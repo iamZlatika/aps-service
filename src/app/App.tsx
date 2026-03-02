@@ -1,4 +1,4 @@
-import "../styles/App.css";
+import "../styles/index.css";
 
 import { Suspense } from "react";
 import { RouterProvider } from "react-router-dom";

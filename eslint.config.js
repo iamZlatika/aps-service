@@ -15,7 +15,10 @@ export default defineConfig([
       "dist/**",
       "build/**",
       "*.log",
-      "vite.config.ts"
+      "vite.config.ts",
+      "*.config.js",
+      "*.config.ts",
+      "src/shared/components/ui/**",
     ],
   },
 
