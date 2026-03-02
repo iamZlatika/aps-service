@@ -1,6 +1,11 @@
 import { lazy, Suspense } from "react";
-import { Navigate, Outlet, type RouteObject } from "react-router-dom";
+import { Navigate, type RouteObject } from "react-router-dom";
 
+import { AuthRoutes } from "@/features/auth/auth-routes.ts";
+import { CustomersRoutes } from "@/features/backoffice/pages/customers/routers.ts";
+import { OrdersRoutes } from "@/features/backoffice/pages/orders/routers.ts";
+import { ServicesRoutes } from "@/features/backoffice/pages/services/routers.ts";
+import { UsersRoutes } from "@/features/backoffice/pages/users/routers.ts";
 import { ROLES } from "@/types/types";
 
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -13,9 +18,11 @@ const UserAccountPage = lazy(
 );
 
 // auth
-const LoginPage = lazy(() => import("@/features/auth/pages/login"));
-const RegistrationPage = lazy(
-  () => import("@/features/auth/pages/registration"),
+const BackofficeLoginPage = lazy(
+  () => import("@/features/auth/backoffice/pages/login"),
+);
+const ForgotPasswordPage = lazy(
+  () => import("@/features/auth/backoffice/pages/fogot"),
 );
 
 // backoffice
@@ -37,7 +44,7 @@ const NotFoundPage = lazy(() => import("@/shared/pages/NotFound"));
 const ForbiddenPage = lazy(() => import("@/shared/pages/Forbidden"));
 
 export const routeConfig: RouteObject[] = [
-  // Public website
+  // public website
   {
     element: (
       <Suspense fallback={<div>Загрузка сайта…</div>}>
@@ -50,20 +57,20 @@ export const routeConfig: RouteObject[] = [
     ],
   },
 
-  // Auth
-  {
-    element: (
-      <Suspense fallback={<div>Загрузка логина…</div>}>
-        <Outlet />
-      </Suspense>
-    ),
-    children: [
-      { path: "/login", element: <LoginPage /> },
-      { path: "/registration", element: <RegistrationPage /> },
-    ],
-  },
+  // auth
+  // {
+  //   element: (
+  //     <Suspense fallback={<div>Загрузка логина…</div>}>
+  //       <Outlet />
+  //     </Suspense>
+  //   ),
+  //   children: [
+  //     { path: AuthRoutes.login(), element: <BackofficeLoginPage /> },
+  //     { path: AuthRoutes.registration(), element: <RegistrationPage /> },
+  //   ],
+  // },
 
-  // Client account
+  // client account
   {
     element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
     children: [
@@ -83,11 +90,21 @@ export const routeConfig: RouteObject[] = [
     ],
   },
 
-  // 🏢 BACKOFFICE (USER + SUPER_ADMIN)
+  // super admin panel
   {
     path: "/backoffice",
     element: <ProtectedRoute allowedRoles={[ROLES.USER, ROLES.SUPER_ADMIN]} />,
     children: [
+      {
+        path: AuthRoutes.auth(),
+        children: [
+          { path: AuthRoutes.login(), element: <BackofficeLoginPage /> },
+          {
+            path: AuthRoutes.forgotPassword(),
+            element: <ForgotPasswordPage />,
+          },
+        ],
+      },
       {
         element: (
           <Suspense fallback={<div>Загрузка панели управления…</div>}>
@@ -95,15 +112,22 @@ export const routeConfig: RouteObject[] = [
           </Suspense>
         ),
         children: [
-          { index: true, element: <Navigate to="orders" replace /> },
-
-          { path: "orders", element: <OrdersPage /> },
-          { path: "customers", element: <CustomersPage /> },
-          { path: "users", element: <UsersPage /> },
+          {
+            index: true,
+            element: <Navigate to={OrdersRoutes.ordersList()} replace />,
+          },
+          { path: OrdersRoutes.ordersList(), element: <OrdersPage /> },
+          { path: CustomersRoutes.customersList(), element: <CustomersPage /> },
+          { path: UsersRoutes.usersList(), element: <UsersPage /> },
 
           {
             element: <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]} />,
-            children: [{ path: "services", element: <ServicesPage /> }],
+            children: [
+              {
+                path: ServicesRoutes.servicesList(),
+                element: <ServicesPage />,
+              },
+            ],
           },
         ],
       },

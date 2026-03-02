@@ -2,8 +2,6 @@ import { Navigate, Outlet } from "react-router-dom";
 
 import type { Role } from "../types/types.ts";
 
-// 🔧 временная заглушка.
-// потом заменишь на Zustand/Context/Redux
 const useAuth = () => {
   return {
     isAuthenticated: true,

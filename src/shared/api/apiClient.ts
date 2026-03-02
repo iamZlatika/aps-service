@@ -1,11 +1,9 @@
-import axios, {
-  type AxiosError,
-  type AxiosRequestConfig,
-  type AxiosResponse,
-} from "axios";
+import axios, { type AxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
 
-// ---- Auth Service ----
+import { type ApiError } from "@/shared/api/types.ts";
+
+// Auth Service
 export const authService = {
   getToken: (): string | undefined => Cookies.get("auth_token"),
   setToken: (token: string, expiresDays = 7) =>
@@ -13,16 +11,16 @@ export const authService = {
   clearToken: () => Cookies.remove("auth_token"),
 };
 
-// ---- API Client ----
+// API Client
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000/api",
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
 });
 
-// ---- Request Interceptor ----
+// Request Interceptor
 apiClient.interceptors.request.use(
   (config) => {
     const token = authService.getToken();
@@ -34,27 +32,24 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// ---- Response Interceptor ----
+// Response Interceptor
 apiClient.interceptors.response.use(
-  (response: AxiosResponse) => response,
-  (error: AxiosError<{ message?: string }>) => {
-    if (error.response?.status === 401) {
-      authService.clearToken();
-      // редирект на страницу логина
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
-      }
-    } else if (error.response?.data?.message) {
-      console.error("API Error:", error.response.data.message);
-    } else {
-      console.error("API Error:", error.message);
-    }
+  (response) => response,
+  (error) => {
+    const status = error.response?.status;
+    const data = error.response?.data;
 
-    return Promise.reject(error);
+    const message = data?.message || error.message || "Неизвестная ошибка";
+
+    return Promise.reject({
+      message,
+      status,
+      data,
+    } satisfies ApiError<unknown>);
   },
 );
 
-// ---- Typed request helpers (optional) ----
+// Typed request helpers (optional)
 export const get = <T = unknown>(url: string, config?: AxiosRequestConfig) =>
   apiClient.get<T>(url, config).then((res) => res.data);
 

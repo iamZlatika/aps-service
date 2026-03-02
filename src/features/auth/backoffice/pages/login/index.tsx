@@ -1,0 +1,112 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+
+import { authApi } from "@/features/auth/api.ts";
+import { OrdersRoutes } from "@/features/backoffice/pages/orders/routers.ts";
+import { authService } from "@/shared/api/apiClient.ts";
+import { Button } from "@/shared/components/ui/button.tsx";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card.tsx";
+import { Input } from "@/shared/components/ui/input.tsx";
+import { Label } from "@/shared/components/ui/label.tsx";
+import { handleFormError } from "@/shared/lib/errorHandlers/formErrorHandler.ts";
+import { cn } from "@/shared/lib/utils.ts";
+
+import { type LoginFormValues, loginSchema } from "./login.schema.ts";
+
+export default function BackofficeLoginPage() {
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (data: LoginFormValues) => {
+    try {
+      const response = await authApi.login(data);
+
+      if (response.token) {
+        authService.setToken(response.token);
+        navigate(OrdersRoutes.ordersList());
+      }
+    } catch (error: unknown) {
+      handleFormError<LoginFormValues>(error, setError);
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl text-center">Вход в систему</CardTitle>
+          <CardDescription className="text-center">
+            Введите ваши данные для доступа в аккаунт
+          </CardDescription>
+        </CardHeader>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                autoFocus
+                id="email"
+                autoComplete="email"
+                type="email"
+                placeholder="name@example.com"
+                {...register("email")}
+                className={cn(errors.email && "border-destructive")}
+              />
+              {errors.email && (
+                <p className="text-sm text-destructive">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Пароль</Label>
+              <Input
+                id="password"
+                type="password"
+                autoComplete="current-password"
+                {...register("password")}
+                className={cn(errors.password && "border-destructive")}
+              />
+              {errors.password && (
+                <p className="text-sm text-destructive">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+          </CardContent>
+          <CardFooter className="flex flex-col space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? "Вход..." : "Войти"}
+            </Button>
+            <a></a>
+            {errors.root && (
+              <p className="text-sm text-destructive text-center mb-4">
+                {errors.root.message}
+              </p>
+            )}
+          </CardFooter>
+        </form>
+      </Card>
+    </div>
+  );
+}

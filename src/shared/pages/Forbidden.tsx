@@ -1,7 +1,7 @@
 const ForbiddenPage = () => {
   return (
     <div>
-      <div>NotFoundPage</div>
+      <div>403</div>
     </div>
   );
 };
