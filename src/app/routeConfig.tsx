@@ -22,7 +22,13 @@ const BackofficeLoginPage = lazy(
   () => import("@/features/auth/backoffice/pages/login"),
 );
 const ForgotPasswordPage = lazy(
-  () => import("@/features/auth/backoffice/pages/fogot"),
+  () => import("@/features/auth/backoffice/pages/forgot"),
+);
+const EmailSentPage = lazy(
+  () => import("@/features/auth/backoffice/pages/forgot/EmailSentPage"),
+);
+const ResetPasswordPage = lazy(
+  () => import("@/features/auth/backoffice/pages/forgot/ResetPasswordPage"),
 );
 
 // backoffice
@@ -89,11 +95,10 @@ export const routeConfig: RouteObject[] = [
       },
     ],
   },
-
-  // super admin panel
+  // backoffice auth
   {
-    path: "/backoffice",
-    element: <ProtectedRoute allowedRoles={[ROLES.USER, ROLES.SUPER_ADMIN]} />,
+    path: AuthRoutes.backofficeRoot(),
+
     children: [
       {
         path: AuthRoutes.auth(),
@@ -103,29 +108,47 @@ export const routeConfig: RouteObject[] = [
             path: AuthRoutes.forgotPassword(),
             element: <ForgotPasswordPage />,
           },
+          { path: AuthRoutes.emailSent(), element: <EmailSentPage /> },
+          {
+            path: AuthRoutes.resetPassword(),
+            element: <ResetPasswordPage />,
+          },
         ],
       },
+
+      // admin panel
       {
         element: (
-          <Suspense fallback={<div>Загрузка панели управления…</div>}>
-            <BackofficeLayout />
-          </Suspense>
+          <ProtectedRoute allowedRoles={[ROLES.USER, ROLES.SUPER_ADMIN]} />
         ),
         children: [
           {
-            index: true,
-            element: <Navigate to={OrdersRoutes.ordersList()} replace />,
-          },
-          { path: OrdersRoutes.ordersList(), element: <OrdersPage /> },
-          { path: CustomersRoutes.customersList(), element: <CustomersPage /> },
-          { path: UsersRoutes.usersList(), element: <UsersPage /> },
-
-          {
-            element: <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]} />,
+            element: (
+              <Suspense fallback={<div>Загрузка панели управления…</div>}>
+                <BackofficeLayout />
+              </Suspense>
+            ),
             children: [
               {
-                path: ServicesRoutes.servicesList(),
-                element: <ServicesPage />,
+                index: true,
+                element: <Navigate to={OrdersRoutes.ordersList()} replace />,
+              },
+              { path: OrdersRoutes.ordersList(), element: <OrdersPage /> },
+              {
+                path: CustomersRoutes.customersList(),
+                element: <CustomersPage />,
+              },
+              { path: UsersRoutes.usersList(), element: <UsersPage /> },
+
+              // super admin panel
+              {
+                element: <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]} />,
+                children: [
+                  {
+                    path: ServicesRoutes.servicesList(),
+                    element: <ServicesPage />,
+                  },
+                ],
               },
             ],
           },

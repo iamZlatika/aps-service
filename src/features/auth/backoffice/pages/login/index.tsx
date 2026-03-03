@@ -1,8 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { authApi } from "@/features/auth/api.ts";
+import { AuthRoutes } from "@/features/auth/auth-routes.ts";
 import { OrdersRoutes } from "@/features/backoffice/pages/orders/routers.ts";
 import { authService } from "@/shared/api/apiClient.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
@@ -94,11 +95,18 @@ export default function BackofficeLoginPage() {
               )}
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
+          <CardFooter className="flex flex-col space-y-2">
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? "Вход..." : "Войти"}
             </Button>
-            <a></a>
+
+            <Link
+              to={AuthRoutes.linkToForgot()}
+              className="text-sm text-blue-600 hover:underline text-center"
+            >
+              Забыли пароль?
+            </Link>
+
             {errors.root && (
               <p className="text-sm text-destructive text-center mb-4">
                 {errors.root.message}
