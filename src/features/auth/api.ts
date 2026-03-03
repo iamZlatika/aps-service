@@ -1,16 +1,14 @@
+import { type ForgotFormValues } from "@/features/auth/backoffice/pages/forgot/forgot.schema.ts";
+import {
+  type CheckTokenData,
+  type LoginResponse,
+  type ResetPasswordData,
+  type SuccessResponse,
+} from "@/features/auth/types.ts";
 import { post } from "@/shared/api/apiClient";
 
 import { AuthRoutes } from "./auth-routes";
 import { type LoginFormValues } from "./backoffice/pages/login/login.schema";
-
-export interface LoginResponse {
-  token: string;
-  user?: {
-    id: string;
-    email: string;
-    name: string;
-  };
-}
 
 export const authApi = {
   login: (data: LoginFormValues): Promise<LoginResponse> => {
@@ -18,5 +16,14 @@ export const authApi = {
       AuthRoutes.backofficeLoginApi(),
       data,
     );
+  },
+  forgot: (data: ForgotFormValues): Promise<SuccessResponse> => {
+    return post(AuthRoutes.backofficeForgotApi(), data);
+  },
+  resetCheckToken: (data: CheckTokenData): Promise<void> => {
+    return post(AuthRoutes.backofficeResetCheckTokenApi(), data);
+  },
+  resetPassword: (data: ResetPasswordData): Promise<SuccessResponse> => {
+    return post(AuthRoutes.backofficeResetPasswordApi(), data);
   },
 };
