@@ -1,26 +1,26 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-import type { Role } from "../types/types.ts";
+import { AuthRoutes } from "@/features/auth/routes.ts";
+import { useAuth } from "@/features/auth/useAuth.ts";
 
-const useAuth = () => {
-  return {
-    isAuthenticated: true,
-    role: "user" as Role,
-  };
-};
+import type { Role } from "../types/types.ts";
 
 type ProtectedRouteProps = {
   allowedRoles?: Role[];
 };
 
 export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
-  const { isAuthenticated, role } = useAuth();
+  const { isAuthenticated, role, isLoading } = useAuth();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+  if (isLoading) {
+    return <div>Загрузка...</div>;
   }
 
-  if (allowedRoles && !allowedRoles.includes(role)) {
+  if (!isAuthenticated) {
+    return <Navigate to={AuthRoutes.linkToLogin()} replace />;
+  }
+
+  if (allowedRoles && (!role || !allowedRoles.includes(role as Role))) {
     return <Navigate to="/403" replace />;
   }
 

@@ -1,32 +1,33 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
+import { logout as sessionLogout } from "@/features/auth/sessionManager.ts";
+import { usersApi } from "@/features/backoffice/modules/users/api/api";
 import { authService } from "@/shared/api/apiClient";
 
 export const useAuth = () => {
-  const queryClient = useQueryClient();
+  const token = authService.getToken();
 
-  // Запрос данных профиля, если есть токен
-  const { data: user, isLoading } = useQuery({
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["auth-user"],
-    queryFn: async () => {
-      // Здесь вызов вашего АПИ для получения профиля
-      // return await getProfile();
-    },
-    enabled: !!authService.getToken(), // Запрос идет только если есть токен
+    queryFn: usersApi.getMe,
+    enabled: !!authService.getToken(),
     retry: false,
+    staleTime: Infinity,
   });
 
   const logout = () => {
-    authService.clearToken();
-    queryClient.setQueryData(["auth-user"], null);
-    window.location.href = "/login";
+    sessionLogout(true);
   };
 
   return {
     user,
-    isAuthenticated: !!user,
-    isLoading,
-    // role: user?.role,
+    role: user?.role,
+    isAuthenticated: !!token && !isError,
+    isLoading: isLoading || (!!token && !user && !isError),
     logout,
   };
 };

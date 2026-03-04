@@ -1,11 +1,11 @@
 import { lazy, Suspense } from "react";
 import { Navigate, type RouteObject } from "react-router-dom";
 
-import { AuthRoutes } from "@/features/auth/auth-routes.ts";
-import { CustomersRoutes } from "@/features/backoffice/pages/customers/routers.ts";
-import { OrdersRoutes } from "@/features/backoffice/pages/orders/routers.ts";
-import { ServicesRoutes } from "@/features/backoffice/pages/services/routers.ts";
-import { UsersRoutes } from "@/features/backoffice/pages/users/routers.ts";
+import { AuthRoutes } from "@/features/auth/routes.ts";
+import { CustomersRoutes } from "@/features/backoffice/modules/customers/routers.ts";
+import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
+import { ServicesRoutes } from "@/features/backoffice/modules/services/routers.ts";
+import { UsersRoutes } from "@/features/backoffice/modules/users/api/routers.ts";
 import { ROLES } from "@/types/types";
 
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -33,11 +33,15 @@ const ResetPasswordPage = lazy(
 
 // backoffice
 const CustomersPage = lazy(
-  () => import("@/features/backoffice/pages/customers"),
+  () => import("@/features/backoffice/modules/customers"),
 );
-const OrdersPage = lazy(() => import("@/features/backoffice/pages/orders"));
-const ServicesPage = lazy(() => import("@/features/backoffice/pages/services"));
-const UsersPage = lazy(() => import("@/features/backoffice/pages/users"));
+const OrdersPage = lazy(() => import("@/features/backoffice/modules/orders"));
+const ServicesPage = lazy(
+  () => import("@/features/backoffice/modules/services"),
+);
+const UsersPage = lazy(
+  () => import("@/features/backoffice/modules/users/pages"),
+);
 
 // Layouts
 const BackofficeLayout = lazy(
@@ -48,8 +52,13 @@ import WebsiteLayout from "@/features/website/components/WebsiteLayout";
 // Shared
 const NotFoundPage = lazy(() => import("@/shared/pages/NotFound"));
 const ForbiddenPage = lazy(() => import("@/shared/pages/Forbidden"));
+const GlobalErrorPage = lazy(() => import("@/shared/pages/GlobalError"));
 
 export const routeConfig: RouteObject[] = [
+  {
+    path: "/",
+    errorElement: <GlobalErrorPage />,
+  },
   // public website
   {
     element: (
@@ -119,7 +128,7 @@ export const routeConfig: RouteObject[] = [
       // admin panel
       {
         element: (
-          <ProtectedRoute allowedRoles={[ROLES.USER, ROLES.SUPER_ADMIN]} />
+          <ProtectedRoute allowedRoles={[ROLES.USER, ROLES.HEAD_MANAGER]} />
         ),
         children: [
           {
@@ -142,7 +151,7 @@ export const routeConfig: RouteObject[] = [
 
               // super admin panel
               {
-                element: <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]} />,
+                element: <ProtectedRoute allowedRoles={[ROLES.HEAD_MANAGER]} />,
                 children: [
                   {
                     path: ServicesRoutes.servicesList(),

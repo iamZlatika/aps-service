@@ -7,8 +7,8 @@ import {
 } from "@/features/auth/types.ts";
 import { post } from "@/shared/api/apiClient";
 
-import { AuthRoutes } from "./auth-routes";
 import { type LoginFormValues } from "./backoffice/pages/login/login.schema";
+import { AuthRoutes } from "./routes.ts";
 
 export const authApi = {
   login: (data: LoginFormValues): Promise<LoginResponse> => {

@@ -1,7 +1,9 @@
 import * as z from "zod";
 
+import { emailRegex } from "@/shared/lib/constats.ts";
+
 export const loginSchema = z.object({
-  email: z.string().refine((val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), {
+  email: z.string().refine((val) => emailRegex.test(val), {
     message: "Введите корректный email",
   }),
   password: z
