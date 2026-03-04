@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
 import { authApi } from "@/features/auth/api.ts";
-import { AuthRoutes } from "@/features/auth/auth-routes.ts";
-import { OrdersRoutes } from "@/features/backoffice/pages/orders/routers.ts";
+import { AuthRoutes } from "@/features/auth/routes.ts";
+import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
 import { authService } from "@/shared/api/apiClient.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
@@ -24,7 +25,7 @@ import { type LoginFormValues, loginSchema } from "./login.schema.ts";
 
 export default function BackofficeLoginPage() {
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -41,10 +42,12 @@ export default function BackofficeLoginPage() {
   const onSubmit = async (data: LoginFormValues) => {
     try {
       const response = await authApi.login(data);
-
       if (response.token) {
         authService.setToken(response.token);
-        navigate(OrdersRoutes.ordersList());
+
+        await queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+
+        navigate(OrdersRoutes.linkToOrders());
       }
     } catch (error: unknown) {
       handleFormError<LoginFormValues>(error, setError);

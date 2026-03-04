@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { authApi } from "@/features/auth/api.ts";
-import { AuthRoutes } from "@/features/auth/auth-routes.ts";
+import { AuthRoutes } from "@/features/auth/routes.ts";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
