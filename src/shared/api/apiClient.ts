@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 
 import { logout } from "@/features/auth/sessionManager.ts";
 import { type ApiError } from "@/shared/api/types.ts";
+import { createApiError } from "@/shared/lib/errorHandlers/services.ts";
 
 export const authService = {
   getToken: (): string | undefined => Cookies.get("auth_token"),
@@ -55,11 +56,7 @@ apiClient.interceptors.response.use(
 
     const message = data?.message || error.message || "Неизвестная ошибка";
 
-    return Promise.reject({
-      message,
-      status,
-      data,
-    });
+    return Promise.reject(createApiError(message, status, data));
   },
 );
 

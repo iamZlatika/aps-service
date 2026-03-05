@@ -6,6 +6,8 @@ import { CustomersRoutes } from "@/features/backoffice/modules/customers/routers
 import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
 import { ServicesRoutes } from "@/features/backoffice/modules/services/routers.ts";
 import { UsersRoutes } from "@/features/backoffice/modules/users/api/routers.ts";
+import WebsiteLayout from "@/features/website/components/WebsiteLayout";
+import { SharedRoutes } from "@/shared/api/routes.ts";
 import { ROLES } from "@/types/types";
 
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -47,7 +49,6 @@ const UsersPage = lazy(
 const BackofficeLayout = lazy(
   () => import("@/features/backoffice/components/BackofficeLayout"),
 );
-import WebsiteLayout from "@/features/website/components/WebsiteLayout";
 
 // Shared
 const NotFoundPage = lazy(() => import("@/shared/pages/NotFound"));
@@ -165,6 +166,6 @@ export const routeConfig: RouteObject[] = [
       },
     ],
   },
-  { path: "/403", element: <ForbiddenPage /> },
+  { path: SharedRoutes.forbidden(), element: <ForbiddenPage /> },
   { path: "*", element: <NotFoundPage /> },
 ];
