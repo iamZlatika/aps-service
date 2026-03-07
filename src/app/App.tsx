@@ -1,4 +1,4 @@
-import "../styles/index.css";
+import "../styles/globals.css";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Suspense } from "react";
