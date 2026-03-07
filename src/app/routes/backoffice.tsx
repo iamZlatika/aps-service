@@ -3,8 +3,8 @@ import { type RouteObject } from "react-router-dom";
 
 import { ProtectedRoute } from "@/app/ProtectedRoute";
 import { CustomersRoutes } from "@/features/backoffice/modules/customers/routers.ts";
+import { DictionariesRoutes } from "@/features/backoffice/modules/dictionaries/routers.ts";
 import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
-import { ServicesRoutes } from "@/features/backoffice/modules/services/routers.ts";
 import { UsersRoutes } from "@/features/backoffice/modules/users/api/routers.ts";
 import { ROLES } from "@/types/types";
 
@@ -16,7 +16,7 @@ const UsersPage = lazy(
   () => import("@/features/backoffice/modules/users/pages"),
 );
 const ServicesPage = lazy(
-  () => import("@/features/backoffice/modules/services"),
+  () => import("@/features/backoffice/modules/dictionaries"),
 );
 
 export const backofficeRoutes: RouteObject = {
@@ -29,7 +29,10 @@ export const backofficeRoutes: RouteObject = {
     {
       element: <ProtectedRoute allowedRoles={[ROLES.HEAD_MANAGER]} />,
       children: [
-        { path: ServicesRoutes.servicesList(), element: <ServicesPage /> },
+        {
+          path: DictionariesRoutes.dictionariesList(),
+          element: <ServicesPage />,
+        },
       ],
     },
   ],
