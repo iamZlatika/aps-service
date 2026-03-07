@@ -3,6 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { AuthRoutes } from "@/features/auth/routes.ts";
 import { useAuth } from "@/features/auth/useAuth.ts";
 import { SharedRoutes } from "@/shared/api/routes.ts";
+import Loader from "@/shared/components/common/Loader.tsx";
 
 import type { Role } from "../types/types.ts";
 
@@ -14,7 +15,7 @@ export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
   const { isAuthenticated, role, isLoading } = useAuth();
 
   if (isLoading) {
-    return <div>Загрузка...</div>;
+    return <Loader />;
   }
 
   if (!isAuthenticated) {
