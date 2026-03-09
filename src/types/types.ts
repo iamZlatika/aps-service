@@ -7,3 +7,5 @@ export const ROLES = {
 export type Role = (typeof ROLES)[keyof typeof ROLES];
 
 export type Language = "ru" | "uk";
+
+export type UserStatus = "active" | "blocked";

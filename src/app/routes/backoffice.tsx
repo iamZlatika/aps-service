@@ -2,7 +2,7 @@ import { lazy } from "react";
 import { type RouteObject } from "react-router-dom";
 
 import { ProtectedRoute } from "@/app/ProtectedRoute";
-import { CustomersRoutes } from "@/features/backoffice/modules/customers/routers.ts";
+import { CustomersRoutes } from "@/features/backoffice/modules/customers/api/routers.ts";
 import { DictionariesRoutes } from "@/features/backoffice/modules/dictionaries/routers.ts";
 import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
 import { UsersRoutes } from "@/features/backoffice/modules/users/api/routers.ts";

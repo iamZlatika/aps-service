@@ -1,5 +1,5 @@
-import i18next from "i18next";
 import axios, { type AxiosError, type AxiosRequestConfig } from "axios";
+import i18next from "i18next";
 import Cookies from "js-cookie";
 
 import { logout } from "@/features/auth/sessionManager.ts";
