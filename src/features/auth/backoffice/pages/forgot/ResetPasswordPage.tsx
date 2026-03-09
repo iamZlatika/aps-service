@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { authApi } from "@/features/auth/api.ts";
@@ -25,6 +26,7 @@ import {
 } from "./forgot.schema";
 
 const ResetPasswordPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
@@ -63,9 +65,9 @@ const ResetPasswordPage = () => {
       } catch (err: unknown) {
         setIsValid(false);
         if (isApiError<ValidationError>(err)) {
-          setErrorState(err.message || "Ссылка недействительна");
+          setErrorState(err.message || t("errors.invalid_link"));
         } else {
-          setErrorState("Произошла ошибка при проверке ссылки");
+          setErrorState(t("errors.check_link_error"));
         }
       } finally {
         setIsValidating(false);
@@ -87,7 +89,7 @@ const ResetPasswordPage = () => {
   if (isValidating) {
     return (
       <div className="flex min-h-screen items-center justify-center p-4">
-        <p>Проверка ссылки...</p>
+        <p>{t("auth.reset.checking_link")}</p>
       </div>
     );
   }
@@ -98,12 +100,11 @@ const ResetPasswordPage = () => {
         <Card className="w-full max-w-md border-destructive">
           <CardHeader>
             <CardTitle className="text-destructive text-center">
-              Ошибка
+              {t("auth.reset.error_title")}
             </CardTitle>
           </CardHeader>
           <CardContent className="text-center">
-            {error ||
-              "Ссылка для восстановления пароля недействительна или просрочена."}
+            {error || t("auth.reset.invalid_link")}
           </CardContent>
         </Card>
       </div>
@@ -114,12 +115,14 @@ const ResetPasswordPage = () => {
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-center text-2xl">Новый пароль</CardTitle>
+          <CardTitle className="text-center text-2xl">
+            {t("auth.reset.title")}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="password">Новый пароль</Label>
+              <Label htmlFor="password">{t("auth.reset.password")}</Label>
               <Input
                 autoFocus
                 id="password"
@@ -134,7 +137,9 @@ const ResetPasswordPage = () => {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password_confirmation">Повторите пароль</Label>
+              <Label htmlFor="password_confirmation">
+                {t("auth.reset.confirm_password")}
+              </Label>
               <Input
                 id="password_confirmation"
                 type="password"
@@ -150,7 +155,9 @@ const ResetPasswordPage = () => {
               )}
             </div>
             <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Сохранение..." : "Подтвердить новый пароль"}
+              {isSubmitting
+                ? t("auth.reset.submitting")
+                : t("auth.reset.submit")}
             </Button>
           </form>
         </CardContent>

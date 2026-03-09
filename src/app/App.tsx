@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "@/shared/lib/i18n/index";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Suspense } from "react";

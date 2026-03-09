@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { authApi } from "@/features/auth/api.ts";
@@ -20,6 +21,7 @@ import { cn } from "@/shared/lib/utils.ts";
 import { type ForgotFormValues, forgotSchema } from "./forgot.schema";
 
 const ForgotPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const {
     register,
@@ -43,15 +45,13 @@ const ForgotPage = () => {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Восстановление пароля</CardTitle>
-          <CardDescription>
-            Укажите Ваш эмейл для восстановления пароля
-          </CardDescription>
+          <CardTitle>{t("auth.forgot.title")}</CardTitle>
+          <CardDescription>{t("auth.forgot.description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("auth.login.email")}</Label>
               <Input
                 autoFocus
                 id="email"
@@ -67,7 +67,9 @@ const ForgotPage = () => {
               )}
             </div>
             <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Отправка..." : "Отправить"}
+              {isSubmitting
+                ? t("auth.forgot.submitting")
+                : t("auth.forgot.submit")}
             </Button>
           </form>
         </CardContent>

@@ -6,6 +6,7 @@ import {
   Users,
   Wrench,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import { AuthRoutes } from "@/features/auth/routes";
@@ -36,6 +37,7 @@ import {
 import { ROLES } from "@/types/types";
 
 export const BackofficeSidebar = () => {
+  const { t } = useTranslation();
   const { role } = useAuth();
   const isHeadManager = role === ROLES.HEAD_MANAGER;
 
@@ -50,22 +52,22 @@ export const BackofficeSidebar = () => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Управление</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("sidebar.management")}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Заказы">
+                <SidebarMenuButton asChild tooltip={t("sidebar.orders")}>
                   <Link to={`${root}/${OrdersRoutes.ordersList()}`}>
                     <Package className="h-4 w-4" />
-                    <span>Заказы</span>
+                    <span>{t("sidebar.orders")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Клиенты">
+                <SidebarMenuButton asChild tooltip={t("sidebar.customers")}>
                   <Link to={`${root}/${CustomersRoutes.customersList()}`}>
                     <Users className="h-4 w-4" />
-                    <span>Клиенты</span>
+                    <span>{t("sidebar.customers")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -73,9 +75,9 @@ export const BackofficeSidebar = () => {
                 <Collapsible className="group/collapsible">
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
-                      <SidebarMenuButton tooltip="Настройки">
+                      <SidebarMenuButton tooltip={t("sidebar.settings")}>
                         <Settings className="h-4 w-4" />
-                        <span>Настройки</span>
+                        <span>{t("sidebar.settings")}</span>
                         <ChevronDown className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-180" />
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
@@ -85,7 +87,7 @@ export const BackofficeSidebar = () => {
                           <SidebarMenuSubButton asChild>
                             <Link to={`${root}/${UsersRoutes.usersList()}`}>
                               <Wrench className="h-4 w-4" />
-                              <span>Мастера</span>
+                              <span>{t("sidebar.masters")}</span>
                             </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
@@ -95,7 +97,7 @@ export const BackofficeSidebar = () => {
                               to={`${root}/${DictionariesRoutes.dictionariesList()}`}
                             >
                               <BookOpenText className="h-4 w-4" />
-                              <span>Справочники</span>
+                              <span>{t("sidebar.dictionaries")}</span>
                             </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>

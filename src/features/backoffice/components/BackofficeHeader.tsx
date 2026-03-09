@@ -1,12 +1,16 @@
 import { LogOut } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { useAuth } from "@/features/auth/useAuth";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
 import { SidebarTrigger } from "@/shared/components/ui/sidebar";
+import { useLanguage } from "@/shared/lib/i18n/useLanguage.ts";
 
 export const BackofficeHeader = () => {
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
+  const { currentLanguage, changeLanguage } = useLanguage();
 
   const firstLetter = user?.name ? user.name.charAt(0).toUpperCase() : "U";
 
@@ -17,8 +21,29 @@ export const BackofficeHeader = () => {
       </div>
 
       <div className="flex items-center gap-4">
+        {/* Language switcher group */}
+        <div className="flex items-center border rounded-md overflow-hidden">
+          <Button
+            variant={currentLanguage === "uk" ? "default" : "ghost"}
+            size="sm"
+            className="rounded-none h-8 px-3"
+            onClick={() => changeLanguage("uk")}
+          >
+            UK
+          </Button>
+          <div className="w-[1px] h-4 bg-border" />
+          <Button
+            variant={currentLanguage === "ru" ? "default" : "ghost"}
+            size="sm"
+            className="rounded-none h-8 px-3"
+            onClick={() => changeLanguage("ru")}
+          >
+            RU
+          </Button>
+        </div>
+
         <span className="text-sm font-medium">
-          Привет, {user?.name || "Пользователь"}
+          {t("header.welcome", { name: user?.name || t("header.user") })}
         </span>
 
         <Avatar>
@@ -31,10 +56,10 @@ export const BackofficeHeader = () => {
           variant="ghost"
           size="icon"
           onClick={() => logout()}
-          title="Выйти"
+          title={t("header.logout")}
         >
           <LogOut className="h-5 w-5" />
-          <span className="sr-only">Выйти</span>
+          <span className="sr-only">{t("header.logout")}</span>
         </Button>
       </div>
     </header>
