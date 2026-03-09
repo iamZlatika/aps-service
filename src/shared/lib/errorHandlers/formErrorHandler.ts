@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import type { FieldValues, Path, UseFormSetError } from "react-hook-form";
 
 import { type ValidationError } from "@/shared/api/types.ts";
@@ -10,7 +11,7 @@ export function handleFormError<TFieldValues extends FieldValues>(
   if (!isApiError<ValidationError>(error)) {
     setError("root" as Path<TFieldValues>, {
       type: "server",
-      message: "Неизвестная ошибка",
+      message: i18next.t("errors.unknown"),
     });
     return;
   }
@@ -26,6 +27,6 @@ export function handleFormError<TFieldValues extends FieldValues>(
   }
   setError("root" as Path<TFieldValues>, {
     type: "server",
-    message: message || "Произошла ошибка на сервере",
+    message: message || i18next.t("errors.server"),
   });
 }

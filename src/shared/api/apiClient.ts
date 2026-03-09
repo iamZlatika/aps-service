@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import axios, { type AxiosError, type AxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
 
@@ -54,7 +55,8 @@ apiClient.interceptors.response.use(
       }, 2000);
     }
 
-    const message = data?.message || error.message || "Неизвестная ошибка";
+    const message =
+      data?.message || error.message || i18next.t("errors.unknown");
 
     return Promise.reject(createApiError(message, status, data));
   },

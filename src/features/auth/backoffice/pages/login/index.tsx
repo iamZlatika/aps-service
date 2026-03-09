@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 
 import { AuthRoutes } from "@/features/auth/routes.ts";
@@ -22,6 +23,7 @@ import { cn } from "@/shared/lib/utils.ts";
 import { type LoginFormValues, loginSchema } from "./login.schema.ts";
 
 export default function BackofficeLoginPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { login } = useAuth();
   const {
@@ -50,15 +52,17 @@ export default function BackofficeLoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center">Вход в систему</CardTitle>
+          <CardTitle className="text-2xl text-center">
+            {t("auth.login.title")}
+          </CardTitle>
           <CardDescription className="text-center">
-            Введите ваши данные для доступа в аккаунт
+            {t("auth.login.description")}
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("auth.login.email")}</Label>
               <Input
                 autoFocus
                 id="email"
@@ -75,7 +79,7 @@ export default function BackofficeLoginPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Пароль</Label>
+              <Label htmlFor="password">{t("auth.login.password")}</Label>
               <Input
                 id="password"
                 type="password"
@@ -92,14 +96,16 @@ export default function BackofficeLoginPage() {
           </CardContent>
           <CardFooter className="flex flex-col space-y-2">
             <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Вход..." : "Войти"}
+              {isSubmitting
+                ? t("auth.login.submitting")
+                : t("auth.login.submit")}
             </Button>
 
             <Link
               to={AuthRoutes.linkToForgot()}
               className="text-sm text-blue-600 hover:underline text-center"
             >
-              Забыли пароль?
+              {t("auth.login.forgot_password")}
             </Link>
 
             {errors.root && (
