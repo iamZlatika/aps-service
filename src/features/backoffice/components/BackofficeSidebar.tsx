@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 import { AuthRoutes } from "@/features/auth/routes";
 import { useAuth } from "@/features/auth/useAuth";
-import { CustomersRoutes } from "@/features/backoffice/modules/customers/routers";
+import { CustomersRoutes } from "@/features/backoffice/modules/customers/api/routers.ts";
 import { DictionariesRoutes } from "@/features/backoffice/modules/dictionaries/routers";
 import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers";
 import { UsersRoutes } from "@/features/backoffice/modules/users/api/routers";

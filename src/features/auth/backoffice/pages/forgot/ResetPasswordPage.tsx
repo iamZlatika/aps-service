@@ -73,7 +73,7 @@ const ResetPasswordPage = () => {
         setIsValidating(false);
       }
     })();
-  }, [token, email]);
+  }, [token, email, t]);
 
   const onSubmit = async (data: ResetPasswordFormValues) => {
     const resetPasswordData = { ...data, token, email };

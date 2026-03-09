@@ -4,4 +4,5 @@ export const UsersRoutes = {
 
   // api
   meApi: () => "/backoffice/users/me",
+  usersApi: () => "/backoffice/users",
 };

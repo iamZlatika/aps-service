@@ -14,4 +14,10 @@ export const usersApi = {
     const validatedData = UserDtoSchema.parse(response.data);
     return mapUserDtoToUser(validatedData);
   },
+  getUsers: async (): Promise<User[]> => {
+    const repo = await get<{ data: UserDto[] }>(UsersRoutes.usersApi());
+
+    const validatedData = UserDtoSchema.array().parse(repo.data);
+    return validatedData.map(mapUserDtoToUser);
+  },
 };

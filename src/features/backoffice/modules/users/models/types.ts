@@ -1,9 +1,9 @@
-import { type Role } from "@/types/types.ts";
+import { type Role, type UserStatus } from "@/types/types.ts";
 
 export type User = {
   id: number;
   name: string;
   email: string;
   role: Role;
-  status: "active" | "blocked";
+  status: UserStatus;
 };
