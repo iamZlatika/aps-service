@@ -46,7 +46,35 @@
     "customers": "Клієнти",
     "settings": "Налаштування",
     "masters": "Майстри",
-    "dictionaries": "Довідники"
+    "dictionaries": "Довідники",
+    "dictionaries_list": {
+      "title": "Довідники",
+      "accessories": "Комплектації",
+      "issue_types": "Типи проблем",
+      "device_conditions": "Стани пристроїв",
+      "device_models": "Моделі пристроїв",
+      "device_types": "Типи пристроїв",
+      "intake_notes": "Нотатки при прийманні",
+      "manufacturers": "Виробники",
+      "repair_operations": "Операції з ремонту",
+      "table": {
+        "add_button": "Додати",
+        "name": "Назва",
+                "no_results": "Немає результатів",
+        "add_modal": {
+          "title": "Додавання запису",
+          "input_placeholder": "Введіть назву",
+          "add": "Додати",
+          "cancel": "Скасувати"
+        },
+        "delete_modal": {
+          "title": "Видалення запису",
+          "description": "Ви впевнені, що хочете видалити \"{{name}}\"?",
+          "confirm": "Видалити",
+          "cancel": "Скасувати"
+        }
+      }
+    }
   },
   "errors": {
     "unknown": "Невідома помилка",

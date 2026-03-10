@@ -46,7 +46,38 @@
     "customers": "Клиенты",
     "settings": "Настройки",
     "masters": "Мастера",
-    "dictionaries": "Справочники"
+    "dictionaries": "Справочники",
+    "dictionaries_list": {
+      "title": "Справочники",
+      "accessories": "Комплектации",
+      "issue_types": "Типы проблем",
+      "device_conditions": "Состояния устройств",
+      "device_models": "Модели устройств",
+      "device_types": "Типы устройств",
+      "intake_notes": "Заметки при приемке",
+      "manufacturers": "Производители",
+      "repair_operations": "Операции по ремонту",
+      "table": {
+        "add_button": "Добавить",
+        "name": "Название",
+               "no_results": "Нет результатов",
+        "add_modal": {
+          "title": "Добавление записи",
+          "input_placeholder": "Введите название",
+          "add": "Добавить",
+          "cancel": "Отмена"
+        },
+        "delete_modal": {
+          "title": "Удаление записи",
+          "description": "Вы уверены, что хотите удалить \"{{name}}\"?",
+          "confirm": "Удалить",
+          "cancel": "Отмена"
+        }
+      },
+      "accessories_page": {
+        "title": "Комплектации"
+      }
+    }
   },
   "errors": {
     "unknown": "Неизвестная ошибка",

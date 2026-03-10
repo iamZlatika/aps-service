@@ -94,7 +94,7 @@ export const BackofficeSidebar = () => {
                         <SidebarMenuSubItem>
                           <SidebarMenuSubButton asChild>
                             <Link
-                              to={`${root}/${DictionariesRoutes.dictionariesList()}`}
+                              to={`${DictionariesRoutes.linkToDictionaries()}`}
                             >
                               <BookOpenText className="h-4 w-4" />
                               <span>{t("sidebar.dictionaries")}</span>

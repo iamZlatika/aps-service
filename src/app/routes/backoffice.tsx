@@ -15,8 +15,11 @@ const CustomersPage = lazy(
 const UsersPage = lazy(
   () => import("@/features/backoffice/modules/users/pages"),
 );
-const ServicesPage = lazy(
+const DictionariesPage = lazy(
   () => import("@/features/backoffice/modules/dictionaries"),
+);
+const AccessoriesPage = lazy(
+  () => import("@/features/backoffice/modules/dictionaries/pages/Accessories"),
 );
 
 export const backofficeRoutes: RouteObject = {
@@ -31,7 +34,11 @@ export const backofficeRoutes: RouteObject = {
       children: [
         {
           path: DictionariesRoutes.dictionariesList(),
-          element: <ServicesPage />,
+          element: <DictionariesPage />,
+        },
+        {
+          path: DictionariesRoutes.accessories(),
+          element: <AccessoriesPage />,
         },
       ],
     },
