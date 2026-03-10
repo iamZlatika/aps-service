@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/shared/components/ui/table";
 
-import { customersApi } from "./api/api";
+import { customersApi } from "./api";
 
 const CustomersPage = () => {
   const {

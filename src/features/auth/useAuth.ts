@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 import { logout as sessionLogout } from "@/features/auth/sessionManager.ts";
-import { usersApi } from "@/features/backoffice/modules/users/api/api";
+import { usersApi } from "@/features/backoffice/modules/users/api";
 import { authService } from "@/shared/api/apiClient";
 
 import { authApi } from "./api";
