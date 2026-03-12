@@ -30,13 +30,8 @@ const WebsiteLayout = lazy(
 // Shared
 const NotFoundPage = lazy(() => import("@/shared/pages/NotFound"));
 const ForbiddenPage = lazy(() => import("@/shared/pages/Forbidden"));
-const GlobalErrorPage = lazy(() => import("@/shared/pages/GlobalError"));
 
 export const routeConfig: RouteObject[] = [
-  {
-    path: "/",
-    errorElement: <GlobalErrorPage />,
-  },
   // public website
   websiteRoutes,
 

@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -16,8 +17,8 @@ import {
 } from "@/shared/components/ui/card.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
-import { handleFormError } from "@/shared/lib/errorHandlers/formErrorHandler.ts";
-import { isApiError } from "@/shared/lib/errorHandlers/services.ts";
+import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
+import { isApiError } from "@/shared/lib/errors/services.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
 import {
@@ -28,7 +29,9 @@ import {
 const ResetPasswordPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
+  const resetMutation = useMutation({
+    mutationFn: authApi.resetPassword,
+  });
   const [searchParams] = useSearchParams();
   const [isValidating, setIsValidating] = useState(true);
   const [isValid, setIsValid] = useState(false);
@@ -42,7 +45,7 @@ const ResetPasswordPage = () => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
@@ -75,15 +78,15 @@ const ResetPasswordPage = () => {
     })();
   }, [token, email, t]);
 
-  const onSubmit = async (data: ResetPasswordFormValues) => {
-    const resetPasswordData = { ...data, token, email };
-    try {
-      await authApi.resetPassword(resetPasswordData);
-
-      navigate(AuthRoutes.linkToLogin());
-    } catch (error: unknown) {
-      handleFormError<ResetPasswordFormValues>(error, setError);
-    }
+  const onSubmit = (data: ResetPasswordFormValues) => {
+    resetMutation.mutate(
+      { ...data, token, email },
+      {
+        onSuccess: () => navigate(AuthRoutes.linkToLogin()),
+        onError: (error) =>
+          handleFormError<ResetPasswordFormValues>(error, setError),
+      },
+    );
   };
 
   if (isValidating) {
@@ -154,8 +157,12 @@ const ResetPasswordPage = () => {
                 </p>
               )}
             </div>
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={resetMutation.isPending}
+            >
+              {resetMutation.isPending
                 ? t("auth.reset.submitting")
                 : t("auth.reset.submit")}
             </Button>

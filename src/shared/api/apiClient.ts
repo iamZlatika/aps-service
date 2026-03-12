@@ -1,21 +1,11 @@
-import axios, { type AxiosError, type AxiosRequestConfig } from "axios";
+import axios, { type AxiosError } from "axios";
 import i18next from "i18next";
-import Cookies from "js-cookie";
 
 import { logout } from "@/features/auth/sessionManager.ts";
-import { type ApiError } from "@/shared/api/types.ts";
-import { createApiError } from "@/shared/lib/errorHandlers/services.ts";
-
-export const authService = {
-  getToken: (): string | undefined => Cookies.get("auth_token"),
-  setToken: (token: string, expiresDays = 365) =>
-    Cookies.set("auth_token", token, {
-      expires: expiresDays,
-      secure: true,
-      sameSite: "strict",
-    }),
-  clearToken: () => Cookies.remove("auth_token"),
-};
+import { authService } from "@/shared/api/authService.ts";
+import { type ServerErrorResponse } from "@/shared/api/types.ts";
+import { createApiError } from "@/shared/lib/errors/services.ts";
+import { captureError } from "@/shared/lib/sentry.ts";
 
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -41,41 +31,35 @@ let isLoggingOut = false;
 
 apiClient.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<ApiError>) => {
+  (error: AxiosError<ServerErrorResponse>) => {
     const status = error.response?.status;
     const data = error.response?.data;
+
     if (status === 401 && !isLoggingOut) {
       isLoggingOut = true;
-
       authService.clearToken();
       logout();
-
       setTimeout(() => {
         isLoggingOut = false;
       }, 2000);
     }
 
-    const message =
-      data?.message || error.message || i18next.t("errors.unknown");
+    const isNetworkError = !error.response && error.code === "ERR_NETWORK";
+    const message = isNetworkError
+      ? i18next.t("errors.network")
+      : data?.message || error.message || i18next.t("errors.unknown");
 
-    return Promise.reject(createApiError(message, status, data));
+    const apiError = createApiError(message, status, data);
+
+    if (status !== 401 && status !== 422) {
+      captureError(apiError, {
+        url: error.config?.url,
+        method: error.config?.method,
+        status,
+        isNetworkError,
+      });
+    }
+
+    return Promise.reject(apiError);
   },
 );
-
-export const get = <T = unknown>(url: string, config?: AxiosRequestConfig) =>
-  apiClient.get<T>(url, config).then((res) => res.data);
-
-export const post = <T = unknown, R = unknown>(
-  url: string,
-  data?: T,
-  config?: AxiosRequestConfig,
-) => apiClient.post<R>(url, data, config).then((res) => res.data);
-
-export const put = <T = unknown, R = unknown>(
-  url: string,
-  data?: T,
-  config?: AxiosRequestConfig,
-) => apiClient.put<R>(url, data, config).then((res) => res.data);
-
-export const del = <R = unknown>(url: string, config?: AxiosRequestConfig) =>
-  apiClient.delete<R>(url, config).then((res) => res.data);
