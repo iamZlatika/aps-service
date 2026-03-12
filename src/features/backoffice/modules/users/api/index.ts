@@ -5,7 +5,7 @@ import {
 import { UsersRoutes } from "@/features/backoffice/modules/users/api/routers.ts";
 import { mapUserDtoToUser } from "@/features/backoffice/modules/users/lib/adapters.ts";
 import { type User } from "@/features/backoffice/modules/users/models/types.ts";
-import { get } from "@/shared/api/apiClient.ts";
+import { get } from "@/shared/api/api.ts";
 
 export const usersApi = {
   getMe: async (): Promise<User> => {

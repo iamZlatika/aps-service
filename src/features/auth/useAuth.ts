@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import { logout as sessionLogout } from "@/features/auth/sessionManager.ts";
 import { usersApi } from "@/features/backoffice/modules/users/api";
-import { authService } from "@/shared/api/apiClient";
+import { authService } from "@/shared/api/authService.ts";
 
 import { authApi } from "./api";
 
@@ -47,7 +47,7 @@ export const useAuth = () => {
     role: user?.role,
     isAuthenticated: !!token && !isError,
     isLoading: isLoading || (!!token && !user && !isError),
-    login: loginMutation.mutateAsync,
+    login: loginMutation.mutate,
     isLoggingIn: loginMutation.isPending,
     logout,
   };

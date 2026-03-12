@@ -5,7 +5,7 @@ import {
 import { CustomersRoutes } from "@/features/backoffice/modules/customers/api/routers.ts";
 import { mapCustomerDtoToCustomer } from "@/features/backoffice/modules/customers/lib/adapters.ts";
 import { type Customer } from "@/features/backoffice/modules/customers/model/types.ts";
-import { get } from "@/shared/api/apiClient.ts";
+import { get } from "@/shared/api/api.ts";
 
 export const customersApi = {
   getCustomers: async (): Promise<Customer[]> => {

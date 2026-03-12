@@ -7,7 +7,7 @@ import {
 import { mapDictionaryItemDtoToDictionaryItem } from "@/features/backoffice/modules/dictionaries/lib/adapter.ts";
 import { type DictionaryItem } from "@/features/backoffice/modules/dictionaries/models/types.ts";
 import { DictionariesRoutes } from "@/features/backoffice/modules/dictionaries/routers.ts";
-import { del, get, post, put } from "@/shared/api/apiClient.ts";
+import { del, get, post, put } from "@/shared/api/api.ts";
 
 export const dictionariesApi = {
   getDictionaryAccessories: async (): Promise<DictionaryItem[]> => {

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { dictionariesApi } from "@/features/backoffice/modules/dictionaries/api";
 import { DictionaryTable } from "@/features/backoffice/modules/dictionaries/components/table";
+import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
 
 const AccessoriesPage = () => {
   const { t } = useTranslation();
@@ -11,17 +12,16 @@ const AccessoriesPage = () => {
     data: accessories,
     isLoading,
     isFetching,
+    isError,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["accessories"],
     queryFn: dictionariesApi.getDictionaryAccessories,
   });
 
   return (
-    <>
-      {error && (
-        <div className="text-red-600">{t("errors.loading_accessories")}</div>
-      )}
+    <QueryPageGuard isError={isError} error={error} onRetry={() => refetch()}>
       <DictionaryTable
         title={t("sidebar.dictionaries_list.accessories")}
         addButtonLabel={t("sidebar.dictionaries_list.table.add_button")}
@@ -35,7 +35,7 @@ const AccessoriesPage = () => {
           dictionariesApi.updateDictionaryAccessory(id, { name })
         }
       />
-    </>
+    </QueryPageGuard>
   );
 };
 

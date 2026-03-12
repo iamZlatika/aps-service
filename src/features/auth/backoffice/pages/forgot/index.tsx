@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +16,7 @@ import {
 } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
-import { handleFormError } from "@/shared/lib/errorHandlers/formErrorHandler.ts";
+import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
 import { type ForgotFormValues, forgotSchema } from "./forgot.schema";
@@ -27,18 +28,19 @@ const ForgotPage = () => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ForgotFormValues>({
     resolver: zodResolver(forgotSchema),
   });
 
-  const onSubmit = async (data: ForgotFormValues): Promise<void> => {
-    try {
-      await authApi.forgot(data);
-      navigate(AuthRoutes.linkToEmailSent());
-    } catch (error: unknown) {
-      handleFormError<ForgotFormValues>(error, setError);
-    }
+  const forgotMutation = useMutation({
+    mutationFn: authApi.forgot,
+  });
+  const onSubmit = (data: ForgotFormValues) => {
+    forgotMutation.mutate(data, {
+      onSuccess: () => navigate(AuthRoutes.linkToEmailSent()),
+      onError: (error) => handleFormError<ForgotFormValues>(error, setError),
+    });
   };
 
   return (
@@ -66,8 +68,12 @@ const ForgotPage = () => {
                 </p>
               )}
             </div>
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={forgotMutation.isPending}
+            >
+              {forgotMutation.isPending
                 ? t("auth.forgot.submitting")
                 : t("auth.forgot.submit")}
             </Button>

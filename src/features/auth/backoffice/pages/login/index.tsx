@@ -17,7 +17,7 @@ import {
 } from "@/shared/components/ui/card.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
-import { handleFormError } from "@/shared/lib/errorHandlers/formErrorHandler.ts";
+import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
 import { type LoginFormValues, loginSchema } from "./login.schema.ts";
@@ -25,12 +25,12 @@ import { type LoginFormValues, loginSchema } from "./login.schema.ts";
 export default function BackofficeLoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isLoggingIn } = useAuth();
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -39,13 +39,11 @@ export default function BackofficeLoginPage() {
     },
   });
 
-  const onSubmit = async (data: LoginFormValues) => {
-    try {
-      await login(data);
-      navigate(OrdersRoutes.linkToOrders());
-    } catch (error: unknown) {
-      handleFormError<LoginFormValues>(error, setError);
-    }
+  const onSubmit = (data: LoginFormValues) => {
+    login(data, {
+      onSuccess: () => navigate(OrdersRoutes.linkToOrders()),
+      onError: (error) => handleFormError<LoginFormValues>(error, setError),
+    });
   };
 
   return (
@@ -95,8 +93,8 @@ export default function BackofficeLoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-2">
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting
+            <Button type="submit" className="w-full" disabled={isLoggingIn}>
+              {isLoggingIn
                 ? t("auth.login.submitting")
                 : t("auth.login.submit")}
             </Button>

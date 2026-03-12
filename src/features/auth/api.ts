@@ -5,7 +5,7 @@ import {
   type ResetPasswordData,
   type SuccessResponse,
 } from "@/features/auth/types.ts";
-import { post } from "@/shared/api/apiClient";
+import { post } from "@/shared/api/api.ts";
 
 import { type LoginFormValues } from "./backoffice/pages/login/login.schema";
 import { AuthRoutes } from "./routes.ts";

@@ -2,7 +2,7 @@ import i18next from "i18next";
 import type { FieldValues, Path, UseFormSetError } from "react-hook-form";
 
 import { type ValidationError } from "@/shared/api/types.ts";
-import { isApiError } from "@/shared/lib/errorHandlers/services.ts";
+import { isApiError } from "@/shared/lib/errors/services.ts";
 
 export function handleFormError<TFieldValues extends FieldValues>(
   error: unknown,
