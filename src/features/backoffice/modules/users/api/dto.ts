@@ -1,14 +1,14 @@
 import { z } from "zod";
 
-import { emailRegex } from "@/shared/lib/constats.ts";
-import { ROLES } from "@/types/types.ts";
+import { emailRegex } from "@/shared/lib/constants.ts";
+import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
+import { ROLES, USER_STATUSES } from "@/shared/types.ts";
 
 export const UserDtoSchema = z.object({
   id: z.number(),
   name: z.string(),
   email: z.string().regex(emailRegex),
-  role: z.enum([ROLES.HEAD_MANAGER, ROLES.USER]),
-  status: z.enum(["active", "blocked"]),
+  role: zodEnumFromConst(ROLES),
+  status: zodEnumFromConst(USER_STATUSES),
 });
-
 export type UserDto = z.infer<typeof UserDtoSchema>;

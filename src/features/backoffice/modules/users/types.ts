@@ -1,4 +1,4 @@
-import { type Role, type UserStatus } from "@/types/types.ts";
+import { type Role, type UserStatus } from "@/shared/types.ts";
 
 export type User = {
   id: number;

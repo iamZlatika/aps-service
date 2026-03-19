@@ -1,5 +1,5 @@
 import { type UserDto } from "../api/dto";
-import { type User } from "../models/types";
+import { type User } from "../types.ts";
 
 export const mapUserDtoToUser = (dto: UserDto): User => {
   return {

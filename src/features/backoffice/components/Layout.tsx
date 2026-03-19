@@ -2,30 +2,32 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 
-import { BackofficeErrorFallback } from "@/features/backoffice/components/BackofficeErrorFallback.tsx";
+import { ErrorFallback } from "@/features/backoffice/components/ErrorFallback.tsx";
 import { SidebarProvider } from "@/shared/components/ui/sidebar";
-import { captureError } from "@/shared/lib/sentry.ts";
+import { captureErrorWithId } from "@/shared/lib/sentry.ts";
 
-import { BackofficeHeader } from "./BackofficeHeader";
-import { BackofficeSidebar } from "./BackofficeSidebar";
+import { Header } from "./Header.tsx";
+import { Sidebar } from "./Sidebar.tsx";
 
-const BackofficeLayout = () => {
+const Layout = () => {
   const location = useLocation();
 
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
-        <BackofficeSidebar />
+        <Sidebar />
 
         <div className="flex flex-1 flex-col">
-          <BackofficeHeader />
+          <Header />
 
           <main className="flex flex-1 overflow-y-auto p-6 bg-gray-50">
             <ErrorBoundary
-              fallbackRender={(props) => <BackofficeErrorFallback {...props} />}
+              FallbackComponent={ErrorFallback}
               resetKeys={[location.pathname]}
               onError={(error, info) =>
-                captureError(error, { componentStack: info.componentStack })
+                captureErrorWithId(error, {
+                  componentStack: info.componentStack,
+                })
               }
             >
               <Outlet />
@@ -39,4 +41,4 @@ const BackofficeLayout = () => {
   );
 };
 
-export default BackofficeLayout;
+export default Layout;

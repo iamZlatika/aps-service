@@ -1,11 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-import { AuthRoutes } from "@/features/auth/routes.ts";
-import { useAuth } from "@/features/auth/useAuth.ts";
+import { AuthRoutes } from "@/features/auth/api/routes.ts";
+import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import Loader from "@/shared/components/common/Loader.tsx";
-
-import type { Role } from "../types/types.ts";
+import type { Role } from "@/shared/types.ts";
 
 type ProtectedRouteProps = {
   allowedRoles?: Role[];

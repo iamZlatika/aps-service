@@ -5,11 +5,11 @@ import { Navigate, type RouteObject } from "react-router-dom";
 import { authRoutes } from "@/app/routes/auth.tsx";
 import { backofficeRoutes } from "@/app/routes/backoffice.tsx";
 import { websiteRoutes } from "@/app/routes/website.tsx";
-import { AuthRoutes } from "@/features/auth/routes.ts";
+import { AuthRoutes } from "@/features/auth/api/routes.ts";
 import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import Loader from "@/shared/components/common/Loader.tsx";
-import { ROLES } from "@/types/types";
+import { ROLES } from "@/shared/types.ts";
 
 import { ProtectedRoute } from "./ProtectedRoute";
 
@@ -20,7 +20,7 @@ const UserAccountPage = lazy(
 
 // Layouts
 const BackofficeLayout = lazy(
-  () => import("@/features/backoffice/components/BackofficeLayout"),
+  () => import("@/features/backoffice/components/Layout"),
 );
 
 const WebsiteLayout = lazy(
@@ -28,8 +28,12 @@ const WebsiteLayout = lazy(
 );
 
 // Shared
-const NotFoundPage = lazy(() => import("@/shared/pages/NotFound"));
-const ForbiddenPage = lazy(() => import("@/shared/pages/Forbidden"));
+const NotFoundPage = lazy(
+  () => import("@/shared/components/errors/NotFound.tsx"),
+);
+const ForbiddenPage = lazy(
+  () => import("@/shared/components/errors/Forbidden.tsx"),
+);
 
 export const routeConfig: RouteObject[] = [
   // public website

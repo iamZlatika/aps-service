@@ -1,13 +1,14 @@
 import { LogOut } from "lucide-react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useAuth } from "@/features/auth/useAuth";
+import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
 import { SidebarTrigger } from "@/shared/components/ui/sidebar";
 import { useLanguage } from "@/shared/lib/i18n/useLanguage.ts";
 
-export const BackofficeHeader = () => {
+export const Header = memo(() => {
   const { user, logout } = useAuth();
   const { t } = useTranslation();
   const { currentLanguage, changeLanguage } = useLanguage();
@@ -64,4 +65,4 @@ export const BackofficeHeader = () => {
       </div>
     </header>
   );
-};
+});

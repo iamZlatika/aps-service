@@ -1,4 +1,4 @@
-import { type Customer } from "@/features/backoffice/modules/customers/model/types.ts";
+import { type Customer } from "@/features/backoffice/modules/customers/types.ts";
 
 import { type CustomerDto } from "../api/dto";
 

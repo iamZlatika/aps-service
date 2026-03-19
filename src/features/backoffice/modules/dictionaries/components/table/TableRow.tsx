@@ -1,65 +1,101 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { KeyboardEvent } from "react";
+import { memo } from "react";
+import { useForm } from "react-hook-form";
+
 import {
   AcceptButton,
   CancelButton,
   DeleteButton,
   EditButton,
 } from "@/features/backoffice/modules/dictionaries/components/table/buttons";
-import EditInputCell from "@/features/backoffice/modules/dictionaries/components/table/EditInputCell.tsx";
-import { type DictionaryItem } from "@/features/backoffice/modules/dictionaries/models/types.ts";
+import {
+  type EditItemFormValues,
+  editItemSchema,
+} from "@/features/backoffice/modules/dictionaries/components/table/editItem.schema.ts";
+import { type DictionaryItem } from "@/features/backoffice/modules/dictionaries/types.ts";
+import { Input } from "@/shared/components/ui/input.tsx";
 import { TableCell, TableRow } from "@/shared/components/ui/table.tsx";
 
 interface DictionaryTableRowProps {
   item: DictionaryItem;
-  editingId: number | null;
-  editingName: string;
-  setEditingName: (value: string) => void;
+  isEditing: boolean;
   updatePending: boolean;
-  onSaveEdit: () => void;
-  onCancelEdit: () => void;
+  onSave: (id: number, name: string) => void;
+  onCancel: () => void;
   onEdit: (item: DictionaryItem) => void;
   onDelete: (item: DictionaryItem) => void;
 }
-export const DictionaryTableRow = ({
-  item,
-  editingId,
-  editingName,
-  setEditingName,
-  updatePending,
-  onSaveEdit,
-  onCancelEdit,
-  onEdit,
-  onDelete,
-}: DictionaryTableRowProps) => {
-  const isEditing = editingId === item.id;
 
-  return (
-    <TableRow>
-      <TableCell className="font-medium">
-        <EditInputCell
-          value={editingName}
-          onChange={setEditingName}
-          onSave={onSaveEdit}
-          onCancel={onCancelEdit}
-          isEditing={isEditing}
-          name={item.name}
-        />
-      </TableCell>
+export const DictionaryTableRow = memo(
+  ({
+    item,
+    isEditing,
+    updatePending,
+    onSave,
+    onCancel,
+    onEdit,
+    onDelete,
+  }: DictionaryTableRowProps) => {
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+    } = useForm<EditItemFormValues>({
+      resolver: zodResolver(editItemSchema),
+      defaultValues: { name: item.name },
+    });
 
-      <TableCell className="text-right">
-        <div className="flex justify-end gap-2">
+    const onSubmit = (data: EditItemFormValues) => {
+      onSave(item.id, data.name);
+    };
+
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Escape") {
+        onCancel();
+      }
+    };
+
+    return (
+      <TableRow>
+        <TableCell className="font-medium">
           {isEditing ? (
-            <>
-              <AcceptButton onClick={onSaveEdit} disabled={updatePending} />
-              <CancelButton onClick={onCancelEdit} disabled={updatePending} />
-            </>
+            <form onSubmit={handleSubmit(onSubmit)} id={`edit-${item.id}`}>
+              <Input
+                {...register("name")}
+                onKeyDown={handleKeyDown}
+                autoFocus
+                className={`h-8 ${errors.name ? "border-red-500" : ""}`}
+              />
+              {errors.name && (
+                <span className="text-xs text-red-500 mt-1">
+                  {errors.name.message}
+                </span>
+              )}
+            </form>
           ) : (
-            <>
-              <EditButton onClick={() => onEdit(item)} />
-              <DeleteButton onClick={() => onDelete(item)} />
-            </>
+            item.name
           )}
-        </div>
-      </TableCell>
-    </TableRow>
-  );
-};
+        </TableCell>
+        <TableCell className="text-right">
+          <div className="flex justify-end gap-2">
+            {isEditing ? (
+              <>
+                <AcceptButton
+                  onClick={handleSubmit(onSubmit)}
+                  disabled={updatePending}
+                />
+                <CancelButton onClick={onCancel} disabled={updatePending} />
+              </>
+            ) : (
+              <>
+                <EditButton onClick={() => onEdit(item)} />
+                <DeleteButton onClick={() => onDelete(item)} />
+              </>
+            )}
+          </div>
+        </TableCell>
+      </TableRow>
+    );
+  },
+);

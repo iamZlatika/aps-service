@@ -6,7 +6,7 @@ import { CustomersRoutes } from "@/features/backoffice/modules/customers/api/rou
 import { DictionariesRoutes } from "@/features/backoffice/modules/dictionaries/routers.ts";
 import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
 import { UsersRoutes } from "@/features/backoffice/modules/users/api/routers.ts";
-import { ROLES } from "@/types/types";
+import { ROLES } from "@/shared/types.ts";
 
 const OrdersPage = lazy(() => import("@/features/backoffice/modules/orders"));
 const CustomersPage = lazy(

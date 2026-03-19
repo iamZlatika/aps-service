@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { dictionariesApi } from "@/features/backoffice/modules/dictionaries/api";
+import { accessoriesApi } from "@/features/backoffice/modules/dictionaries/api";
 import { DictionaryTable } from "@/features/backoffice/modules/dictionaries/components/table";
+import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
 
 const AccessoriesPage = () => {
@@ -16,8 +17,8 @@ const AccessoriesPage = () => {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["accessories"],
-    queryFn: dictionariesApi.getDictionaryAccessories,
+    queryKey: queryKeys.dictionaries.accessories(),
+    queryFn: accessoriesApi.getAll,
   });
 
   return (
@@ -28,12 +29,10 @@ const AccessoriesPage = () => {
         items={accessories}
         isLoading={isLoading}
         isFetching={isFetching}
-        queryKey={["accessories"]}
-        onAdd={(name) => dictionariesApi.createDictionaryAccessory({ name })}
-        onDelete={(id) => dictionariesApi.deleteDictionaryAccessory(id)}
-        onUpdate={(id, name) =>
-          dictionariesApi.updateDictionaryAccessory(id, { name })
-        }
+        queryKey={queryKeys.dictionaries.accessories()}
+        onAdd={(name) => accessoriesApi.create({ name })}
+        onDelete={(id) => accessoriesApi.remove(id)}
+        onUpdate={(id, name) => accessoriesApi.update(id, { name })}
       />
     </QueryPageGuard>
   );

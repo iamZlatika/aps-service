@@ -1,4 +1,4 @@
-import { type UserStatus } from "@/types/types.ts";
+import { type UserStatus } from "@/shared/types.ts";
 
 export type Customer = {
   id: number;

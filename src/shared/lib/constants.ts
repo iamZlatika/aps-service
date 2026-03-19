@@ -1,4 +1,4 @@
-import { type Language } from "@/types/types.ts";
+import { type Language } from "@/shared/types.ts";
 
 export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

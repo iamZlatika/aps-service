@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-import { logout as sessionLogout } from "@/features/auth/sessionManager.ts";
+import { authService } from "@/features/auth/lib/authService.ts";
+import { logout as sessionLogout } from "@/features/auth/lib/sessionManager.ts";
 import { usersApi } from "@/features/backoffice/modules/users/api";
-import { authService } from "@/shared/api/authService.ts";
+import { queryKeys } from "@/shared/api/queryKeys.ts";
 
-import { authApi } from "./api";
+import { authApi } from "../api";
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
@@ -16,7 +17,7 @@ export const useAuth = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["auth-user"],
+    queryKey: queryKeys.auth.user(),
     queryFn: usersApi.getMe,
     enabled: !!token,
     retry: false,
@@ -33,7 +34,9 @@ export const useAuth = () => {
     onSuccess: (response) => {
       if (response.token) {
         authService.setToken(response.token);
-        return queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+        return queryClient.invalidateQueries({
+          queryKey: queryKeys.auth.user(),
+        });
       }
     },
   });
