@@ -2,7 +2,7 @@ import { lazy } from "react";
 import { type RouteObject } from "react-router-dom";
 
 import { GuestRoute } from "@/app/GuestRoute.tsx";
-import { AuthRoutes } from "@/features/auth/routes.ts";
+import { AuthRoutes } from "@/features/auth/api/routes.ts";
 
 const BackofficeLoginPage = lazy(
   () => import("@/features/auth/backoffice/pages/login"),

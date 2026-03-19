@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 
-import { AuthRoutes } from "@/features/auth/routes.ts";
-import { useAuth } from "@/features/auth/useAuth.ts";
+import { AuthRoutes } from "@/features/auth/api/routes.ts";
+import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {

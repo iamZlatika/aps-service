@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
-import { STORAGE_KEYS } from "@/shared/lib/constats.ts";
+import { STORAGE_KEYS } from "@/shared/lib/constants.ts";
 
 export const useLanguage = () => {
   const { i18n } = useTranslation();

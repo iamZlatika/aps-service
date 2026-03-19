@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
-import { isApiError } from "@/shared/lib/errors/services.ts";
 import PageError from "@/shared/components/errors/ErrorPage.tsx";
+import { isApiError } from "@/shared/lib/errors/services.ts";
 
 interface QueryPageGuardProps {
   isError: boolean;

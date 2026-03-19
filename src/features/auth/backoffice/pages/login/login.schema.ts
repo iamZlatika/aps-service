@@ -1,7 +1,7 @@
 import i18next from "i18next";
 import * as z from "zod";
 
-import { emailRegex } from "@/shared/lib/constats.ts";
+import { emailRegex } from "@/shared/lib/constants.ts";
 
 export const loginSchema = z.object({
   email: z.string().refine((val) => emailRegex.test(val), {

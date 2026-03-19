@@ -1,3 +1,4 @@
+import { DialogDescription } from "@radix-ui/react-dialog";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/shared/components/ui/button.tsx";
@@ -9,7 +10,6 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
-import { DialogDescription } from "@radix-ui/react-dialog";
 
 interface AddItemDialogProps {
   isOpen: boolean;

@@ -6,11 +6,12 @@ import {
   Users,
   Wrench,
 } from "lucide-react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-import { AuthRoutes } from "@/features/auth/routes";
-import { useAuth } from "@/features/auth/useAuth";
+import { AuthRoutes } from "@/features/auth/api/routes.ts";
+import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import { CustomersRoutes } from "@/features/backoffice/modules/customers/api/routers.ts";
 import { DictionariesRoutes } from "@/features/backoffice/modules/dictionaries/routers";
 import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers";
@@ -21,7 +22,7 @@ import {
   CollapsibleTrigger,
 } from "@/shared/components/ui/collapsible";
 import {
-  Sidebar,
+  Sidebar as SidebarRoot,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
@@ -34,9 +35,9 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/shared/components/ui/sidebar";
-import { ROLES } from "@/types/types";
+import { ROLES } from "@/shared/types.ts";
 
-export const BackofficeSidebar = () => {
+export const Sidebar = memo(() => {
   const { t } = useTranslation();
   const { role } = useAuth();
   const isHeadManager = role === ROLES.HEAD_MANAGER;
@@ -44,7 +45,7 @@ export const BackofficeSidebar = () => {
   const root = AuthRoutes.backofficeRoot();
 
   return (
-    <Sidebar>
+    <SidebarRoot>
       <SidebarHeader className="p-4">
         <div className="font-bold text-xl uppercase tracking-wider text-primary">
           APS Service
@@ -110,6 +111,6 @@ export const BackofficeSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-    </Sidebar>
+    </SidebarRoot>
   );
-};
+});

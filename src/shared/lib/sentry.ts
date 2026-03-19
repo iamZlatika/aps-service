@@ -5,10 +5,10 @@ export function initSentry() {
 
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
-    environment: import.meta.env.MODE, // "development" | "production"
-    enabled: import.meta.env.PROD, // только в проде
+    environment: import.meta.env.MODE,
+    enabled: import.meta.env.PROD,
     integrations: [Sentry.browserTracingIntegration()],
-    tracesSampleRate: 0.2, // 20% запросов для performance monitoring
+    tracesSampleRate: 0.2,
   });
 }
 
@@ -21,4 +21,15 @@ export function captureError(
   } else {
     console.error("[Sentry would capture]:", error, context);
   }
+}
+
+export function captureErrorWithId(
+  error: unknown,
+  context?: Record<string, unknown>,
+): string | null {
+  if (import.meta.env.PROD) {
+    return Sentry.captureException(error, { extra: context });
+  }
+  console.error("[Sentry would capture]:", error, context);
+  return null;
 }

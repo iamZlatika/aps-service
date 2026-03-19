@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
 import { Badge } from "@/shared/components/ui/badge";
 import {
@@ -21,7 +22,7 @@ const UsersPage = () => {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["users"],
+    queryKey: queryKeys.users.list(),
     queryFn: usersApi.getUsers,
   });
 

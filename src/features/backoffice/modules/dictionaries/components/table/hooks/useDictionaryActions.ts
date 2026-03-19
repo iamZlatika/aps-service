@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
-import { type DictionaryItem } from "@/features/backoffice/modules/dictionaries/models/types.ts";
+import { type DictionaryItem } from "@/features/backoffice/modules/dictionaries/types.ts";
 
 export const useDictionaryActions = (
-  queryKey: string[],
+  queryKey: readonly string[],
   onAdd: (name: string) => Promise<DictionaryItem>,
   onDelete: (id: number) => Promise<void>,
   onUpdate: (id: number, name: string) => Promise<DictionaryItem>,
@@ -18,7 +18,6 @@ export const useDictionaryActions = (
   const [itemToDelete, setItemToDelete] = useState<DictionaryItem | null>(null);
 
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [editingName, setEditingName] = useState("");
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey });
 
@@ -45,71 +44,80 @@ export const useDictionaryActions = (
       onUpdate(id, name),
     onSuccess: () => {
       setEditingId(null);
-      setEditingName("");
       return invalidate();
     },
   });
 
-  const addItem = () => {
+  const addItem = useCallback(() => {
     const name = newItemName.trim();
     if (name) createMutation.mutate(name);
-  };
+  }, [newItemName, createMutation]);
 
-  const startEdit = (item: DictionaryItem) => {
+  const startEdit = useCallback((item: DictionaryItem) => {
     setEditingId(item.id);
-    setEditingName(item.name);
-  };
+  }, []);
 
-  const cancelEdit = () => {
+  const cancelEdit = useCallback(() => {
     setEditingId(null);
-    setEditingName("");
-  };
+  }, []);
 
-  const saveEdit = () => {
-    const name = editingName.trim();
-    if (editingId !== null && name) {
-      updateMutation.mutate({ id: editingId, name });
-    }
-  };
+  const saveEdit = useCallback(
+    (id: number, name: string) => {
+      updateMutation.mutate({ id, name });
+    },
+    [updateMutation],
+  );
 
-  const requestDelete = (item: DictionaryItem) => {
+  const requestDelete = useCallback((item: DictionaryItem) => {
     setItemToDelete(item);
     setIsDeleteModalOpen(true);
-  };
+  }, []);
 
-  const confirmDelete = () => {
+  const confirmDelete = useCallback(() => {
     if (itemToDelete) {
       deleteMutation.mutate(itemToDelete.id);
     }
-  };
+  }, [itemToDelete, deleteMutation]);
 
-  return {
-    addModal: {
+  const addModal = useMemo(
+    () => ({
       isOpen: isAddModalOpen,
       setOpen: setIsAddModalOpen,
       value: newItemName,
       setValue: setNewItemName,
       submit: addItem,
       isPending: createMutation.isPending,
-    },
+    }),
+    [isAddModalOpen, newItemName, addItem, createMutation.isPending],
+  );
 
-    deleteModal: {
+  const deleteModal = useMemo(
+    () => ({
       isOpen: isDeleteModalOpen,
       setOpen: setIsDeleteModalOpen,
       item: itemToDelete,
       requestDelete,
       confirm: confirmDelete,
       isPending: deleteMutation.isPending,
-    },
+    }),
+    [
+      isDeleteModalOpen,
+      itemToDelete,
+      requestDelete,
+      confirmDelete,
+      deleteMutation.isPending,
+    ],
+  );
 
-    editing: {
+  const editing = useMemo(
+    () => ({
       id: editingId,
-      name: editingName,
-      setName: setEditingName,
       start: startEdit,
       cancel: cancelEdit,
       save: saveEdit,
       isPending: updateMutation.isPending,
-    },
-  };
+    }),
+    [editingId, startEdit, cancelEdit, saveEdit, updateMutation.isPending],
+  );
+  return { addModal, deleteModal, editing };
 };

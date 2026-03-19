@@ -7,7 +7,7 @@ import {
 } from "@/features/auth/types.ts";
 import { post } from "@/shared/api/api.ts";
 
-import { type LoginFormValues } from "./backoffice/pages/login/login.schema";
+import { type LoginFormValues } from "../backoffice/pages/login/login.schema.ts";
 import { AuthRoutes } from "./routes.ts";
 
 export const authApi = {

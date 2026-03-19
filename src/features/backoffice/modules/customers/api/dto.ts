@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-import { emailRegex } from "@/shared/lib/constats.ts";
+import { emailRegex } from "@/shared/lib/constants.ts";
+import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
+import { USER_STATUSES } from "@/shared/types.ts";
 
 export const CustomerDtoSchema = z.object({
   id: z.number(),
@@ -18,7 +20,7 @@ export const CustomerDtoSchema = z.object({
   comment: z.string().nullable(),
   created_at: z.string(),
   updated_at: z.string(),
-  status: z.enum(["active", "blocked"]),
+  status: zodEnumFromConst(USER_STATUSES),
 });
 
 export type CustomerDto = z.infer<typeof CustomerDtoSchema>;

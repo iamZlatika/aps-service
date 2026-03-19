@@ -1,5 +1,5 @@
 import { type DictionaryItemDto } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
-import { type DictionaryItem } from "@/features/backoffice/modules/dictionaries/models/types.ts";
+import { type DictionaryItem } from "@/features/backoffice/modules/dictionaries/types.ts";
 
 export const mapDictionaryItemDtoToDictionaryItem = (
   dto: DictionaryItemDto,

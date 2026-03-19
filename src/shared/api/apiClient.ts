@@ -1,10 +1,10 @@
 import axios, { type AxiosError } from "axios";
 import i18next from "i18next";
 
-import { logout } from "@/features/auth/sessionManager.ts";
-import { authService } from "@/shared/api/authService.ts";
+import { authService } from "@/features/auth/lib/authService.ts";
+import { logout } from "@/features/auth/lib/sessionManager.ts";
 import { type ServerErrorResponse } from "@/shared/api/types.ts";
-import { createApiError } from "@/shared/lib/errors/services.ts";
+import { ApiError } from "@/shared/lib/errors/services.ts";
 import { captureError } from "@/shared/lib/sentry.ts";
 
 export const apiClient = axios.create({
@@ -14,6 +14,7 @@ export const apiClient = axios.create({
     Accept: "application/json",
     "ngrok-skip-browser-warning": "true",
   },
+  timeout: 30000,
 });
 
 apiClient.interceptors.request.use(
@@ -27,21 +28,14 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-let isLoggingOut = false;
-
 apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError<ServerErrorResponse>) => {
     const status = error.response?.status;
     const data = error.response?.data;
 
-    if (status === 401 && !isLoggingOut) {
-      isLoggingOut = true;
-      authService.clearToken();
+    if (status === 401 && authService.getToken()) {
       logout();
-      setTimeout(() => {
-        isLoggingOut = false;
-      }, 2000);
     }
 
     const isNetworkError = !error.response && error.code === "ERR_NETWORK";
@@ -49,7 +43,7 @@ apiClient.interceptors.response.use(
       ? i18next.t("errors.network")
       : data?.message || error.message || i18next.t("errors.unknown");
 
-    const apiError = createApiError(message, status, data);
+    const apiError = new ApiError(message, status, data);
 
     if (status !== 401 && status !== 422) {
       captureError(apiError, {

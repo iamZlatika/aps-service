@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { authApi } from "@/features/auth/api.ts";
-import { AuthRoutes } from "@/features/auth/routes.ts";
+import { authApi } from "@/features/auth/api";
+import { AuthRoutes } from "@/features/auth/api/routes.ts";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
