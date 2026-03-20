@@ -21,6 +21,26 @@ const DictionariesPage = lazy(
 const AccessoriesPage = lazy(
   () => import("@/features/backoffice/modules/dictionaries/pages/Accessories"),
 );
+const DeviceConditionsPage = lazy(
+  () =>
+    import("@/features/backoffice/modules/dictionaries/pages/DeviceConditions"),
+);
+const IssueTypesPage = lazy(
+  () => import("@/features/backoffice/modules/dictionaries/pages/IssueTypes"),
+);
+const DeviceModelsPage = lazy(
+  () => import("@/features/backoffice/modules/dictionaries/pages/DeviceModels"),
+);
+const DeviceTypesPage = lazy(
+  () => import("@/features/backoffice/modules/dictionaries/pages/DeviceTypes"),
+);
+const IntakeNotesPage = lazy(
+  () => import("@/features/backoffice/modules/dictionaries/pages/IntakeNotes"),
+);
+const ManufacturersPage = lazy(
+  () =>
+    import("@/features/backoffice/modules/dictionaries/pages/Manufacturers"),
+);
 
 export const backofficeRoutes: RouteObject = {
   children: [
@@ -39,6 +59,30 @@ export const backofficeRoutes: RouteObject = {
         {
           path: DictionariesRoutes.accessories(),
           element: <AccessoriesPage />,
+        },
+        {
+          path: DictionariesRoutes.deviceConditions(),
+          element: <DeviceConditionsPage />,
+        },
+        {
+          path: DictionariesRoutes.issueTypes(),
+          element: <IssueTypesPage />,
+        },
+        {
+          path: DictionariesRoutes.deviceModels(),
+          element: <DeviceModelsPage />,
+        },
+        {
+          path: DictionariesRoutes.deviceTypes(),
+          element: <DeviceTypesPage />,
+        },
+        {
+          path: DictionariesRoutes.intakeNotes(),
+          element: <IntakeNotesPage />,
+        },
+        {
+          path: DictionariesRoutes.manufacturers(),
+          element: <ManufacturersPage />,
         },
       ],
     },

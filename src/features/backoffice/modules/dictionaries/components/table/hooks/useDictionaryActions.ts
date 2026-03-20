@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { type DictionaryItem } from "@/features/backoffice/modules/dictionaries/types.ts";
 
 export const useDictionaryActions = (
-  queryKey: readonly string[],
+  queryKey: readonly (string | number)[],
   onAdd: (name: string) => Promise<DictionaryItem>,
   onDelete: (id: number) => Promise<void>,
   onUpdate: (id: number, name: string) => Promise<DictionaryItem>,

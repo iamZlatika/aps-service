@@ -58,6 +58,11 @@
       "manufacturers": "Виробники",
       "repair_operations": "Операції з ремонту",
       "table": {
+        "per_page": "Показувати:",
+        "pagination": {
+          "previous": "Назад",
+          "next": "Вперед"
+        },
         "add_button": "Додати",
         "name": "Назва",
                 "no_results": "Немає результатів",

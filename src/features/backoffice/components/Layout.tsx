@@ -20,7 +20,7 @@ const Layout = () => {
         <div className="flex flex-1 flex-col">
           <Header />
 
-          <main className="flex flex-1 overflow-y-auto p-6 bg-gray-50">
+          <main className="flex-1 overflow-y-auto bg-gray-50">
             <ErrorBoundary
               FallbackComponent={ErrorFallback}
               resetKeys={[location.pathname]}

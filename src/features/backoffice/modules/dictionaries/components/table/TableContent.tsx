@@ -11,6 +11,7 @@ interface DictionaryTableContentProps {
   isOperationLoading: boolean;
   editingId: number | null;
   updatePending: boolean;
+  perPage: number;
   onSave: (id: number, name: string) => void;
   onCancel: () => void;
   onEdit: (item: DictionaryItem) => void;
@@ -23,6 +24,7 @@ export const TableContent = memo(
     isOperationLoading,
     editingId,
     updatePending,
+    perPage,
     onSave,
     onCancel,
     onEdit,
@@ -31,7 +33,7 @@ export const TableContent = memo(
     const { t } = useTranslation();
 
     if (isOperationLoading) {
-      return <TableSkeleton />;
+      return <TableSkeleton rowCount={perPage} />;
     }
 
     if (!items || items.length === 0) {

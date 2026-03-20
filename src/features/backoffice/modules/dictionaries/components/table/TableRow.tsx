@@ -74,7 +74,9 @@ export const DictionaryTableRow = memo(
               )}
             </form>
           ) : (
-            item.name
+            <span className="block truncate max-w-[21ch] sm:max-w-none">
+              {item.name}
+            </span>
           )}
         </TableCell>
         <TableCell className="text-right">
