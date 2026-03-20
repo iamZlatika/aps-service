@@ -2,6 +2,12 @@ export const DictionariesRoutes = {
   //router
   dictionariesList: () => "dictionaries",
   accessories: () => "dictionaries/accessories",
+  deviceConditions: () => "dictionaries/device-conditions",
+  issueTypes: () => "dictionaries/issue-types",
+  deviceModels: () => "dictionaries/device-models",
+  deviceTypes: () => "dictionaries/device-types",
+  intakeNotes: () => "dictionaries/intake-notes",
+  manufacturers: () => "dictionaries/manufacturers",
 
   // api
   accessoriesApi: () => "/backoffice/dictionaries/accessories",
@@ -14,7 +20,7 @@ export const DictionariesRoutes = {
   linkToDeviceConditions: () => "/backoffice/dictionaries/device-conditions",
   linkToDeviceModels: () => "/backoffice/dictionaries/device-models",
   linkToDeviceTypes: () => "/backoffice/dictionaries/device-types",
-  linkToIntakesNotes: () => "/backoffice/dictionaries/intake-notes",
+  linkToIntakeNotes: () => "/backoffice/dictionaries/intake-notes",
   linkToManufacturers: () => "/backoffice/dictionaries/manufacturers",
   linkToRepairOperations: () => "/backoffice/dictionaries/repair-operations",
 };

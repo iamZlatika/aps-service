@@ -1,9 +1,13 @@
 import { Skeleton } from "@/shared/components/ui/skeleton.tsx";
 import { TableCell, TableRow } from "@/shared/components/ui/table.tsx";
 
-export const TableSkeleton = () => (
+interface TableSkeletonProps {
+  rowCount?: number;
+}
+
+export const TableSkeleton = ({ rowCount = 15 }: TableSkeletonProps) => (
   <>
-    {[...Array(20)].map((_, i) => (
+    {[...Array(rowCount)].map((_, i) => (
       <TableRow key={i}>
         <TableCell>
           <Skeleton className="h-5 w-[200px]" />
@@ -18,5 +22,4 @@ export const TableSkeleton = () => (
     ))}
   </>
 );
-
 export default TableSkeleton;
