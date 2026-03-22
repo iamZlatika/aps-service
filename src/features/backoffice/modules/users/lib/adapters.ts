@@ -8,5 +8,6 @@ export const mapUserDtoToUser = (dto: UserDto): User => {
     email: dto.email,
     role: dto.role,
     status: dto.status,
+    avatarUrl: dto.avatar_url || null,
   };
 };

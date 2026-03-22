@@ -68,7 +68,7 @@ export const routeConfig: RouteObject[] = [
       // admin panel
       {
         element: (
-          <ProtectedRoute allowedRoles={[ROLES.USER, ROLES.HEAD_MANAGER]} />
+          <ProtectedRoute allowedRoles={[ROLES.MANAGER, ROLES.HEAD_MANAGER]} />
         ),
         children: [
           {
