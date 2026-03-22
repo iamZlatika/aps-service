@@ -1,3 +1,5 @@
+import { type SortType } from "@/shared/hooks/useSortParams.ts";
+
 export const queryKeys = {
   auth: {
     all: ["auth"] as const,
@@ -18,54 +20,103 @@ export const queryKeys = {
 
   dictionaries: {
     all: ["dictionaries"] as const,
-    accessories: (page?: number, perPage?: number) =>
+    accessories: (
+      page?: number,
+      perPage?: number,
+      sortColumn?: string | null,
+      sortType?: SortType,
+    ) =>
       [
         ...queryKeys.dictionaries.all,
         "accessories",
         ...(page !== undefined ? [page] : []),
         ...(perPage !== undefined ? [perPage] : []),
+        ...(sortColumn ? [sortColumn] : []),
+        ...(sortType && sortType !== "none" ? [sortType] : []),
       ] as const,
-    deviceConditions: (page?: number, perPage?: number) =>
+    deviceConditions: (
+      page?: number,
+      perPage?: number,
+      sortColumn?: string | null,
+      sortType?: SortType,
+    ) =>
       [
         ...queryKeys.dictionaries.all,
         "device-conditions",
         ...(page !== undefined ? [page] : []),
         ...(perPage !== undefined ? [perPage] : []),
+        ...(sortColumn ? [sortColumn] : []),
+        ...(sortType && sortType !== "none" ? [sortType] : []),
       ] as const,
-    issueTypes: (page?: number, perPage?: number) =>
+    issueTypes: (
+      page?: number,
+      perPage?: number,
+      sortColumn?: string | null,
+      sortType?: SortType,
+    ) =>
       [
         ...queryKeys.dictionaries.all,
         "issue-types",
         ...(page !== undefined ? [page] : []),
         ...(perPage !== undefined ? [perPage] : []),
+        ...(sortColumn ? [sortColumn] : []),
+        ...(sortType && sortType !== "none" ? [sortType] : []),
       ] as const,
-    deviceModels: (page?: number, perPage?: number) =>
+    deviceModels: (
+      page?: number,
+      perPage?: number,
+      sortColumn?: string | null,
+      sortType?: SortType,
+    ) =>
       [
         ...queryKeys.dictionaries.all,
         "device-models",
         ...(page !== undefined ? [page] : []),
         ...(perPage !== undefined ? [perPage] : []),
+        ...(sortColumn ? [sortColumn] : []),
+        ...(sortType && sortType !== "none" ? [sortType] : []),
       ] as const,
-    deviceTypes: (page?: number, perPage?: number) =>
+    deviceTypes: (
+      page?: number,
+      perPage?: number,
+      sortColumn?: string | null,
+      sortType?: SortType,
+    ) =>
       [
         ...queryKeys.dictionaries.all,
         "device-types",
         ...(page !== undefined ? [page] : []),
         ...(perPage !== undefined ? [perPage] : []),
+        ...(sortColumn ? [sortColumn] : []),
+        ...(sortType && sortType !== "none" ? [sortType] : []),
       ] as const,
-    intakeNotes: (page?: number, perPage?: number) =>
+    intakeNotes: (
+      page?: number,
+      perPage?: number,
+      sortColumn?: string | null,
+      sortType?: SortType,
+    ) =>
       [
         ...queryKeys.dictionaries.all,
         "intake-notes",
         ...(page !== undefined ? [page] : []),
         ...(perPage !== undefined ? [perPage] : []),
+        ...(sortColumn ? [sortColumn] : []),
+        ...(sortType && sortType !== "none" ? [sortType] : []),
       ] as const,
-    manufacturers: (page?: number, perPage?: number) =>
+    manufacturers: (
+      page?: number,
+      perPage?: number,
+      sortColumn?: string | null,
+      sortType?: SortType,
+    ) =>
       [
         ...queryKeys.dictionaries.all,
         "manufacturers",
         ...(page !== undefined ? [page] : []),
         ...(perPage !== undefined ? [perPage] : []),
+        ...(sortColumn ? [sortColumn] : []),
+        ...(sortType && sortType !== "none" ? [sortType] : []),
       ] as const,
   },
 } as const;

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Plus } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -30,6 +30,7 @@ import {
   TableRow,
 } from "@/shared/components/ui/table.tsx";
 import { type PerPageOption, usePerPage } from "@/shared/hooks/usePerPage.ts";
+import { type SortType, useSortParams } from "@/shared/hooks/useSortParams.ts";
 import { getPageNumbers } from "@/shared/lib/pagination.ts";
 
 import { AddItemDialog, DeleteConfirmDialog } from "./dialogs";
@@ -38,7 +39,12 @@ import { useDictionaryActions } from "./hooks/useDictionaryActions";
 interface DictionaryTableProps {
   titleKey: string;
   api: DictionaryApi;
-  queryKeyFn: (page: number, perPage: number) => readonly (string | number)[];
+  queryKeyFn: (
+    page: number,
+    perPage: number,
+    sortColumn: string | null,
+    sortType: SortType,
+  ) => readonly (string | number | null)[];
 }
 
 export const DictionaryTable = ({
@@ -49,12 +55,13 @@ export const DictionaryTable = ({
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const { perPage, setPerPage, perPageOptions } = usePerPage();
+  const { sort, toggleSort } = useSortParams();
 
-  const queryKey = queryKeyFn(page, perPage);
+  const queryKey = queryKeyFn(page, perPage, sort.column, sort.type);
 
   const { data, isLoading, isFetching } = useQuery({
     queryKey,
-    queryFn: () => api.getAll(page, perPage),
+    queryFn: () => api.getAll(page, perPage, sort.column, sort.type),
   });
 
   const { addModal, deleteModal, editing } = useDictionaryActions(
@@ -99,7 +106,21 @@ export const DictionaryTable = ({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t("sidebar.dictionaries_list.table.name")}</TableHead>
+              <TableHead
+                className="cursor-pointer select-none"
+                onClick={() => toggleSort("name")}
+              >
+                <div className="flex items-center gap-1">
+                  {sort.column === "name" && sort.type === "asc" ? (
+                    <ArrowUp className="h-4 w-4" />
+                  ) : sort.column === "name" && sort.type === "desc" ? (
+                    <ArrowDown className="h-4 w-4" />
+                  ) : (
+                    <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+                  )}
+                  {t("sidebar.dictionaries_list.table.name")}
+                </div>
+              </TableHead>
               <TableHead className="w-[80px] sm:w-[100px] text-right"></TableHead>
             </TableRow>
           </TableHeader>
@@ -120,7 +141,6 @@ export const DictionaryTable = ({
         </Table>
       </div>
 
-      {/* Пагинация + выбор perPage */}
       <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="flex-1 w-full sm:w-auto">
           {lastPage > 1 && (
