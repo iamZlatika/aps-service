@@ -1,3 +1,4 @@
+import { AvatarImage } from "@radix-ui/react-avatar";
 import { LogOut } from "lucide-react";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
@@ -48,11 +49,16 @@ export const Header = memo(() => {
         </span>
 
         <Avatar>
+          {user?.avatarUrl && (
+            <AvatarImage
+              src={user?.avatarUrl}
+              alt={user?.name || "User avatar"}
+            />
+          )}
           <AvatarFallback className="bg-primary text-primary-foreground">
             {firstLetter}
           </AvatarFallback>
         </Avatar>
-
         <Button
           variant="ghost"
           size="icon"
