@@ -58,6 +58,12 @@
       "manufacturers": "Виробники",
       "repair_operations": "Операції з ремонту",
       "table": {
+        "fields": {
+          "name": "Назва",
+          "category": "Категорія",
+          "base_price": "Базова ціна"
+
+        },
         "per_page": "Показувати:",
         "pagination": {
           "previous": "Назад",
@@ -77,9 +83,14 @@
           "description": "Ви впевнені, що хочете видалити \"{{name}}\"?",
           "confirm": "Видалити",
           "cancel": "Скасувати"
+        },
+        "edit_modal": {
+          "title": "Редагування запису",
+          "cancel": "Скасувати",
+          "confirm": "Зберегти"
         }
       }
-    }
+        }
   },
   "errors": {
     "unknown": "Невідома помилка",

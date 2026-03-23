@@ -1,6 +1,6 @@
 import { repairOperationsApi } from "@/features/backoffice/modules/dictionaries/api";
-import { DictionaryTable } from "@/features/backoffice/modules/dictionaries/components/table";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { DictionaryTable } from "@/shared/components/table";
 
 const RepairOperationsPage = () => (
   <DictionaryTable
@@ -8,9 +8,21 @@ const RepairOperationsPage = () => (
     api={repairOperationsApi}
     queryKeyFn={queryKeys.dictionaries.repairOperations}
     columns={[
-      { key: "name", labelKey: "table.name", sortable: true },
-      { key: "category", labelKey: "table.category", sortable: true },
-      { key: "base_price", labelKey: "table.base_price", sortable: false },
+      {
+        key: "name",
+        labelKey: "sidebar.dictionaries_list.table.fields.name",
+        sortable: true,
+      },
+      {
+        key: "category",
+        labelKey: "sidebar.dictionaries_list.table.fields.category",
+        sortable: true,
+      },
+      {
+        key: "base_price",
+        labelKey: "sidebar.dictionaries_list.table.fields.base_price",
+        sortable: false,
+      },
     ]}
   />
 );

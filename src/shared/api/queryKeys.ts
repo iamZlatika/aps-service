@@ -1,4 +1,4 @@
-import { type SortType } from "@/features/backoffice/modules/dictionaries/components/table/hooks/useSortParams.ts";
+import { type SortType } from "@/shared/components/table/hooks/useSortParams.ts";
 
 export const queryKeys = {
   auth: {

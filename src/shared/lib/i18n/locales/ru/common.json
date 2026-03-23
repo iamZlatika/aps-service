@@ -58,6 +58,11 @@
       "manufacturers": "Производители",
       "repair_operations": "Операции по ремонту",
       "table": {
+        "fields": {
+          "name": "Название",
+          "category": "Категория",
+          "base_price": "Базовая цена"
+        },
         "per_page": "Показывать:",
         "pagination": {
           "previous": "Назад",
@@ -77,8 +82,12 @@
           "description": "Вы уверены, что хотите удалить \"{{name}}\"?",
           "confirm": "Удалить",
           "cancel": "Отмена"
-        }
-      },
+        },
+       "edit_modal": {
+        "title":"Редактировать запись",
+        "cancel": "Отмена",
+        "confirm": "Сохранить"}
+        },
       "accessories_page": {
         "title": "Комплектации"
       }
