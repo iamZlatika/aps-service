@@ -5,16 +5,14 @@ import {
   type PaginatedDictionaryItemsDto,
   PaginatedDictionaryItemsDtoSchema,
 } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
+import { type SortType } from "@/features/backoffice/modules/dictionaries/components/table/hooks/useSortParams.ts";
+import { type BaseItem } from "@/features/backoffice/modules/dictionaries/components/table/types.ts";
 import {
   mapDictionaryItemDtoToDictionaryItem,
   mapPaginatedDtoToPaginatedItems,
 } from "@/features/backoffice/modules/dictionaries/lib/adapter.ts";
-import {
-  type DictionaryItem,
-  type PaginatedDictionaryItems,
-} from "@/features/backoffice/modules/dictionaries/types.ts";
+import { type PaginatedDictionaryItems } from "@/features/backoffice/modules/dictionaries/types.ts";
 import { del, get, post, put } from "@/shared/api/api.ts";
-import { type SortType } from "@/shared/hooks/useSortParams.ts";
 
 interface DictionaryApiRoutes {
   list: () => string;
@@ -43,7 +41,7 @@ export const createDictionaryApi = (routes: DictionaryApiRoutes) => ({
     const validated = PaginatedDictionaryItemsDtoSchema.parse(response);
     return mapPaginatedDtoToPaginatedItems(validated);
   },
-  create: async (data: CreateDictionaryItemDto): Promise<DictionaryItem> => {
+  create: async (data: CreateDictionaryItemDto): Promise<BaseItem> => {
     const response = await post<
       CreateDictionaryItemDto,
       { data: DictionaryItemDto }
@@ -54,7 +52,7 @@ export const createDictionaryApi = (routes: DictionaryApiRoutes) => ({
   update: async (
     id: number,
     data: CreateDictionaryItemDto,
-  ): Promise<DictionaryItem> => {
+  ): Promise<BaseItem> => {
     const response = await put<
       CreateDictionaryItemDto,
       { data: DictionaryItemDto }

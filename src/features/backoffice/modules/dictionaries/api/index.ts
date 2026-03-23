@@ -33,3 +33,7 @@ export const manufacturersApi = createDictionaryApi({
   list: () => "/backoffice/dictionaries/manufacturers",
   item: (id) => `/backoffice/dictionaries/manufacturers/${id}`,
 });
+export const repairOperationsApi = createDictionaryApi({
+  list: () => "/backoffice/dictionaries/repair-operations",
+  item: (id) => `/backoffice/dictionaries/repair-operations/${id}`,
+});

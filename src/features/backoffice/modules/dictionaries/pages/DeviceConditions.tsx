@@ -7,6 +7,13 @@ const DeviceConditionsPage = () => (
     titleKey="sidebar.dictionaries_list.device_conditions"
     api={deviceConditionsApi}
     queryKeyFn={queryKeys.dictionaries.deviceConditions}
+    columns={[
+      {
+        key: "name",
+        labelKey: "sidebar.dictionaries_list.table.name",
+        sortable: true,
+      },
+    ]}
   />
 );
 

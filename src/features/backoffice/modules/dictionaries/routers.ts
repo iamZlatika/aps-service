@@ -8,6 +8,7 @@ export const DictionariesRoutes = {
   deviceTypes: () => "dictionaries/device-types",
   intakeNotes: () => "dictionaries/intake-notes",
   manufacturers: () => "dictionaries/manufacturers",
+  repairOperations: () => "dictionaries/repair-operations",
 
   // api
   accessoriesApi: () => "/backoffice/dictionaries/accessories",

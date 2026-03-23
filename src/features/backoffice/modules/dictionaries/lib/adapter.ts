@@ -2,18 +2,13 @@ import {
   type DictionaryItemDto,
   type PaginatedDictionaryItemsDto,
 } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
-import {
-  type DictionaryItem,
-  type PaginatedDictionaryItems,
-} from "@/features/backoffice/modules/dictionaries/types.ts";
+import { type BaseItem } from "@/features/backoffice/modules/dictionaries/components/table/types.ts";
+import { type PaginatedDictionaryItems } from "@/features/backoffice/modules/dictionaries/types.ts";
 
 export const mapDictionaryItemDtoToDictionaryItem = (
   dto: DictionaryItemDto,
-): DictionaryItem => {
-  return {
-    id: dto.id,
-    name: dto.name,
-  };
+): BaseItem => {
+  return { ...dto } as BaseItem;
 };
 
 export const mapPaginatedDtoToPaginatedItems = (

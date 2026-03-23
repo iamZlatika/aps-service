@@ -1,4 +1,4 @@
-import { type SortType } from "@/shared/hooks/useSortParams.ts";
+import { type SortType } from "@/features/backoffice/modules/dictionaries/components/table/hooks/useSortParams.ts";
 
 export const queryKeys = {
   auth: {
@@ -113,6 +113,20 @@ export const queryKeys = {
       [
         ...queryKeys.dictionaries.all,
         "manufacturers",
+        ...(page !== undefined ? [page] : []),
+        ...(perPage !== undefined ? [perPage] : []),
+        ...(sortColumn ? [sortColumn] : []),
+        ...(sortType && sortType !== "none" ? [sortType] : []),
+      ] as const,
+    repairOperations: (
+      page?: number,
+      perPage?: number,
+      sortColumn?: string | null,
+      sortType?: SortType,
+    ) =>
+      [
+        ...queryKeys.dictionaries.all,
+        "repair-operations",
         ...(page !== undefined ? [page] : []),
         ...(perPage !== undefined ? [perPage] : []),
         ...(sortColumn ? [sortColumn] : []),

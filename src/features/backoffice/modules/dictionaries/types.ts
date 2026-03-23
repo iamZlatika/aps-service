@@ -1,7 +1,4 @@
-export type DictionaryItem = {
-  id: number;
-  name: string;
-};
+import { type BaseItem } from "@/features/backoffice/modules/dictionaries/components/table/types.ts";
 
 export type PaginationMeta = {
   currentPage: number;
@@ -13,6 +10,6 @@ export type PaginationMeta = {
 };
 
 export type PaginatedDictionaryItems = {
-  items: DictionaryItem[];
+  items: BaseItem[];
   meta: PaginationMeta;
 };

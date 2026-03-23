@@ -7,6 +7,13 @@ const IntakeNotesPage = () => (
     titleKey="sidebar.dictionaries_list.intake_notes"
     api={intakeNotesApi}
     queryKeyFn={queryKeys.dictionaries.intakeNotes}
+    columns={[
+      {
+        key: "name",
+        labelKey: "sidebar.dictionaries_list.table.name",
+        sortable: true,
+      },
+    ]}
   />
 );
 

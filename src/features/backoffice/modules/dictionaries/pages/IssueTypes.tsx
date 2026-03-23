@@ -7,6 +7,13 @@ const IssueTypesPage = () => (
     titleKey="sidebar.dictionaries_list.issue_types"
     api={issueTypesApi}
     queryKeyFn={queryKeys.dictionaries.issueTypes}
+    columns={[
+      {
+        key: "name",
+        labelKey: "sidebar.dictionaries_list.table.name",
+        sortable: true,
+      },
+    ]}
   />
 );
 
