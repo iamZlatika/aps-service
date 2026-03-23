@@ -1,7 +1,11 @@
-import { DialogDescription } from "@radix-ui/react-dialog";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import type { z } from "zod";
 
-import { Button } from "@/shared/components/ui/button.tsx";
+import { type BaseItem } from "@/shared/components/table/types.ts";
+import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,37 +15,58 @@ import {
 } from "@/shared/components/ui/dialog.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 
+import { buildEditSchema } from "../lib/buildEditSchema";
+import type { FieldConfig } from "./EditItemDialog";
+
 interface AddItemDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
-  placeholder: string;
+  fields: FieldConfig[];
   cancelLabel: string;
   confirmLabel: string;
-  onConfirm: (name: string) => void;
+  onConfirm: (values: Partial<BaseItem>) => void;
   isPending: boolean;
-  value: string;
-  onValueChange: (value: string) => void;
+  schema?: z.ZodObject<Record<string, z.ZodString>>;
 }
 
 export const AddItemDialog = ({
   isOpen,
   onOpenChange,
   title,
-  placeholder,
+  fields,
   cancelLabel,
   confirmLabel,
   onConfirm,
   isPending,
-  value,
-  onValueChange,
+  schema: externalSchema,
 }: AddItemDialogProps) => {
   const { t } = useTranslation();
 
-  const handleConfirm = () => {
-    if (value.trim()) {
-      onConfirm(value.trim());
+  const schema = useMemo(
+    () => externalSchema ?? buildEditSchema(fields),
+    [externalSchema, fields],
+  );
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Record<string, string>>({
+    resolver: zodResolver(schema),
+    defaultValues: Object.fromEntries(fields.map((f) => [f.key, ""])),
+  });
+
+  // Сбрасываем форму при открытии
+  useEffect(() => {
+    if (isOpen) {
+      reset(Object.fromEntries(fields.map((f) => [f.key, ""])));
     }
+  }, [isOpen, fields, reset]);
+
+  const onSubmit = (data: Record<string, string>) => {
+    onConfirm(data as Partial<BaseItem>);
   };
 
   return (
@@ -49,34 +74,43 @@ export const AddItemDialog = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription className="sr-only">
-            Форма добавления нового элемента
-          </DialogDescription>
         </DialogHeader>
-        <div className="py-4">
-          <Input
-            placeholder={placeholder}
-            value={value}
-            onChange={(e) => onValueChange(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleConfirm();
-              }
-            }}
-          />
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {cancelLabel}
-          </Button>
-          <Button
-            className="bg-green-600 hover:bg-green-700 text-white"
-            onClick={handleConfirm}
-            disabled={isPending || !value.trim()}
-          >
-            {isPending ? t("loader.default") : confirmLabel}
-          </Button>
-        </DialogFooter>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="py-4 flex flex-col gap-3"
+        >
+          {fields.map((field) => (
+            <div key={field.key}>
+              <label className="text-sm font-medium">{field.label}</label>
+              <Input
+                {...register(field.key)}
+                placeholder={field.placeholder}
+                className={errors[field.key] ? "border-red-500" : ""}
+              />
+              {errors[field.key] && (
+                <span className="text-xs text-red-500 mt-1">
+                  {String(errors[field.key]?.message)}
+                </span>
+              )}
+            </div>
+          ))}
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+            >
+              {cancelLabel}
+            </Button>
+            <Button
+              type="submit"
+              className="bg-green-600 hover:bg-green-700 text-white"
+              disabled={isPending}
+            >
+              {isPending ? t("loader.default") : confirmLabel}
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

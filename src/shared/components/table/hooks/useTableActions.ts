@@ -5,14 +5,13 @@ import { type BaseItem } from "@/shared/components/table/types.ts";
 
 export const useTableActions = (
   queryKey: readonly (string | number | null)[],
-  onAdd: (name: string) => Promise<BaseItem>,
+  onAdd: (values: Partial<BaseItem>) => Promise<BaseItem>,
   onDelete: (id: number) => Promise<void>,
   onUpdate: (id: number, values: Partial<BaseItem>) => Promise<BaseItem>,
 ) => {
   const queryClient = useQueryClient();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [newItemName, setNewItemName] = useState("");
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<BaseItem | null>(null);
@@ -25,7 +24,6 @@ export const useTableActions = (
     mutationFn: onAdd,
     onSuccess: () => {
       setIsAddModalOpen(false);
-      setNewItemName("");
       return invalidate();
     },
   });
@@ -48,10 +46,12 @@ export const useTableActions = (
     },
   });
 
-  const addItem = useCallback(() => {
-    const name = newItemName.trim();
-    if (name) createMutation.mutate(name);
-  }, [newItemName, createMutation]);
+  const submitAdd = useCallback(
+    (values: Partial<BaseItem>) => {
+      createMutation.mutate(values);
+    },
+    [createMutation],
+  );
 
   const startEdit = useCallback((item: BaseItem) => {
     setEditingId(item.id);
@@ -83,12 +83,10 @@ export const useTableActions = (
     () => ({
       isOpen: isAddModalOpen,
       setOpen: setIsAddModalOpen,
-      value: newItemName,
-      setValue: setNewItemName,
-      submit: addItem,
+      submit: submitAdd,
       isPending: createMutation.isPending,
     }),
-    [isAddModalOpen, newItemName, addItem, createMutation.isPending],
+    [isAddModalOpen, submitAdd, createMutation.isPending],
   );
 
   const deleteModal = useMemo(
