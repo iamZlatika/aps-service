@@ -72,9 +72,7 @@ export const DictionaryTable = ({
   const { sort, toggleSort } = useSortParams();
 
   const [editDialogItem, setEditDialogItem] = useState<BaseItem | null>(null);
-  const [editDialogValues, setEditDialogValues] = useState<Partial<BaseItem>>(
-    {},
-  );
+
   const editableFields = columns.filter((col) => col.key !== "id");
   const hasExtraFields = editableFields.length > 1;
 
@@ -87,7 +85,7 @@ export const DictionaryTable = ({
 
   const { addModal, deleteModal, editing } = useTableActions(
     queryKey,
-    (name) => api.create({ name }),
+    (values) => api.create(values as CreateDictionaryItemDto),
     (id) => api.remove(id),
     (id, values) => api.update(id, values as CreateDictionaryItemDto),
   );
@@ -95,17 +93,12 @@ export const DictionaryTable = ({
   const handleEditStart = useCallback(
     (item: BaseItem) => {
       if (hasExtraFields) {
-        setEditDialogItem(item);
-        const initialValues: Partial<BaseItem> = {};
-        editableFields.forEach((col) => {
-          initialValues[col.key] = item[col.key];
-        });
-        setEditDialogValues(initialValues);
+        setEditDialogItem(item); // только это
       } else {
         editing.start(item);
       }
     },
-    [hasExtraFields, editableFields, editing],
+    [hasExtraFields, editing],
   );
 
   const handleEditDialogConfirm = useCallback(
@@ -274,15 +267,19 @@ export const DictionaryTable = ({
         isOpen={addModal.isOpen}
         onOpenChange={addModal.setOpen}
         title={t("sidebar.dictionaries_list.table.add_modal.title")}
-        placeholder={t(
-          "sidebar.dictionaries_list.table.add_modal.input_placeholder",
-        )}
+        fields={editableFields.map((col) => ({
+          key: col.key,
+          label: t(col.labelKey),
+          placeholder:
+            col.key === "name"
+              ? t("sidebar.dictionaries_list.table.add_modal.input_placeholder")
+              : undefined,
+          required: col.key === "name",
+        }))}
         cancelLabel={t("sidebar.dictionaries_list.table.add_modal.cancel")}
         confirmLabel={t("sidebar.dictionaries_list.table.add_modal.add")}
         onConfirm={addModal.submit}
         isPending={addModal.isPending}
-        value={addModal.value}
-        onValueChange={addModal.setValue}
       />
 
       <DeleteConfirmDialog
@@ -312,8 +309,7 @@ export const DictionaryTable = ({
             label: t(col.labelKey),
             required: col.key === "name",
           }))}
-          values={editDialogValues}
-          onValuesChange={setEditDialogValues}
+          values={editDialogItem ?? {}} // <-- вместо editDialogValues
           onConfirm={handleEditDialogConfirm}
           isPending={editing.isPending}
           cancelLabel={t("sidebar.dictionaries_list.table.edit_modal.cancel")}
