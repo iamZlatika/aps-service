@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const DictionaryItemDtoSchema = z.object({
+export const DictionaryItemDtoSchema = z.looseObject({
   id: z.number(),
   name: z.string(),
 });
@@ -14,8 +14,6 @@ export const CreateDictionaryItemDtoSchema = z.object({
 export type CreateDictionaryItemDto = z.infer<
   typeof CreateDictionaryItemDtoSchema
 >;
-
-// --- Новые типы для пагинации ---
 
 export const PaginationLinksDtoSchema = z.object({
   first: z.string().nullable(),

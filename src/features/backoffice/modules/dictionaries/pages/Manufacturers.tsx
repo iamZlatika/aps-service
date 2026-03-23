@@ -7,6 +7,13 @@ const ManufacturersPage = () => (
     titleKey="sidebar.dictionaries_list.manufacturers"
     api={manufacturersApi}
     queryKeyFn={queryKeys.dictionaries.manufacturers}
+    columns={[
+      {
+        key: "name",
+        labelKey: "sidebar.dictionaries_list.table.name",
+        sortable: true,
+      },
+    ]}
   />
 );
 

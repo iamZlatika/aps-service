@@ -3,15 +3,21 @@ import { TableCell, TableRow } from "@/shared/components/ui/table.tsx";
 
 interface TableSkeletonProps {
   rowCount?: number;
+  colCount?: number;
 }
 
-export const TableSkeleton = ({ rowCount = 15 }: TableSkeletonProps) => (
+export const TableSkeleton = ({
+  rowCount = 15,
+  colCount = 2,
+}: TableSkeletonProps) => (
   <>
     {[...Array(rowCount)].map((_, i) => (
       <TableRow key={i}>
-        <TableCell>
-          <Skeleton className="h-5 w-[200px]" />
-        </TableCell>
+        {[...Array(colCount - 1)].map((_, j) => (
+          <TableCell key={j}>
+            <Skeleton className="h-5 w-[200px]" />
+          </TableCell>
+        ))}
         <TableCell className="text-right">
           <div className="flex justify-end gap-2">
             <Skeleton className="h-8 w-8 rounded-md" />

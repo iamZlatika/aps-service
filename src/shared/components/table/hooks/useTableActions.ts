@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
 
-import { type DictionaryItem } from "@/features/backoffice/modules/dictionaries/types.ts";
+import { type BaseItem } from "@/features/backoffice/modules/dictionaries/components/table/types.ts";
 
-export const useDictionaryActions = (
+export const useTableActions = (
   queryKey: readonly (string | number | null)[],
-  onAdd: (name: string) => Promise<DictionaryItem>,
+  onAdd: (name: string) => Promise<BaseItem>,
   onDelete: (id: number) => Promise<void>,
-  onUpdate: (id: number, name: string) => Promise<DictionaryItem>,
+  onUpdate: (id: number, name: string) => Promise<BaseItem>,
 ) => {
   const queryClient = useQueryClient();
 
@@ -15,7 +15,7 @@ export const useDictionaryActions = (
   const [newItemName, setNewItemName] = useState("");
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<DictionaryItem | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<BaseItem | null>(null);
 
   const [editingId, setEditingId] = useState<number | null>(null);
 
@@ -53,7 +53,7 @@ export const useDictionaryActions = (
     if (name) createMutation.mutate(name);
   }, [newItemName, createMutation]);
 
-  const startEdit = useCallback((item: DictionaryItem) => {
+  const startEdit = useCallback((item: BaseItem) => {
     setEditingId(item.id);
   }, []);
 
@@ -68,7 +68,7 @@ export const useDictionaryActions = (
     [updateMutation],
   );
 
-  const requestDelete = useCallback((item: DictionaryItem) => {
+  const requestDelete = useCallback((item: BaseItem) => {
     setItemToDelete(item);
     setIsDeleteModalOpen(true);
   }, []);

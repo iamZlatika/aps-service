@@ -7,6 +7,13 @@ const DeviceModelsPage = () => (
     titleKey="sidebar.dictionaries_list.device_models"
     api={deviceModelsApi}
     queryKeyFn={queryKeys.dictionaries.deviceModels}
+    columns={[
+      {
+        key: "name",
+        labelKey: "sidebar.dictionaries_list.table.name",
+        sortable: true,
+      },
+    ]}
   />
 );
 

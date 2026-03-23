@@ -1,21 +1,28 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { DictionaryTableRow } from "@/features/backoffice/modules/dictionaries/components/table/TableRow.tsx";
-import TableSkeleton from "@/features/backoffice/modules/dictionaries/components/table/TableSkeleton.tsx";
-import { type DictionaryItem } from "@/features/backoffice/modules/dictionaries/types.ts";
-import { TableCell, TableRow } from "@/shared/components/ui/table.tsx";
+import { TableRow } from "@/features/backoffice/modules/dictionaries/components/table/TableRow";
+import TableSkeleton from "@/features/backoffice/modules/dictionaries/components/table/TableSkeleton";
+import type {
+  BaseItem,
+  ColumnConfig,
+} from "@/features/backoffice/modules/dictionaries/components/table/types.ts";
+import {
+  TableCell,
+  TableRow as ShadCNTableRow,
+} from "@/shared/components/ui/table.tsx";
 
-interface DictionaryTableContentProps {
-  items: DictionaryItem[] | undefined;
+interface TableContentProps {
+  items: BaseItem[] | undefined;
   isOperationLoading: boolean;
   editingId: number | null;
   updatePending: boolean;
   perPage: number;
+  columns: ColumnConfig[];
   onSave: (id: number, name: string) => void;
   onCancel: () => void;
-  onEdit: (item: DictionaryItem) => void;
-  onDelete: (item: DictionaryItem) => void;
+  onEdit: (item: BaseItem) => void;
+  onDelete: (item: BaseItem) => void;
 }
 
 export const TableContent = memo(
@@ -25,33 +32,35 @@ export const TableContent = memo(
     editingId,
     updatePending,
     perPage,
+    columns,
     onSave,
     onCancel,
     onEdit,
     onDelete,
-  }: DictionaryTableContentProps) => {
+  }: TableContentProps) => {
     const { t } = useTranslation();
 
     if (isOperationLoading) {
-      return <TableSkeleton rowCount={perPage} />;
+      return <TableSkeleton rowCount={perPage} colCount={columns.length + 1} />;
     }
 
     if (!items || items.length === 0) {
       return (
-        <TableRow>
-          <TableCell colSpan={2} className="h-24 text-center">
+        <ShadCNTableRow>
+          <TableCell colSpan={columns.length + 1} className="h-24 text-center">
             {t("sidebar.dictionaries_list.table.no_results")}
           </TableCell>
-        </TableRow>
+        </ShadCNTableRow>
       );
     }
 
     return (
       <>
         {items.map((item) => (
-          <DictionaryTableRow
+          <TableRow
             key={item.id}
             item={item}
+            columns={columns}
             isEditing={editingId === item.id}
             updatePending={updatePending}
             onSave={onSave}

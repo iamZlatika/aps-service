@@ -4,7 +4,16 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { DictionaryApi } from "@/features/backoffice/modules/dictionaries/api/createDictionaryApi.ts";
+import {
+  type PerPageOption,
+  usePerPage,
+} from "@/features/backoffice/modules/dictionaries/components/table/hooks/usePerPage.ts";
+import {
+  type SortType,
+  useSortParams,
+} from "@/features/backoffice/modules/dictionaries/components/table/hooks/useSortParams.ts";
 import { TableContent } from "@/features/backoffice/modules/dictionaries/components/table/TableContent.tsx";
+import { type ColumnConfig } from "@/features/backoffice/modules/dictionaries/components/table/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
   Pagination,
@@ -29,12 +38,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/shared/components/ui/table.tsx";
-import { type PerPageOption, usePerPage } from "@/shared/hooks/usePerPage.ts";
-import { type SortType, useSortParams } from "@/shared/hooks/useSortParams.ts";
 import { getPageNumbers } from "@/shared/lib/pagination.ts";
+import { cn } from "@/shared/lib/utils.ts";
 
 import { AddItemDialog, DeleteConfirmDialog } from "./dialogs";
-import { useDictionaryActions } from "./hooks/useDictionaryActions";
+import { useTableActions } from "./hooks/useTableActions.ts";
 
 interface DictionaryTableProps {
   titleKey: string;
@@ -45,12 +53,14 @@ interface DictionaryTableProps {
     sortColumn: string | null,
     sortType: SortType,
   ) => readonly (string | number | null)[];
+  columns: ColumnConfig[];
 }
 
 export const DictionaryTable = ({
   titleKey,
   api,
   queryKeyFn,
+  columns,
 }: DictionaryTableProps) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
@@ -64,7 +74,7 @@ export const DictionaryTable = ({
     queryFn: () => api.getAll(page, perPage, sort.column, sort.type),
   });
 
-  const { addModal, deleteModal, editing } = useDictionaryActions(
+  const { addModal, deleteModal, editing } = useTableActions(
     queryKey,
     (name) => api.create({ name }),
     (id) => api.remove(id),
@@ -106,27 +116,35 @@ export const DictionaryTable = ({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead
-                className="cursor-pointer select-none"
-                onClick={() => toggleSort("name")}
-              >
-                <div className="flex items-center gap-1">
-                  {sort.column === "name" && sort.type === "asc" ? (
-                    <ArrowUp className="h-4 w-4" />
-                  ) : sort.column === "name" && sort.type === "desc" ? (
-                    <ArrowDown className="h-4 w-4" />
-                  ) : (
-                    <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+              {columns.map((col) => (
+                <TableHead
+                  key={col.key}
+                  className={cn(
+                    col.sortable && "cursor-pointer select-none",
+                    col.className,
                   )}
-                  {t("sidebar.dictionaries_list.table.name")}
-                </div>
-              </TableHead>
-              <TableHead className="w-[80px] sm:w-[100px] text-right"></TableHead>
+                  onClick={col.sortable ? () => toggleSort(col.key) : undefined}
+                >
+                  <div className="flex items-center gap-1">
+                    {col.sortable &&
+                      (sort.column === col.key && sort.type === "asc" ? (
+                        <ArrowUp className="h-4 w-4" />
+                      ) : sort.column === col.key && sort.type === "desc" ? (
+                        <ArrowDown className="h-4 w-4" />
+                      ) : (
+                        <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+                      ))}
+                    {t(col.labelKey)}
+                  </div>
+                </TableHead>
+              ))}
+              <TableHead className="w-[80px] sm:w-[100px] text-right" />
             </TableRow>
           </TableHeader>
 
           <TableBody>
             <TableContent
+              columns={columns}
               items={items}
               isOperationLoading={isOperationLoading}
               editingId={editing.id}

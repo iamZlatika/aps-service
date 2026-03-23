@@ -7,6 +7,13 @@ const AccessoriesPage = () => (
     titleKey="sidebar.dictionaries_list.accessories"
     api={accessoriesApi}
     queryKeyFn={queryKeys.dictionaries.accessories}
+    columns={[
+      {
+        key: "name",
+        labelKey: "sidebar.dictionaries_list.table.name",
+        sortable: true,
+      },
+    ]}
   />
 );
 
