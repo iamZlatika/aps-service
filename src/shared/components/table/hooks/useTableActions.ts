@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
 
-import { type BaseItem } from "@/features/backoffice/modules/dictionaries/components/table/types.ts";
+import { type BaseItem } from "@/shared/components/table/types.ts";
 
 export const useTableActions = (
   queryKey: readonly (string | number | null)[],
   onAdd: (name: string) => Promise<BaseItem>,
   onDelete: (id: number) => Promise<void>,
-  onUpdate: (id: number, name: string) => Promise<BaseItem>,
+  onUpdate: (id: number, values: Partial<BaseItem>) => Promise<BaseItem>,
 ) => {
   const queryClient = useQueryClient();
 
@@ -40,8 +40,8 @@ export const useTableActions = (
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, name }: { id: number; name: string }) =>
-      onUpdate(id, name),
+    mutationFn: ({ id, values }: { id: number; values: Partial<BaseItem> }) =>
+      onUpdate(id, values),
     onSuccess: () => {
       setEditingId(null);
       return invalidate();
@@ -62,8 +62,8 @@ export const useTableActions = (
   }, []);
 
   const saveEdit = useCallback(
-    (id: number, name: string) => {
-      updateMutation.mutate({ id, name });
+    (id: number, values: Partial<BaseItem>) => {
+      updateMutation.mutate({ id, values });
     },
     [updateMutation],
   );

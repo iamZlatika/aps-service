@@ -1,4 +1,4 @@
-import { type BaseItem } from "@/features/backoffice/modules/dictionaries/components/table/types.ts";
+import { type BaseItem } from "@/shared/components/table/types.ts";
 
 export type PaginationMeta = {
   currentPage: number;

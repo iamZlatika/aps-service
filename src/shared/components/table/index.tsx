@@ -1,19 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import { ArrowDown, ArrowUp, ArrowUpDown, Plus } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { DictionaryApi } from "@/features/backoffice/modules/dictionaries/api/createDictionaryApi.ts";
+import { type CreateDictionaryItemDto } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import {
   type PerPageOption,
   usePerPage,
-} from "@/features/backoffice/modules/dictionaries/components/table/hooks/usePerPage.ts";
+} from "@/shared/components/table/hooks/usePerPage.ts";
 import {
   type SortType,
   useSortParams,
-} from "@/features/backoffice/modules/dictionaries/components/table/hooks/useSortParams.ts";
-import { TableContent } from "@/features/backoffice/modules/dictionaries/components/table/TableContent.tsx";
-import { type ColumnConfig } from "@/features/backoffice/modules/dictionaries/components/table/types.ts";
+} from "@/shared/components/table/hooks/useSortParams.ts";
+import { TableContent } from "@/shared/components/table/TableContent.tsx";
+import {
+  type BaseItem,
+  type ColumnConfig,
+} from "@/shared/components/table/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
   Pagination,
@@ -41,7 +45,7 @@ import {
 import { getPageNumbers } from "@/shared/lib/pagination.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
-import { AddItemDialog, DeleteConfirmDialog } from "./dialogs";
+import { AddItemDialog, DeleteConfirmDialog, EditItemDialog } from "./dialogs";
 import { useTableActions } from "./hooks/useTableActions.ts";
 
 interface DictionaryTableProps {
@@ -67,6 +71,13 @@ export const DictionaryTable = ({
   const { perPage, setPerPage, perPageOptions } = usePerPage();
   const { sort, toggleSort } = useSortParams();
 
+  const [editDialogItem, setEditDialogItem] = useState<BaseItem | null>(null);
+  const [editDialogValues, setEditDialogValues] = useState<Partial<BaseItem>>(
+    {},
+  );
+  const editableFields = columns.filter((col) => col.key !== "id");
+  const hasExtraFields = editableFields.length > 1;
+
   const queryKey = queryKeyFn(page, perPage, sort.column, sort.type);
 
   const { data, isLoading, isFetching } = useQuery({
@@ -78,7 +89,33 @@ export const DictionaryTable = ({
     queryKey,
     (name) => api.create({ name }),
     (id) => api.remove(id),
-    (id, name) => api.update(id, { name }),
+    (id, values) => api.update(id, values as CreateDictionaryItemDto),
+  );
+
+  const handleEditStart = useCallback(
+    (item: BaseItem) => {
+      if (hasExtraFields) {
+        setEditDialogItem(item);
+        const initialValues: Partial<BaseItem> = {};
+        editableFields.forEach((col) => {
+          initialValues[col.key] = item[col.key];
+        });
+        setEditDialogValues(initialValues);
+      } else {
+        editing.start(item);
+      }
+    },
+    [hasExtraFields, editableFields, editing],
+  );
+
+  const handleEditDialogConfirm = useCallback(
+    (values: Partial<BaseItem>) => {
+      if (editDialogItem) {
+        editing.save(editDialogItem.id, values);
+        setEditDialogItem(null);
+      }
+    },
+    [editDialogItem, editing],
   );
 
   const isOperationLoading =
@@ -152,7 +189,7 @@ export const DictionaryTable = ({
               perPage={perPage}
               onSave={editing.save}
               onCancel={editing.cancel}
-              onEdit={editing.start}
+              onEdit={handleEditStart}
               onDelete={deleteModal.requestDelete}
             />
           </TableBody>
@@ -263,6 +300,26 @@ export const DictionaryTable = ({
         onConfirm={deleteModal.confirm}
         isPending={deleteModal.isPending}
       />
+      {hasExtraFields && (
+        <EditItemDialog
+          isOpen={editDialogItem !== null}
+          onOpenChange={(open) => {
+            if (!open) setEditDialogItem(null);
+          }}
+          title={t("sidebar.dictionaries_list.table.edit_modal.title")}
+          fields={editableFields.map((col) => ({
+            key: col.key,
+            label: t(col.labelKey),
+            required: col.key === "name",
+          }))}
+          values={editDialogValues}
+          onValuesChange={setEditDialogValues}
+          onConfirm={handleEditDialogConfirm}
+          isPending={editing.isPending}
+          cancelLabel={t("sidebar.dictionaries_list.table.edit_modal.cancel")}
+          confirmLabel={t("sidebar.dictionaries_list.table.edit_modal.confirm")}
+        />
+      )}
     </div>
   );
 };

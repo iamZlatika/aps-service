@@ -1,6 +1,6 @@
 import { deviceConditionsApi } from "@/features/backoffice/modules/dictionaries/api";
-import { DictionaryTable } from "@/features/backoffice/modules/dictionaries/components/table";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { DictionaryTable } from "@/shared/components/table";
 
 const DeviceConditionsPage = () => (
   <DictionaryTable

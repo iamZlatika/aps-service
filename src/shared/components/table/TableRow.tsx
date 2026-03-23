@@ -3,11 +3,11 @@ import type { KeyboardEvent } from "react";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 
-import { Input } from "@/shared/components/ui/input";
+import { Input } from "@/shared/components/ui/input.tsx";
 import {
   TableCell,
   TableRow as ShadCNTableRow,
-} from "@/shared/components/ui/table";
+} from "@/shared/components/ui/table.tsx";
 
 import {
   AcceptButton,
@@ -15,15 +15,15 @@ import {
   DeleteButton,
   EditButton,
 } from "./buttons";
-import { type EditItemFormValues, editItemSchema } from "./editItem.schema";
-import type { BaseItem, ColumnConfig } from "./types";
+import { type EditItemFormValues, editItemSchema } from "./editItem.schema.ts";
+import type { BaseItem, ColumnConfig } from "./types.ts";
 
 interface TableRowProps {
   item: BaseItem;
   columns: ColumnConfig[];
   isEditing: boolean;
   updatePending: boolean;
-  onSave: (id: number, name: string) => void;
+  onSave: (id: number, values: Partial<BaseItem>) => void;
   onCancel: () => void;
   onEdit: (item: BaseItem) => void;
   onDelete: (item: BaseItem) => void;
@@ -50,7 +50,7 @@ export const TableRow = memo(
     });
 
     const onSubmit = (data: EditItemFormValues) => {
-      onSave(item.id, data.name);
+      onSave(item.id, { name: data.name });
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {

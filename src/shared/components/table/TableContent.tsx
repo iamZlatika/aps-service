@@ -1,12 +1,12 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { TableRow } from "@/features/backoffice/modules/dictionaries/components/table/TableRow";
-import TableSkeleton from "@/features/backoffice/modules/dictionaries/components/table/TableSkeleton";
+import { TableRow } from "@/shared/components/table/TableRow.tsx";
+import TableSkeleton from "@/shared/components/table/TableSkeleton.tsx";
 import type {
   BaseItem,
   ColumnConfig,
-} from "@/features/backoffice/modules/dictionaries/components/table/types.ts";
+} from "@/shared/components/table/types.ts";
 import {
   TableCell,
   TableRow as ShadCNTableRow,
@@ -19,7 +19,7 @@ interface TableContentProps {
   updatePending: boolean;
   perPage: number;
   columns: ColumnConfig[];
-  onSave: (id: number, name: string) => void;
+  onSave: (id: number, values: Partial<BaseItem>) => void;
   onCancel: () => void;
   onEdit: (item: BaseItem) => void;
   onDelete: (item: BaseItem) => void;
