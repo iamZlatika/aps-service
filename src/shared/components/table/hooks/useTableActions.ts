@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
+import { type UseFormSetError } from "react-hook-form";
 
 import { type BaseItem } from "@/shared/components/table/types.ts";
+import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 
 export const useTableActions = (
   queryKey: readonly (string | number | null)[],
@@ -47,8 +49,15 @@ export const useTableActions = (
   });
 
   const submitAdd = useCallback(
-    (values: Partial<BaseItem>) => {
-      createMutation.mutate(values);
+    async (
+      values: Partial<BaseItem>,
+      setError: UseFormSetError<Record<string, string>>,
+    ) => {
+      try {
+        await createMutation.mutateAsync(values);
+      } catch (error) {
+        handleFormError(error, setError);
+      }
     },
     [createMutation],
   );
@@ -62,8 +71,19 @@ export const useTableActions = (
   }, []);
 
   const saveEdit = useCallback(
-    (id: number, values: Partial<BaseItem>) => {
-      updateMutation.mutate({ id, values });
+    async (
+      id: number,
+      values: Partial<BaseItem>,
+      setError?: UseFormSetError<Record<string, string>>,
+    ) => {
+      try {
+        await updateMutation.mutateAsync({ id, values });
+      } catch (error) {
+        if (setError) {
+          handleFormError(error, setError);
+        }
+        // если setError нет (inline-редактирование) — тост покажется глобально
+      }
     },
     [updateMutation],
   );

@@ -48,7 +48,7 @@ export const TableContent = memo(
       return (
         <ShadCNTableRow>
           <TableCell colSpan={columns.length + 1} className="h-24 text-center">
-            {t("sidebar.dictionaries_list.table.no_results")}
+            {t("table.no_results")}
           </TableCell>
         </ShadCNTableRow>
       );

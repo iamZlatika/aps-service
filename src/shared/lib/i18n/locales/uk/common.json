@@ -56,41 +56,8 @@
       "device_types": "Типи пристроїв",
       "intake_notes": "Нотатки при прийманні",
       "manufacturers": "Виробники",
-      "repair_operations": "Операції з ремонту",
-      "table": {
-        "fields": {
-          "name": "Назва",
-          "category": "Категорія",
-          "base_price": "Базова ціна"
-
-        },
-        "per_page": "Показувати:",
-        "pagination": {
-          "previous": "Назад",
-          "next": "Вперед"
-        },
-        "add_button": "Додати",
-        "name": "Назва",
-                "no_results": "Немає результатів",
-        "add_modal": {
-          "title": "Додавання запису",
-          "input_placeholder": "Введіть назву",
-          "add": "Додати",
-          "cancel": "Скасувати"
-        },
-        "delete_modal": {
-          "title": "Видалення запису",
-          "description": "Ви впевнені, що хочете видалити \"{{name}}\"?",
-          "confirm": "Видалити",
-          "cancel": "Скасувати"
-        },
-        "edit_modal": {
-          "title": "Редагування запису",
-          "cancel": "Скасувати",
-          "confirm": "Зберегти"
-        }
-      }
-        }
+      "repair_operations": "Операції з ремонту"
+    }
   },
   "errors": {
     "unknown": "Невідома помилка",
@@ -105,6 +72,38 @@
     "forbidden_action": "Недостатньо прав для виконання операції",
     "network": "Немає підключення до мережі. Перевірте підключення.",
     "error_id": "Код помилки"
+  },
+  "table": {
+    "fields": {
+      "name": "Назва",
+      "category": "Категорія",
+      "base_price": "Базова ціна"
+    },
+    "per_page": "Показувати:",
+    "pagination": {
+      "previous": "Назад",
+      "next": "Вперед"
+    },
+    "add_button": "Додати",
+    "name": "Назва",
+    "no_results": "Немає результатів",
+    "add_modal": {
+      "title": "Додавання запису",
+      "input_placeholder": "Введіть назву",
+      "add": "Додати",
+      "cancel": "Скасувати"
+    },
+    "delete_modal": {
+      "title": "Видалення запису",
+      "description": "Ви впевнені, що хочете видалити \"{{name}}\"?",
+      "confirm": "Видалити",
+      "cancel": "Скасувати"
+    },
+    "edit_modal": {
+      "title": "Редагування запису",
+      "cancel": "Скасувати",
+      "confirm": "Зберегти"
+    }
   },
   "validation": {
     "email_invalid": "Введіть коректний email",

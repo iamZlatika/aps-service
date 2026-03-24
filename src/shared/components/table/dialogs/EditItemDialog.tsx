@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import type { z } from "zod";
 
@@ -30,7 +30,10 @@ interface EditItemDialogProps<T extends BaseItem> {
   title: string;
   fields: FieldConfig[];
   values: Partial<T>;
-  onConfirm: (values: Partial<T>) => void;
+  onConfirm: (
+    values: Partial<BaseItem>,
+    setError: UseFormSetError<Record<string, string>>,
+  ) => void;
   isPending: boolean;
   cancelLabel: string;
   confirmLabel: string;
@@ -60,6 +63,7 @@ export const EditItemDialog = <T extends BaseItem>({
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm<Record<string, string>>({
     resolver: zodResolver(schema),
@@ -73,7 +77,7 @@ export const EditItemDialog = <T extends BaseItem>({
   }, [isOpen, values, reset]);
 
   const onSubmit = (data: Record<string, string>) => {
-    onConfirm(data as Partial<T>);
+    onConfirm(data as Partial<BaseItem>, setError);
   };
 
   return (
@@ -89,7 +93,6 @@ export const EditItemDialog = <T extends BaseItem>({
           {fields.map((field) => (
             <div key={field.key}>
               <label className="text-sm font-medium">{field.label}</label>
-              {/* 6. register связывает инпут с react-hook-form */}
               <Input
                 {...register(field.key)}
                 placeholder={field.placeholder}
@@ -102,6 +105,9 @@ export const EditItemDialog = <T extends BaseItem>({
               )}
             </div>
           ))}
+          {errors.root && (
+            <p className="text-sm text-red-500">{errors.root.message}</p>
+          )}
           <DialogFooter>
             <Button
               type="button"
