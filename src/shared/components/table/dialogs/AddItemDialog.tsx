@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import type { z } from "zod";
 
@@ -25,7 +25,10 @@ interface AddItemDialogProps {
   fields: FieldConfig[];
   cancelLabel: string;
   confirmLabel: string;
-  onConfirm: (values: Partial<BaseItem>) => void;
+  onConfirm: (
+    values: Partial<BaseItem>,
+    setError: UseFormSetError<Record<string, string>>,
+  ) => void;
   isPending: boolean;
   schema?: z.ZodObject<Record<string, z.ZodString>>;
 }
@@ -52,13 +55,13 @@ export const AddItemDialog = ({
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm<Record<string, string>>({
     resolver: zodResolver(schema),
     defaultValues: Object.fromEntries(fields.map((f) => [f.key, ""])),
   });
 
-  // Сбрасываем форму при открытии
   useEffect(() => {
     if (isOpen) {
       reset(Object.fromEntries(fields.map((f) => [f.key, ""])));
@@ -66,9 +69,8 @@ export const AddItemDialog = ({
   }, [isOpen, fields, reset]);
 
   const onSubmit = (data: Record<string, string>) => {
-    onConfirm(data as Partial<BaseItem>);
+    onConfirm(data as Partial<BaseItem>, setError);
   };
-
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -94,6 +96,9 @@ export const AddItemDialog = ({
               )}
             </div>
           ))}
+          {errors.root && (
+            <p className="text-sm text-red-500">{errors.root.message}</p>
+          )}
           <DialogFooter>
             <Button
               type="button"

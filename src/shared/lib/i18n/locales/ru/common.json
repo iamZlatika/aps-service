@@ -57,37 +57,6 @@
       "intake_notes": "Заметки при приемке",
       "manufacturers": "Производители",
       "repair_operations": "Операции по ремонту",
-      "table": {
-        "fields": {
-          "name": "Название",
-          "category": "Категория",
-          "base_price": "Базовая цена"
-        },
-        "per_page": "Показывать:",
-        "pagination": {
-          "previous": "Назад",
-          "next": "Вперёд"
-        },
-        "add_button": "Добавить",
-        "name": "Название",
-               "no_results": "Нет результатов",
-        "add_modal": {
-          "title": "Добавление записи",
-          "input_placeholder": "Введите название",
-          "add": "Добавить",
-          "cancel": "Отмена"
-        },
-        "delete_modal": {
-          "title": "Удаление записи",
-          "description": "Вы уверены, что хотите удалить \"{{name}}\"?",
-          "confirm": "Удалить",
-          "cancel": "Отмена"
-        },
-       "edit_modal": {
-        "title":"Редактировать запись",
-        "cancel": "Отмена",
-        "confirm": "Сохранить"}
-        },
       "accessories_page": {
         "title": "Комплектации"
       }
@@ -107,6 +76,38 @@
     "network": "Нет подключения к интернету. Проверьте соединение.",
     "error_id": "Код ошибки"
     },
+  "table": {
+    "fields": {
+      "name": "Название",
+      "category": "Категория",
+      "base_price": "Базовая цена"
+    },
+    "per_page": "Показывать:",
+    "pagination": {
+      "previous": "Назад",
+      "next": "Вперёд"
+    },
+    "add_button": "Добавить",
+    "name": "Название",
+    "no_results": "Нет результатов",
+    "add_modal": {
+      "title": "Добавление записи",
+      "input_placeholder": "Введите название",
+      "add": "Добавить",
+      "cancel": "Отмена"
+    },
+    "delete_modal": {
+      "title": "Удаление записи",
+      "description": "Вы уверены, что хотите удалить \"{{name}}\"?",
+      "confirm": "Удалить",
+      "cancel": "Отмена"
+    },
+    "edit_modal": {
+      "title": "Редактировать запись",
+      "cancel": "Отмена",
+      "confirm": "Сохранить"
+    }
+  },
   "validation": {
     "email_invalid": "Введите корректный email",
     "password_min": "Пароль должен быть не менее 8 символов",

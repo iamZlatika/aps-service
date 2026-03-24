@@ -1,39 +1,41 @@
+import { DictionariesRoutes } from "@/features/backoffice/modules/dictionaries/routers.ts";
+
 import { createDictionaryApi } from "./createDictionaryApi";
 
 export const accessoriesApi = createDictionaryApi({
-  list: () => "/backoffice/dictionaries/accessories",
-  item: (id) => `/backoffice/dictionaries/accessories/${id}`,
+  list: () => DictionariesRoutes.accessoriesApi(),
+  item: (id) => DictionariesRoutes.accessoryApi(id),
 });
 
 export const issueTypesApi = createDictionaryApi({
-  list: () => "/backoffice/dictionaries/issue-types",
-  item: (id) => `/backoffice/dictionaries/issue-types/${id}`,
+  list: () => DictionariesRoutes.issueTypesApi(),
+  item: (id) => DictionariesRoutes.issueTypeApi(id),
 });
 
 export const deviceConditionsApi = createDictionaryApi({
-  list: () => "/backoffice/dictionaries/device-conditions",
-  item: (id) => `/backoffice/dictionaries/device-conditions/${id}`,
+  list: () => DictionariesRoutes.deviceConditionsApi(),
+  item: (id) => DictionariesRoutes.deviceConditionApi(id),
 });
 
 export const deviceModelsApi = createDictionaryApi({
-  list: () => "/backoffice/dictionaries/device-models",
-  item: (id) => `/backoffice/dictionaries/device-models/${id}`,
+  list: () => DictionariesRoutes.deviceModelsApi(),
+  item: (id) => DictionariesRoutes.deviceModelApi(id),
 });
 
 export const deviceTypesApi = createDictionaryApi({
-  list: () => "/backoffice/dictionaries/device-types",
-  item: (id) => `/backoffice/dictionaries/device-types/${id}`,
+  list: () => DictionariesRoutes.deviceTypesApi(),
+  item: (id) => DictionariesRoutes.deviceTypeApi(id),
 });
 
 export const intakeNotesApi = createDictionaryApi({
-  list: () => "/backoffice/dictionaries/intake-notes",
-  item: (id) => `/backoffice/dictionaries/intake-notes/${id}`,
+  list: () => DictionariesRoutes.intakeNotesApi(),
+  item: (id) => DictionariesRoutes.intakeNoteApi(id),
 });
 export const manufacturersApi = createDictionaryApi({
-  list: () => "/backoffice/dictionaries/manufacturers",
-  item: (id) => `/backoffice/dictionaries/manufacturers/${id}`,
+  list: () => DictionariesRoutes.manufacturersApi(),
+  item: (id) => DictionariesRoutes.manufacturerApi(id),
 });
 export const repairOperationsApi = createDictionaryApi({
-  list: () => "/backoffice/dictionaries/repair-operations",
-  item: (id) => `/backoffice/dictionaries/repair-operations/${id}`,
+  list: () => DictionariesRoutes.repairOperationsApi(),
+  item: (id) => DictionariesRoutes.repairOperationApi(id),
 });

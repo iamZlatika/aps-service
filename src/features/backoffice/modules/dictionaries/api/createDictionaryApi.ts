@@ -1,5 +1,4 @@
 import {
-  type CreateDictionaryItemDto,
   type DictionaryItemDto,
   DictionaryItemDtoSchema,
   type PaginatedDictionaryItemsDto,
@@ -41,11 +40,11 @@ export const createDictionaryApi = (routes: DictionaryApiRoutes) => ({
     const validated = PaginatedDictionaryItemsDtoSchema.parse(response);
     return mapPaginatedDtoToPaginatedItems(validated);
   },
-  create: async (data: CreateDictionaryItemDto): Promise<BaseItem> => {
-    const response = await post<
-      CreateDictionaryItemDto,
-      { data: DictionaryItemDto }
-    >(routes.list(), data);
+  create: async (data: Partial<BaseItem>): Promise<BaseItem> => {
+    const response = await post<Partial<BaseItem>, { data: DictionaryItemDto }>(
+      routes.list(),
+      data,
+    );
     const validated = DictionaryItemDtoSchema.parse(response.data);
     return mapDictionaryItemDtoToDictionaryItem(validated);
   },
@@ -64,5 +63,3 @@ export const createDictionaryApi = (routes: DictionaryApiRoutes) => ({
     await del(routes.item(id));
   },
 });
-
-export type DictionaryApi = ReturnType<typeof createDictionaryApi>;

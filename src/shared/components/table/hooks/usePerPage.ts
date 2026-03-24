@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-const STORAGE_KEY = "dictionary_per_page";
+const STORAGE_KEY = "items_per_page";
 const DEFAULT_PER_PAGE = 15;
 const PER_PAGE_OPTIONS = [10, 15, 20, 25] as const;
 
@@ -16,7 +16,7 @@ function getStoredPerPage(): PerPageOption {
       }
     }
   } catch {
-    // localStorage недоступен
+    // localStorage
   }
   return DEFAULT_PER_PAGE;
 }
