@@ -40,6 +40,18 @@
       "invalid_link": "Ссылка для восстановления пароля недействительна или просрочена."
     }
   },
+  "pages": {
+    "repair_operations": {
+      "options": {
+        "cleaning": "Чистка",
+        "diagnostics": "Диагностика",
+        "repair": "Ремонт",
+        "replacement": "Замена",
+        "restoration": "Восстановление",
+        "settings_update_reflashing": "ПО и прошивка"
+      }
+    }
+  },
   "sidebar": {
     "management": "Управление",
     "orders": "Заказы",
@@ -62,7 +74,7 @@
       }
     }
   },
-  "errors": {
+    "errors": {
     "unknown": "Неизвестная ошибка",
     "server": "Произошла ошибка на сервере",
     "invalid_link": "Ссылка недействительна",

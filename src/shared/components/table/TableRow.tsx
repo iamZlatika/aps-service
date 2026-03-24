@@ -3,6 +3,7 @@ import type { KeyboardEvent } from "react";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 
+import { resolveDisplayValue } from "@/shared/components/table/lib/resolveDisplayValue.ts";
 import { Input } from "@/shared/components/ui/input.tsx";
 import {
   TableCell,
@@ -77,7 +78,7 @@ export const TableRow = memo(
               </form>
             ) : (
               <span className="block truncate max-w-[21ch] sm:max-w-none">
-                {item[col.key]}
+                {resolveDisplayValue(col, item[col.key])}
               </span>
             )}
           </TableCell>

@@ -21,12 +21,28 @@ export interface SmartTableApi<T extends BaseItem = BaseItem> {
   remove: (id: number) => Promise<void>;
 }
 
+export type SelectOption = {
+  value: string;
+  label: string;
+};
+
+export interface FieldConfig {
+  key: string;
+  label: string;
+  placeholder?: string;
+  required?: boolean;
+  type?: "input" | "select";
+  options?: SelectOption[];
+}
+
 export type ColumnConfig = {
   key: string;
   labelKey: string;
   sortable: boolean;
   className?: string;
   required?: boolean;
+  type?: "input" | "select";
+  options?: { value: string; label: string }[];
 };
 
 export type BaseItem = {
