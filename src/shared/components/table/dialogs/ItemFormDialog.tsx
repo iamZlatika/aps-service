@@ -1,10 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
-import { useForm, type UseFormSetError } from "react-hook-form";
+import { Controller, useForm, type UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import type { z } from "zod";
 
-import { type BaseItem } from "@/shared/components/table/types.ts";
+import {
+  type BaseItem,
+  type FieldConfig,
+} from "@/shared/components/table/types.ts";
 import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
@@ -14,22 +17,22 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/components/ui/select.tsx";
 
 import { buildEditSchema } from "../lib/buildEditSchema";
 
-export interface FieldConfig {
-  key: string;
-  label: string;
-  placeholder?: string;
-  required?: boolean;
-}
-
-interface EditItemDialogProps<T extends BaseItem> {
+interface ItemFormDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
   fields: FieldConfig[];
-  values: Partial<T>;
+  values?: Partial<BaseItem>;
   onConfirm: (
     values: Partial<BaseItem>,
     setError: UseFormSetError<Record<string, string>>,
@@ -40,7 +43,7 @@ interface EditItemDialogProps<T extends BaseItem> {
   schema?: z.ZodObject<Record<string, z.ZodString>>;
 }
 
-export const EditItemDialog = <T extends BaseItem>({
+export const ItemFormDialog = ({
   isOpen,
   onOpenChange,
   title,
@@ -51,7 +54,7 @@ export const EditItemDialog = <T extends BaseItem>({
   cancelLabel,
   confirmLabel,
   schema: externalSchema,
-}: EditItemDialogProps<T>) => {
+}: ItemFormDialogProps) => {
   const { t } = useTranslation();
 
   const schema = useMemo(
@@ -59,22 +62,31 @@ export const EditItemDialog = <T extends BaseItem>({
     [externalSchema, fields],
   );
 
+  const defaultValues = useMemo(
+    () =>
+      values
+        ? (values as Record<string, string>)
+        : Object.fromEntries(fields.map((f) => [f.key, ""])),
+    [values, fields],
+  );
+
   const {
     register,
     handleSubmit,
     reset,
     setError,
+    control,
     formState: { errors },
   } = useForm<Record<string, string>>({
     resolver: zodResolver(schema),
-    defaultValues: values as Record<string, string>,
+    defaultValues,
   });
 
   useEffect(() => {
     if (isOpen) {
-      reset(values as Record<string, string>);
+      reset(defaultValues);
     }
-  }, [isOpen, values, reset]);
+  }, [isOpen, defaultValues, reset]);
 
   const onSubmit = (data: Record<string, string>) => {
     onConfirm(data as Partial<BaseItem>, setError);
@@ -93,11 +105,38 @@ export const EditItemDialog = <T extends BaseItem>({
           {fields.map((field) => (
             <div key={field.key}>
               <label className="text-sm font-medium">{field.label}</label>
-              <Input
-                {...register(field.key)}
-                placeholder={field.placeholder}
-                className={errors[field.key] ? "border-red-500" : ""}
-              />
+
+              {field.type === "select" && field.options ? (
+                <Controller
+                  control={control}
+                  name={field.key}
+                  render={({ field: { onChange, value } }) => (
+                    <Select value={value} onValueChange={onChange}>
+                      <SelectTrigger
+                        className={errors[field.key] ? "border-red-500" : ""}
+                      >
+                        <SelectValue
+                          placeholder={field.placeholder ?? "Выберите..."}
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {field.options!.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              ) : (
+                <Input
+                  {...register(field.key)}
+                  placeholder={field.placeholder}
+                  className={errors[field.key] ? "border-red-500" : ""}
+                />
+              )}
+
               {errors[field.key] && (
                 <span className="text-xs text-red-500 mt-1">
                   {String(errors[field.key]?.message)}
@@ -116,7 +155,11 @@ export const EditItemDialog = <T extends BaseItem>({
             >
               {cancelLabel}
             </Button>
-            <Button type="submit" disabled={isPending}>
+            <Button
+              type="submit"
+              className="bg-green-600 hover:bg-green-700 text-white"
+              disabled={isPending}
+            >
               {isPending ? t("loader.default") : confirmLabel}
             </Button>
           </DialogFooter>

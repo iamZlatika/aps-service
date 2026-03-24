@@ -9,7 +9,7 @@ import type {
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Table, TableBody } from "@/shared/components/ui/table.tsx";
 
-import { AddItemDialog, DeleteConfirmDialog, EditItemDialog } from "./dialogs";
+import { DeleteConfirmDialog, ItemFormDialog } from "./dialogs";
 import { useSmartTable } from "./hooks/useSmartTable.ts";
 import { toFieldConfigs } from "./lib/toFieldConfigs.ts";
 import { SortableTableHeader } from "./SortableTableHeader.tsx";
@@ -123,7 +123,7 @@ export const SmartTable = ({
         </>
       )}
 
-      <AddItemDialog
+      <ItemFormDialog
         isOpen={addModal.isOpen}
         onOpenChange={addModal.setOpen}
         title={t("table.add_modal.title")}
@@ -148,18 +148,18 @@ export const SmartTable = ({
       />
 
       {hasExtraFields && (
-        <EditItemDialog
+        <ItemFormDialog
           isOpen={editDialogItem !== null}
           onOpenChange={(open) => {
             if (!open) setEditDialogItem(null);
           }}
           title={t("table.edit_modal.title")}
           fields={fieldConfigs}
-          values={editDialogItem ?? {}}
-          onConfirm={handleEditDialogConfirm}
-          isPending={editing.isPending}
+          values={editDialogItem ?? undefined} // ← передаём values для режима редактирования
           cancelLabel={t("table.edit_modal.cancel")}
           confirmLabel={t("table.edit_modal.confirm")}
+          onConfirm={handleEditDialogConfirm}
+          isPending={editing.isPending}
         />
       )}
     </div>

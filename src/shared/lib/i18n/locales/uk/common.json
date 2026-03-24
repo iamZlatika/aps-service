@@ -40,6 +40,18 @@
       "invalid_link": "Посилання для відновлення пароля недійсне або прострочене."
     }
   },
+  "pages": {
+    "repair_operations": {
+      "options": {
+        "cleaning": "Чистка",
+        "diagnostics": "Діагностика",
+        "repair": "Ремонт",
+        "replacement": "Заміна",
+        "restoration": "Відновлення",
+        "settings_update_reflashing": "ПЗ та прошивка"
+      }
+    }
+  },
   "sidebar": {
     "management": "Керування",
     "orders": "Замовлення",
