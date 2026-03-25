@@ -1,30 +1,36 @@
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import {
+  SortableTableHeader,
+  TableContent,
+  TablePagination,
+} from "@/shared/components/table/components";
+import SearchFilter from "@/shared/components/table/components/filters/FilterInput";
 import type { SortType } from "@/shared/components/table/hooks/useSortParams.ts";
 import type {
   ColumnConfig,
   SmartTableApi,
-} from "@/shared/components/table/types.ts";
+} from "@/shared/components/table/models/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Table, TableBody } from "@/shared/components/ui/table.tsx";
 
-import { DeleteConfirmDialog, ItemFormDialog } from "./dialogs";
+import { DeleteConfirmDialog, ItemFormDialog } from "./components/dialogs";
 import { useSmartTable } from "./hooks/useSmartTable.ts";
 import { toFieldConfigs } from "./lib/toFieldConfigs.ts";
-import { SortableTableHeader } from "./SortableTableHeader.tsx";
-import { TableContent } from "./TableContent.tsx";
-import { TablePagination } from "./TablePagination.tsx";
 
 interface SmartTableProps {
   titleKey: string;
   api: SmartTableApi;
+  searchPlaceholder: string;
+  searchField?: string;
   queryKeyFn: (
     page: number,
     perPage: number,
     sortColumn: string | null,
     sortType: SortType,
-  ) => readonly (string | number | null)[];
+    filters: Record<string, string>,
+  ) => readonly unknown[];
   columns: ColumnConfig[];
 }
 
@@ -32,34 +38,47 @@ export const SmartTable = ({
   titleKey,
   api,
   queryKeyFn,
+  searchPlaceholder,
+  searchField,
   columns,
 }: SmartTableProps) => {
   const { t } = useTranslation();
 
   const {
-    items,
-    editableFields,
-    hasExtraFields,
-    isOperationLoading,
-    isError,
-    refetch,
-    page,
-    setPage,
-    lastPage,
-    pageNumbers,
-    perPage,
-    perPageOptions,
-    handlePerPageChange,
-    sort,
-    toggleSort,
-    addModal,
-    deleteModal,
-    editing,
-    handleEditStart,
-    editDialogItem,
-    setEditDialogItem,
-    handleEditDialogConfirm,
-  } = useSmartTable({ api, queryKeyFn, columns });
+    data: {
+      items,
+      editableFields,
+      hasExtraFields,
+      isOperationLoading,
+      isError,
+      refetch,
+    },
+    pagination: {
+      page,
+      setPage,
+      lastPage,
+      pageNumbers,
+      perPage,
+      perPageOptions,
+      handlePerPageChange,
+    },
+    sort: { sort, toggleSort },
+    filters: { filters, setFilter },
+    actions: {
+      addModal,
+      deleteModal,
+      editing,
+      handleEditStart,
+      editDialogItem,
+      setEditDialogItem,
+      handleEditDialogConfirm,
+    },
+  } = useSmartTable({
+    api,
+    queryKeyFn,
+    columns,
+    searchField: searchField ?? "name",
+  });
 
   const fieldConfigs = toFieldConfigs(editableFields, t);
 
@@ -87,6 +106,12 @@ export const SmartTable = ({
         </div>
       ) : (
         <>
+          <SearchFilter
+            fieldName={searchField ?? "name"}
+            placeholder={t(searchPlaceholder)}
+            value={filters[searchField ?? "name"] ?? ""}
+            onChange={setFilter}
+          />
           <div className="rounded-md border overflow-hidden">
             <Table>
               <SortableTableHeader
@@ -155,7 +180,7 @@ export const SmartTable = ({
           }}
           title={t("table.edit_modal.title")}
           fields={fieldConfigs}
-          values={editDialogItem ?? undefined} // ← передаём values для режима редактирования
+          values={editDialogItem ?? undefined}
           cancelLabel={t("table.edit_modal.cancel")}
           confirmLabel={t("table.edit_modal.confirm")}
           onConfirm={handleEditDialogConfirm}

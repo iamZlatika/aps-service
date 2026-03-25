@@ -11,7 +11,7 @@ import {
 import { type PaginatedDictionaryItems } from "@/features/backoffice/modules/dictionaries/types.ts";
 import { del, get, post, put } from "@/shared/api/api.ts";
 import { type SortType } from "@/shared/components/table/hooks/useSortParams.ts";
-import { type BaseItem } from "@/shared/components/table/types.ts";
+import { type BaseItem } from "@/shared/components/table/models/types.ts";
 
 interface DictionaryApiRoutes {
   list: () => string;
@@ -20,10 +20,11 @@ interface DictionaryApiRoutes {
 
 export const createDictionaryApi = (routes: DictionaryApiRoutes) => ({
   getAll: async (
-    page: number = 1,
-    perPage: number = 15,
+    page = 1,
+    perPage = 15,
     sortColumn?: string | null,
     sortType?: SortType,
+    filters?: Record<string, string>,
   ): Promise<PaginatedDictionaryItems> => {
     const params = new URLSearchParams({
       page: String(page),
@@ -32,6 +33,11 @@ export const createDictionaryApi = (routes: DictionaryApiRoutes) => ({
     if (sortColumn && sortType && sortType !== "none") {
       params.set("sort_column", sortColumn);
       params.set("sort_type", sortType);
+    }
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value) params.set(key, value);
+      });
     }
 
     const response = await get<PaginatedDictionaryItemsDto>(

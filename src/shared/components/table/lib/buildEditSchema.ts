@@ -1,7 +1,7 @@
 import i18next from "i18next";
 import { z } from "zod";
 
-import { type FieldConfig } from "@/shared/components/table/types.ts";
+import { type FieldConfig } from "@/shared/components/table/models/types.ts";
 
 export const buildEditSchema = (fields: FieldConfig[]) => {
   const shape: Record<string, z.ZodString> = {};

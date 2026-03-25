@@ -7,6 +7,7 @@ const IssueTypesPage = () => (
     titleKey="sidebar.dictionaries_list.issue_types"
     api={issueTypesApi}
     queryKeyFn={queryKeys.dictionaries.issueTypes}
+    searchPlaceholder="search_placeholders.dictionaries_name"
     columns={[
       {
         key: "name",

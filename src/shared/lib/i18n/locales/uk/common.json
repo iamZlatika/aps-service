@@ -123,5 +123,8 @@
     "password_max": "Пароль занадто довгий",
     "field_required": "Поле не може бути порожнім",
     "passwords_dont_match": "Паролі не збігаються"
+  },
+  "search_placeholders": {
+    "dictionaries_name": "Пошук по назві"
   }
 }

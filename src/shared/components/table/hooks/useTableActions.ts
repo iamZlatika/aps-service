@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
 import { type UseFormSetError } from "react-hook-form";
 
-import { type BaseItem } from "@/shared/components/table/types.ts";
+import { type BaseItem } from "@/shared/components/table/models/types.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 
 export const useTableActions = (
-  queryKey: readonly (string | number | null)[],
+  queryKey: readonly unknown[],
   onAdd: (values: Partial<BaseItem>) => Promise<BaseItem>,
   onDelete: (id: number) => Promise<void>,
   onUpdate: (id: number, values: Partial<BaseItem>) => Promise<BaseItem>,

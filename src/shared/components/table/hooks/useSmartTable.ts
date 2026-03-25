@@ -1,15 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { type UseFormSetError } from "react-hook-form";
 
+import { useFilterParams } from "@/shared/components/table/hooks/useFilterParams.ts";
+import { usePageParam } from "@/shared/components/table/hooks/usePageParam.ts";
 import { usePerPage } from "@/shared/components/table/hooks/usePerPage.ts";
 import type { SortType } from "@/shared/components/table/hooks/useSortParams.ts";
 import { useSortParams } from "@/shared/components/table/hooks/useSortParams.ts";
+import { sanitizeFilters } from "@/shared/components/table/lib/sanitizeFilters.ts";
 import type {
   BaseItem,
   ColumnConfig,
   SmartTableApi,
-} from "@/shared/components/table/types.ts";
+} from "@/shared/components/table/models/types.ts";
 import { getPageNumbers } from "@/shared/lib/pagination.ts";
 
 import { useTableActions } from "./useTableActions.ts";
@@ -21,30 +24,42 @@ interface UseSmartTableParams {
     perPage: number,
     sortColumn: string | null,
     sortType: SortType,
-  ) => readonly (string | number | null)[];
+    filters: Record<string, string>,
+  ) => readonly unknown[];
   columns: ColumnConfig[];
+  searchField: string;
 }
 
 export const useSmartTable = ({
   api,
   queryKeyFn,
   columns,
+  searchField,
 }: UseSmartTableParams) => {
-  const [page, setPage] = useState(1);
+  const { page, setPage } = usePageParam();
   const { perPage, setPerPage, perPageOptions } = usePerPage();
   const { sort, toggleSort } = useSortParams();
 
+  const { filters, setFilter, resetFilters } = useFilterParams();
+  const sanitized = sanitizeFilters(filters, columns, searchField);
   const [editDialogItem, setEditDialogItem] = useState<BaseItem | null>(null);
 
   const editableFields = columns.filter((col) => col.key !== "id");
   const hasExtraFields = editableFields.length > 1;
 
-  const queryKey = queryKeyFn(page, perPage, sort.column, sort.type);
+  const queryKey = queryKeyFn(page, perPage, sort.column, sort.type, sanitized);
 
   const { data, isLoading, isFetching, isError, refetch } = useQuery({
     queryKey,
-    queryFn: () => api.getAll(page, perPage, sort.column, sort.type),
+    queryFn: () => api.getAll(page, perPage, sort.column, sort.type, sanitized),
   });
+
+  useEffect(() => {
+    const invalidKeys = Object.keys(filters).filter((k) => !(k in sanitized));
+    if (invalidKeys.length > 0) {
+      invalidKeys.forEach((key) => setFilter(key, ""));
+    }
+  }, [filters, sanitized, setFilter]);
 
   const { addModal, deleteModal, editing } = useTableActions(
     queryKey,
@@ -94,28 +109,41 @@ export const useSmartTable = ({
   };
 
   return {
-    items,
-    columns,
-    editableFields,
-    hasExtraFields,
-    isOperationLoading,
-    isError,
-    refetch,
-    page,
-    setPage,
-    lastPage,
-    pageNumbers,
-    perPage,
-    perPageOptions,
-    handlePerPageChange,
-    sort,
-    toggleSort,
-    addModal,
-    deleteModal,
-    editing,
-    handleEditStart,
-    editDialogItem,
-    setEditDialogItem,
-    handleEditDialogConfirm,
+    data: {
+      items,
+      columns,
+      editableFields,
+      hasExtraFields,
+      isOperationLoading,
+      isError,
+      refetch,
+    },
+    pagination: {
+      page,
+      setPage,
+      lastPage,
+      pageNumbers,
+      perPage,
+      perPageOptions,
+      handlePerPageChange,
+    },
+    sort: {
+      sort,
+      toggleSort,
+    },
+    filters: {
+      filters: sanitized,
+      setFilter,
+      resetFilters,
+    },
+    actions: {
+      addModal,
+      deleteModal,
+      editing,
+      handleEditStart,
+      editDialogItem,
+      setEditDialogItem,
+      handleEditDialogConfirm,
+    },
   };
 };
