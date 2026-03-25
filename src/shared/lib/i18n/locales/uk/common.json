@@ -126,5 +126,20 @@
   },
   "search_placeholders": {
     "dictionaries_name": "Пошук по назві"
+  },
+  "breadcrumbs": {
+    "home": "Головна",
+    "orders": "Замовлення",
+    "customers": "Клієнти",
+    "users": "Майстри",
+    "dictionaries": "Довідники",
+    "accessories": "Аксесуари",
+    "deviceConditions": "Стан пристроїв",
+    "issueTypes": "Типи несправностей",
+    "deviceModels": "Моделі пристроїв",
+    "deviceTypes": "Типи пристроїв",
+    "intakeNotes": "Примітки прийому",
+    "manufacturers": "Виробники",
+    "repairOperations": "Ремонтні операції"
   }
 }
