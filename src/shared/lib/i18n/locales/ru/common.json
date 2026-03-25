@@ -129,5 +129,20 @@
   },
   "search_placeholders": {
     "dictionaries_name": "Поиск по названию"
+  },
+  "breadcrumbs": {
+    "home": "Главная",
+    "orders": "Заказы",
+    "customers": "Клиенты",
+    "users": "Мастера",
+    "dictionaries": "Справочники",
+    "accessories": "Аксессуары",
+    "deviceConditions": "Состояния устройств",
+    "issueTypes": "Типы неисправностей",
+    "deviceModels": "Модели устройств",
+    "deviceTypes": "Типы устройств",
+    "intakeNotes": "Примечания приёма",
+    "manufacturers": "Производители",
+    "repairOperations": "Ремонтные операции"
   }
 }

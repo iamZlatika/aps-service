@@ -34,16 +34,23 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/shared/components/ui/sidebar";
 import { ROLES } from "@/shared/types.ts";
 
 export const Sidebar = memo(() => {
   const { t } = useTranslation();
   const { role } = useAuth();
+  const { isMobile, setOpenMobile } = useSidebar();
   const isHeadManager = role === ROLES.HEAD_MANAGER;
 
   const root = AuthRoutes.backofficeRoot();
 
+  const closeMobileSidebar = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
   return (
     <SidebarRoot>
       <SidebarHeader className="p-4">
@@ -58,7 +65,10 @@ export const Sidebar = memo(() => {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip={t("sidebar.orders")}>
-                  <Link to={`${root}/${OrdersRoutes.ordersList()}`}>
+                  <Link
+                    to={`${root}/${OrdersRoutes.ordersList()}`}
+                    onClick={closeMobileSidebar}
+                  >
                     <Package className="h-4 w-4" />
                     <span>{t("sidebar.orders")}</span>
                   </Link>
@@ -66,7 +76,10 @@ export const Sidebar = memo(() => {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip={t("sidebar.customers")}>
-                  <Link to={`${root}/${CustomersRoutes.customersList()}`}>
+                  <Link
+                    to={`${root}/${CustomersRoutes.customersList()}`}
+                    onClick={closeMobileSidebar}
+                  >
                     <Users className="h-4 w-4" />
                     <span>{t("sidebar.customers")}</span>
                   </Link>
@@ -86,7 +99,10 @@ export const Sidebar = memo(() => {
                       <SidebarMenuSub>
                         <SidebarMenuSubItem>
                           <SidebarMenuSubButton asChild>
-                            <Link to={`${root}/${UsersRoutes.usersList()}`}>
+                            <Link
+                              to={`${root}/${UsersRoutes.usersList()}`}
+                              onClick={closeMobileSidebar}
+                            >
                               <Wrench className="h-4 w-4" />
                               <span>{t("sidebar.masters")}</span>
                             </Link>
@@ -96,6 +112,7 @@ export const Sidebar = memo(() => {
                           <SidebarMenuSubButton asChild>
                             <Link
                               to={`${DictionariesRoutes.linkToDictionaries()}`}
+                              onClick={closeMobileSidebar}
                             >
                               <BookOpenText className="h-4 w-4" />
                               <span>{t("sidebar.dictionaries")}</span>

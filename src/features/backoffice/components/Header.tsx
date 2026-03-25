@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
 import { SidebarTrigger } from "@/shared/components/ui/sidebar";
 import { useLanguage } from "@/shared/lib/i18n/useLanguage.ts";
+import { Breadcrumbs } from "@/features/backoffice/components/Breadcrums.tsx";
 
 export const Header = memo(() => {
   const { user, logout } = useAuth();
@@ -20,6 +21,7 @@ export const Header = memo(() => {
     <header className="flex h-16 shrink-0 items-center justify-between border-b px-4 bg-white">
       <div className="flex items-center gap-2">
         <SidebarTrigger />
+        <Breadcrumbs />
       </div>
 
       <div className="flex items-center gap-4">
