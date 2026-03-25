@@ -4,7 +4,7 @@ import { repairOperationsApi } from "@/features/backoffice/modules/dictionaries/
 import { getRepairCategoryOptions } from "@/features/backoffice/modules/dictionaries/data.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { SmartTable } from "@/shared/components/table";
-import type { ColumnConfig } from "@/shared/components/table/types.ts";
+import type { ColumnConfig } from "@/shared/components/table/models/types.ts";
 
 const RepairOperationsPage = () => {
   const { t } = useTranslation();
@@ -34,6 +34,7 @@ const RepairOperationsPage = () => {
       titleKey="sidebar.dictionaries_list.repair_operations"
       api={repairOperationsApi}
       queryKeyFn={queryKeys.dictionaries.repairOperations}
+      searchPlaceholder="search_placeholders.dictionaries_name"
       columns={columns}
     />
   );

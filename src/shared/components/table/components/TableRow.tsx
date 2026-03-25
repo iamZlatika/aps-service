@@ -11,13 +11,16 @@ import {
 } from "@/shared/components/ui/table.tsx";
 
 import {
+  type EditItemFormValues,
+  editItemSchema,
+} from "../models/editItem.schema.ts";
+import type { BaseItem, ColumnConfig } from "../models/types.ts";
+import {
   AcceptButton,
   CancelButton,
   DeleteButton,
   EditButton,
 } from "./buttons";
-import { type EditItemFormValues, editItemSchema } from "./editItem.schema.ts";
-import type { BaseItem, ColumnConfig } from "./types.ts";
 
 interface TableRowProps {
   item: BaseItem;

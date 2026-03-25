@@ -7,6 +7,7 @@ const IntakeNotesPage = () => (
     titleKey="sidebar.dictionaries_list.intake_notes"
     api={intakeNotesApi}
     queryKeyFn={queryKeys.dictionaries.intakeNotes}
+    searchPlaceholder="search_placeholders.dictionaries_name"
     columns={[
       {
         key: "name",

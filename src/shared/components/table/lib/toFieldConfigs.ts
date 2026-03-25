@@ -1,7 +1,7 @@
 import type {
   ColumnConfig,
   FieldConfig,
-} from "@/shared/components/table/types.ts";
+} from "@/shared/components/table/models/types.ts";
 
 export const toFieldConfigs = (
   columns: ColumnConfig[],

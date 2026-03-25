@@ -7,6 +7,7 @@ const DeviceModelsPage = () => (
     titleKey="sidebar.dictionaries_list.device_models"
     api={deviceModelsApi}
     queryKeyFn={queryKeys.dictionaries.deviceModels}
+    searchPlaceholder="search_placeholders.dictionaries_name"
     columns={[
       {
         key: "name",

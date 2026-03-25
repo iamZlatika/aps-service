@@ -126,5 +126,8 @@
     "password_max": "Пароль слишком длинный",
     "field_required": "Поле не может быть пустым",
     "passwords_dont_match": "Пароли не совпадают"
+  },
+  "search_placeholders": {
+    "dictionaries_name": "Поиск по названию"
   }
 }

@@ -25,22 +25,23 @@ export const useSortParams = () => {
   const toggleSort = useCallback(
     (column: string) => {
       setSearchParams((prev) => {
-        const currentColumn = prev.get("sort_column");
-        const currentType = prev.get("sort_type");
+        const next = new URLSearchParams(prev);
+        const currentColumn = next.get("sort_column");
+        const currentType = next.get("sort_type");
 
         if (currentColumn !== column) {
-          prev.set("sort_column", column);
-          prev.set("sort_type", "asc");
+          next.set("sort_column", column);
+          next.set("sort_type", "asc");
         } else if (currentType === "asc") {
-          prev.set("sort_column", column);
-          prev.set("sort_type", "desc");
+          next.set("sort_column", column);
+          next.set("sort_type", "desc");
         } else {
-          prev.delete("sort_column");
-          prev.delete("sort_type");
+          next.delete("sort_column");
+          next.delete("sort_type");
         }
 
-        prev.set("page", "1");
-        return prev;
+        next.set("page", "1");
+        return next;
       });
     },
     [setSearchParams],

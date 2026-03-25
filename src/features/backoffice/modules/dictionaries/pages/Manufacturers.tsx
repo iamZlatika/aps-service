@@ -7,6 +7,7 @@ const ManufacturersPage = () => (
     titleKey="sidebar.dictionaries_list.manufacturers"
     api={manufacturersApi}
     queryKeyFn={queryKeys.dictionaries.manufacturers}
+    searchPlaceholder="search_placeholders.dictionaries_name"
     columns={[
       {
         key: "name",

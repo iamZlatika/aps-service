@@ -15,6 +15,7 @@ export interface SmartTableApi<T extends BaseItem = BaseItem> {
     perPage: number,
     sortColumn?: string | null,
     sortType?: SortType,
+    filters?: Record<string, string>,
   ) => Promise<PaginatedResponse<T>>;
   create: (data: Partial<T>) => Promise<T>;
   update: (id: number, data: Partial<T>) => Promise<T>;
@@ -43,9 +44,13 @@ export type ColumnConfig = {
   required?: boolean;
   type?: "input" | "select";
   options?: { value: string; label: string }[];
+  filterable?: boolean;
+  filterType?: "text" | "select" | "range";
 };
 
 export type BaseItem = {
   id: number;
   [key: string]: string | number;
 };
+
+export type Filters = Record<string, string>;

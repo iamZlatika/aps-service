@@ -7,6 +7,7 @@ const AccessoriesPage = () => (
     titleKey="sidebar.dictionaries_list.accessories"
     api={accessoriesApi}
     queryKeyFn={queryKeys.dictionaries.accessories}
+    searchPlaceholder="search_placeholders.dictionaries_name"
     columns={[
       {
         key: "name",

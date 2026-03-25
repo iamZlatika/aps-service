@@ -7,8 +7,8 @@ import type { z } from "zod";
 import {
   type BaseItem,
   type FieldConfig,
-} from "@/shared/components/table/types.ts";
-import { Button } from "@/shared/components/ui/button";
+} from "@/shared/components/table/models/types.ts";
+import { Button } from "@/shared/components/ui/button.tsx";
 import {
   Dialog,
   DialogContent,
@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select.tsx";
 
-import { buildEditSchema } from "../lib/buildEditSchema";
+import { buildEditSchema } from "../../lib/buildEditSchema.ts";
 
 interface ItemFormDialogProps {
   isOpen: boolean;
