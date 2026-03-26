@@ -4,9 +4,15 @@ import type { FieldValues, Path, UseFormSetError } from "react-hook-form";
 import { type ValidationError } from "@/shared/api/types.ts";
 import { isApiError } from "@/shared/lib/errors/services.ts";
 
+type HandleFormErrorOptions<TFieldValues extends FieldValues> = {
+  fieldMap?: Record<string, Path<TFieldValues>>;
+  messageMap?: Record<string, string>;
+};
+
 export function handleFormError<TFieldValues extends FieldValues>(
   error: unknown,
   setError: UseFormSetError<TFieldValues>,
+  options?: HandleFormErrorOptions<TFieldValues>,
 ) {
   if (!isApiError<ValidationError>(error)) {
     setError("root" as Path<TFieldValues>, {
@@ -15,16 +21,25 @@ export function handleFormError<TFieldValues extends FieldValues>(
     });
     return;
   }
+
   const { data, message } = error;
+
   if (data?.errors) {
     Object.entries(data.errors).forEach(([field, messages]) => {
-      setError(field as Path<TFieldValues>, {
+      const mappedField =
+        options?.fieldMap?.[field] ?? (field as Path<TFieldValues>);
+      const originalMessage = messages.join(", ");
+      const mappedMessage =
+        options?.messageMap?.[originalMessage] ?? originalMessage;
+
+      setError(mappedField, {
         type: "server",
-        message: messages.join(", "),
+        message: mappedMessage,
       });
     });
     return;
   }
+
   setError("root" as Path<TFieldValues>, {
     type: "server",
     message: message || i18next.t("errors.server"),

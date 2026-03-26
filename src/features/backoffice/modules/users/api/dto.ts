@@ -10,6 +10,6 @@ export const UserDtoSchema = z.object({
   email: z.string().regex(emailRegex),
   role: zodEnumFromConst(ROLES),
   status: zodEnumFromConst(USER_STATUSES),
-  avatar_url: z.string().optional(),
+  avatar_url: z.string(),
 });
 export type UserDto = z.infer<typeof UserDtoSchema>;

@@ -11,9 +11,9 @@ import {
   BreadcrumbSeparator,
 } from "@/shared/components/ui/breadcrumb";
 
-// Маппинг сегмента URL → ключ i18n
 const SEGMENT_LABELS: Record<string, string> = {
   backoffice: "breadcrumbs.home",
+  profile: "breadcrumbs.profile",
   orders: "breadcrumbs.orders",
   customers: "breadcrumbs.customers",
   users: "breadcrumbs.users",
@@ -32,10 +32,8 @@ export const Breadcrumbs = () => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
 
-  // Разбиваем путь на сегменты, убираем пустые
   const segments = pathname.split("/").filter(Boolean);
 
-  // Не показываем крошки если мы на корне бекофиса
   if (segments.length <= 1) return null;
 
   return (
@@ -46,7 +44,6 @@ export const Breadcrumbs = () => {
           const isLast = index === segments.length - 1;
           const labelKey = SEGMENT_LABELS[segment];
 
-          // Пропускаем сегменты без маппинга (например, динамические id)
           if (!labelKey) return null;
 
           return (

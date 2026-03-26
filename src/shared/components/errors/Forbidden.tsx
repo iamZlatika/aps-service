@@ -2,7 +2,7 @@ import { AlertTriangle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
+import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation";
 import { Button } from "@/shared/components/ui/button.tsx";
 
 const ForbiddenPage = () => {
@@ -24,9 +24,7 @@ const ForbiddenPage = () => {
         </div>
 
         <Button
-          onClick={() =>
-            navigate(OrdersRoutes.linkToOrders(), { replace: true })
-          }
+          onClick={() => navigate(ORDERS_LINKS.root(), { replace: true })}
         >
           {t("errors.go_to_orders")}
         </Button>

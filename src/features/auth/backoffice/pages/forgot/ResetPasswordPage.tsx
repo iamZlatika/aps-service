@@ -24,6 +24,7 @@ import {
   type ResetPasswordFormValues,
   resetPasswordSchema,
 } from "./forgot.schema";
+import Loader from "@/shared/components/common/Loader.tsx";
 
 const ResetPasswordPage = () => {
   const { t } = useTranslation();
@@ -91,6 +92,7 @@ const ResetPasswordPage = () => {
       isError={isError}
       error={error}
       isLoading={isLoading}
+      loadingFallback={<Loader />}
       onRetry={() => refetch()}
     >
       <div className="flex min-h-screen items-center justify-center p-4">

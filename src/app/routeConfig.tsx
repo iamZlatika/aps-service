@@ -6,7 +6,7 @@ import { authRoutes } from "@/app/routes/auth.tsx";
 import { backofficeRoutes } from "@/app/routes/backoffice.tsx";
 import { websiteRoutes } from "@/app/routes/website.tsx";
 import { AuthRoutes } from "@/features/auth/api/routes.ts";
-import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
+import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import Loader from "@/shared/components/common/Loader.tsx";
 import { ROLES } from "@/shared/types.ts";
@@ -82,7 +82,7 @@ export const routeConfig: RouteObject[] = [
             children: [
               {
                 index: true,
-                element: <Navigate to={OrdersRoutes.ordersList()} replace />,
+                element: <Navigate to={ORDERS_ROUTES.root} replace />,
               },
               backofficeRoutes,
             ],
