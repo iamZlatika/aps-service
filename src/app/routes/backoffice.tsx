@@ -2,11 +2,12 @@ import { lazy } from "react";
 import { type RouteObject } from "react-router-dom";
 
 import { ProtectedRoute } from "@/app/ProtectedRoute";
-import { CustomersRoutes } from "@/features/backoffice/modules/customers/api/routers.ts";
-import { DictionariesRoutes } from "@/features/backoffice/modules/dictionaries/routers.ts";
-import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
-import { UsersRoutes } from "@/features/backoffice/modules/users/api/routers.ts";
+import { CUSTOMERS_ROUTES } from "@/features/backoffice/modules/customers/routes";
+import { DICTIONARIES_ROUTES } from "@/features/backoffice/modules/dictionaries/routes";
+import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
+import { USERS_ROUTES } from "@/features/backoffice/modules/users/routes";
 import { ROLES } from "@/shared/types.ts";
+import { PROFILE_ROUTES } from "@/features/backoffice/modules/profile/routes.ts";
 
 const OrdersPage = lazy(() => import("@/features/backoffice/modules/orders"));
 const CustomersPage = lazy(
@@ -15,6 +16,7 @@ const CustomersPage = lazy(
 const UsersPage = lazy(
   () => import("@/features/backoffice/modules/users/pages"),
 );
+const ProfilePage = lazy(() => import("@/features/backoffice/modules/profile"));
 const DictionariesPage = lazy(
   () => import("@/features/backoffice/modules/dictionaries"),
 );
@@ -48,48 +50,49 @@ const RepairOperationsPage = lazy(
 
 export const backofficeRoutes: RouteObject = {
   children: [
-    { path: OrdersRoutes.ordersList(), element: <OrdersPage /> },
-    { path: CustomersRoutes.customersList(), element: <CustomersPage /> },
-    { path: UsersRoutes.usersList(), element: <UsersPage /> },
+    { path: ORDERS_ROUTES.root, element: <OrdersPage /> },
+    { path: CUSTOMERS_ROUTES.root, element: <CustomersPage /> },
+    { path: USERS_ROUTES.root, element: <UsersPage /> },
+    { path: PROFILE_ROUTES.root, element: <ProfilePage /> },
 
     // super admin panel
     {
       element: <ProtectedRoute allowedRoles={[ROLES.HEAD_MANAGER]} />,
       children: [
         {
-          path: DictionariesRoutes.dictionariesList(),
+          path: DICTIONARIES_ROUTES.root,
           element: <DictionariesPage />,
         },
         {
-          path: DictionariesRoutes.accessories(),
+          path: DICTIONARIES_ROUTES.accessories,
           element: <AccessoriesPage />,
         },
         {
-          path: DictionariesRoutes.deviceConditions(),
+          path: DICTIONARIES_ROUTES.deviceConditions,
           element: <DeviceConditionsPage />,
         },
         {
-          path: DictionariesRoutes.issueTypes(),
+          path: DICTIONARIES_ROUTES.issueTypes,
           element: <IssueTypesPage />,
         },
         {
-          path: DictionariesRoutes.deviceModels(),
+          path: DICTIONARIES_ROUTES.deviceModels,
           element: <DeviceModelsPage />,
         },
         {
-          path: DictionariesRoutes.deviceTypes(),
+          path: DICTIONARIES_ROUTES.deviceTypes,
           element: <DeviceTypesPage />,
         },
         {
-          path: DictionariesRoutes.intakeNotes(),
+          path: DICTIONARIES_ROUTES.intakeNotes,
           element: <IntakeNotesPage />,
         },
         {
-          path: DictionariesRoutes.manufacturers(),
+          path: DICTIONARIES_ROUTES.manufacturers,
           element: <ManufacturersPage />,
         },
         {
-          path: DictionariesRoutes.repairOperations(),
+          path: DICTIONARIES_ROUTES.repairOperations,
           element: <RepairOperationsPage />,
         },
       ],

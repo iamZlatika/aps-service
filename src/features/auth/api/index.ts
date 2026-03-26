@@ -1,5 +1,6 @@
 import { type ForgotFormValues } from "@/features/auth/backoffice/pages/forgot/forgot.schema.ts";
 import {
+  type ChangePasswordData,
   type CheckTokenData,
   type LoginResponse,
   type ResetPasswordData,
@@ -25,5 +26,8 @@ export const authApi = {
   },
   resetPassword: (data: ResetPasswordData): Promise<SuccessResponse> => {
     return post(AuthRoutes.backofficeResetPasswordApi(), data);
+  },
+  changePassword: (data: ChangePasswordData): Promise<SuccessResponse> => {
+    return post(AuthRoutes.backofficeChangePasswordApi(), data);
   },
 };

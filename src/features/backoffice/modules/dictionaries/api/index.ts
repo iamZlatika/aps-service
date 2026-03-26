@@ -1,41 +1,34 @@
-import { DictionariesRoutes } from "@/features/backoffice/modules/dictionaries/routers.ts";
-
+import { DICTIONARIES_API } from "./endpoints";
 import { createDictionaryApi } from "./createDictionaryApi";
-
 export const accessoriesApi = createDictionaryApi({
-  list: () => DictionariesRoutes.accessoriesApi(),
-  item: (id) => DictionariesRoutes.accessoryApi(id),
+  list: () => DICTIONARIES_API.accessories(),
+  item: (id) => DICTIONARIES_API.accessory(id),
 });
-
 export const issueTypesApi = createDictionaryApi({
-  list: () => DictionariesRoutes.issueTypesApi(),
-  item: (id) => DictionariesRoutes.issueTypeApi(id),
+  list: () => DICTIONARIES_API.issueTypes(),
+  item: (id) => DICTIONARIES_API.issueType(id),
 });
-
 export const deviceConditionsApi = createDictionaryApi({
-  list: () => DictionariesRoutes.deviceConditionsApi(),
-  item: (id) => DictionariesRoutes.deviceConditionApi(id),
+  list: () => DICTIONARIES_API.deviceConditions(),
+  item: (id) => DICTIONARIES_API.deviceCondition(id),
 });
-
 export const deviceModelsApi = createDictionaryApi({
-  list: () => DictionariesRoutes.deviceModelsApi(),
-  item: (id) => DictionariesRoutes.deviceModelApi(id),
+  list: () => DICTIONARIES_API.deviceModels(),
+  item: (id) => DICTIONARIES_API.deviceModel(id),
 });
-
 export const deviceTypesApi = createDictionaryApi({
-  list: () => DictionariesRoutes.deviceTypesApi(),
-  item: (id) => DictionariesRoutes.deviceTypeApi(id),
+  list: () => DICTIONARIES_API.deviceTypes(),
+  item: (id) => DICTIONARIES_API.deviceType(id),
 });
-
 export const intakeNotesApi = createDictionaryApi({
-  list: () => DictionariesRoutes.intakeNotesApi(),
-  item: (id) => DictionariesRoutes.intakeNoteApi(id),
+  list: () => DICTIONARIES_API.intakeNotes(),
+  item: (id) => DICTIONARIES_API.intakeNote(id),
 });
 export const manufacturersApi = createDictionaryApi({
-  list: () => DictionariesRoutes.manufacturersApi(),
-  item: (id) => DictionariesRoutes.manufacturerApi(id),
+  list: () => DICTIONARIES_API.manufacturers(),
+  item: (id) => DICTIONARIES_API.manufacturer(id),
 });
 export const repairOperationsApi = createDictionaryApi({
-  list: () => DictionariesRoutes.repairOperationsApi(),
-  item: (id) => DictionariesRoutes.repairOperationApi(id),
+  list: () => DICTIONARIES_API.repairOperations(),
+  item: (id) => DICTIONARIES_API.repairOperation(id),
 });

@@ -21,3 +21,9 @@ export type CheckTokenData = {
 };
 
 export type ResetPasswordData = CheckTokenData & ResetPasswordFormValues;
+
+export type ChangePasswordData = {
+  current_password: string;
+  password: string;
+  password_confirmation: string;
+};

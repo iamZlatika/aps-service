@@ -12,10 +12,10 @@ import { Link } from "react-router-dom";
 
 import { AuthRoutes } from "@/features/auth/api/routes.ts";
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
-import { CustomersRoutes } from "@/features/backoffice/modules/customers/api/routers.ts";
-import { DictionariesRoutes } from "@/features/backoffice/modules/dictionaries/routers";
-import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers";
-import { UsersRoutes } from "@/features/backoffice/modules/users/api/routers";
+import { CUSTOMERS_ROUTES } from "@/features/backoffice/modules/customers/routes";
+import { DICTIONARIES_LINKS } from "@/features/backoffice/modules/dictionaries/navigation";
+import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
+import { USERS_ROUTES } from "@/features/backoffice/modules/users/routes";
 import {
   Collapsible,
   CollapsibleContent,
@@ -66,7 +66,7 @@ export const Sidebar = memo(() => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip={t("sidebar.orders")}>
                   <Link
-                    to={`${root}/${OrdersRoutes.ordersList()}`}
+                    to={`${root}/${ORDERS_ROUTES.root}`}
                     onClick={closeMobileSidebar}
                   >
                     <Package className="h-4 w-4" />
@@ -77,7 +77,7 @@ export const Sidebar = memo(() => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip={t("sidebar.customers")}>
                   <Link
-                    to={`${root}/${CustomersRoutes.customersList()}`}
+                    to={`${root}/${CUSTOMERS_ROUTES.root}`}
                     onClick={closeMobileSidebar}
                   >
                     <Users className="h-4 w-4" />
@@ -100,7 +100,7 @@ export const Sidebar = memo(() => {
                         <SidebarMenuSubItem>
                           <SidebarMenuSubButton asChild>
                             <Link
-                              to={`${root}/${UsersRoutes.usersList()}`}
+                              to={`${root}/${USERS_ROUTES.root}`}
                               onClick={closeMobileSidebar}
                             >
                               <Wrench className="h-4 w-4" />
@@ -111,7 +111,7 @@ export const Sidebar = memo(() => {
                         <SidebarMenuSubItem>
                           <SidebarMenuSubButton asChild>
                             <Link
-                              to={`${DictionariesRoutes.linkToDictionaries()}`}
+                              to={DICTIONARIES_LINKS.root()}
                               onClick={closeMobileSidebar}
                             >
                               <BookOpenText className="h-4 w-4" />

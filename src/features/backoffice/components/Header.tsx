@@ -2,13 +2,15 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import { LogOut } from "lucide-react";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { Breadcrumbs } from "@/features/backoffice/components/Breadcrums.tsx";
+import { ORDERS_LINKS } from "@/features/backoffice/modules/profile/navigation.ts";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
 import { SidebarTrigger } from "@/shared/components/ui/sidebar";
 import { useLanguage } from "@/shared/lib/i18n/useLanguage.ts";
-import { Breadcrumbs } from "@/features/backoffice/components/Breadcrums.tsx";
 
 export const Header = memo(() => {
   const { user, logout } = useAuth();
@@ -46,21 +48,24 @@ export const Header = memo(() => {
           </Button>
         </div>
 
-        <span className="text-sm font-medium">
-          {t("header.welcome", { name: user?.name || t("header.user") })}
-        </span>
+        <Link to={ORDERS_LINKS.root()} className="flex items-center space-x-2">
+          <span className="text-sm font-medium">
+            {t("header.welcome", { name: user?.name || t("header.user") })}
+          </span>
 
-        <Avatar>
-          {user?.avatarUrl && (
-            <AvatarImage
-              src={user?.avatarUrl}
-              alt={user?.name || "User avatar"}
-            />
-          )}
-          <AvatarFallback className="bg-primary text-primary-foreground">
-            {firstLetter}
-          </AvatarFallback>
-        </Avatar>
+          <Avatar>
+            {user?.avatarUrl ? (
+              <AvatarImage
+                src={user.avatarUrl}
+                alt={user?.name || "User avatar"}
+              />
+            ) : (
+              <AvatarFallback className="bg-primary text-primary-foreground">
+                {firstLetter}
+              </AvatarFallback>
+            )}
+          </Avatar>
+        </Link>
         <Button
           variant="ghost"
           size="icon"

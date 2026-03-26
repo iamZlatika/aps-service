@@ -5,7 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { AuthRoutes } from "@/features/auth/api/routes.ts";
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
-import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
+import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation";
+import Loader from "@/shared/components/common/Loader.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
   Card,
@@ -41,10 +42,13 @@ export default function BackofficeLoginPage() {
 
   const onSubmit = (data: LoginFormValues) => {
     login(data, {
-      onSuccess: () => navigate(OrdersRoutes.linkToOrders()),
+      onSuccess: () => navigate(ORDERS_LINKS.root()),
       onError: (error) => handleFormError<LoginFormValues>(error, setError),
     });
   };
+  if (isLoggingIn) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">

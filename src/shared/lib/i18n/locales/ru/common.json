@@ -132,6 +132,7 @@
   },
   "breadcrumbs": {
     "home": "Главная",
+    "profile": "Личный кабинет",
     "orders": "Заказы",
     "customers": "Клиенты",
     "users": "Мастера",
@@ -144,5 +145,26 @@
     "intakeNotes": "Примечания приёма",
     "manufacturers": "Производители",
     "repairOperations": "Ремонтные операции"
+  },
+  "profile": {
+    "settings": "Настройки профиля",
+    "avatar": {
+      "change": "Изменить",
+      "remove": "Удалить",
+      "editor_title": "Редактирование аватара",
+      "cancel": "Отмена",
+      "save": "Сохранить"
+          },
+    "change_form": {
+      "enter_old_password": "Введите текущий пароль",
+      "enter_new_password": "Введите новый пароль",
+      "confirm_new_password": "Подтвердите новый пароль",
+      "change_password": "Сменить пароль",
+      "passwords_dont_match": "Пароли не совпадают",
+      "too_short": "Пароль слишком короткий",
+      "wrong_current_password": "Неверный текущий пароль"
+    },
+    "password_changed_success": "Новый пароль успешно установлен!",
+    "ok": "Ок"
   }
 }

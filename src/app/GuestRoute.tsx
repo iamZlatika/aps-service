@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
-import { OrdersRoutes } from "@/features/backoffice/modules/orders/routers.ts";
+import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation";
 import Loader from "@/shared/components/common/Loader.tsx";
 
 export const GuestRoute = () => {
@@ -12,7 +12,7 @@ export const GuestRoute = () => {
   }
 
   if (isAuthenticated) {
-    return <Navigate to={OrdersRoutes.linkToOrders()} replace />;
+    return <Navigate to={ORDERS_LINKS.root()} replace />;
   }
 
   return <Outlet />;

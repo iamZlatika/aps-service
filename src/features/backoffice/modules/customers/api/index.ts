@@ -2,16 +2,14 @@ import {
   type CustomerDto,
   CustomerDtoSchema,
 } from "@/features/backoffice/modules/customers/api/dto.ts";
-import { CustomersRoutes } from "@/features/backoffice/modules/customers/api/routers.ts";
+import { CUSTOMERS_API } from "@/features/backoffice/modules/customers/api/endpoints";
 import { mapCustomerDtoToCustomer } from "@/features/backoffice/modules/customers/lib/adapters.ts";
 import { type Customer } from "@/features/backoffice/modules/customers/types.ts";
 import { get } from "@/shared/api/api.ts";
 
 export const customersApi = {
   getCustomers: async (): Promise<Customer[]> => {
-    const repo = await get<{ data: CustomerDto[] }>(
-      CustomersRoutes.customersApi(),
-    );
+    const repo = await get<{ data: CustomerDto[] }>(CUSTOMERS_API.customers());
 
     const validatedData = CustomerDtoSchema.array().parse(repo.data);
     return validatedData.map(mapCustomerDtoToCustomer);

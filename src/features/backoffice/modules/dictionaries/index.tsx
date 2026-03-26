@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 import { Card, CardHeader, CardTitle } from "@/shared/components/ui/card";
 
-import { DictionariesRoutes } from "./routers";
+import { DICTIONARIES_LINKS } from "./navigation";
 
 const DictionariesPage = () => {
   const { t } = useTranslation();
@@ -22,42 +22,42 @@ const DictionariesPage = () => {
     {
       title: t("sidebar.dictionaries_list.accessories"),
       icon: Package,
-      href: DictionariesRoutes.linkToAccessories(),
+      href: DICTIONARIES_LINKS.accessories(),
     },
     {
       title: t("sidebar.dictionaries_list.issue_types"),
       icon: AlertCircle,
-      href: DictionariesRoutes.linkToIssueTypes(),
+      href: DICTIONARIES_LINKS.issueTypes(),
     },
     {
       title: t("sidebar.dictionaries_list.device_conditions"),
       icon: Stethoscope,
-      href: DictionariesRoutes.linkToDeviceConditions(),
+      href: DICTIONARIES_LINKS.deviceConditions(),
     },
     {
       title: t("sidebar.dictionaries_list.device_models"),
       icon: Smartphone,
-      href: DictionariesRoutes.linkToDeviceModels(),
+      href: DICTIONARIES_LINKS.deviceModels(),
     },
     {
       title: t("sidebar.dictionaries_list.device_types"),
       icon: Cpu,
-      href: DictionariesRoutes.linkToDeviceTypes(),
+      href: DICTIONARIES_LINKS.deviceTypes(),
     },
     {
       title: t("sidebar.dictionaries_list.intake_notes"),
       icon: StickyNote,
-      href: DictionariesRoutes.linkToIntakeNotes(),
+      href: DICTIONARIES_LINKS.intakeNotes(),
     },
     {
       title: t("sidebar.dictionaries_list.manufacturers"),
       icon: Factory,
-      href: DictionariesRoutes.linkToManufacturers(),
+      href: DICTIONARIES_LINKS.manufacturers(),
     },
     {
       title: t("sidebar.dictionaries_list.repair_operations"),
       icon: Wrench,
-      href: DictionariesRoutes.linkToRepairOperations(),
+      href: DICTIONARIES_LINKS.repairOperations(),
     },
   ];
 

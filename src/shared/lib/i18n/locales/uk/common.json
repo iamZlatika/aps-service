@@ -129,6 +129,7 @@
   },
   "breadcrumbs": {
     "home": "Головна",
+    "profile": "Личний кабінет",
     "orders": "Замовлення",
     "customers": "Клієнти",
     "users": "Майстри",
@@ -141,5 +142,26 @@
     "intakeNotes": "Примітки прийому",
     "manufacturers": "Виробники",
     "repairOperations": "Ремонтні операції"
+  },
+  "profile": {
+    "settings": "Налаштування профілю",
+    "avatar": {
+      "change": "Змінити",
+      "remove": "Видалити",
+      "editor_title": "Редагування аватара",
+      "cancel": "Скасувати",
+      "save": "Зберегти"
+    },
+    "change_form": {
+      "enter_old_password": "Введіть поточний пароль",
+      "enter_new_password": "Введіть новий пароль",
+      "confirm_new_password": "Підтвердіть новий пароль",
+      "change_password": "Змінити пароль",
+      "passwords_dont_match": "Паролі не збігаються",
+      "too_short": "Пароль занадто короткий",
+      "wrong_current_password": "Невірний поточний пароль"
+    },
+    "password_changed_success": "Новий пароль успішно встановлено!",
+    "ok": "Ок"
   }
 }

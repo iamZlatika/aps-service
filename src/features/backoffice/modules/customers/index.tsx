@@ -13,6 +13,7 @@ import {
 } from "@/shared/components/ui/table";
 
 import { customersApi } from "./api";
+import Loader from "@/shared/components/common/Loader.tsx";
 
 const CustomersPage = () => {
   const {
@@ -31,6 +32,7 @@ const CustomersPage = () => {
       isError={isError}
       error={error}
       isLoading={isLoading}
+      loadingFallback={<Loader />}
       onRetry={() => refetch()}
     >
       <div className="p-6">

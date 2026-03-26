@@ -6,5 +6,5 @@ export type User = {
   email: string;
   role: Role;
   status: UserStatus;
-  avatarUrl: string | null;
+  avatarUrl: string;
 };
