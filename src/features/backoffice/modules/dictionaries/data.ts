@@ -1,4 +1,4 @@
-import type { SelectOption } from "@/shared/components/table/models/types.ts";
+import type { SelectOption } from "@/features/backoffice/widgets/table/models/types.ts";
 
 const REPAIR_CATEGORY_KEYS = [
   "cleaning",

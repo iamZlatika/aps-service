@@ -1,5 +1,5 @@
-import { DICTIONARIES_API } from "./endpoints";
 import { createDictionaryApi } from "./createDictionaryApi";
+import { DICTIONARIES_API } from "./endpoints";
 export const accessoriesApi = createDictionaryApi({
   list: () => DICTIONARIES_API.accessories(),
   item: (id) => DICTIONARIES_API.accessory(id),

@@ -1,5 +1,5 @@
-import { type SortType } from "@/shared/components/table/hooks/useSortParams.ts";
-import { type Filters } from "@/shared/components/table/models/types.ts";
+import { type SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
+import { type Filters } from "@/features/backoffice/widgets/table/models/types.ts";
 
 const makeDictKey =
   (name: string) =>

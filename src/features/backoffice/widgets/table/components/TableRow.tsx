@@ -3,7 +3,7 @@ import type { KeyboardEvent } from "react";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 
-import { resolveDisplayValue } from "@/shared/components/table/lib/resolveDisplayValue.ts";
+import { resolveDisplayValue } from "@/features/backoffice/widgets/table/lib/resolveDisplayValue.ts";
 import { Input } from "@/shared/components/ui/input.tsx";
 import {
   TableCell,

@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { type Filters } from "@/shared/components/table/models/types.ts";
+import { type Filters } from "@/features/backoffice/widgets/table/models/types.ts";
 
 const RESERVED_PARAMS = ["page", "per_page", "sort_column", "sort_type"];
 

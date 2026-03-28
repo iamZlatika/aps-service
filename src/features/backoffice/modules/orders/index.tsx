@@ -1,7 +1,7 @@
 const OrdersPage = () => {
   return (
     <div>
-      <div>OrdersdPage</div>
+      <div>OrdersPage</div>
     </div>
   );
 };

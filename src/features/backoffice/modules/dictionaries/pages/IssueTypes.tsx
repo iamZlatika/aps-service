@@ -1,6 +1,6 @@
 import { issueTypesApi } from "@/features/backoffice/modules/dictionaries/api";
+import { SmartTable } from "@/features/backoffice/widgets/table";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { SmartTable } from "@/shared/components/table";
 
 const IssueTypesPage = () => (
   <SmartTable

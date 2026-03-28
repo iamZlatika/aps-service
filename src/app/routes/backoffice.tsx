@@ -5,9 +5,9 @@ import { ProtectedRoute } from "@/app/ProtectedRoute";
 import { CUSTOMERS_ROUTES } from "@/features/backoffice/modules/customers/routes";
 import { DICTIONARIES_ROUTES } from "@/features/backoffice/modules/dictionaries/routes";
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
+import { PROFILE_ROUTES } from "@/features/backoffice/modules/profile/routes.ts";
 import { USERS_ROUTES } from "@/features/backoffice/modules/users/routes";
 import { ROLES } from "@/shared/types.ts";
-import { PROFILE_ROUTES } from "@/features/backoffice/modules/profile/routes.ts";
 
 const OrdersPage = lazy(() => import("@/features/backoffice/modules/orders"));
 const CustomersPage = lazy(

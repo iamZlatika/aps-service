@@ -3,7 +3,7 @@ import {
   type PaginatedDictionaryItemsDto,
 } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { type PaginatedDictionaryItems } from "@/features/backoffice/modules/dictionaries/types.ts";
-import { type BaseItem } from "@/shared/components/table/models/types.ts";
+import { type BaseItem } from "@/features/backoffice/widgets/table/models/types.ts";
 
 export const mapDictionaryItemDtoToDictionaryItem = (
   dto: DictionaryItemDto,

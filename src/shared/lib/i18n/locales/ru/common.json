@@ -148,13 +148,19 @@
   },
   "profile": {
     "settings": "Настройки профиля",
+    "user_info": {
+      "name_too_short": "Имя должно содержать минимум 3 символа",
+      "invalid_email": "Некорректный email",
+      "email_taken": "Этот email уже занят"
+    },
     "avatar": {
       "change": "Изменить",
       "remove": "Удалить",
       "editor_title": "Редактирование аватара",
       "cancel": "Отмена",
-      "save": "Сохранить"
-          },
+      "save": "Сохранить",
+      "saving": "Сохранение"
+    },
     "change_form": {
       "enter_old_password": "Введите текущий пароль",
       "enter_new_password": "Введите новый пароль",

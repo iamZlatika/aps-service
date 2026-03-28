@@ -1,4 +1,3 @@
-import i18next from "i18next";
 import { lazy, Suspense } from "react";
 import { Navigate, type RouteObject } from "react-router-dom";
 
@@ -45,7 +44,7 @@ export const routeConfig: RouteObject[] = [
     children: [
       {
         element: (
-          <Suspense fallback={<Loader text={i18next.t("loader.backoffice")} />}>
+          <Suspense fallback={<Loader />}>
             <WebsiteLayout />
           </Suspense>
         ),
@@ -73,9 +72,7 @@ export const routeConfig: RouteObject[] = [
         children: [
           {
             element: (
-              <Suspense
-                fallback={<Loader text={i18next.t("loader.control_panel")} />}
-              >
+              <Suspense fallback={<Loader />}>
                 <BackofficeLayout />
               </Suspense>
             ),

@@ -1,8 +1,8 @@
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import type { SortType } from "@/shared/components/table/hooks/useSortParams.ts";
-import type { ColumnConfig } from "@/shared/components/table/models/types.ts";
+import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
+import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import {
   TableHead,
   TableHeader,
