@@ -7,6 +7,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { authApi } from "@/features/auth/api";
 import { AuthRoutes } from "@/features/auth/api/routes.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import Loader from "@/shared/components/common/Loader.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
@@ -24,7 +25,6 @@ import {
   type ResetPasswordFormValues,
   resetPasswordSchema,
 } from "./forgot.schema";
-import Loader from "@/shared/components/common/Loader.tsx";
 
 const ResetPasswordPage = () => {
   const { t } = useTranslation();

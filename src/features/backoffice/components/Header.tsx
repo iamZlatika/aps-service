@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
-import { Breadcrumbs } from "@/features/backoffice/components/Breadcrums.tsx";
-import { ORDERS_LINKS } from "@/features/backoffice/modules/profile/navigation.ts";
+import { Breadcrumbs } from "@/features/backoffice/components/Breadcrumbs.tsx";
+import { PROFILE_LINKS } from "@/features/backoffice/modules/profile/navigation.ts";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
 import { SidebarTrigger } from "@/shared/components/ui/sidebar";
@@ -48,7 +48,7 @@ export const Header = memo(() => {
           </Button>
         </div>
 
-        <Link to={ORDERS_LINKS.root()} className="flex items-center space-x-2">
+        <Link to={PROFILE_LINKS.root()} className="flex items-center space-x-2">
           <span className="text-sm font-medium">
             {t("header.welcome", { name: user?.name || t("header.user") })}
           </span>

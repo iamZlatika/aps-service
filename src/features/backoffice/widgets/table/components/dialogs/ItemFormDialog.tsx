@@ -7,7 +7,7 @@ import type { z } from "zod";
 import {
   type BaseItem,
   type FieldConfig,
-} from "@/shared/components/table/models/types.ts";
+} from "@/features/backoffice/widgets/table/models/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
   Dialog,

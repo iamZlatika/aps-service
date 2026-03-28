@@ -5,13 +5,13 @@ import {
   SortableTableHeader,
   TableContent,
   TablePagination,
-} from "@/shared/components/table/components";
-import SearchFilter from "@/shared/components/table/components/filters/FilterInput";
-import type { SortType } from "@/shared/components/table/hooks/useSortParams.ts";
+} from "@/features/backoffice/widgets/table/components";
+import SearchFilter from "@/features/backoffice/widgets/table/components/filters/FilterInput.tsx";
+import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type {
   ColumnConfig,
   SmartTableApi,
-} from "@/shared/components/table/models/types.ts";
+} from "@/features/backoffice/widgets/table/models/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Table, TableBody } from "@/shared/components/ui/table.tsx";
 

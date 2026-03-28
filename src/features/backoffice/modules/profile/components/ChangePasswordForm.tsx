@@ -1,37 +1,40 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { authApi } from "@/features/auth/api";
-import { mapChangePasswordToApi } from "@/features/auth/lib/adapter.ts";
+import { profileApi } from "@/features/backoffice/modules/profile/api";
+import PasswordChangedDialog from "@/features/backoffice/modules/profile/components/PasswordChangedDialog.tsx";
+import { mapChangePasswordToApi } from "@/features/backoffice/modules/profile/lib/adapter.ts";
 import {
   type ChangePasswordFormValues,
-  changePasswordSchema,
-} from "@/features/backoffice/modules/profile/change-password.schema.ts";
-import ConfirmDialog from "@/features/backoffice/modules/profile/components/ConfirmDialog.tsx";
+  createProfileSchema,
+} from "@/features/backoffice/modules/profile/profile.schema.ts";
+import { FormField } from "@/shared/components/common/FormField.tsx";
 import Loader from "@/shared/components/common/Loader.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
-import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
-import { cn } from "@/shared/lib/utils.ts";
 
 const ChangePasswordForm = () => {
   const { t } = useTranslation();
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const schema = useMemo(() => createProfileSchema(), []);
+
   const {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors },
   } = useForm<ChangePasswordFormValues>({
-    resolver: zodResolver(changePasswordSchema),
+    resolver: zodResolver(schema),
   });
 
   const changePasswordMutation = useMutation({
-    mutationFn: authApi.changePassword,
+    mutationFn: profileApi.changePassword,
+    meta: { silent: true },
   });
 
   const onSubmit = (data: ChangePasswordFormValues) => {
@@ -59,43 +62,27 @@ const ChangePasswordForm = () => {
           <Label htmlFor="currentPassword">
             {t("profile.change_form.enter_old_password")}
           </Label>
-          <Input
-            autoFocus
+          <FormField
             type="password"
-            className={cn(errors.currentPassword && "border-destructive")}
+            error={errors.currentPassword}
             {...register("currentPassword")}
           />
-          {errors.currentPassword && (
-            <p className="text-sm text-destructive">
-              {errors.currentPassword.message}
-            </p>
-          )}
           <Label htmlFor="newPassword">
             {t("profile.change_form.enter_new_password")}
           </Label>
-          <Input
+          <FormField
             type="password"
-            className={cn(errors.newPassword && "border-destructive")}
+            error={errors.newPassword}
             {...register("newPassword")}
           />
-          {errors.newPassword && (
-            <p className="text-sm text-destructive">
-              {errors.newPassword.message}
-            </p>
-          )}
           <Label htmlFor="confirm_new_password">
             {t("profile.change_form.confirm_new_password")}
           </Label>
-          <Input
+          <FormField
             type="password"
-            className={cn(errors.confirmPassword && "border-destructive")}
+            error={errors.confirmPassword}
             {...register("confirmPassword")}
           />
-          {errors.confirmPassword && (
-            <p className="text-sm text-destructive">
-              {errors.confirmPassword.message}
-            </p>
-          )}
         </div>
         <Button
           type="submit"
@@ -112,9 +99,12 @@ const ChangePasswordForm = () => {
           <Loader />
         </div>
       )}
-      <ConfirmDialog
+      <PasswordChangedDialog
         open={isSuccessOpen}
-        onClose={() => setIsSuccessOpen(false)}
+        onClose={() => {
+          setIsSuccessOpen(false);
+          reset();
+        }}
       />
     </div>
   );

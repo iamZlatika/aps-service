@@ -14,3 +14,7 @@ export const USER_STATUSES = {
 export type UserStatus = (typeof USER_STATUSES)[keyof typeof USER_STATUSES];
 
 export type Language = "ru" | "uk";
+
+export interface SuccessResponse {
+  message: string;
+}

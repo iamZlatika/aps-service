@@ -1,5 +1,5 @@
 const BASE = "/backoffice/profile";
 
-export const ORDERS_LINKS = {
+export const PROFILE_LINKS = {
   root: () => BASE,
 } as const;

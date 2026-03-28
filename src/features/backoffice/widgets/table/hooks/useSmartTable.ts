@@ -2,17 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
 import { type UseFormSetError } from "react-hook-form";
 
-import { useFilterParams } from "@/shared/components/table/hooks/useFilterParams.ts";
-import { usePageParam } from "@/shared/components/table/hooks/usePageParam.ts";
-import { usePerPage } from "@/shared/components/table/hooks/usePerPage.ts";
-import type { SortType } from "@/shared/components/table/hooks/useSortParams.ts";
-import { useSortParams } from "@/shared/components/table/hooks/useSortParams.ts";
-import { sanitizeFilters } from "@/shared/components/table/lib/sanitizeFilters.ts";
+import { useFilterParams } from "@/features/backoffice/widgets/table/hooks/useFilterParams.ts";
+import { usePageParam } from "@/features/backoffice/widgets/table/hooks/usePageParam.ts";
+import { usePerPage } from "@/features/backoffice/widgets/table/hooks/usePerPage.ts";
+import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
+import { useSortParams } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
+import { sanitizeFilters } from "@/features/backoffice/widgets/table/lib/sanitizeFilters.ts";
 import type {
   BaseItem,
   ColumnConfig,
   SmartTableApi,
-} from "@/shared/components/table/models/types.ts";
+} from "@/features/backoffice/widgets/table/models/types.ts";
 import { getPageNumbers } from "@/shared/lib/pagination.ts";
 
 import { useTableActions } from "./useTableActions.ts";

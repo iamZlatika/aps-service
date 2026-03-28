@@ -10,12 +10,15 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog.tsx";
 
-type ConfirmDialogProps = {
+type PasswordChangedDialogProps = {
   open: boolean;
   onClose: () => void;
 };
 
-const ConfirmDialog = ({ open, onClose }: ConfirmDialogProps) => {
+const PasswordChangedDialog = ({
+  open,
+  onClose,
+}: PasswordChangedDialogProps) => {
   const { t } = useTranslation();
 
   return (
@@ -35,4 +38,4 @@ const ConfirmDialog = ({ open, onClose }: ConfirmDialogProps) => {
   );
 };
 
-export default ConfirmDialog;
+export default PasswordChangedDialog;

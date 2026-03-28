@@ -2,9 +2,9 @@ import { useTranslation } from "react-i18next";
 
 import { repairOperationsApi } from "@/features/backoffice/modules/dictionaries/api";
 import { getRepairCategoryOptions } from "@/features/backoffice/modules/dictionaries/data.ts";
+import { SmartTable } from "@/features/backoffice/widgets/table";
+import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { SmartTable } from "@/shared/components/table";
-import type { ColumnConfig } from "@/shared/components/table/models/types.ts";
 
 const RepairOperationsPage = () => {
   const { t } = useTranslation();

@@ -18,8 +18,8 @@ const Loader = ({ className }: LoaderProps) => {
         visible={true}
         height="150"
         width="150"
-        color="#4fa94d"
-        secondaryColor="#4fa94d"
+        color="yellow"
+        secondaryColor="blue"
         radius="15"
         ariaLabel="mutating-dots-loading"
         wrapperStyle={{}}

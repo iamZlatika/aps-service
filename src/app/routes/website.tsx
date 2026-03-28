@@ -1,4 +1,3 @@
-import i18next from "i18next";
 import { lazy, Suspense } from "react";
 import { type RouteObject } from "react-router-dom";
 
@@ -12,7 +11,7 @@ const ContactsPage = lazy(() => import("@/features/website/pages/contacts"));
 
 export const websiteRoutes: RouteObject = {
   element: (
-    <Suspense fallback={<Loader text={i18next.t("loader.site")} />}>
+    <Suspense fallback={<Loader />}>
       <WebsiteLayout />
     </Suspense>
   ),

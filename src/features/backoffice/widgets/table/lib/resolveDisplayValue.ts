@@ -1,4 +1,4 @@
-import type { ColumnConfig } from "@/shared/components/table/models/types.ts";
+import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 
 export const resolveDisplayValue = (
   col: ColumnConfig,

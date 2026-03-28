@@ -145,12 +145,18 @@
   },
   "profile": {
     "settings": "Налаштування профілю",
+    "user_info": {
+      "name_too_short": "Ім’я повинно містити щонайменше 3 символи",
+      "invalid_email": "Некоректний email",
+      "email_taken": "Цей email вже зайнятий"
+    },
     "avatar": {
       "change": "Змінити",
       "remove": "Видалити",
       "editor_title": "Редагування аватара",
       "cancel": "Скасувати",
-      "save": "Зберегти"
+      "save": "Зберегти",
+      "saving": "Збереження"
     },
     "change_form": {
       "enter_old_password": "Введіть поточний пароль",
