@@ -1,8 +1,8 @@
 import { type SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import { type Filters } from "@/features/backoffice/widgets/table/models/types.ts";
 
-const makeDictKey =
-  (name: string) =>
+const makeEntityKey =
+  (base: readonly string[], name: string) =>
   (
     page?: number,
     perPage?: number,
@@ -11,7 +11,7 @@ const makeDictKey =
     filters?: Filters,
   ) =>
     [
-      ...queryKeys.dictionaries.all,
+      ...base,
       name,
       ...(page !== undefined ? [page] : []),
       ...(perPage !== undefined ? [perPage] : []),
@@ -30,7 +30,8 @@ export const queryKeys = {
 
   users: {
     all: ["users"] as const,
-    list: () => [...queryKeys.users.all, "list"] as const,
+    list: makeEntityKey(["users"], "list"),
+    me: () => ["users", "me"] as const,
   },
 
   customers: {
@@ -40,13 +41,13 @@ export const queryKeys = {
 
   dictionaries: {
     all: ["dictionaries"] as const,
-    accessories: makeDictKey("accessories"),
-    deviceConditions: makeDictKey("device-conditions"),
-    issueTypes: makeDictKey("issue-types"),
-    deviceModels: makeDictKey("device-models"),
-    deviceTypes: makeDictKey("device-types"),
-    intakeNotes: makeDictKey("intake-notes"),
-    manufacturers: makeDictKey("manufacturers"),
-    repairOperations: makeDictKey("repair-operations"),
+    accessories: makeEntityKey(["dictionaries"], "accessories"),
+    deviceConditions: makeEntityKey(["dictionaries"], "device-conditions"),
+    issueTypes: makeEntityKey(["dictionaries"], "issue-types"),
+    deviceModels: makeEntityKey(["dictionaries"], "device-models"),
+    deviceTypes: makeEntityKey(["dictionaries"], "device-types"),
+    intakeNotes: makeEntityKey(["dictionaries"], "intake-notes"),
+    manufacturers: makeEntityKey(["dictionaries"], "manufacturers"),
+    repairOperations: makeEntityKey(["dictionaries"], "repair-operations"),
   },
 } as const;

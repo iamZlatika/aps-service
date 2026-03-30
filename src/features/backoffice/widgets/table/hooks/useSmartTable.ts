@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useCallback, useEffect, useState } from "react";
-import { type UseFormSetError } from "react-hook-form";
+import { useEffect } from "react";
 
 import { useFilterParams } from "@/features/backoffice/widgets/table/hooks/useFilterParams.ts";
 import { usePageParam } from "@/features/backoffice/widgets/table/hooks/usePageParam.ts";
@@ -15,10 +14,8 @@ import type {
 } from "@/features/backoffice/widgets/table/models/types.ts";
 import { getPageNumbers } from "@/shared/lib/pagination.ts";
 
-import { useTableActions } from "./useTableActions.ts";
-
-interface UseSmartTableParams {
-  api: SmartTableApi;
+interface UseSmartTableParams<T extends BaseItem = BaseItem> {
+  api: SmartTableApi<T>;
   queryKeyFn: (
     page: number,
     perPage: number,
@@ -30,22 +27,18 @@ interface UseSmartTableParams {
   searchField: string;
 }
 
-export const useSmartTable = ({
+export const useSmartTable = <T extends BaseItem>({
   api,
   queryKeyFn,
   columns,
   searchField,
-}: UseSmartTableParams) => {
+}: UseSmartTableParams<T>) => {
   const { page, setPage } = usePageParam();
   const { perPage, setPerPage, perPageOptions } = usePerPage();
   const { sort, toggleSort } = useSortParams();
 
   const { filters, setFilter, resetFilters } = useFilterParams();
   const sanitized = sanitizeFilters(filters, columns, searchField);
-  const [editDialogItem, setEditDialogItem] = useState<BaseItem | null>(null);
-
-  const editableFields = columns.filter((col) => col.key !== "id");
-  const hasExtraFields = editableFields.length > 1;
 
   const queryKey = queryKeyFn(page, perPage, sort.column, sort.type, sanitized);
 
@@ -61,44 +54,9 @@ export const useSmartTable = ({
     }
   }, [filters, sanitized, setFilter]);
 
-  const { addModal, deleteModal, editing } = useTableActions(
-    queryKey,
-    (values) => api.create(values),
-    (id) => api.remove(id),
-    (id, values) => api.update(id, values),
-  );
+  const isOperationLoading = isLoading || isFetching;
 
-  const handleEditStart = useCallback(
-    (item: BaseItem) => {
-      if (hasExtraFields) {
-        setEditDialogItem(item);
-      } else {
-        editing.start(item);
-      }
-    },
-    [hasExtraFields, editing],
-  );
-
-  const handleEditDialogConfirm = useCallback(
-    (
-      values: Partial<BaseItem>,
-      setError: UseFormSetError<Record<string, string>>,
-    ) => {
-      if (editDialogItem) {
-        editing.save(editDialogItem.id, values, setError);
-      }
-    },
-    [editDialogItem, editing],
-  );
-
-  const isOperationLoading =
-    isLoading ||
-    isFetching ||
-    addModal.isPending ||
-    deleteModal.isPending ||
-    editing.isPending;
-
-  const items = data?.items;
+  const items = data?.items as T[] | undefined;
   const meta = data?.meta;
   const lastPage = meta?.lastPage ?? 1;
   const pageNumbers = getPageNumbers(page, lastPage);
@@ -111,9 +69,6 @@ export const useSmartTable = ({
   return {
     data: {
       items,
-      columns,
-      editableFields,
-      hasExtraFields,
       isOperationLoading,
       isError,
       refetch,
@@ -136,14 +91,6 @@ export const useSmartTable = ({
       setFilter,
       resetFilters,
     },
-    actions: {
-      addModal,
-      deleteModal,
-      editing,
-      handleEditStart,
-      editDialogItem,
-      setEditDialogItem,
-      handleEditDialogConfirm,
-    },
+    queryKey,
   };
 };

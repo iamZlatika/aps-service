@@ -4,6 +4,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import UserAvatar from "@/features/backoffice/modules/profile/components/avatar/components/UserAvatar.tsx";
 import ChangePasswordForm from "@/features/backoffice/modules/profile/components/ChangePasswordForm.tsx";
 import ChangeUserInfoForm from "@/features/backoffice/modules/profile/components/ChangeUserInfoForm.tsx";
+import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
 import { Card, CardContent, CardTitle } from "@/shared/components/ui/card.tsx";
 import { Separator } from "@/shared/components/ui/separator.tsx";
 
@@ -23,8 +24,12 @@ const ProfilePage = () => {
               userName={user.name}
               userAvatarUrl={user.avatarUrl || ""}
             />
-            <ChangeUserInfoForm userName={user.name} userEmail={user.email} />
+            <div>
+              <ChangeUserInfoForm userName={user.name} userEmail={user.email} />
+              <RoleBadge role={user.role} />
+            </div>
           </div>
+
           <Separator className="my-6 h-px bg-border" />
           <CardTitle className="text-2xl font-bold my-4">
             {t("profile.change_form.change_password")}

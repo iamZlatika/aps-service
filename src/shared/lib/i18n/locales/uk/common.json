@@ -124,7 +124,8 @@
     "passwords_dont_match": "Паролі не збігаються"
   },
   "search_placeholders": {
-    "dictionaries_name": "Пошук по назві"
+    "dictionaries_name": "Пошук по назві",
+    "users_name": "Пошук по імені"
   },
   "breadcrumbs": {
     "home": "Головна",
@@ -168,5 +169,9 @@
     },
     "password_changed_success": "Новий пароль успішно встановлено!",
     "ok": "Ок"
+  },
+  "users": {
+    "head_manager": "Адміністратор",
+    "manager": "Менеджер"
   }
 }
