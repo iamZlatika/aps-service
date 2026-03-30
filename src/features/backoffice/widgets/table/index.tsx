@@ -84,7 +84,7 @@ export const SmartTable = ({
 
   return (
     <div className="p-2 sm:p-6 max-w-4xl mx-auto w-full">
-      <div className="mb-4 sm:mb-6 flex items-center justify-between">
+      <div className="mb-2 sm:mb-3 flex items-center justify-between">
         <h1 className="text-xl sm:text-2xl font-bold">{t(titleKey)}</h1>
         <Button
           className="bg-green-600 hover:bg-green-700 text-white"
@@ -112,7 +112,7 @@ export const SmartTable = ({
             value={filters[searchField ?? "name"] ?? ""}
             onChange={setFilter}
           />
-          <div className="rounded-md border overflow-hidden">
+          <div className="rounded-md border overflow-hidden bg-card">
             <Table>
               <SortableTableHeader
                 columns={columns}

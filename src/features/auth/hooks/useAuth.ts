@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import { authService } from "@/features/auth/lib/authService.ts";
 import { logout as sessionLogout } from "@/features/auth/lib/sessionManager.ts";
@@ -12,6 +13,8 @@ export const useAuth = () => {
   const queryClient = useQueryClient();
   const token = authService.getToken();
 
+  const { i18n } = useTranslation();
+
   const {
     data: user,
     isLoading,
@@ -23,6 +26,12 @@ export const useAuth = () => {
     retry: false,
     staleTime: Infinity,
   });
+
+  useEffect(() => {
+    if (user?.locale && user.locale !== i18n.language) {
+      i18n.changeLanguage(user.locale);
+    }
+  }, [i18n, user?.locale]);
 
   useEffect(() => {
     if (isError) {
@@ -40,6 +49,10 @@ export const useAuth = () => {
       }
     },
   });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", user?.theme === "dark");
+  }, [user?.theme]);
 
   const logout = () => {
     sessionLogout(true);

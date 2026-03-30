@@ -73,7 +73,7 @@ const SearchFilter = ({
         value={localValue}
         onChange={handleChange}
         placeholder={placeholder}
-        className="pl-9 pr-9"
+        className="pl-9 pr-9 bg-background"
       />
 
       {localValue && (
