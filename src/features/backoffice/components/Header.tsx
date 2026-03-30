@@ -1,69 +1,82 @@
-import { AvatarImage } from "@radix-ui/react-avatar";
 import { LogOut } from "lucide-react";
-import { memo } from "react";
+import { Moon, Sun } from "lucide-react";
+import { memo, type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
-import { Breadcrumbs } from "@/features/backoffice/components/Breadcrumbs.tsx";
+import SegmentedControl from "@/features/backoffice/components/SegmentedControl.tsx";
 import { PROFILE_LINKS } from "@/features/backoffice/modules/profile/navigation.ts";
-import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
+import { useUpdateLocale } from "@/features/backoffice/modules/users/hooks/useUpdateLocale.ts";
+import { useUpdateTheme } from "@/features/backoffice/modules/users/hooks/useUpdateTheme.ts";
+import { Avatar, AvatarImage } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
 import { SidebarTrigger } from "@/shared/components/ui/sidebar";
-import { useLanguage } from "@/shared/lib/i18n/useLanguage.ts";
+import {
+  USER_LANGUAGES,
+  type UserLanguage,
+  type UserTheme,
+} from "@/shared/types.ts";
 
 export const Header = memo(() => {
   const { user, logout } = useAuth();
   const { t } = useTranslation();
-  const { currentLanguage, changeLanguage } = useLanguage();
+  const updateLocale = useUpdateLocale();
+  const updateTheme = useUpdateTheme();
 
-  const firstLetter = user?.name ? user.name.charAt(0).toUpperCase() : "U";
+  const [imgSrc, setImgSrc] = useState(user?.avatarUrl || "/default.webp");
 
+  useEffect(() => {
+    if (!user?.avatarUrl) return;
+    let cancelled = false;
+    const img = new Image();
+    img.src = user?.avatarUrl;
+    img.onload = () => {
+      if (!cancelled) setImgSrc(user?.avatarUrl);
+    };
+    return () => {
+      cancelled = true;
+      img.onload = null;
+      img.src = "";
+    };
+  }, [user?.avatarUrl]);
+
+  const localeOptions: { label: string | ReactNode; value: UserLanguage }[] = [
+    { label: "UK", value: USER_LANGUAGES.UK },
+    { label: "RU", value: USER_LANGUAGES.RU },
+  ];
+
+  const themeOptions: { label: string | ReactNode; value: UserTheme }[] = [
+    { label: <Sun size={16} />, value: "light" },
+    { label: <Moon size={16} />, value: "dark" },
+  ];
   return (
-    <header className="flex h-16 shrink-0 items-center justify-between border-b px-4 bg-white">
+    <header className="flex h-16 shrink-0 items-center justify-between border-b px-4 bg-background">
       <div className="flex items-center gap-2">
         <SidebarTrigger />
-        <Breadcrumbs />
       </div>
 
       <div className="flex items-center gap-4">
-        {/* Language switcher group */}
-        <div className="flex items-center border rounded-md overflow-hidden">
-          <Button
-            variant={currentLanguage === "uk" ? "default" : "ghost"}
-            size="sm"
-            className="rounded-none h-8 px-3"
-            onClick={() => changeLanguage("uk")}
-          >
-            UK
-          </Button>
-          <div className="w-[1px] h-4 bg-border" />
-          <Button
-            variant={currentLanguage === "ru" ? "default" : "ghost"}
-            size="sm"
-            className="rounded-none h-8 px-3"
-            onClick={() => changeLanguage("ru")}
-          >
-            RU
-          </Button>
-        </div>
+        <SegmentedControl
+          onChange={updateLocale.mutate}
+          disabled={updateLocale.isPending}
+          value={user?.locale || "uk"}
+          options={localeOptions}
+        />
+        <SegmentedControl
+          onChange={updateTheme.mutate}
+          disabled={updateTheme.isPending}
+          value={user?.theme || "dark"}
+          options={themeOptions}
+        />
 
         <Link to={PROFILE_LINKS.root()} className="flex items-center space-x-2">
           <span className="text-sm font-medium">
-            {t("header.welcome", { name: user?.name || t("header.user") })}
+            {user?.name || t("header.user")}
           </span>
 
           <Avatar>
-            {user?.avatarUrl ? (
-              <AvatarImage
-                src={user.avatarUrl}
-                alt={user?.name || "User avatar"}
-              />
-            ) : (
-              <AvatarFallback className="bg-primary text-primary-foreground">
-                {firstLetter}
-              </AvatarFallback>
-            )}
+            <AvatarImage src={imgSrc} alt={user?.name || "User avatar"} />
           </Avatar>
         </Link>
         <Button

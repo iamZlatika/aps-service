@@ -5,7 +5,8 @@ import {
 import { USERS_API } from "@/features/backoffice/modules/users/api/endpoints";
 import { mapUserDtoToUser } from "@/features/backoffice/modules/users/lib/adapters.ts";
 import { type User } from "@/features/backoffice/modules/users/types.ts";
-import { get } from "@/shared/api/api.ts";
+import { get, put } from "@/shared/api/api.ts";
+import { type UserLanguage, type UserTheme } from "@/shared/types.ts";
 
 export const usersApi = {
   getMe: async (): Promise<User> => {
@@ -19,5 +20,11 @@ export const usersApi = {
 
     const validatedData = UserDtoSchema.array().parse(repo.data);
     return validatedData.map(mapUserDtoToUser);
+  },
+  updateLocale: async (locale: UserLanguage): Promise<void> => {
+    await put(USERS_API.updateLocale(), { locale });
+  },
+  updateTheme: async (theme: UserTheme): Promise<void> => {
+    await put(USERS_API.updateTheme(), { theme });
   },
 };

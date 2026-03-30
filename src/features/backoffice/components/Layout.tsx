@@ -2,6 +2,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 
+import { Breadcrumbs } from "@/features/backoffice/components/Breadcrumbs.tsx";
 import { ErrorFallback } from "@/features/backoffice/components/ErrorFallback.tsx";
 import { SidebarProvider } from "@/shared/components/ui/sidebar";
 import { captureErrorWithId } from "@/shared/lib/sentry.ts";
@@ -19,8 +20,8 @@ const Layout = () => {
 
         <div className="flex flex-1 flex-col">
           <Header />
-
-          <main className="flex-1 overflow-y-auto bg-gray-50">
+          <Breadcrumbs />
+          <main className="flex-1 overflow-y-auto bg-muted">
             <ErrorBoundary
               FallbackComponent={ErrorFallback}
               resetKeys={[location.pathname]}

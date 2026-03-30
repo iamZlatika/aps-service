@@ -13,7 +13,19 @@ export const USER_STATUSES = {
 
 export type UserStatus = (typeof USER_STATUSES)[keyof typeof USER_STATUSES];
 
-export type Language = "ru" | "uk";
+export const USER_LANGUAGES = {
+  UK: "uk",
+  RU: "ru",
+} as const;
+
+export type UserLanguage = (typeof USER_LANGUAGES)[keyof typeof USER_LANGUAGES];
+
+export const USER_THEMES = {
+  DARK: "dark",
+  LIGHT: "light",
+} as const;
+
+export type UserTheme = (typeof USER_THEMES)[keyof typeof USER_THEMES];
 
 export interface SuccessResponse {
   message: string;

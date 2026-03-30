@@ -6,6 +6,7 @@ import AvatarEditorDialog from "@/features/backoffice/modules/profile/components
 import { useAvatarDelete } from "@/features/backoffice/modules/profile/components/avatar/hooks/useAvatarDelete.ts";
 import { useAvatarUpload } from "@/features/backoffice/modules/profile/components/avatar/hooks/useAvatarUpload.ts";
 import EditButton from "@/features/backoffice/modules/profile/components/buttons/EditButton.tsx";
+import { isCustomAvatar } from "@/features/backoffice/modules/profile/lib/isCusttomAvatar.ts";
 import Loader from "@/shared/components/common/Loader.tsx";
 import { Avatar, AvatarImage } from "@/shared/components/ui/avatar";
 import { useIsMobile } from "@/shared/hooks/useMobile.ts";
@@ -43,6 +44,8 @@ const UserAvatar = ({ userName, userAvatarUrl }: UserAvatarProps) => {
     };
   }, [userAvatarUrl]);
 
+  const hasCustomAvatar = isCustomAvatar(userAvatarUrl);
+
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -76,7 +79,7 @@ const UserAvatar = ({ userName, userAvatarUrl }: UserAvatarProps) => {
           </div>
         )}
 
-        {userAvatarUrl && (
+        {hasCustomAvatar && (
           <button
             onClick={() => deleteMutation.mutate()}
             disabled={deleteMutation.isPending}

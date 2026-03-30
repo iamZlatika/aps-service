@@ -1,4 +1,9 @@
-import { type Role, type UserStatus } from "@/shared/types.ts";
+import {
+  type Role,
+  type UserLanguage,
+  type UserStatus,
+  type UserTheme,
+} from "@/shared/types.ts";
 
 export type User = {
   id: number;
@@ -6,5 +11,7 @@ export type User = {
   email: string;
   role: Role;
   status: UserStatus;
+  locale: UserLanguage;
+  theme: UserTheme;
   avatarUrl: string;
 };
