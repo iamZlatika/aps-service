@@ -1,3 +1,5 @@
+import { type ReactNode } from "react";
+
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 
 export interface PaginatedResponse<T extends BaseItem = BaseItem> {
@@ -17,9 +19,6 @@ export interface SmartTableApi<T extends BaseItem = BaseItem> {
     sortType?: SortType,
     filters?: Record<string, string>,
   ) => Promise<PaginatedResponse<T>>;
-  create: (data: Partial<T>) => Promise<T>;
-  update: (id: number, data: Partial<T>) => Promise<T>;
-  remove: (id: number) => Promise<void>;
 }
 
 export type SelectOption = {
@@ -54,3 +53,7 @@ export type BaseItem = {
 };
 
 export type Filters = Record<string, string>;
+
+export type RenderRowActions<T extends BaseItem = BaseItem> = (
+  item: T,
+) => ReactNode;

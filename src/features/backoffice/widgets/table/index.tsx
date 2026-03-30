@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -9,21 +9,19 @@ import {
 import SearchFilter from "@/features/backoffice/widgets/table/components/filters/FilterInput.tsx";
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type {
+  BaseItem,
   ColumnConfig,
+  RenderRowActions,
   SmartTableApi,
 } from "@/features/backoffice/widgets/table/models/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Table, TableBody } from "@/shared/components/ui/table.tsx";
 
-import { DeleteConfirmDialog, ItemFormDialog } from "./components/dialogs";
 import { useSmartTable } from "./hooks/useSmartTable.ts";
-import { toFieldConfigs } from "./lib/toFieldConfigs.ts";
 
-interface SmartTableProps {
+interface SmartTableProps<T extends BaseItem = BaseItem> {
   titleKey: string;
-  api: SmartTableApi;
-  searchPlaceholder: string;
-  searchField?: string;
+  api: SmartTableApi<T>; // только getAll
   queryKeyFn: (
     page: number,
     perPage: number,
@@ -32,47 +30,29 @@ interface SmartTableProps {
     filters: Record<string, string>,
   ) => readonly unknown[];
   columns: ColumnConfig[];
+  searchPlaceholder: string;
+  searchField?: string;
+  renderRowActions?: RenderRowActions<T>;
+  headerActions?: ReactNode;
 }
 
-export const SmartTable = ({
+export const SmartTable = <T extends BaseItem>({
   titleKey,
   api,
   queryKeyFn,
   searchPlaceholder,
   searchField,
   columns,
-}: SmartTableProps) => {
+  renderRowActions,
+  headerActions,
+}: SmartTableProps<T>) => {
   const { t } = useTranslation();
 
   const {
-    data: {
-      items,
-      editableFields,
-      hasExtraFields,
-      isOperationLoading,
-      isError,
-      refetch,
-    },
-    pagination: {
-      page,
-      setPage,
-      lastPage,
-      pageNumbers,
-      perPage,
-      perPageOptions,
-      handlePerPageChange,
-    },
+    data: { items, isOperationLoading, isError, refetch },
+    pagination,
     sort: { sort, toggleSort },
     filters: { filters, setFilter },
-    actions: {
-      addModal,
-      deleteModal,
-      editing,
-      handleEditStart,
-      editDialogItem,
-      setEditDialogItem,
-      handleEditDialogConfirm,
-    },
   } = useSmartTable({
     api,
     queryKeyFn,
@@ -80,19 +60,22 @@ export const SmartTable = ({
     searchField: searchField ?? "name",
   });
 
-  const fieldConfigs = toFieldConfigs(editableFields, t);
+  const {
+    page,
+    setPage,
+    lastPage,
+    pageNumbers,
+    perPage,
+    perPageOptions,
+    handlePerPageChange,
+  } = pagination;
 
   return (
     <div className="p-2 sm:p-6 max-w-4xl mx-auto w-full">
       <div className="mb-2 sm:mb-3 flex items-center justify-between">
         <h1 className="text-xl sm:text-2xl font-bold">{t(titleKey)}</h1>
-        <Button
-          className="bg-green-600 hover:bg-green-700 text-white"
-          onClick={() => addModal.setOpen(true)}
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          {t("table.add_button")}
-        </Button>
+
+        {headerActions}
       </div>
 
       {isError ? (
@@ -124,13 +107,8 @@ export const SmartTable = ({
                   columns={columns}
                   items={items}
                   isOperationLoading={isOperationLoading}
-                  editingId={editing.id}
-                  updatePending={editing.isPending}
-                  perPage={perPage}
-                  onSave={editing.save}
-                  onCancel={editing.cancel}
-                  onEdit={handleEditStart}
-                  onDelete={deleteModal.requestDelete}
+                  perPage={pagination.perPage}
+                  renderRowActions={renderRowActions}
                 />
               </TableBody>
             </Table>
@@ -146,46 +124,6 @@ export const SmartTable = ({
             onPerPageChange={handlePerPageChange}
           />
         </>
-      )}
-
-      <ItemFormDialog
-        isOpen={addModal.isOpen}
-        onOpenChange={addModal.setOpen}
-        title={t("table.add_modal.title")}
-        fields={toFieldConfigs(editableFields, t)}
-        cancelLabel={t("table.add_modal.cancel")}
-        confirmLabel={t("table.add_modal.add")}
-        onConfirm={addModal.submit}
-        isPending={addModal.isPending}
-      />
-
-      <DeleteConfirmDialog
-        isOpen={deleteModal.isOpen}
-        onOpenChange={deleteModal.setOpen}
-        title={t("table.delete_modal.title")}
-        description={t("table.delete_modal.description", {
-          name: deleteModal.item?.name,
-        })}
-        cancelLabel={t("table.delete_modal.cancel")}
-        confirmLabel={t("table.delete_modal.confirm")}
-        onConfirm={deleteModal.confirm}
-        isPending={deleteModal.isPending}
-      />
-
-      {hasExtraFields && (
-        <ItemFormDialog
-          isOpen={editDialogItem !== null}
-          onOpenChange={(open) => {
-            if (!open) setEditDialogItem(null);
-          }}
-          title={t("table.edit_modal.title")}
-          fields={fieldConfigs}
-          values={editDialogItem ?? undefined}
-          cancelLabel={t("table.edit_modal.cancel")}
-          confirmLabel={t("table.edit_modal.confirm")}
-          onConfirm={handleEditDialogConfirm}
-          isPending={editing.isPending}
-        />
       )}
     </div>
   );

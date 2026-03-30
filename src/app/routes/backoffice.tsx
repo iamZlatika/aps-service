@@ -13,9 +13,7 @@ const OrdersPage = lazy(() => import("@/features/backoffice/modules/orders"));
 const CustomersPage = lazy(
   () => import("@/features/backoffice/modules/customers"),
 );
-const UsersPage = lazy(
-  () => import("@/features/backoffice/modules/users/pages"),
-);
+const UsersPage = lazy(() => import("@/features/backoffice/modules/users"));
 const ProfilePage = lazy(() => import("@/features/backoffice/modules/profile"));
 const DictionariesPage = lazy(
   () => import("@/features/backoffice/modules/dictionaries"),
