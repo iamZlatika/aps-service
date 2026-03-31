@@ -18,7 +18,7 @@ export const useTableActions = (
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<BaseItem | null>(null);
 
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editDialogItem, setEditDialogItem] = useState<BaseItem | null>(null);
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey });
 
@@ -43,7 +43,7 @@ export const useTableActions = (
     mutationFn: ({ id, values }: { id: number; values: Partial<BaseItem> }) =>
       onUpdate(id, values),
     onSuccess: () => {
-      setEditingId(null);
+      setEditDialogItem(null); // закрываем модалку после успеха
       return invalidate();
     },
   });
@@ -63,29 +63,23 @@ export const useTableActions = (
   );
 
   const startEdit = useCallback((item: BaseItem) => {
-    setEditingId(item.id);
+    setEditDialogItem(item);
   }, []);
 
-  const cancelEdit = useCallback(() => {
-    setEditingId(null);
-  }, []);
-
-  const saveEdit = useCallback(
+  const confirmEdit = useCallback(
     async (
-      id: number,
       values: Partial<BaseItem>,
-      setError?: UseFormSetError<Record<string, string>>,
+      setError: UseFormSetError<Record<string, string>>,
     ) => {
-      try {
-        await updateMutation.mutateAsync({ id, values });
-      } catch (error) {
-        if (setError) {
+      if (editDialogItem) {
+        try {
+          await updateMutation.mutateAsync({ id: editDialogItem.id, values });
+        } catch (error) {
           handleFormError(error, setError);
         }
-        // если setError нет (inline-редактирование) — тост покажется глобально
       }
     },
-    [updateMutation],
+    [editDialogItem, updateMutation],
   );
 
   const requestDelete = useCallback((item: BaseItem) => {
@@ -126,16 +120,17 @@ export const useTableActions = (
       deleteMutation.isPending,
     ],
   );
-
-  const editing = useMemo(
+  const editModal = useMemo(
     () => ({
-      id: editingId,
+      item: editDialogItem,
+      isOpen: editDialogItem !== null,
+      close: () => setEditDialogItem(null),
       start: startEdit,
-      cancel: cancelEdit,
-      save: saveEdit,
+      confirm: confirmEdit,
       isPending: updateMutation.isPending,
     }),
-    [editingId, startEdit, cancelEdit, saveEdit, updateMutation.isPending],
+    [editDialogItem, startEdit, confirmEdit, updateMutation.isPending],
   );
-  return { addModal, deleteModal, editing };
+
+  return { addModal, deleteModal, editModal };
 };

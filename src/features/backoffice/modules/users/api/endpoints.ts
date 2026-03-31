@@ -5,5 +5,6 @@ export const USERS_API = {
   updateLocale: () => `${BASE}/locale`,
   updateTheme: () => `${BASE}/theme`,
   updateUserStatus: (id: number) => `${BASE}/${id}/status`,
-  users: () => BASE,
+  listUsers: () => BASE,
+  registerUser: () => "/backoffice/auth/register",
 } as const;

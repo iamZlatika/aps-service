@@ -15,3 +15,11 @@ export type User = {
   theme: UserTheme;
   avatarUrl: string;
 };
+
+export type NewUser = {
+  email: string;
+  name: string;
+  password: string;
+  password_confirmation: string;
+  role: Role;
+};

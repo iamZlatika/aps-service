@@ -1,5 +1,4 @@
 import { resolveDisplayValue } from "@/features/backoffice/widgets/table/lib/resolveDisplayValue.ts";
-
 import {
   TableCell,
   TableRow as ShadCNTableRow,
@@ -26,16 +25,16 @@ export const TableRow = <T extends BaseItem>({
     <ShadCNTableRow>
       {columns.map((col) => (
         <TableCell key={col.key} className={col.className}>
-          <span className="block truncate max-w-[21ch] sm:max-w-none">
-            {resolveDisplayValue(col, item[col.key])}
+          <span className="inline-block truncate max-w-[21ch] sm:max-w-none">
+            {col.renderCell
+              ? col.renderCell(item[col.key], item)
+              : resolveDisplayValue(col, item[col.key])}
           </span>
         </TableCell>
       ))}
       {renderActions && (
-        <TableCell className="text-right">
-          <div className="flex justify-end gap-2">
-            {renderActions(item)} {/* ← вот тут item.id доступен! */}
-          </div>
+        <TableCell className="inline-flex">
+          <div className="flex justify-start gap-1">{renderActions(item)}</div>
         </TableCell>
       )}
     </ShadCNTableRow>

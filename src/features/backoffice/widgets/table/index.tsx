@@ -69,7 +69,6 @@ export const SmartTable = <T extends BaseItem>({
     perPageOptions,
     handlePerPageChange,
   } = pagination;
-
   return (
     <div className="p-2 sm:p-6 max-w-4xl mx-auto w-full">
       <div className="mb-2 sm:mb-3 flex items-center justify-between">

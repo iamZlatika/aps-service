@@ -73,7 +73,7 @@
       }
     }
   },
-    "errors": {
+  "errors": {
     "unknown": "Неизвестная ошибка",
     "server": "Произошла ошибка на сервере",
     "invalid_link": "Ссылка недействительна",
@@ -86,13 +86,8 @@
     "forbidden_action": "Недостаточно прав для выполнения операции",
     "network": "Нет подключения к интернету. Проверьте соединение.",
     "error_id": "Код ошибки"
-    },
+  },
   "table": {
-    "fields": {
-      "name": "Название",
-      "category": "Категория",
-      "base_price": "Базовая цена"
-    },
     "per_page": "Показывать:",
     "pagination": {
       "previous": "Назад",
@@ -175,6 +170,44 @@
   },
   "users": {
     "head_manager": "Администратор",
-    "manager": "Менеджер"
+    "manager": "Менеджер",
+    "table_fields": {
+      "name": "Имя",
+      "role": "Роль",
+      "status": "Статус"
+    },
+    "roles": {
+      "manager": "Менеджер",
+      "head_manager": "Адміністратор"
+    },
+    "actions": {
+      "block": "Заблокировать",
+      "unblock": "Разблокировать",
+      "block_confirm": "Вы действительно хотите заблокировать пользователя {{name}}?",
+      "unblock_confirm": "Вы действительно хотите разблокировать пользователя {{name}}?",
+      "cancel": "Отмена"
+    },
+    "register_form": {
+      "title": "Создание пользователя",
+      "email": "Email",
+      "email_placeholder": "Введите email",
+      "name": "Имя",
+      "name_placeholder": "Введите имя",
+      "password": "Пароль",
+      "password_placeholder": "Введите пароль",
+      "password_confirmation": "Подтверждение пароля",
+      "password_confirmation_placeholder": "Повторите пароль",
+      "role": "Роль",
+      "role_placeholder": "Выберите роль",
+      "cancel": "Отмена",
+      "submit": "Создать"
+    }
+  },
+  "dictionaries": {
+    "table_fields": {
+      "name": "Название",
+      "category": "Категория",
+      "base_price": "Базовая цена"
+    }
   }
 }

@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
 import { Controller, useForm, type UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import type { z } from "zod";
 
 import {
   type BaseItem,
@@ -40,7 +39,7 @@ interface ItemFormDialogProps {
   isPending: boolean;
   cancelLabel: string;
   confirmLabel: string;
-  schema?: z.ZodObject<Record<string, z.ZodString>>;
+  schema?: Parameters<typeof zodResolver>[0];
 }
 
 export const ItemFormDialog = ({
@@ -77,7 +76,7 @@ export const ItemFormDialog = ({
     setError,
     control,
     formState: { errors },
-  } = useForm<Record<string, string>>({
+  } = useForm({
     resolver: zodResolver(schema),
     defaultValues,
   });
@@ -88,7 +87,7 @@ export const ItemFormDialog = ({
     }
   }, [isOpen, defaultValues, reset]);
 
-  const onSubmit = (data: Record<string, string>) => {
+  const onSubmit = (data: unknown) => {
     onConfirm(data as Partial<BaseItem>, setError);
   };
 
@@ -132,6 +131,7 @@ export const ItemFormDialog = ({
               ) : (
                 <Input
                   {...register(field.key)}
+                  type={field.inputType ?? "text"}
                   placeholder={field.placeholder}
                   className={errors[field.key] ? "border-red-500" : ""}
                 />
