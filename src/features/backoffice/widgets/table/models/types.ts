@@ -32,6 +32,7 @@ export interface FieldConfig {
   placeholder?: string;
   required?: boolean;
   type?: "input" | "select";
+  inputType?: string;
   options?: SelectOption[];
 }
 
@@ -43,6 +44,7 @@ export type ColumnConfig = {
   required?: boolean;
   type?: "input" | "select";
   options?: { value: string; label: string }[];
+  renderCell?: (value: string | number, item: BaseItem) => ReactNode;
   filterable?: boolean;
   filterType?: "text" | "select" | "range";
 };

@@ -1,20 +1,19 @@
 import { accessoriesApi } from "@/features/backoffice/modules/dictionaries/api";
-import { SmartTable } from "@/features/backoffice/widgets/table";
+import { DictionaryTablePage } from "@/features/backoffice/modules/dictionaries/components/DictionaryTablePage.tsx";
+import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
+const columns: ColumnConfig[] = [
+  { key: "name", labelKey: "dictionaries.table_fields.name", sortable: true },
+];
+
 const AccessoriesPage = () => (
-  <SmartTable
+  <DictionaryTablePage
     titleKey="sidebar.dictionaries_list.accessories"
     api={accessoriesApi}
     queryKeyFn={queryKeys.dictionaries.accessories}
-    searchPlaceholder="search_placeholders.dictionaries_name"
-    columns={[
-      {
-        key: "name",
-        labelKey: "table.name",
-        sortable: true,
-      },
-    ]}
+    queryKey={queryKeys.dictionaries.accessories()}
+    columns={columns}
   />
 );
 

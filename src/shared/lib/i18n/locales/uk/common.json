@@ -85,11 +85,6 @@
     "error_id": "Код помилки"
   },
   "table": {
-    "fields": {
-      "name": "Назва",
-      "category": "Категорія",
-      "base_price": "Базова ціна"
-    },
     "per_page": "Показувати:",
     "pagination": {
       "previous": "Назад",
@@ -172,6 +167,44 @@
   },
   "users": {
     "head_manager": "Адміністратор",
-    "manager": "Менеджер"
+    "manager": "Менеджер",
+    "table_fields": {
+      "name": "Ім'я",
+      "role": "Роль",
+      "status": "Статус"
+    },
+    "roles": {
+      "manager": "Менеджер",
+      "head_manager": "Адміністратор"
+    },
+    "actions": {
+      "block": "Заблокувати",
+      "unblock": "Розблокувати",
+      "block_confirm": "Ви дійсно хочете заблокувати користувача {{name}}?",
+      "unblock_confirm": "Ви дійсно хочете розблокувати користувача {{name}}?",
+      "cancel": "Скасувати"
+    },
+    "register_form": {
+      "title": "Створення користувача",
+      "email": "Email",
+      "email_placeholder": "Введіть email",
+      "name": "Ім'я",
+      "name_placeholder": "Введіть ім'я",
+      "password": "Пароль",
+      "password_placeholder": "Введіть пароль",
+      "password_confirmation": "Підтвердження пароля",
+      "password_confirmation_placeholder": "Повторіть пароль",
+      "role": "Роль",
+      "role_placeholder": "Оберіть роль",
+      "cancel": "Скасувати",
+      "submit": "Створити"
+    }
+  },
+  "dictionaries": {
+    "table_fields": {
+      "name": "Назва",
+      "category": "Категорія",
+      "base_price": "Базова ціна"
+    }
   }
 }

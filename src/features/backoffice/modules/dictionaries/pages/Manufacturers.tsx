@@ -1,20 +1,19 @@
 import { manufacturersApi } from "@/features/backoffice/modules/dictionaries/api";
-import { SmartTable } from "@/features/backoffice/widgets/table";
+import { DictionaryTablePage } from "@/features/backoffice/modules/dictionaries/components/DictionaryTablePage.tsx";
+import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
+const columns: ColumnConfig[] = [
+  { key: "name", labelKey: "dictionaries.table_fields.name", sortable: true },
+];
+
 const ManufacturersPage = () => (
-  <SmartTable
+  <DictionaryTablePage
     titleKey="sidebar.dictionaries_list.manufacturers"
     api={manufacturersApi}
     queryKeyFn={queryKeys.dictionaries.manufacturers}
-    searchPlaceholder="search_placeholders.dictionaries_name"
-    columns={[
-      {
-        key: "name",
-        labelKey: "table.name",
-        sortable: true,
-      },
-    ]}
+    queryKey={queryKeys.dictionaries.manufacturers()}
+    columns={columns}
   />
 );
 

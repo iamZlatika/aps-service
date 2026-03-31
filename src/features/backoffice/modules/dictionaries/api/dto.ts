@@ -25,7 +25,7 @@ export const PaginationLinksDtoSchema = z.object({
 export const PaginationMetaLinkDtoSchema = z.object({
   url: z.string().nullable(),
   label: z.string(),
-  page: z.number().nullable(),
+  page: z.number().nullable().optional(),
   active: z.boolean(),
 });
 
