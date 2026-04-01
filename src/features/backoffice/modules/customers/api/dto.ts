@@ -17,10 +17,25 @@ export const CustomerDtoSchema = z.object({
   ),
   email: z.string().regex(emailRegex).nullable(),
   email_verified_at: z.string().nullable(),
+  status: zodEnumFromConst(USER_STATUSES),
   comment: z.string().nullable(),
+  last_order_at: z.string().nullable(),
   created_at: z.string(),
   updated_at: z.string(),
-  status: zodEnumFromConst(USER_STATUSES),
 });
 
 export type CustomerDto = z.infer<typeof CustomerDtoSchema>;
+
+export const PaginatedCustomersDtoSchema = z.object({
+  data: z.array(CustomerDtoSchema),
+  meta: z.object({
+    current_page: z.number(),
+    last_page: z.number(),
+    total: z.number(),
+    per_page: z.number(),
+    from: z.number().nullable(),
+    to: z.number().nullable(),
+  }),
+});
+
+export type PaginatedCustomersDto = z.infer<typeof PaginatedCustomersDtoSchema>;

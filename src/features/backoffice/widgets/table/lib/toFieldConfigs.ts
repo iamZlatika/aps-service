@@ -1,10 +1,11 @@
 import type {
+  BaseItem,
   ColumnConfig,
   FieldConfig,
 } from "@/features/backoffice/widgets/table/models/types.ts";
 
 export const toFieldConfigs = (
-  columns: ColumnConfig[],
+  columns: ColumnConfig<BaseItem>[],
   t: (key: string) => string,
 ): FieldConfig[] =>
   columns.map((col) => ({

@@ -36,7 +36,7 @@ export const queryKeys = {
 
   customers: {
     all: ["customers"] as const,
-    list: () => [...queryKeys.customers.all, "list"] as const,
+    list: makeEntityKey(["customers"], "list"),
   },
 
   dictionaries: {

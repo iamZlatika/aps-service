@@ -35,23 +35,25 @@ export interface FieldConfig {
   inputType?: string;
   options?: SelectOption[];
 }
-
-export type ColumnConfig = {
-  key: string;
+export type ColumnConfig<
+  T extends BaseItem,
+  K extends keyof T & string = keyof T & string,
+> = {
+  key: K;
   labelKey: string;
   sortable: boolean;
   className?: string;
   required?: boolean;
   type?: "input" | "select";
   options?: { value: string; label: string }[];
-  renderCell?: (value: string | number, item: BaseItem) => ReactNode;
+  renderCell?: (value: T[K], item: T) => ReactNode;
   filterable?: boolean;
   filterType?: "text" | "select" | "range";
 };
 
 export type BaseItem = {
   id: number;
-  [key: string]: string | number;
+  [key: string]: unknown;
 };
 
 export type Filters = Record<string, string>;

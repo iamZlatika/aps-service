@@ -29,7 +29,7 @@ interface SmartTableProps<T extends BaseItem = BaseItem> {
     sortType: SortType,
     filters: Record<string, string>,
   ) => readonly unknown[];
-  columns: ColumnConfig[];
+  columns: ColumnConfig<BaseItem>[];
   searchPlaceholder: string;
   searchField?: string;
   renderRowActions?: RenderRowActions<T>;
