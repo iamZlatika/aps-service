@@ -7,6 +7,7 @@ export type Customer = {
   email: string | null;
   emailVerifiedAt: string | null;
   comment: string | null;
+  lastOrderAt: string | null;
   createdAt: string;
   updatedAt: string;
   status: UserStatus;

@@ -12,10 +12,9 @@ import type {
 
 interface TableRowProps<T extends BaseItem> {
   item: T;
-  columns: ColumnConfig[];
+  columns: ColumnConfig<T>[];
   renderActions?: RenderRowActions<T>;
 }
-
 export const TableRow = <T extends BaseItem>({
   item,
   columns,

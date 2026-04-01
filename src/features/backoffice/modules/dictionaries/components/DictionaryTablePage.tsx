@@ -34,7 +34,7 @@ interface DictionaryTablePageProps {
     filters: Record<string, string>,
   ) => readonly unknown[];
   queryKey: readonly unknown[];
-  columns: ColumnConfig[];
+  columns: ColumnConfig<BaseItem>[];
   searchPlaceholder?: string;
 }
 

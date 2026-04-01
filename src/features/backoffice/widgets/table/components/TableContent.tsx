@@ -16,7 +16,7 @@ interface TableContentProps<T extends BaseItem> {
   items: T[] | undefined;
   isOperationLoading: boolean;
   perPage: number;
-  columns: ColumnConfig[];
+  columns: ColumnConfig<BaseItem>[];
   renderRowActions?: RenderRowActions<T>;
 }
 

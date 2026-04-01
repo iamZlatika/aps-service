@@ -2,7 +2,10 @@ import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
-import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
+import type {
+  BaseItem,
+  ColumnConfig,
+} from "@/features/backoffice/widgets/table/models/types.ts";
 import {
   TableHead,
   TableHeader,
@@ -11,7 +14,7 @@ import {
 import { cn } from "@/shared/lib/utils.ts";
 
 interface SortableTableHeaderProps {
-  columns: ColumnConfig[];
+  columns: ColumnConfig<BaseItem>[];
   sort: { column: string | null; type: SortType };
   onToggleSort: (key: string) => void;
 }

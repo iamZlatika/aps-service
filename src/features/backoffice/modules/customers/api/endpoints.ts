@@ -1,5 +1,5 @@
 const BASE = "/backoffice/customers";
 
 export const CUSTOMERS_API = {
-  customers: () => `${BASE}/`,
+  listCustomers: () => `${BASE}/`,
 } as const;

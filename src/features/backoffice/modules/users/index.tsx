@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { useCallback, useState } from "react";
 import { type UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -21,15 +20,15 @@ import type {
   FieldConfig,
 } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { Badge } from "@/shared/components/ui/badge.tsx";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 import { type UserStatus } from "@/shared/types.ts";
-import { Badge } from "@/shared/components/ui/badge.tsx";
 
 const UsersPage = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const columns: ColumnConfig[] = [
+  const columns: ColumnConfig<BaseItem>[] = [
     { key: "name", labelKey: "users.table_fields.name", sortable: false },
     {
       key: "role",
@@ -44,14 +43,9 @@ const UsersPage = () => {
       sortable: true,
       renderCell: (value) => {
         const isActive = value === "active";
+
         return (
-          <Badge
-            className={
-              isActive
-                ? "bg-green-100 text-green-800 border-green-200 hover:bg-green-100"
-                : "bg-red-100 text-red-800 border-red-200 hover:bg-red-100"
-            }
-          >
+          <Badge className={isActive ? "..." : "..."}>
             {isActive ? "Active" : "Blocked"}
           </Badge>
         );
@@ -59,7 +53,6 @@ const UsersPage = () => {
     },
   ];
 
-  // === Блокировка/разблокировка ===
   const [targetUser, setTargetUser] = useState<BaseItem | null>(null);
   const isActive = targetUser?.status === "active";
   const newStatus: UserStatus = isActive ? "blocked" : "active";
@@ -83,7 +76,6 @@ const UsersPage = () => {
     }
   }, [targetUser, newStatus, statusMutation]);
 
-  // === Создание пользователя ===
   const [isAddOpen, setIsAddOpen] = useState(false);
 
   const registerMutation = useMutation({
@@ -165,7 +157,6 @@ const UsersPage = () => {
         )}
       />
 
-      {/* Модалка блокировки/разблокировки */}
       <DeleteConfirmDialog
         isOpen={targetUser !== null}
         onOpenChange={(open) => {
@@ -185,7 +176,6 @@ const UsersPage = () => {
         isPending={statusMutation.isPending}
       />
 
-      {/* Модалка создания пользователя */}
       <ItemFormDialog
         isOpen={isAddOpen}
         onOpenChange={setIsAddOpen}
