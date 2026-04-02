@@ -7,6 +7,13 @@ import { USER_STATUSES } from "@/shared/types.ts";
 export const CustomerDtoSchema = z.object({
   id: z.number(),
   name: z.string(),
+  portal_name: z.string().nullable(),
+  email: z.string().regex(emailRegex).nullable(),
+  email_verified_at: z.string().nullable(),
+  has_google: z.boolean(),
+  telegram_chat_id: z.number().nullable(),
+  telegram_linked_at: z.string().nullable(),
+  avatar_url: z.string(),
   phones: z.array(
     z.object({
       id: z.number(),
@@ -15,9 +22,8 @@ export const CustomerDtoSchema = z.object({
       is_primary: z.boolean(),
     }),
   ),
-  email: z.string().regex(emailRegex).nullable(),
-  email_verified_at: z.string().nullable(),
   status: zodEnumFromConst(USER_STATUSES),
+  rating: z.number().nullable(),
   comment: z.string().nullable(),
   last_order_at: z.string().nullable(),
   created_at: z.string(),

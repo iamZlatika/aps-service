@@ -24,6 +24,8 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select.tsx";
 
+import { PhoneMaskInput } from "../inputs/PhoneMaskInput.tsx";
+
 import { buildEditSchema } from "../../lib/buildEditSchema.ts";
 
 interface ItemFormDialogProps {
@@ -126,6 +128,19 @@ export const ItemFormDialog = ({
                         ))}
                       </SelectContent>
                     </Select>
+                  )}
+                />
+              ) : field.type === "phone" ? (
+                <Controller
+                  control={control}
+                  name={field.key}
+                  render={({ field: { onChange, value } }) => (
+                    <PhoneMaskInput
+                      value={value}
+                      onChange={onChange}
+                      placeholder={field.placeholder}
+                      className={errors[field.key] ? "border-red-500" : ""}
+                    />
                   )}
                 />
               ) : (

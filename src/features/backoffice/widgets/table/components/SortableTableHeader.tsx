@@ -17,12 +17,14 @@ interface SortableTableHeaderProps {
   columns: ColumnConfig<BaseItem>[];
   sort: { column: string | null; type: SortType };
   onToggleSort: (key: string) => void;
+  hasActions?: boolean;
 }
 
 export const SortableTableHeader = ({
   columns,
   sort,
   onToggleSort,
+  hasActions,
 }: SortableTableHeaderProps) => {
   const { t } = useTranslation();
 
@@ -51,7 +53,9 @@ export const SortableTableHeader = ({
             </div>
           </TableHead>
         ))}
-        <TableHead className="w-[80px] sm:w-[100px] text-right" />
+        {hasActions && (
+          <TableHead className="w-[80px] sm:w-[100px] text-right" />
+        )}
       </TableRow>
     </TableHeader>
   );

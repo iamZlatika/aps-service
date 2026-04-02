@@ -32,6 +32,7 @@ interface SmartTableProps<T extends BaseItem = BaseItem> {
   columns: ColumnConfig<BaseItem>[];
   searchPlaceholder: string;
   searchField?: string;
+  searchNumbersOnly?: boolean;
   renderRowActions?: RenderRowActions<T>;
   headerActions?: ReactNode;
 }
@@ -42,6 +43,7 @@ export const SmartTable = <T extends BaseItem>({
   queryKeyFn,
   searchPlaceholder,
   searchField,
+  searchNumbersOnly,
   columns,
   renderRowActions,
   headerActions,
@@ -93,6 +95,7 @@ export const SmartTable = <T extends BaseItem>({
             placeholder={t(searchPlaceholder)}
             value={filters[searchField ?? "name"] ?? ""}
             onChange={setFilter}
+            numbersOnly={searchNumbersOnly}
           />
           <div className="rounded-md border overflow-hidden bg-card">
             <Table>
@@ -100,6 +103,7 @@ export const SmartTable = <T extends BaseItem>({
                 columns={columns}
                 sort={sort}
                 onToggleSort={toggleSort}
+                hasActions={!!renderRowActions}
               />
               <TableBody>
                 <TableContent
