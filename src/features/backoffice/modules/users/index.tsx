@@ -20,7 +20,6 @@ import type {
   FieldConfig,
 } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { Badge } from "@/shared/components/ui/badge.tsx";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 import { type UserStatus } from "@/shared/types.ts";
 
@@ -41,15 +40,13 @@ const UsersPage = () => {
       key: "status",
       labelKey: "users.table_fields.status",
       sortable: true,
-      renderCell: (value) => {
-        const isActive = value === "active";
-
-        return (
-          <Badge className={isActive ? "..." : "..."}>
-            {isActive ? "Active" : "Blocked"}
-          </Badge>
-        );
-      },
+      className: "text-right [&>*]:ml-auto [&>div]:justify-end",
+      renderCell: (value, item) => (
+        <UserStatusButton
+          status={String(value)}
+          onClick={() => handleStatusClick(item)}
+        />
+      ),
     },
   ];
 
@@ -149,12 +146,6 @@ const UsersPage = () => {
         searchPlaceholder="search_placeholders.users_name"
         columns={columns}
         headerActions={<AddButton onClick={() => setIsAddOpen(true)} />}
-        renderRowActions={(user) => (
-          <UserStatusButton
-            status={String(user.status)}
-            onClick={() => handleStatusClick(user)}
-          />
-        )}
       />
 
       <DeleteConfirmDialog

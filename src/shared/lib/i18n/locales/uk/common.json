@@ -116,11 +116,14 @@
     "password_min": "Пароль має бути не менше 8 символів",
     "password_max": "Пароль занадто довгий",
     "field_required": "Поле не може бути порожнім",
-    "passwords_dont_match": "Паролі не збігаються"
+    "passwords_dont_match": "Паролі не збігаються",
+    "phone_invalid": "Введіть коректний номер телефона"
   },
   "search_placeholders": {
     "dictionaries_name": "Пошук по назві",
-    "users_name": "Пошук по імені"
+    "users_name": "Пошук по імені",
+    "customer_name": "Пошук по імені клієнта",
+    "customer_phone": "Пошук за номером телефону"
   },
   "breadcrumbs": {
     "home": "Головна",
@@ -198,6 +201,29 @@
       "role_placeholder": "Оберіть роль",
       "cancel": "Скасувати",
       "submit": "Створити"
+    }
+  },
+  "customers": {
+    "table_fields": {
+      "name": "Ім'я",
+      "lastOrderAt": "Останнє замовлення",
+      "mainPhone": "Основний тел.",
+      "secondaryPhone": "Інший тел.",
+      "comment": "Коментар",
+      "rating": "Рейтинг"
+    },
+    "register_form": {
+      "title": "Додавання клієнта",
+      "name": "Ім'я",
+      "name_placeholder": "Введіть ім'я",
+      "phone": "Телефон",
+      "phone_placeholder": "Введіть номер телефону",
+      "email": "Email",
+      "email_placeholder": "Введіть email",
+      "comment": "Коментар",
+      "comment_placeholder": "Введіть коментар",
+      "cancel": "Скасувати",
+      "submit": "Додати"
     }
   },
   "dictionaries": {

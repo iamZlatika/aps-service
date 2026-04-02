@@ -9,6 +9,7 @@ interface SearchFilterProps {
   value: string;
   onChange: (fieldName: string, value: string) => void;
   debounceMs?: number;
+  numbersOnly?: boolean;
 }
 
 const SearchFilter = ({
@@ -17,6 +18,7 @@ const SearchFilter = ({
   value,
   onChange,
   debounceMs = 400,
+  numbersOnly = false,
 }: SearchFilterProps) => {
   const [localValue, setLocalValue] = useState(value);
 
@@ -35,7 +37,9 @@ const SearchFilter = ({
   }, [value]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const next = e.target.value;
+    const next = numbersOnly
+      ? e.target.value.replace(/\D/g, "")
+      : e.target.value;
     setLocalValue(next);
 
     if (timerRef.current) {
@@ -73,6 +77,7 @@ const SearchFilter = ({
         value={localValue}
         onChange={handleChange}
         placeholder={placeholder}
+        inputMode={numbersOnly ? "numeric" : undefined}
         className="pl-9 pr-9 bg-background"
       />
 

@@ -31,7 +31,7 @@ export interface FieldConfig {
   label: string;
   placeholder?: string;
   required?: boolean;
-  type?: "input" | "select";
+  type?: "input" | "select" | "phone";
   inputType?: string;
   options?: SelectOption[];
 }
@@ -44,7 +44,7 @@ export type ColumnConfig<
   sortable: boolean;
   className?: string;
   required?: boolean;
-  type?: "input" | "select";
+  type?: "input" | "select" | "phone";
   options?: { value: string; label: string }[];
   renderCell?: (value: T[K], item: T) => ReactNode;
   filterable?: boolean;
