@@ -58,15 +58,18 @@ export const ItemFormDialog = ({
   const { t } = useTranslation();
 
   const schema = useMemo(
-    () => externalSchema ?? buildEditSchema(fields),
-    [externalSchema, fields],
+    () => externalSchema ?? buildEditSchema(fields, t),
+    [externalSchema, fields, t],
   );
 
   const defaultValues = useMemo(
     () =>
-      values
-        ? (values as Record<string, string>)
-        : Object.fromEntries(fields.map((f) => [f.key, ""])),
+      Object.fromEntries(
+        fields.map((f) => [
+          f.key,
+          values?.[f.key] != null ? String(values[f.key]) : "",
+        ]),
+      ),
     [values, fields],
   );
 
@@ -116,7 +119,9 @@ export const ItemFormDialog = ({
                         className={errors[field.key] ? "border-red-500" : ""}
                       >
                         <SelectValue
-                          placeholder={field.placeholder ?? "Выберите..."}
+                          placeholder={
+                            field.placeholder ?? t("table.select_placeholder")
+                          }
                         />
                       </SelectTrigger>
                       <SelectContent>

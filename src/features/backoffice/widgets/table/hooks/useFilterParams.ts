@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 import { type Filters } from "@/features/backoffice/widgets/table/models/types.ts";
 
-const RESERVED_PARAMS = ["page", "per_page", "sort_column", "sort_type"];
+const RESERVED_PARAMS = ["page", "sort_column", "sort_type"];
 
 export const useFilterParams = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,27 +27,7 @@ export const useFilterParams = () => {
         } else {
           next.delete(fieldName);
         }
-        next.set("page", "1");
-        return next;
-      });
-    },
-    [setSearchParams],
-  );
-
-  const setFilters = useCallback(
-    (newFilters: Filters) => {
-      setSearchParams((prev) => {
-        const next = new URLSearchParams(prev);
-
-        Object.entries(newFilters).forEach(([key, value]) => {
-          if (value) {
-            next.set(key, value);
-          } else {
-            next.delete(key);
-          }
-        });
-
-        next.set("page", "1");
+        next.delete("page");
         return next;
       });
     },
@@ -61,9 +41,10 @@ export const useFilterParams = () => {
         const val = prev.get(key);
         if (val) next.set(key, val);
       });
+      next.delete("page");
       return next;
     });
   }, [setSearchParams]);
 
-  return { filters, setFilter, setFilters, resetFilters };
+  return { filters, setFilter, resetFilters };
 };

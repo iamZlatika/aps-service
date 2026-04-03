@@ -16,12 +16,18 @@ import type {
 } from "@/features/backoffice/widgets/table/models/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Table, TableBody } from "@/shared/components/ui/table.tsx";
+import { cn } from "@/shared/lib/utils.ts";
 
 import { useSmartTable } from "./hooks/useSmartTable.ts";
 
-interface SmartTableProps<T extends BaseItem = BaseItem> {
+type RowInteraction<T extends BaseItem> =
+  | { onRowClick: (item: T) => void; renderRowActions?: never }
+  | { renderRowActions: RenderRowActions<T>; onRowClick?: never }
+  | { onRowClick?: never; renderRowActions?: never };
+
+type SmartTableProps<T extends BaseItem = BaseItem> = {
   titleKey: string;
-  api: SmartTableApi<T>; // только getAll
+  api: SmartTableApi<T>;
   queryKeyFn: (
     page: number,
     perPage: number,
@@ -29,14 +35,12 @@ interface SmartTableProps<T extends BaseItem = BaseItem> {
     sortType: SortType,
     filters: Record<string, string>,
   ) => readonly unknown[];
-  columns: ColumnConfig<BaseItem>[];
+  columns: ColumnConfig<T>[];
   searchPlaceholder: string;
   searchField?: string;
   searchNumbersOnly?: boolean;
-  renderRowActions?: RenderRowActions<T>;
-  onRowClick?: (item: T) => void;
   headerActions?: ReactNode;
-}
+} & RowInteraction<T>;
 
 export const SmartTable = <T extends BaseItem>({
   titleKey,
@@ -53,7 +57,7 @@ export const SmartTable = <T extends BaseItem>({
   const { t } = useTranslation();
 
   const {
-    data: { items, isOperationLoading, isError, refetch },
+    data: { items, isLoading, isRefetching, isError, refetch },
     pagination,
     sort: { sort, toggleSort },
     filters: { filters, setFilter },
@@ -62,6 +66,7 @@ export const SmartTable = <T extends BaseItem>({
     queryKeyFn,
     columns,
     searchField: searchField ?? "name",
+    tableKey: titleKey,
   });
 
   const {
@@ -73,13 +78,21 @@ export const SmartTable = <T extends BaseItem>({
     perPageOptions,
     handlePerPageChange,
   } = pagination;
+
   return (
     <div className="p-2 sm:p-6 max-w-4xl mx-auto w-full">
       <div className="mb-2 sm:mb-3 flex items-center justify-between">
         <h1 className="text-xl sm:text-2xl font-bold">{t(titleKey)}</h1>
-
         {headerActions}
       </div>
+
+      <SearchFilter
+        fieldName={searchField ?? "name"}
+        placeholder={t(searchPlaceholder)}
+        value={filters[searchField ?? "name"] ?? ""}
+        onChange={setFilter}
+        numbersOnly={searchNumbersOnly}
+      />
 
       {isError ? (
         <div className="rounded-md border p-8 text-center">
@@ -92,14 +105,12 @@ export const SmartTable = <T extends BaseItem>({
         </div>
       ) : (
         <>
-          <SearchFilter
-            fieldName={searchField ?? "name"}
-            placeholder={t(searchPlaceholder)}
-            value={filters[searchField ?? "name"] ?? ""}
-            onChange={setFilter}
-            numbersOnly={searchNumbersOnly}
-          />
-          <div className="rounded-md border overflow-hidden bg-card">
+          <div
+            className={cn(
+              "rounded-md border overflow-hidden bg-card",
+              isRefetching && "opacity-60 pointer-events-none",
+            )}
+          >
             <Table>
               <SortableTableHeader
                 columns={columns}
@@ -111,8 +122,8 @@ export const SmartTable = <T extends BaseItem>({
                 <TableContent
                   columns={columns}
                   items={items}
-                  isOperationLoading={isOperationLoading}
-                  perPage={pagination.perPage}
+                  isLoading={isLoading}
+                  perPage={perPage}
                   renderRowActions={renderRowActions}
                   onRowClick={onRowClick}
                 />

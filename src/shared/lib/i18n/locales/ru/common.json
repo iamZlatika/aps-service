@@ -89,6 +89,7 @@
   },
   "table": {
     "per_page": "Показывать:",
+    "select_placeholder": "Выберите...",
     "pagination": {
       "previous": "Назад",
       "next": "Вперёд"
