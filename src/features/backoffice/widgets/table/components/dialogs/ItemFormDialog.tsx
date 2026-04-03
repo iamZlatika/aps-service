@@ -24,9 +24,8 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select.tsx";
 
-import { PhoneMaskInput } from "../inputs/PhoneMaskInput.tsx";
-
 import { buildEditSchema } from "../../lib/buildEditSchema.ts";
+import { PhoneMaskInput } from "../inputs/PhoneMaskInput.tsx";
 
 interface ItemFormDialogProps {
   isOpen: boolean;

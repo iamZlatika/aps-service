@@ -18,6 +18,7 @@ interface TableContentProps<T extends BaseItem> {
   perPage: number;
   columns: ColumnConfig<BaseItem>[];
   renderRowActions?: RenderRowActions<T>;
+  onRowClick?: (item: T) => void;
 }
 
 export const TableContent = <T extends BaseItem>({
@@ -26,6 +27,7 @@ export const TableContent = <T extends BaseItem>({
   perPage,
   columns,
   renderRowActions,
+  onRowClick,
 }: TableContentProps<T>) => {
   const { t } = useTranslation();
 
@@ -51,6 +53,7 @@ export const TableContent = <T extends BaseItem>({
           item={item}
           columns={columns}
           renderActions={renderRowActions}
+          onRowClick={onRowClick}
         />
       ))}
     </>

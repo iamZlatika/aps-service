@@ -14,9 +14,7 @@ export const PhoneMaskInput = ({
   onChange,
   className,
 }: PhoneMaskInputProps) => {
-  const displayValue = value.startsWith("38")
-    ? value.slice(2)
-    : value;
+  const displayValue = value.startsWith("38") ? value.slice(2) : value;
 
   return (
     <div
