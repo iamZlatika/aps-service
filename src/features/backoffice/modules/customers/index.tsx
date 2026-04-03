@@ -3,8 +3,10 @@ import { useCallback, useState } from "react";
 import type { UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { CustomerCardDialog } from "@/features/backoffice/modules/customers/components/CustomerCardDialog.tsx";
 import { newCustomerSchema } from "@/features/backoffice/modules/customers/lib/newCustomerSchema.ts";
 import {
+  type Customer,
   type NewCustomer,
   type Phones,
 } from "@/features/backoffice/modules/customers/types.ts";
@@ -25,6 +27,9 @@ import { customersApi } from "./api";
 const CustomersPage = () => {
   const { t } = useTranslation();
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    null,
+  );
   const columns: ColumnConfig<BaseItem>[] = [
     { key: "name", labelKey: "customers.table_fields.name", sortable: true },
     {
@@ -123,6 +128,11 @@ const CustomersPage = () => {
         searchNumbersOnly
         columns={columns}
         headerActions={<AddButton onClick={() => setIsAddOpen(true)} />}
+        onRowClick={(item) => setSelectedCustomer(item as Customer)}
+      />
+      <CustomerCardDialog
+        customer={selectedCustomer}
+        onOpenChange={(open) => !open && setSelectedCustomer(null)}
       />
       <ItemFormDialog
         isOpen={isAddOpen}

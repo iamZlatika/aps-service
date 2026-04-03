@@ -34,6 +34,7 @@ interface SmartTableProps<T extends BaseItem = BaseItem> {
   searchField?: string;
   searchNumbersOnly?: boolean;
   renderRowActions?: RenderRowActions<T>;
+  onRowClick?: (item: T) => void;
   headerActions?: ReactNode;
 }
 
@@ -46,6 +47,7 @@ export const SmartTable = <T extends BaseItem>({
   searchNumbersOnly,
   columns,
   renderRowActions,
+  onRowClick,
   headerActions,
 }: SmartTableProps<T>) => {
   const { t } = useTranslation();
@@ -112,6 +114,7 @@ export const SmartTable = <T extends BaseItem>({
                   isOperationLoading={isOperationLoading}
                   perPage={pagination.perPage}
                   renderRowActions={renderRowActions}
+                  onRowClick={onRowClick}
                 />
               </TableBody>
             </Table>

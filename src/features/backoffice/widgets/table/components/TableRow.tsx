@@ -14,14 +14,19 @@ interface TableRowProps<T extends BaseItem> {
   item: T;
   columns: ColumnConfig<T>[];
   renderActions?: RenderRowActions<T>;
+  onRowClick?: (item: T) => void;
 }
 export const TableRow = <T extends BaseItem>({
   item,
   columns,
   renderActions,
+  onRowClick,
 }: TableRowProps<T>) => {
   return (
-    <ShadCNTableRow>
+    <ShadCNTableRow
+      onClick={onRowClick ? () => onRowClick(item) : undefined}
+      className={onRowClick ? "cursor-pointer" : undefined}
+    >
       {columns.map((col) => (
         <TableCell key={col.key} className={col.className}>
           <span className="inline-block truncate max-w-[21ch] sm:max-w-none">
