@@ -37,8 +37,10 @@ export const TableRow = <T extends BaseItem>({
         </TableCell>
       ))}
       {renderActions && (
-        <TableCell className="inline-flex">
-          <div className="flex justify-start gap-1">{renderActions(item)}</div>
+        <TableCell className="">
+          <div className="inline-flex justify-start gap-1">
+            {renderActions(item)}
+          </div>
         </TableCell>
       )}
     </ShadCNTableRow>

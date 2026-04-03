@@ -1,26 +1,31 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { type UseFormSetError } from "react-hook-form";
 
 import { type BaseItem } from "@/features/backoffice/widgets/table/models/types.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 
-export const useTableActions = (
+export const useTableActions = <T extends BaseItem>(
   queryKey: readonly unknown[],
-  onAdd: (values: Partial<BaseItem>) => Promise<BaseItem>,
+  onAdd: (values: Partial<T>) => Promise<T>,
   onDelete: (id: number) => Promise<void>,
-  onUpdate: (id: number, values: Partial<BaseItem>) => Promise<BaseItem>,
+  onUpdate: (id: number, values: Partial<T>) => Promise<T>,
 ) => {
   const queryClient = useQueryClient();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<BaseItem | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<T | null>(null);
 
-  const [editDialogItem, setEditDialogItem] = useState<BaseItem | null>(null);
+  const [editDialogItem, setEditDialogItem] = useState<T | null>(null);
 
-  const invalidate = () => queryClient.invalidateQueries({ queryKey });
+  const queryKeyRef = useRef(queryKey);
+  queryKeyRef.current = queryKey;
+  const invalidate = useCallback(
+    () => queryClient.invalidateQueries({ queryKey: queryKeyRef.current }),
+    [queryClient],
+  );
 
   const createMutation = useMutation({
     mutationFn: onAdd,
@@ -40,17 +45,17 @@ export const useTableActions = (
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, values }: { id: number; values: Partial<BaseItem> }) =>
+    mutationFn: ({ id, values }: { id: number; values: Partial<T> }) =>
       onUpdate(id, values),
     onSuccess: () => {
-      setEditDialogItem(null); // закрываем модалку после успеха
+      setEditDialogItem(null);
       return invalidate();
     },
   });
 
   const submitAdd = useCallback(
     async (
-      values: Partial<BaseItem>,
+      values: Partial<T>,
       setError: UseFormSetError<Record<string, string>>,
     ) => {
       try {
@@ -62,13 +67,13 @@ export const useTableActions = (
     [createMutation],
   );
 
-  const startEdit = useCallback((item: BaseItem) => {
+  const startEdit = useCallback((item: T) => {
     setEditDialogItem(item);
   }, []);
 
   const confirmEdit = useCallback(
     async (
-      values: Partial<BaseItem>,
+      values: Partial<T>,
       setError: UseFormSetError<Record<string, string>>,
     ) => {
       if (editDialogItem) {
@@ -82,7 +87,7 @@ export const useTableActions = (
     [editDialogItem, updateMutation],
   );
 
-  const requestDelete = useCallback((item: BaseItem) => {
+  const requestDelete = useCallback((item: T) => {
     setItemToDelete(item);
     setIsDeleteModalOpen(true);
   }, []);
@@ -120,6 +125,7 @@ export const useTableActions = (
       deleteMutation.isPending,
     ],
   );
+
   const editModal = useMemo(
     () => ({
       item: editDialogItem,

@@ -14,16 +14,16 @@ import {
 
 interface TableContentProps<T extends BaseItem> {
   items: T[] | undefined;
-  isOperationLoading: boolean;
+  isLoading: boolean;
   perPage: number;
-  columns: ColumnConfig<BaseItem>[];
+  columns: ColumnConfig<T>[];
   renderRowActions?: RenderRowActions<T>;
   onRowClick?: (item: T) => void;
 }
 
 export const TableContent = <T extends BaseItem>({
   items,
-  isOperationLoading,
+  isLoading,
   perPage,
   columns,
   renderRowActions,
@@ -31,14 +31,23 @@ export const TableContent = <T extends BaseItem>({
 }: TableContentProps<T>) => {
   const { t } = useTranslation();
 
-  if (isOperationLoading) {
-    return <TableSkeleton rowCount={perPage} colCount={columns.length + 1} />;
+  if (isLoading) {
+    return (
+      <TableSkeleton
+        rowCount={perPage}
+        colCount={columns.length}
+        hasActions={!!renderRowActions}
+      />
+    );
   }
 
   if (!items || items.length === 0) {
     return (
       <ShadCNTableRow>
-        <TableCell colSpan={columns.length + 1} className="h-24 text-center">
+        <TableCell
+          colSpan={columns.length + (renderRowActions ? 1 : 0)}
+          className="h-24 text-center"
+        >
           {t("table.no_results")}
         </TableCell>
       </ShadCNTableRow>

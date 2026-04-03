@@ -40,7 +40,7 @@ export const useSortParams = () => {
           next.delete("sort_type");
         }
 
-        next.set("page", "1");
+        next.delete("page");
         return next;
       });
     },
