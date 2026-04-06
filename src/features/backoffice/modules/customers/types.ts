@@ -10,21 +10,26 @@ export type Customer = {
   telegramChatId: number | null;
   telegramLinkedAt: string | null;
   avatarUrl: string;
-  phones: Phones[];
+  phones: Phone[];
   status: UserStatus;
-  rating: number | null;
+  rating: RatingValue;
   comment: string | null;
   lastOrderAt: string | null;
   createdAt: string;
   updatedAt: string;
 };
 
-export type Phones = {
+export type Phone = {
   id: number;
   phoneNumber: string;
   phoneVerifiedAt: string | null;
   isPrimary: boolean;
 };
-type CreatableCustomerFields = "name" | "phones" | "email" | "comment";
 
-export type NewCustomer = Pick<Customer, CreatableCustomerFields>;
+export type NewPhone = Pick<Phone, "phoneNumber">;
+
+export type NewCustomer = Pick<Customer, "name" | "email" | "comment"> & {
+  phone: string;
+};
+
+export type RatingValue = 1 | 2 | 3 | 4 | 5 | null;

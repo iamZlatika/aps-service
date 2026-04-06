@@ -15,7 +15,11 @@ export const PhoneMaskInput = ({
   placeholder,
   className,
 }: PhoneMaskInputProps) => {
-  const displayValue = value.startsWith("38") ? value.slice(2) : value;
+  const displayValue = value.startsWith("+38")
+    ? value.slice(3)
+    : value.startsWith("38")
+      ? value.slice(2)
+      : value;
 
   return (
     <div
@@ -32,7 +36,7 @@ export const PhoneMaskInput = ({
         value={displayValue}
         onAccept={(maskedValue: string) => {
           const digits = maskedValue.replace(/\D/g, "");
-          onChange(digits ? "38" + digits : "");
+          onChange(digits ? "+38" + digits : "");
         }}
         placeholder={placeholder ?? "0XX-XXX-XX-XX"}
         className="flex-1 bg-transparent px-3 py-1 text-sm placeholder:text-muted-foreground focus:outline-none rounded-r-md"

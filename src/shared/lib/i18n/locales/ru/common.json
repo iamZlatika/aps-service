@@ -121,7 +121,7 @@
     "password_max": "Пароль слишком длинный",
     "field_required": "Поле не может быть пустым",
     "passwords_dont_match": "Пароли не совпадают",
-    "validation.phone_invalid": "Введите корректный номер телефона"
+    "phone_invalid": "Введите номер в формате +38 0XX-XXX-XX-XX"
   },
   "search_placeholders": {
     "dictionaries_name": "Поиск по названию",
@@ -221,13 +221,28 @@
       "name": "Имя",
       "name_placeholder": "Введите имя",
       "phone": "Телефон",
-      "phone_placeholder": "Введите номер телефона",
+      "new_phone": "Новый телефон",
+      "phone_placeholder": "0__-___-__-__",
       "email": "Email",
       "email_placeholder": "Введите email",
       "comment": "Комментарий",
       "comment_placeholder": "Введите комментарий",
       "cancel": "Отмена",
-      "submit": "Добавить"
+      "submit": "Добавить",
+      "add_phone": "Добавить телефон"
+    },
+    "actions": {
+      "block": "Заблокировать",
+      "unblock": "Разблокировать",
+      "block_confirm": "Вы действительно хотите заблокировать клиента {{name}}?",
+      "unblock_confirm": "Вы действительно хотите разблокировать клиента {{name}}?",
+      "cancel": "Отмена",
+      "delete": "Удалить",
+      "delete_confirm": "Вы действительно хотите удалить номер {{number}}?",
+      "add_phone": "Добавить телефон"
+    },
+    "profile": {
+      "phones": "Телефоны"
     }
   },
   "dictionaries": {

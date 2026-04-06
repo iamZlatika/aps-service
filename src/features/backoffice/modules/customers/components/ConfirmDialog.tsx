@@ -4,38 +4,43 @@ import { Button } from "@/shared/components/ui/button.tsx";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/shared/components/ui/dialog.tsx";
 
-interface PasswordChangedDialogProps {
+interface ConfirmDialogProps {
   open: boolean;
   onClose: () => void;
+  onConfirm: () => void;
+  title: string;
+  buttonDescription: string;
 }
 
-const PasswordChangedDialog = ({
+const ConfirmDialog = ({
   open,
   onClose,
-}: PasswordChangedDialogProps) => {
+  onConfirm,
+  title,
+  buttonDescription,
+}: ConfirmDialogProps) => {
   const { t } = useTranslation();
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t("profile.password_changed_success")}</DialogTitle>
-          <DialogDescription className="sr-only">
-            {t("profile.password_changed_success")}
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={onClose}>{t("profile.ok")}</Button>
+          <Button onClick={onClose}>{t("customers.actions.cancel")}</Button>
+          <Button variant="destructive" onClick={onConfirm}>
+            {buttonDescription}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default PasswordChangedDialog;
+export default ConfirmDialog;

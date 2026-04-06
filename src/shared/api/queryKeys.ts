@@ -37,6 +37,7 @@ export const queryKeys = {
   customers: {
     all: ["customers"] as const,
     list: makeEntityKey(["customers"], "list"),
+    detail: (id: number) => ["customers", "detail", id] as const,
   },
 
   dictionaries: {

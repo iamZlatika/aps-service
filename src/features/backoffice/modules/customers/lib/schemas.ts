@@ -5,7 +5,9 @@ import { emailRegex } from "@/shared/lib/constants.ts";
 
 export const newCustomerSchema = z.object({
   name: z.string().trim().min(1, i18next.t("validation.field_required")),
-  phone: z.string().regex(/^380\d{9}$/, "validation.phone_invalid"),
+  phone: z
+    .string()
+    .regex(/^\+380\d{9}$/, i18next.t("validation.phone_invalid")),
   email: z
     .string()
     .trim()
@@ -14,4 +16,10 @@ export const newCustomerSchema = z.object({
     })
     .optional(),
   comment: z.string().optional(),
+});
+
+export const addPhoneSchema = z.object({
+  phone: z
+    .string()
+    .regex(/^\+380\d{9}$/, i18next.t("validation.phone_invalid")),
 });

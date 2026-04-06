@@ -5,10 +5,12 @@ import { useTranslation } from "react-i18next";
 
 import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
 import { usersApi } from "@/features/backoffice/modules/users/api";
-import { UserStatusButton } from "@/features/backoffice/modules/users/components/UserStatusButton.tsx";
 import { getUserRoleOptions } from "@/features/backoffice/modules/users/data.ts";
 import { registerUserSchema } from "@/features/backoffice/modules/users/lib/registerUserSchema.ts";
-import { type NewUser } from "@/features/backoffice/modules/users/types.ts";
+import {
+  type NewUser,
+  type User,
+} from "@/features/backoffice/modules/users/types.ts";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import {
   DeleteConfirmDialog,
@@ -20,6 +22,7 @@ import type {
   FieldConfig,
 } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { UserStatusButton } from "@/shared/components/common/UserStatusButton.tsx";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 import { type UserStatus } from "@/shared/types.ts";
 
@@ -27,7 +30,7 @@ const UsersPage = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const columns: ColumnConfig<BaseItem>[] = [
+  const columns: ColumnConfig<User>[] = [
     { key: "name", labelKey: "users.table_fields.name", sortable: false },
     {
       key: "role",
@@ -50,7 +53,7 @@ const UsersPage = () => {
     },
   ];
 
-  const [targetUser, setTargetUser] = useState<BaseItem | null>(null);
+  const [targetUser, setTargetUser] = useState<User | null>(null);
   const isActive = targetUser?.status === "active";
   const newStatus: UserStatus = isActive ? "blocked" : "active";
 
@@ -63,7 +66,7 @@ const UsersPage = () => {
     },
   });
 
-  const handleStatusClick = useCallback((item: BaseItem) => {
+  const handleStatusClick = useCallback((item: User) => {
     setTargetUser(item);
   }, []);
 
