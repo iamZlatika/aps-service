@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 import { type Filters } from "@/features/backoffice/widgets/table/models/types.ts";
 
-const RESERVED_PARAMS = ["page", "sort_column", "sort_type"];
+const RESERVED_PARAMS = ["page", "sort_column", "sort_type", "id"];
 
 export const useFilterParams = () => {
   const [searchParams, setSearchParams] = useSearchParams();

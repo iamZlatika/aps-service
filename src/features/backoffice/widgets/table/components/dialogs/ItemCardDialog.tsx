@@ -12,7 +12,7 @@ import {
 interface ItemCardDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  title: string;
+  title: string | ReactNode;
   closeLabel: string;
   children: ReactNode;
 }

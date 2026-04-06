@@ -4,6 +4,16 @@ import { emailRegex } from "@/shared/lib/constants.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
 import { USER_STATUSES } from "@/shared/types.ts";
 
+export const PhoneDtoSchema = z.object({
+  id: z.number(),
+  phone_number: z.string(),
+  phone_verified_at: z.string().nullable(),
+  is_primary: z.boolean(),
+});
+export type PhoneDto = z.infer<typeof PhoneDtoSchema>;
+export const PhoneDtoArraySchema = z.array(PhoneDtoSchema);
+export type PhoneDtoArray = z.infer<typeof PhoneDtoArraySchema>;
+
 export const CustomerDtoSchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -14,16 +24,17 @@ export const CustomerDtoSchema = z.object({
   telegram_chat_id: z.number().nullable(),
   telegram_linked_at: z.string().nullable(),
   avatar_url: z.string(),
-  phones: z.array(
-    z.object({
-      id: z.number(),
-      phone_number: z.string(),
-      phone_verified_at: z.string().nullable(),
-      is_primary: z.boolean(),
-    }),
-  ),
+  phones: z.array(PhoneDtoSchema),
   status: zodEnumFromConst(USER_STATUSES),
-  rating: z.number().nullable(),
+  rating: z
+    .union([
+      z.literal(1),
+      z.literal(2),
+      z.literal(3),
+      z.literal(4),
+      z.literal(5),
+    ])
+    .nullable(),
   comment: z.string().nullable(),
   last_order_at: z.string().nullable(),
   created_at: z.string(),

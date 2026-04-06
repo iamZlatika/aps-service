@@ -2,13 +2,13 @@ import { useMutation } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 import type { UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
-import { CustomerCardDialog } from "@/features/backoffice/modules/customers/components/CustomerCardDialog.tsx";
-import { newCustomerSchema } from "@/features/backoffice/modules/customers/lib/newCustomerSchema.ts";
+import { newCustomerSchema } from "@/features/backoffice/modules/customers/lib/schemas.ts";
 import {
   type Customer,
   type NewCustomer,
-  type Phones,
+  type Phone,
 } from "@/features/backoffice/modules/customers/types.ts";
 import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
 import { SmartTable } from "@/features/backoffice/widgets/table";
@@ -22,15 +22,14 @@ import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 
-import { customersApi } from "./api";
+import { customersApi } from "../api";
 
 const CustomersPage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
-    null,
-  );
-  const columns: ColumnConfig<BaseItem>[] = [
+
+  const columns: ColumnConfig<Customer>[] = [
     { key: "name", labelKey: "customers.table_fields.name", sortable: true },
     {
       key: "lastOrderAt",
@@ -42,25 +41,9 @@ const CustomersPage = () => {
       labelKey: "customers.table_fields.mainPhone",
       sortable: false,
       renderCell: (value) => {
-        const phones = value as Phones[];
+        const phones = value as Phone[];
         const mainPhone = phones.find((phone) => phone.isPrimary);
         return <span>{mainPhone?.phoneNumber}</span>;
-      },
-    },
-    {
-      key: "phones",
-      labelKey: "customers.table_fields.secondaryPhone",
-      sortable: false,
-      renderCell: (value) => {
-        const phones = value as Phones[];
-        const mainPhone = phones.filter((phone) => !phone.isPrimary);
-        return (
-          <ul className="flex flex-col gap-1">
-            {mainPhone.map((phone) => (
-              <li key={phone.id}>{phone.phoneNumber}</li>
-            ))}
-          </ul>
-        );
       },
     },
   ];
@@ -117,6 +100,11 @@ const CustomersPage = () => {
       required: true,
     },
   ];
+
+  const onRowClick = (customer: Customer) => {
+    navigate(`/backoffice/customers/${customer.id}`);
+  };
+
   return (
     <>
       <SmartTable
@@ -128,11 +116,7 @@ const CustomersPage = () => {
         searchNumbersOnly
         columns={columns}
         headerActions={<AddButton onClick={() => setIsAddOpen(true)} />}
-        onRowClick={(item) => setSelectedCustomer(item as Customer)}
-      />
-      <CustomerCardDialog
-        customer={selectedCustomer}
-        onOpenChange={(open) => !open && setSelectedCustomer(null)}
+        onRowClick={onRowClick}
       />
       <ItemFormDialog
         isOpen={isAddOpen}

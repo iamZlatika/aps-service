@@ -118,7 +118,7 @@
     "password_max": "Пароль занадто довгий",
     "field_required": "Поле не може бути порожнім",
     "passwords_dont_match": "Паролі не збігаються",
-    "phone_invalid": "Введіть коректний номер телефона"
+    "phone_invalid": "Введіть номер у форматі +38 0XX-XXX-XX-XX"
   },
   "search_placeholders": {
     "dictionaries_name": "Пошук по назві",
@@ -218,13 +218,28 @@
       "name": "Ім'я",
       "name_placeholder": "Введіть ім'я",
       "phone": "Телефон",
-      "phone_placeholder": "Введіть номер телефону",
+      "new_phone": "Новий телефон",
+      "phone_placeholder": "0__-___-__-__",
       "email": "Email",
       "email_placeholder": "Введіть email",
       "comment": "Коментар",
       "comment_placeholder": "Введіть коментар",
       "cancel": "Скасувати",
-      "submit": "Додати"
+      "submit": "Додати",
+      "add_phone": "Додати телефон"
+    },
+    "actions": {
+      "block": "Заблокувати",
+      "unblock": "Розблокувати",
+      "block_confirm": "Ви дійсно хочете заблокувати клієнта {{name}}?",
+      "unblock_confirm": "Ви дійсно хочете розблокувати клієнта {{name}}?",
+      "cancel": "Скасувати",
+      "delete": "Видалити",
+      "delete_confirm": "Ви дійсно хочете видалити номер {{number}}?",
+      "add_phone": "Додати телефон"
+    },
+    "profile": {
+      "phones": "Телефони"
     }
   },
   "dictionaries": {
