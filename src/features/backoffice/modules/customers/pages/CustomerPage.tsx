@@ -2,13 +2,13 @@ import { Plus, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
-import ConfirmDialog from "@/features/backoffice/modules/customers/components/ConfirmDialog.tsx";
 import { IsPrimaryButton } from "@/features/backoffice/modules/customers/components/IsPrimaryButton.tsx";
 import { Rating } from "@/features/backoffice/modules/customers/components/RatingStars.tsx";
 import { useCustomer } from "@/features/backoffice/modules/customers/hooks/useCustomer.ts";
 import { useCustomerPhones } from "@/features/backoffice/modules/customers/hooks/useCustomerPhones.ts";
 import { useCustomerStatus } from "@/features/backoffice/modules/customers/hooks/useCustomerStatus.ts";
 import { addPhoneSchema } from "@/features/backoffice/modules/customers/lib/schemas.ts";
+import { DeleteConfirmDialog } from "@/features/backoffice/widgets/table/components/dialogs";
 import { ItemFormDialog } from "@/features/backoffice/widgets/table/components/dialogs";
 import type { FieldConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import Loader from "@/shared/components/common/Loader.tsx";
@@ -29,8 +29,12 @@ const CustomerPage = () => {
   const { t } = useTranslation();
 
   const { selectedCustomer, isLoading } = useCustomer(customerId);
-  const { isConfirmOpened, setIsConfirmOpened, handleConfirm } =
-    useCustomerStatus(customerId, selectedCustomer);
+  const {
+    isConfirmOpened,
+    setIsConfirmOpened,
+    handleConfirm,
+    isStatusPending,
+  } = useCustomerStatus(customerId, selectedCustomer);
   const {
     sortedPhones,
     phoneNumberToDelete,
@@ -43,6 +47,7 @@ const CustomerPage = () => {
     openDeleteDialog,
     changeIsPrimaryMutation,
     isAddPending,
+    isDeletePending,
   } = useCustomerPhones(customerId, selectedCustomer);
 
   const registerFields: FieldConfig[] = [
@@ -133,20 +138,27 @@ const CustomerPage = () => {
           </CardContent>
         </Card>
       </div>
-      <ConfirmDialog
-        open={isDeleteOpened}
-        onClose={() => setIsDeleteOpened(false)}
-        onConfirm={handleDeletePhone}
-        buttonDescription={t("customers.actions.delete")}
-        title={t("customers.actions.delete_confirm", {
+      <DeleteConfirmDialog
+        isOpen={isDeleteOpened}
+        onOpenChange={(open) => setIsDeleteOpened(open)}
+        title={t("customers.actions.delete_phone")}
+        description={t("customers.actions.delete_confirm", {
           number: phoneNumberToDelete,
         })}
+        cancelLabel={t("customers.actions.cancel")}
+        confirmLabel={t("customers.actions.delete")}
+        onConfirm={handleDeletePhone}
+        isPending={isDeletePending}
       />
-      <ConfirmDialog
-        open={isConfirmOpened}
-        onClose={() => setIsConfirmOpened(false)}
-        onConfirm={handleConfirm}
+      <DeleteConfirmDialog
+        isOpen={isConfirmOpened}
+        onOpenChange={(open) => setIsConfirmOpened(open)}
         title={
+          selectedCustomer.status === "active"
+            ? t("customers.actions.block")
+            : t("customers.actions.unblock")
+        }
+        description={
           selectedCustomer.status === "active"
             ? t("customers.actions.block_confirm", {
                 name: selectedCustomer.name,
@@ -155,11 +167,14 @@ const CustomerPage = () => {
                 name: selectedCustomer.name,
               })
         }
-        buttonDescription={
+        cancelLabel={t("customers.actions.cancel")}
+        confirmLabel={
           selectedCustomer.status === "active"
             ? t("customers.actions.block")
             : t("customers.actions.unblock")
         }
+        onConfirm={handleConfirm}
+        isPending={isStatusPending}
       />
       <ItemFormDialog
         isOpen={isAddOpened}

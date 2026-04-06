@@ -40,6 +40,12 @@ export const queryKeys = {
     detail: (id: number) => ["customers", "detail", id] as const,
   },
 
+  orders: {
+    all: ["orders"] as const,
+    list: makeEntityKey(["orders"], "list"),
+    detail: (id: number) => ["orders", "detail", id] as const,
+  },
+
   dictionaries: {
     all: ["dictionaries"] as const,
     accessories: makeEntityKey(["dictionaries"], "accessories"),

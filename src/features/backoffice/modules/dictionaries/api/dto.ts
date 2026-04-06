@@ -8,9 +8,6 @@ export type DictionaryItemDto = z.infer<typeof DictionaryItemDtoSchema>;
 
 export const DictionaryItemsDtoSchema = z.array(DictionaryItemDtoSchema);
 
-export const CreateDictionaryItemDtoSchema = z.object({
-  name: z.string(),
-});
 export const PaginationLinksDtoSchema = z.object({
   first: z.string().nullable(),
   last: z.string().nullable(),
@@ -42,9 +39,6 @@ export const PaginatedDictionaryItemsDtoSchema = z.object({
   meta: PaginationMetaDtoSchema,
 });
 
-export type PaginationLinksDto = z.infer<typeof PaginationLinksDtoSchema>;
-export type PaginationMetaDto = z.infer<typeof PaginationMetaDtoSchema>;
-export type PaginationMetaLinkDto = z.infer<typeof PaginationMetaLinkDtoSchema>;
 export type PaginatedDictionaryItemsDto = z.infer<
   typeof PaginatedDictionaryItemsDtoSchema
 >;

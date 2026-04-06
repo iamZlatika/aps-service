@@ -104,5 +104,6 @@ export const useCustomerPhones = (
     openDeleteDialog,
     changeIsPrimaryMutation,
     isAddPending: addNewPhoneMutation.isPending,
+    isDeletePending: deletePhoneMutation.isPending,
   };
 };
