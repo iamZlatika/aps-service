@@ -52,5 +52,6 @@ export const useCustomerStatus = (
     isConfirmOpened,
     setIsConfirmOpened,
     handleConfirm,
+    isStatusPending: changeStatusMutation.isPending,
   };
 };
