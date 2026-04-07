@@ -141,7 +141,7 @@
     "issueTypes": "Типи несправностей",
     "deviceModels": "Моделі пристроїв",
     "deviceTypes": "Типи пристроїв",
-    "intakeNotes": "Примітки прийому",
+    "intakeNotes": "Нотатки приймача",
     "manufacturers": "Виробники",
     "repairOperations": "Ремонтні операції"
   },
@@ -257,13 +257,16 @@
     "createNew": "Створити нове замовлення",
     "customerInfo": "Інформація про клієнта",
     "deviceInfo": "Інформація про пристрій",
+    "additionalInfo": "Додаткова інформація",
     "actions": {
       "create": "Створити"
     },
     "form": {
-      "devicePassword": "Пароль пристрою",
+      "devicePassword": "Пароль пристрою*",
       "estimatedCost": "Орієнтовна вартість",
-      "isUrgent": "Терміново"
+      "isUrgent": "Терміново",
+      "issueTypes": "Причина обращення*",
+      "deviceTypes": "Тип пристрою*"
     }
   }
 }

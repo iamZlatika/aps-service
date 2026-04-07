@@ -34,7 +34,7 @@ const defaultRenderInput = (props: SearchableSelectInputProps) => (
     placeholder={props.placeholder}
     disabled={props.disabled}
     className={cn(
-      "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+      "flex h-11 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
       props.hasError && "border-destructive",
     )}
   />
@@ -59,8 +59,10 @@ const SearchableSelect = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
   const skipBlurRef = useRef(false);
+  const isProgrammaticUpdateRef = useRef(false);
 
   useEffect(() => {
+    isProgrammaticUpdateRef.current = true;
     setInputValue(value);
   }, [value]);
 
@@ -102,6 +104,11 @@ const SearchableSelect = ({
   };
 
   const handleInputChange = (val: string) => {
+    if (isProgrammaticUpdateRef.current) {
+      isProgrammaticUpdateRef.current = false;
+      setInputValue(val);
+      return;
+    }
     setInputValue(val);
     setIsOpen(true);
   };
@@ -176,9 +183,9 @@ const SearchableSelect = ({
       {isOpen && (
         <div className="absolute z-50 mt-1 w-full rounded-md border bg-popover text-popover-foreground shadow-md">
           {isFetching ? (
-            <div className="px-3 py-2 text-sm text-muted-foreground">...</div>
+            <div className="px-3 py-2 text-base text-muted-foreground">...</div>
           ) : options.length === 0 ? (
-            <div className="px-3 py-2 text-sm text-muted-foreground">
+            <div className="px-3 py-2 text-base text-muted-foreground">
               No results
             </div>
           ) : (

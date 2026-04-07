@@ -32,12 +32,12 @@ export const PhoneMaskInput = ({
   return (
     <div
       className={cn(
-        "flex h-9 w-full rounded-md border border-input shadow-sm transition-colors focus-within:ring-1 focus-within:ring-ring",
+        "flex h-11 w-full rounded-md border border-input shadow-sm transition-colors focus-within:ring-1 focus-within:ring-ring",
         hasError && "border-destructive",
         className,
       )}
     >
-      <span className="flex items-center px-3 border-r border-input bg-muted text-sm rounded-l-md select-none">
+      <span className="flex items-center px-3 border-r border-input bg-muted text-base rounded-l-md select-none">
         +38
       </span>
       <IMaskInput
@@ -51,7 +51,7 @@ export const PhoneMaskInput = ({
         onBlur={onBlur}
         onKeyDown={onKeyDown}
         placeholder={placeholder ?? "0__-___-__-__"}
-        className="flex-1 bg-transparent px-3 py-1 text-sm placeholder:text-muted-foreground focus:outline-none rounded-r-md"
+        className="flex-1 bg-transparent px-3 py-1 text-base placeholder:text-muted-foreground focus:outline-none rounded-r-md"
       />
     </div>
   );

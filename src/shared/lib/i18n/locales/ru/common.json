@@ -144,7 +144,7 @@
     "issueTypes": "Типы неисправностей",
     "deviceModels": "Модели устройств",
     "deviceTypes": "Типы устройств",
-    "intakeNotes": "Примечания приёма",
+    "intakeNotes": "Заметки приёмщика",
     "manufacturers": "Производители",
     "repairOperations": "Ремонтные операции"
   },
@@ -257,16 +257,46 @@
     }
   },
   "orders": {
-    "createNew": "Создать новый заказ",
+    "createNew": "Создание заказа",
     "customerInfo": "Информация о клиенте",
     "deviceInfo": "Информация о устройстве",
+    "additionalInfo": "Дополнительная информация",
     "actions": {
       "create": "Создать"
     },
     "form": {
-      "devicePassword": "Пароль устройства",
+      "customerName": "Имя клиента *",
+      "customerPhone": "Телефон клиента *",
+      "comment": "Комментарий о клиенте",
+      "devicePassword": "Пароль устройства *",
       "estimatedCost": "Ориентировочная стоимость",
-      "isUrgent": "Срочно"
+      "isUrgent": "Срочно",
+      "issueType": "Причина обращения *",
+      "deviceType": "Тип устройства *",
+      "manufacturer": "Производитель *",
+      "deviceModel": "Модель устройства *",
+      "deviceCondition": "Состояние устройства",
+      "accessory": "Комплектация",
+      "intakeNotes": "Заметки приемщика",
+      "manager": "Заказ принял",
+      "assignee": "Назначен мастером"
+    },
+    "placeholders": {
+      "customerName": "Введите имя или выберете из списка",
+      "customerEmail": "Введите email (необязательно)",
+      "customerComment": "Введите комментарий (необязательно)",
+      "issueTypes": "Выберите причину обращения",
+      "deviceType": "Выберите тип устройства",
+      "manufacturer": "Выберите производителя",
+      "deviceModel": "Выберите модель",
+      "devicePassword": "Введите пароль устройства",
+      "deviceCondition": "Выберите состояние (необязательно)",
+      "accessory": "Выберите комплектацию (необязательно)",
+      "intakeNotes": "Введите примечания (необязательно)",
+      "assignee": "Выберите мастера (необязательно)",
+      "estimatedCost": "Укажите примерную стоимость (необязательно)"
+
+
     }
   }
 }
