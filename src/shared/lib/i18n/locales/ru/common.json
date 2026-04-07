@@ -133,7 +133,10 @@
     "home": "Главная",
     "profile": "Личный кабинет",
     "orders": "Заказы",
+    "order": "Заказ",
+    "newOrder": "Новый заказ",
     "customers": "Клиенты",
+    "customer": "Клиент",
     "users": "Мастера",
     "dictionaries": "Справочники",
     "accessories": "Аксессуары",
@@ -251,6 +254,19 @@
       "name": "Название",
       "category": "Категория",
       "base_price": "Базовая цена"
+    }
+  },
+  "orders": {
+    "createNew": "Создать новый заказ",
+    "customerInfo": "Информация о клиенте",
+    "deviceInfo": "Информация о устройстве",
+    "actions": {
+      "create": "Создать"
+    },
+    "form": {
+      "devicePassword": "Пароль устройства",
+      "estimatedCost": "Ориентировочная стоимость",
+      "isUrgent": "Срочно"
     }
   }
 }

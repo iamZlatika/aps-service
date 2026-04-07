@@ -21,7 +21,7 @@ const SegmentedControl = <T extends string>({
   disabled,
 }: SegmentedControlProps<T>) => {
   return (
-    <div className="flex items-center border rounded-md overflow-hidden">
+    <div className="flex items-center border rounded-md overflow-hidden flex-1">
       {options.map((option, index) => (
         <div key={option.value} className="flex items-center">
           <Button

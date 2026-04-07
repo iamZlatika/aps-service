@@ -9,7 +9,7 @@ export const toFieldConfigs = <T extends BaseItem>(
   t: (key: string) => string,
 ): FieldConfig[] =>
   columns.map((col) => ({
-    key: col.key,
+    key: col.field,
     label: t(col.labelKey),
     placeholder: t(col.labelKey),
     required: col.required !== false,

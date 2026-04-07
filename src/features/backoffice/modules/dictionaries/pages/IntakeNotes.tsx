@@ -7,7 +7,12 @@ import type {
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
 const columns: ColumnConfig<BaseItem>[] = [
-  { key: "name", labelKey: "dictionaries.table_fields.name", sortable: true },
+  {
+    key: "name",
+    field: "name",
+    labelKey: "dictionaries.table_fields.name",
+    sortable: true,
+  },
 ];
 
 const IntakeNotesPage = () => (

@@ -9,7 +9,12 @@ import { PROFILE_ROUTES } from "@/features/backoffice/modules/profile/routes.ts"
 import { USERS_ROUTES } from "@/features/backoffice/modules/users/routes";
 import { ROLES } from "@/shared/types.ts";
 
-const OrdersPage = lazy(() => import("@/features/backoffice/modules/orders"));
+const OrdersPage = lazy(
+  () => import("@/features/backoffice/modules/orders/pages"),
+);
+const CreateOrderPage = lazy(
+  () => import("@/features/backoffice/modules/orders/pages/CreateOrderPage"),
+);
 const CustomersPage = lazy(
   () => import("@/features/backoffice/modules/customers/pages"),
 );
@@ -52,6 +57,7 @@ const RepairOperationsPage = lazy(
 export const backofficeRoutes: RouteObject = {
   children: [
     { path: ORDERS_ROUTES.root, element: <OrdersPage /> },
+    { path: ORDERS_ROUTES.createNewOrder, element: <CreateOrderPage /> },
     { path: CUSTOMERS_ROUTES.root, element: <CustomersPage /> },
     { path: CUSTOMERS_ROUTES.customer, element: <CustomerPage /> },
     { path: USERS_ROUTES.root, element: <UsersPage /> },

@@ -31,9 +31,15 @@ const UsersPage = () => {
   const queryClient = useQueryClient();
 
   const columns: ColumnConfig<User>[] = [
-    { key: "name", labelKey: "users.table_fields.name", sortable: false },
+    {
+      key: "name",
+      field: "name",
+      labelKey: "users.table_fields.name",
+      sortable: false,
+    },
     {
       key: "role",
+      field: "role",
       labelKey: "users.table_fields.role",
       sortable: true,
       type: "select",
@@ -41,6 +47,7 @@ const UsersPage = () => {
     },
     {
       key: "status",
+      field: "status",
       labelKey: "users.table_fields.status",
       sortable: true,
       className: "text-right [&>*]:ml-auto [&>div]:justify-end",

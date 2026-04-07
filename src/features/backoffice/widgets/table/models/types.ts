@@ -39,7 +39,8 @@ export type ColumnConfig<
   T extends BaseItem,
   K extends keyof T & string = keyof T & string,
 > = {
-  key: K;
+  key: string;
+  field: K;
   labelKey: string;
   sortable: boolean;
   className?: string;

@@ -130,8 +130,11 @@
     "home": "Головна",
     "profile": "Личний кабінет",
     "orders": "Замовлення",
+    "order": "Замовлення",
+    "newOrder": "Нове замовлення",
     "customers": "Клієнти",
-    "users": "Майстри",
+    "customer": "Клієнт",
+        "users": "Майстри",
     "dictionaries": "Довідники",
     "accessories": "Аксесуари",
     "deviceConditions": "Стан пристроїв",
@@ -248,6 +251,19 @@
       "name": "Назва",
       "category": "Категорія",
       "base_price": "Базова ціна"
+    }
+  },
+  "orders": {
+    "createNew": "Створити нове замовлення",
+    "customerInfo": "Інформація про клієнта",
+    "deviceInfo": "Інформація про пристрій",
+    "actions": {
+      "create": "Створити"
+    },
+    "form": {
+      "devicePassword": "Пароль пристрою",
+      "estimatedCost": "Орієнтовна вартість",
+      "isUrgent": "Терміново"
     }
   }
 }

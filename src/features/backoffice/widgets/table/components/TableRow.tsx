@@ -31,8 +31,8 @@ export const TableRow = <T extends BaseItem>({
         <TableCell key={col.key} className={col.className}>
           <span className="inline-block truncate max-w-[21ch] sm:max-w-none">
             {col.renderCell
-              ? col.renderCell(item[col.key], item)
-              : resolveDisplayValue(col, item[col.key])}
+              ? col.renderCell(item[col.field], item)
+              : resolveDisplayValue(col, item[col.field])}
           </span>
         </TableCell>
       ))}

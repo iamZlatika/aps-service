@@ -22,7 +22,7 @@ interface UseSmartTableParams<T extends BaseItem = BaseItem> {
     sortType: SortType,
     filters: Record<string, string>,
   ) => readonly unknown[];
-  columns: { key: string; filterable?: boolean }[];
+  columns: { field: string; filterable?: boolean }[];
   searchField: string;
   tableKey: string;
 }
