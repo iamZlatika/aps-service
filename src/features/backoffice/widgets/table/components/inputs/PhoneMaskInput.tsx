@@ -5,15 +5,23 @@ import { cn } from "@/shared/lib/utils";
 interface PhoneMaskInputProps {
   value: string;
   onChange: (value: string) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
   placeholder?: string;
   className?: string;
+  hasError?: boolean;
 }
 
 export const PhoneMaskInput = ({
   value,
   onChange,
+  onFocus,
+  onBlur,
+  onKeyDown,
   placeholder,
   className,
+  hasError,
 }: PhoneMaskInputProps) => {
   const displayValue = value.startsWith("+38")
     ? value.slice(3)
@@ -25,6 +33,7 @@ export const PhoneMaskInput = ({
     <div
       className={cn(
         "flex h-9 w-full rounded-md border border-input shadow-sm transition-colors focus-within:ring-1 focus-within:ring-ring",
+        hasError && "border-destructive",
         className,
       )}
     >
@@ -38,7 +47,10 @@ export const PhoneMaskInput = ({
           const digits = maskedValue.replace(/\D/g, "");
           onChange(digits ? "+38" + digits : "");
         }}
-        placeholder={placeholder ?? "0XX-XXX-XX-XX"}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onKeyDown={onKeyDown}
+        placeholder={placeholder ?? "0__-___-__-__"}
         className="flex-1 bg-transparent px-3 py-1 text-sm placeholder:text-muted-foreground focus:outline-none rounded-r-md"
       />
     </div>

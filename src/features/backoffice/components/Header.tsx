@@ -51,24 +51,26 @@ export const Header = memo(() => {
     { label: <Moon size={16} />, value: "dark" },
   ];
   return (
-    <header className="flex h-16 shrink-0 items-center justify-between border-b px-4 bg-background">
+    <header className="flex min-h-16 items-center justify-between border-b px-4 bg-background">
       <div className="flex items-center gap-2">
         <SidebarTrigger />
       </div>
 
       <div className="flex items-center gap-4">
-        <SegmentedControl
-          onChange={updateLocale.mutate}
-          disabled={updateLocale.isPending}
-          value={user?.locale || "uk"}
-          options={localeOptions}
-        />
-        <SegmentedControl
-          onChange={updateTheme.mutate}
-          disabled={updateTheme.isPending}
-          value={user?.theme || "dark"}
-          options={themeOptions}
-        />
+        <div className="flex flex-col gap-2 lg:flex-row lg:gap-4">
+          <SegmentedControl
+            onChange={updateLocale.mutate}
+            disabled={updateLocale.isPending}
+            value={user?.locale || "uk"}
+            options={localeOptions}
+          />
+          <SegmentedControl
+            onChange={updateTheme.mutate}
+            disabled={updateTheme.isPending}
+            value={user?.theme || "dark"}
+            options={themeOptions}
+          />
+        </div>
 
         <Link to={PROFILE_LINKS.root()} className="flex items-center space-x-2">
           <span className="text-sm font-medium">

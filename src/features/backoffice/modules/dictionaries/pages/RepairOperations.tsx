@@ -13,9 +13,15 @@ const RepairOperationsPage = () => {
   const { t } = useTranslation();
 
   const columns: ColumnConfig<BaseItem>[] = [
-    { key: "name", labelKey: "dictionaries.table_fields.name", sortable: true },
+    {
+      key: "name",
+      field: "name",
+      labelKey: "dictionaries.table_fields.name",
+      sortable: true,
+    },
     {
       key: "category",
+      field: "category",
       labelKey: "dictionaries.table_fields.category",
       sortable: true,
       type: "select",
@@ -23,6 +29,7 @@ const RepairOperationsPage = () => {
     },
     {
       key: "base_price",
+      field: "base_price",
       labelKey: "dictionaries.table_fields.base_price",
       sortable: false,
     },

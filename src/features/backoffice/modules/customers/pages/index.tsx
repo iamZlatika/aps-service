@@ -30,14 +30,21 @@ const CustomersPage = () => {
   const [isAddOpen, setIsAddOpen] = useState(false);
 
   const columns: ColumnConfig<Customer>[] = [
-    { key: "name", labelKey: "customers.table_fields.name", sortable: true },
+    {
+      key: "name",
+      field: "name",
+      labelKey: "customers.table_fields.name",
+      sortable: true,
+    },
     {
       key: "lastOrderAt",
+      field: "lastOrderAt",
       labelKey: "customers.table_fields.lastOrderAt",
       sortable: true,
     },
     {
       key: "phones",
+      field: "phones",
       labelKey: "customers.table_fields.mainPhone",
       sortable: false,
       renderCell: (value) => {
