@@ -17,4 +17,6 @@ export const DICTIONARIES_API = {
   manufacturer: (id: number) => `${BASE}/manufacturers/${id}`,
   repairOperations: () => `${BASE}/repair-operations`,
   repairOperation: (id: number) => `${BASE}/repair-operations/${id}`,
+  orderStatuses: () => `${BASE}/order-statuses`,
+  orderStatus: (id: number) => `${BASE}/order-statuses/${id}`,
 } as const;

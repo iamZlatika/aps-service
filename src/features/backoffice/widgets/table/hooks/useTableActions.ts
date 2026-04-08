@@ -6,7 +6,7 @@ import { type BaseItem } from "@/features/backoffice/widgets/table/models/types.
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 
 export const useTableActions = <T extends BaseItem>(
-  queryKey: readonly unknown[],
+  queryKeyFn: () => readonly unknown[],
   onAdd: (values: Partial<T>) => Promise<T>,
   onDelete: (id: number) => Promise<void>,
   onUpdate: (id: number, values: Partial<T>) => Promise<T>,
@@ -20,10 +20,10 @@ export const useTableActions = <T extends BaseItem>(
 
   const [editDialogItem, setEditDialogItem] = useState<T | null>(null);
 
-  const queryKeyRef = useRef(queryKey);
-  queryKeyRef.current = queryKey;
+  const queryKeyFnRef = useRef(queryKeyFn);
+  queryKeyFnRef.current = queryKeyFn;
   const invalidate = useCallback(
-    () => queryClient.invalidateQueries({ queryKey: queryKeyRef.current }),
+    () => queryClient.invalidateQueries({ queryKey: queryKeyFnRef.current() }),
     [queryClient],
   );
 
@@ -55,11 +55,11 @@ export const useTableActions = <T extends BaseItem>(
 
   const submitAdd = useCallback(
     async (
-      values: Partial<T>,
+      values: Record<string, unknown>,
       setError: UseFormSetError<Record<string, string>>,
     ) => {
       try {
-        await createMutation.mutateAsync(values);
+        await createMutation.mutateAsync(values as Partial<T>);
       } catch (error) {
         handleFormError(error, setError);
       }
@@ -73,12 +73,15 @@ export const useTableActions = <T extends BaseItem>(
 
   const confirmEdit = useCallback(
     async (
-      values: Partial<T>,
+      values: Record<string, unknown>,
       setError: UseFormSetError<Record<string, string>>,
     ) => {
       if (editDialogItem) {
         try {
-          await updateMutation.mutateAsync({ id: editDialogItem.id, values });
+          await updateMutation.mutateAsync({
+            id: editDialogItem.id,
+            values: values as Partial<T>,
+          });
         } catch (error) {
           handleFormError(error, setError);
         }
@@ -86,6 +89,10 @@ export const useTableActions = <T extends BaseItem>(
     },
     [editDialogItem, updateMutation],
   );
+
+  const closeEdit = useCallback(() => {
+    setEditDialogItem(null);
+  }, []);
 
   const requestDelete = useCallback((item: T) => {
     setItemToDelete(item);
@@ -130,12 +137,18 @@ export const useTableActions = <T extends BaseItem>(
     () => ({
       item: editDialogItem,
       isOpen: editDialogItem !== null,
-      close: () => setEditDialogItem(null),
+      close: closeEdit,
       start: startEdit,
       confirm: confirmEdit,
       isPending: updateMutation.isPending,
     }),
-    [editDialogItem, startEdit, confirmEdit, updateMutation.isPending],
+    [
+      editDialogItem,
+      closeEdit,
+      startEdit,
+      confirmEdit,
+      updateMutation.isPending,
+    ],
   );
 
   return { addModal, deleteModal, editModal };

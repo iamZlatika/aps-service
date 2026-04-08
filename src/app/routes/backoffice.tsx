@@ -51,7 +51,11 @@ const ManufacturersPage = lazy(
 );
 const RepairOperationsPage = lazy(
   () =>
-    import("@/features/backoffice/modules/dictionaries/pages/RepairOperations.tsx"),
+    import("@/features/backoffice/modules/dictionaries/pages/RepairOperations"),
+);
+const OrderStatusesPage = lazy(
+  () =>
+    import("@/features/backoffice/modules/dictionaries/pages/OrderStatuses"),
 );
 
 export const backofficeRoutes: RouteObject = {
@@ -102,6 +106,10 @@ export const backofficeRoutes: RouteObject = {
         {
           path: DICTIONARIES_ROUTES.repairOperations,
           element: <RepairOperationsPage />,
+        },
+        {
+          path: DICTIONARIES_ROUTES.orderStatuses,
+          element: <OrderStatusesPage />,
         },
       ],
     },

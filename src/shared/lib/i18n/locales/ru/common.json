@@ -68,6 +68,7 @@
       "intake_notes": "Заметки при приемке",
       "manufacturers": "Производители",
       "repair_operations": "Операции по ремонту",
+      "order_statuses": "Статусы заказов",
       "accessories_page": {
         "title": "Комплектации"
       }
@@ -146,7 +147,8 @@
     "deviceTypes": "Типы устройств",
     "intakeNotes": "Заметки приёмщика",
     "manufacturers": "Производители",
-    "repairOperations": "Ремонтные операции"
+    "repairOperations": "Ремонтные операции",
+    "orderStatuses": "Статусы заказов"
   },
   "profile": {
     "settings": "Настройки профиля",
@@ -295,8 +297,6 @@
       "intakeNotes": "Введите примечания (необязательно)",
       "assignee": "Выберите мастера (необязательно)",
       "estimatedCost": "Укажите примерную стоимость (необязательно)"
-
-
     }
   }
 }

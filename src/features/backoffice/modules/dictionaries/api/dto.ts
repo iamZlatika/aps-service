@@ -1,6 +1,9 @@
 import { z } from "zod";
 
-export const DictionaryItemDtoSchema = z.looseObject({
+import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
+import { STATUS_COLORS } from "@/shared/types.ts";
+
+export const DictionaryItemDtoSchema = z.object({
   id: z.number(),
   name: z.string(),
 });
@@ -33,6 +36,8 @@ export const PaginationMetaDtoSchema = z.object({
   total: z.number(),
 });
 
+export type PaginationMetaDto = z.infer<typeof PaginationMetaDtoSchema>;
+
 export const PaginatedDictionaryItemsDtoSchema = z.object({
   data: DictionaryItemsDtoSchema,
   links: PaginationLinksDtoSchema,
@@ -42,3 +47,23 @@ export const PaginatedDictionaryItemsDtoSchema = z.object({
 export type PaginatedDictionaryItemsDto = z.infer<
   typeof PaginatedDictionaryItemsDtoSchema
 >;
+
+export const RepairOperationItemSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  category: z.string(),
+  base_price: z.string(),
+});
+
+export type RepairOperationItem = z.infer<typeof RepairOperationItemSchema>;
+
+export const OrderStatusDtoSchema = z.object({
+  id: z.number(),
+  key: z.string(),
+  name_ru: z.string(),
+  name_ua: z.string(),
+  color: zodEnumFromConst(STATUS_COLORS),
+  is_system: z.boolean(),
+});
+
+export type OrderStatusDto = z.infer<typeof OrderStatusDtoSchema>;

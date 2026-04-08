@@ -30,3 +30,17 @@ export type UserTheme = (typeof USER_THEMES)[keyof typeof USER_THEMES];
 export interface SuccessResponse {
   message: string;
 }
+
+export const STATUS_COLORS = {
+  Red: "red",
+  Fuchsia: "fuchsia",
+  Pink: "pink",
+  Violet: "violet",
+  Blue: "blue",
+  Sky: "sky",
+  Green: "green",
+  Yellow: "yellow",
+  Orange: "orange",
+  Black: "black",
+  Gray: "gray",
+} as const;

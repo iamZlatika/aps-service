@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
 import { RowActions } from "@/features/backoffice/modules/dictionaries/components/RowActions.tsx";
+import type { DictionaryItem } from "@/features/backoffice/modules/dictionaries/types.ts";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import {
   DeleteConfirmDialog,
@@ -11,45 +12,41 @@ import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSort
 import { useTableActions } from "@/features/backoffice/widgets/table/hooks/useTableActions.ts";
 import { toFieldConfigs } from "@/features/backoffice/widgets/table/lib/toFieldConfigs.ts";
 import type {
-  BaseItem,
   ColumnConfig,
   SmartTableApi,
 } from "@/features/backoffice/widgets/table/models/types.ts";
 
-interface DictionaryApi {
-  getAll: SmartTableApi<BaseItem>["getAll"];
-  create: (values: Partial<BaseItem>) => Promise<BaseItem>;
-  update: (id: number, values: Partial<BaseItem>) => Promise<BaseItem>;
+interface DictionaryApi<T extends DictionaryItem> extends SmartTableApi<T> {
+  create: (values: Partial<T>) => Promise<T>;
+  update: (id: number, values: Partial<T>) => Promise<T>;
   remove: (id: number) => Promise<void>;
 }
 
-interface DictionaryTablePageProps {
+interface DictionaryTablePageProps<T extends DictionaryItem> {
   titleKey: string;
-  api: DictionaryApi;
+  api: DictionaryApi<T>;
   queryKeyFn: (
-    page: number,
-    perPage: number,
-    sortColumn: string | null,
-    sortType: SortType,
-    filters: Record<string, string>,
+    page?: number,
+    perPage?: number,
+    sortColumn?: string | null,
+    sortType?: SortType,
+    filters?: Record<string, string>,
   ) => readonly unknown[];
-  queryKey: readonly unknown[];
-  columns: ColumnConfig<BaseItem>[];
+  columns: ColumnConfig<T>[];
   searchPlaceholder?: string;
 }
 
-export const DictionaryTablePage = ({
+export const DictionaryTablePage = <T extends DictionaryItem>({
   titleKey,
   api,
   queryKeyFn,
-  queryKey,
   columns,
   searchPlaceholder = "search_placeholders.dictionaries_name",
-}: DictionaryTablePageProps) => {
+}: DictionaryTablePageProps<T>) => {
   const { t } = useTranslation();
 
-  const { addModal, deleteModal, editModal } = useTableActions(
-    queryKey,
+  const { addModal, deleteModal, editModal } = useTableActions<T>(
+    queryKeyFn,
     api.create,
     api.remove,
     api.update,
