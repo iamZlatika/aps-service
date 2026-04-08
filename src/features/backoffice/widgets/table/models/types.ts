@@ -54,7 +54,6 @@ export type ColumnConfig<
 
 export type BaseItem = {
   id: number;
-  [key: string]: unknown;
 };
 
 export type Filters = Record<string, string>;

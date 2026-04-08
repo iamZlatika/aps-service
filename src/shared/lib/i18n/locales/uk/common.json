@@ -67,7 +67,8 @@
       "device_types": "Типи пристроїв",
       "intake_notes": "Нотатки при прийманні",
       "manufacturers": "Виробники",
-      "repair_operations": "Операції з ремонту"
+      "repair_operations": "Операції з ремонту",
+      "order_statuses": "Статуси замовлень"
     }
   },
   "errors": {
@@ -143,7 +144,8 @@
     "deviceTypes": "Типи пристроїв",
     "intakeNotes": "Нотатки приймача",
     "manufacturers": "Виробники",
-    "repairOperations": "Ремонтні операції"
+    "repairOperations": "Ремонтні операції",
+    "orderStatuses": "Статуси замовлень"
   },
   "profile": {
     "settings": "Налаштування профілю",
@@ -262,11 +264,36 @@
       "create": "Створити"
     },
     "form": {
-      "devicePassword": "Пароль пристрою*",
+      "customerName": "Ім’я клієнта *",
+      "customerPhone": "Телефон клієнта *",
+      "comment": "Коментар про клієнта",
+      "devicePassword": "Пароль пристрою *",
       "estimatedCost": "Орієнтовна вартість",
       "isUrgent": "Терміново",
-      "issueTypes": "Причина обращення*",
-      "deviceTypes": "Тип пристрою*"
+      "issueType": "Причина звернення *",
+      "deviceType": "Тип пристрою *",
+      "manufacturer": "Виробник *",
+      "deviceModel": "Модель пристрою *",
+      "deviceCondition": "Стан пристрою",
+      "accessory": "Комплектація",
+      "intakeNotes": "Нотатки приймальника",
+      "manager": "Замовлення прийняв",
+      "assignee": "Призначений майстер"
+    },
+    "placeholders": {
+      "customerName": "Введіть ім’я або оберіть зі списку",
+      "customerEmail": "Введіть email (необов’язково)",
+      "customerComment": "Введіть коментар (необов’язково)",
+      "issueTypes": "Оберіть причину звернення",
+      "deviceType": "Оберіть тип пристрою",
+      "manufacturer": "Оберіть виробника",
+      "deviceModel": "Оберіть модель",
+      "devicePassword": "Введіть пароль пристрою",
+      "deviceCondition": "Оберіть стан (необов’язково)",
+      "accessory": "Оберіть комплектацію (необов’язково)",
+      "intakeNotes": "Введіть примітки (необов’язково)",
+      "assignee": "Оберіть майстра (необов’язково)",
+      "estimatedCost": "Вкажіть приблизну вартість (необов’язково)"
     }
   }
 }

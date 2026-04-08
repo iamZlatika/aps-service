@@ -3,10 +3,7 @@ import { useEffect, useMemo } from "react";
 import { Controller, useForm, type UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import {
-  type BaseItem,
-  type FieldConfig,
-} from "@/features/backoffice/widgets/table/models/types.ts";
+import type { FieldConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
   Dialog,
@@ -32,9 +29,9 @@ interface ItemFormDialogProps {
   onOpenChange: (open: boolean) => void;
   title: string;
   fields: FieldConfig[];
-  values?: Partial<BaseItem>;
+  values?: Record<string, unknown>;
   onConfirm: (
-    values: Partial<BaseItem>,
+    values: Record<string, unknown>,
     setError: UseFormSetError<Record<string, string>>,
   ) => void;
   isPending: boolean;
@@ -92,7 +89,7 @@ export const ItemFormDialog = ({
   }, [isOpen, defaultValues, reset]);
 
   const onSubmit = (data: unknown) => {
-    onConfirm(data as Partial<BaseItem>, setError);
+    onConfirm(data as Record<string, unknown>, setError);
   };
 
   return (

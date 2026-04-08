@@ -7,7 +7,6 @@ import type {
   Customer,
   NewPhone,
 } from "@/features/backoffice/modules/customers/types.ts";
-import type { BaseItem } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
@@ -56,7 +55,7 @@ export const useCustomerPhones = (
 
   const handleAddPhone = useCallback(
     async (
-      values: Partial<BaseItem>,
+      values: Record<string, unknown>,
       setError: UseFormSetError<Record<string, string>>,
     ) => {
       try {

@@ -8,4 +8,5 @@ export const DICTIONARIES_ROUTES = {
   intakeNotes: "dictionaries/intake-notes",
   manufacturers: "dictionaries/manufacturers",
   repairOperations: "dictionaries/repair-operations",
+  orderStatuses: "dictionaries/order-statuses",
 } as const;

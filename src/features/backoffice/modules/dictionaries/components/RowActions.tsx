@@ -4,13 +4,17 @@ import {
 } from "@/features/backoffice/widgets/table/components/buttons";
 import type { BaseItem } from "@/features/backoffice/widgets/table/models/types.ts";
 
-interface RowActionsProps {
-  item: BaseItem;
-  onEdit: (item: BaseItem) => void;
-  onDelete: (item: BaseItem) => void;
+interface RowActionsProps<T extends BaseItem> {
+  item: T;
+  onEdit: (item: T) => void;
+  onDelete: (item: T) => void;
 }
 
-export const RowActions = ({ item, onEdit, onDelete }: RowActionsProps) => (
+export const RowActions = <T extends BaseItem>({
+  item,
+  onEdit,
+  onDelete,
+}: RowActionsProps<T>) => (
   <>
     <EditButton onClick={() => onEdit(item)} />
     <DeleteButton onClick={() => onDelete(item)} />

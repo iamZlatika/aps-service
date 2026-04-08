@@ -56,5 +56,6 @@ export const queryKeys = {
     intakeNotes: makeEntityKey(["dictionaries"], "intake-notes"),
     manufacturers: makeEntityKey(["dictionaries"], "manufacturers"),
     repairOperations: makeEntityKey(["dictionaries"], "repair-operations"),
+    orderStatuses: makeEntityKey(["dictionaries"], "order-statuses"),
   },
 } as const;
