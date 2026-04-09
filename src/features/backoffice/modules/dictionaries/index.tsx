@@ -2,6 +2,7 @@ import {
   AlertCircle,
   Cpu,
   Factory,
+  FolderCog,
   Package,
   Smartphone,
   Stethoscope,
@@ -58,6 +59,11 @@ const DictionariesPage = () => {
       title: t("sidebar.dictionaries_list.repair_operations"),
       icon: Wrench,
       href: DICTIONARIES_LINKS.repairOperations(),
+    },
+    {
+      title: t("sidebar.dictionaries_list.order_statuses"),
+      icon: FolderCog,
+      href: DICTIONARIES_LINKS.orderStatuses(),
     },
   ];
 

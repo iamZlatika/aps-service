@@ -1,4 +1,5 @@
 import { type BaseItem } from "@/features/backoffice/widgets/table/models/types.ts";
+import { type STATUS_COLORS } from "@/shared/types.ts";
 
 export type DictionaryItem = {
   id: number;
@@ -18,3 +19,5 @@ export type PaginatedDictionaryItems<T extends BaseItem = DictionaryItem> = {
   items: T[];
   meta: PaginationMeta;
 };
+
+export type StatusColor = (typeof STATUS_COLORS)[keyof typeof STATUS_COLORS];

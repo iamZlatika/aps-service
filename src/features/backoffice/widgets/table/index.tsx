@@ -80,20 +80,21 @@ export const SmartTable = <T extends BaseItem>({
   } = pagination;
 
   return (
-    <div className="p-2 sm:p-6 max-w-4xl mx-auto w-full">
+    <div className="p-2 sm:p-6 max-w-3xl lg:max-w-7xl mx-auto w-full">
       <div className="mb-2 sm:mb-3 flex items-center justify-between">
         <h1 className="text-xl sm:text-2xl font-bold">{t(titleKey)}</h1>
         {headerActions}
       </div>
 
-      <SearchFilter
-        fieldName={searchField ?? "name"}
-        placeholder={t(searchPlaceholder)}
-        value={filters[searchField ?? "name"] ?? ""}
-        onChange={setFilter}
-        numbersOnly={searchNumbersOnly}
-      />
-
+      {searchField && (
+        <SearchFilter
+          fieldName={searchField}
+          placeholder={t(searchPlaceholder)}
+          value={filters[searchField ?? "name"] ?? ""}
+          onChange={setFilter}
+          numbersOnly={searchNumbersOnly}
+        />
+      )}
       {isError ? (
         <div className="rounded-md border p-8 text-center">
           <p className="text-muted-foreground mb-4">
