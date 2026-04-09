@@ -24,6 +24,7 @@ export interface SmartTableApi<T extends BaseItem = BaseItem> {
 export type SelectOption = {
   value: string;
   label: string;
+  colorDot?: string;
 };
 
 export interface FieldConfig {

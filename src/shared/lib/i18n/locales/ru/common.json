@@ -122,7 +122,10 @@
     "password_max": "Пароль слишком длинный",
     "field_required": "Поле не может быть пустым",
     "passwords_dont_match": "Пароли не совпадают",
-    "phone_invalid": "Введите номер в формате +38 0XX-XXX-XX-XX"
+    "phone_invalid": "Введите номер в формате +38 0XX-XXX-XX-XX",
+    "onlyLat": "Только латиница, цифры и _",
+    "minCharsIs": "Минимальное количество символов {{chars}}",
+    "colorRequired": "Выберите цвет"
   },
   "search_placeholders": {
     "dictionaries_name": "Поиск по названию",
@@ -255,7 +258,16 @@
     "table_fields": {
       "name": "Название",
       "category": "Категория",
-      "base_price": "Базовая цена"
+      "base_price": "Базовая цена",
+      "key": "Системный ключ",
+      "name_ua": "Название (укр.)",
+      "name_ru": "Название (рус.)",
+      "color": "Цвет"
+    },
+    "placeholders": {
+      "key": "Только латиница, цифры и _",
+      "name": "Введите название",
+      "color": "Выберите цвет"
     }
   },
   "orders": {

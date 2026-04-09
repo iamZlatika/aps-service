@@ -10,4 +10,5 @@ export const DICTIONARIES_LINKS = {
   intakeNotes: () => `${BASE}/intake-notes`,
   manufacturers: () => `${BASE}/manufacturers`,
   repairOperations: () => `${BASE}/repair-operations`,
+  orderStatuses: () => `${BASE}/order-statuses`,
 } as const;

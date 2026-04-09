@@ -62,6 +62,7 @@ export const DictionaryTablePage = <T extends DictionaryItem>({
         queryKeyFn={queryKeyFn}
         searchPlaceholder={searchPlaceholder}
         columns={columns}
+        searchField="name"
         headerActions={<AddButton onClick={() => addModal.setOpen(true)} />}
         renderRowActions={(item) => (
           <RowActions

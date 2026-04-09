@@ -124,7 +124,14 @@ export const ItemFormDialog = ({
                       <SelectContent>
                         {field.options!.map((opt) => (
                           <SelectItem key={opt.value} value={opt.value}>
-                            {opt.label}
+                            <div className="flex items-center gap-2">
+                              {opt.colorDot && (
+                                <div
+                                  className={`w-3 h-3 rounded-full flex-shrink-0 ${opt.colorDot}`}
+                                />
+                              )}
+                              {opt.label}
+                            </div>
                           </SelectItem>
                         ))}
                       </SelectContent>
