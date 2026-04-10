@@ -61,10 +61,8 @@ export function mapOrderDtoToOrder(dto: OrderDto): Order {
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
     closedAt: dto.closed_at,
-    // statusHistory: dto.status_history.map(
-    //   mapStatusHistoryItemDtoToStatusHistoryItem,
-    // ),
-    // items: dto.items,
+    totalIncome: dto.total_income,
+    totalCost: dto.total_cost,
   };
 }
 

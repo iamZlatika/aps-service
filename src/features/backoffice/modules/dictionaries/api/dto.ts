@@ -44,15 +44,6 @@ export const PaginatedDictionaryItemsDtoSchema = z.object({
   meta: PaginationMetaDtoSchema,
 });
 
-export const RepairOperationItemSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  category: z.string(),
-  base_price: z.string(),
-});
-
-export type RepairOperationItem = z.infer<typeof RepairOperationItemSchema>;
-
 export const OrderStatusDtoSchema = z.object({
   id: z.number(),
   key: z.string(),

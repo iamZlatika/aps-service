@@ -21,8 +21,8 @@ import type {
   FieldConfig,
 } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { statusColorMap, statusTextColorMap } from "@/shared/lib/constants.ts";
-import { cn } from "@/shared/lib/utils.ts";
+import { StatusBadge } from "@/shared/components/common/StatusBadge.tsx";
+import { statusColorMap } from "@/shared/lib/constants.ts";
 import { STATUS_COLORS } from "@/shared/types.ts";
 
 const colorOptions = Object.values(STATUS_COLORS).map((color) => ({
@@ -30,20 +30,6 @@ const colorOptions = Object.values(STATUS_COLORS).map((color) => ({
   label: color,
   colorDot: statusColorMap[color as StatusColor],
 }));
-const renderStatusBadge = (
-  value: string | number | boolean,
-  item: OrderStatusDto,
-) => (
-  <span
-    className={cn(
-      "inline-block rounded px-2 py-0.5 text-sm font-medium",
-      statusColorMap[item.color],
-      statusTextColorMap[item.color],
-    )}
-  >
-    {value}
-  </span>
-);
 
 const columns: ColumnConfig<OrderStatusDto>[] = [
   {
@@ -57,14 +43,18 @@ const columns: ColumnConfig<OrderStatusDto>[] = [
     field: "name_ua",
     labelKey: "dictionaries.table_fields.name_ua",
     sortable: false,
-    renderCell: (value, item) => renderStatusBadge(value, item),
+    renderCell: (value, item) => (
+      <StatusBadge name={String(value)} color={item.color} />
+    ),
   },
   {
     key: "name_ru",
     field: "name_ru",
     labelKey: "dictionaries.table_fields.name_ru",
     sortable: false,
-    renderCell: (value, item) => renderStatusBadge(value, item),
+    renderCell: (value, item) => (
+      <StatusBadge name={String(value)} color={item.color} />
+    ),
   },
 ];
 
