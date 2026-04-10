@@ -44,10 +44,6 @@ export const PaginatedDictionaryItemsDtoSchema = z.object({
   meta: PaginationMetaDtoSchema,
 });
 
-export type PaginatedDictionaryItemsDto = z.infer<
-  typeof PaginatedDictionaryItemsDtoSchema
->;
-
 export const RepairOperationItemSchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -67,3 +63,22 @@ export const OrderStatusDtoSchema = z.object({
 });
 
 export type OrderStatusDto = z.infer<typeof OrderStatusDtoSchema>;
+
+export const SupplierDtoSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  manager_name: z.string(),
+  phone: z.string(),
+  website: z.string(),
+});
+
+export type Supplier = z.infer<typeof SupplierDtoSchema>;
+
+export const ProductDtoSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  purchase_price: z.string(),
+  supplier: SupplierDtoSchema,
+});
+
+export type Product = z.infer<typeof ProductDtoSchema>;

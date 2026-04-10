@@ -1,9 +1,11 @@
 import {
   AlertCircle,
+  Container,
   Cpu,
   Factory,
   FolderCog,
   Package,
+  ShoppingCart,
   Smartphone,
   Stethoscope,
   StickyNote,
@@ -64,6 +66,16 @@ const DictionariesPage = () => {
       title: t("sidebar.dictionaries_list.order_statuses"),
       icon: FolderCog,
       href: DICTIONARIES_LINKS.orderStatuses(),
+    },
+    {
+      title: t("sidebar.dictionaries_list.suppliers"),
+      icon: Container,
+      href: DICTIONARIES_LINKS.suppliers(),
+    },
+    {
+      title: t("sidebar.dictionaries_list.products"),
+      icon: ShoppingCart,
+      href: DICTIONARIES_LINKS.products(),
     },
   ];
 

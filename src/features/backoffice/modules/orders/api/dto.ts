@@ -23,6 +23,7 @@ export type StatusHistoryItemDto = z.infer<typeof StatusHistoryItemDtoSchema>;
 
 export const OrderDtoSchema = z.object({
   id: z.number(),
+  order_number: z.string().trim().min(1),
   customer: CustomerDtoSchema,
   manager: UserDtoSchema,
   assignee: UserDtoSchema.nullable(),
@@ -43,8 +44,8 @@ export const OrderDtoSchema = z.object({
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),
   closed_at: z.iso.datetime().nullable(),
-  status_history: z.array(StatusHistoryItemDtoSchema),
-  items: z.array(z.unknown()),
+  // status_history: z.array(StatusHistoryItemDtoSchema),
+  // items: z.array(z.unknown()),
 });
 export type OrderDto = z.infer<typeof OrderDtoSchema>;
 

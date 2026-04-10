@@ -9,4 +9,6 @@ export const DICTIONARIES_ROUTES = {
   manufacturers: "dictionaries/manufacturers",
   repairOperations: "dictionaries/repair-operations",
   orderStatuses: "dictionaries/order-statuses",
+  suppliers: "dictionaries/suppliers",
+  products: "dictionaries/products",
 } as const;

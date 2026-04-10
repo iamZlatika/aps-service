@@ -1,3 +1,6 @@
+import type { z } from "zod";
+
+import type { newCustomerSchema } from "@/features/backoffice/modules/customers/lib/schemas.ts";
 import { type UserStatus } from "@/shared/types.ts";
 
 export type Customer = {
@@ -28,8 +31,6 @@ export type Phone = {
 
 export type NewPhone = Pick<Phone, "phoneNumber">;
 
-export type NewCustomer = Pick<Customer, "name" | "email" | "comment"> & {
-  phone: string;
-};
+export type NewCustomer = z.infer<typeof newCustomerSchema>;
 
 export type RatingValue = 1 | 2 | 3 | 4 | 5 | null;

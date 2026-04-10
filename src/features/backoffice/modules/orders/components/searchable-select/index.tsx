@@ -7,6 +7,7 @@ import {
   type SearchableSelectInputProps,
   type SearchableSelectOption,
 } from "@/features/backoffice/modules/orders/components/searchable-select/searchableSelect.types.ts";
+import { SEARCH_DEBOUNCE_MS } from "@/shared/lib/constants.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
 export type { SearchableSelectOption };
@@ -67,7 +68,10 @@ const SearchableSelect = ({
   }, [value]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedSearch(inputValue), 300);
+    const timer = setTimeout(
+      () => setDebouncedSearch(inputValue),
+      SEARCH_DEBOUNCE_MS,
+    );
     return () => clearTimeout(timer);
   }, [inputValue]);
 

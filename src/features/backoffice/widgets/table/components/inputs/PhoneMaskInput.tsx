@@ -1,3 +1,4 @@
+import { type KeyboardEvent } from "react";
 import { IMaskInput } from "react-imask";
 
 import { cn } from "@/shared/lib/utils";
@@ -7,7 +8,7 @@ interface PhoneMaskInputProps {
   onChange: (value: string) => void;
   onFocus?: () => void;
   onBlur?: () => void;
-  onKeyDown?: (e: React.KeyboardEvent) => void;
+  onKeyDown?: (e: KeyboardEvent) => void;
   placeholder?: string;
   className?: string;
   hasError?: boolean;

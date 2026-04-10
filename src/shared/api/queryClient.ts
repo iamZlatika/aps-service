@@ -1,5 +1,6 @@
 import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 
+import { QUERY_GC_TIME, QUERY_STALE_TIME } from "@/shared/lib/constants.ts";
 import { isApiError, notifyError } from "@/shared/lib/errors/services.ts";
 import { captureError } from "@/shared/lib/sentry.ts";
 
@@ -22,8 +23,8 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      gcTime: 10 * 60 * 1000,
+      staleTime: QUERY_STALE_TIME,
+      gcTime: QUERY_GC_TIME,
       retry: (failureCount, error) => {
         if (isApiError(error) && error.status && error.status < 500)
           return false;
