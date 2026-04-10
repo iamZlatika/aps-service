@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { CustomerDtoSchema } from "@/features/backoffice/modules/customers/api/dto.ts";
 import { UserDtoSchema } from "@/features/backoffice/modules/users/api/dto.ts";
+import { LocationDtoSchema } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 
 export const StatusDtoSchema = z.object({
   id: z.number(),
@@ -41,11 +42,11 @@ export const OrderDtoSchema = z.object({
   estimated_cost: z.string().nullable(),
   is_urgent: z.boolean(),
   is_called: z.boolean(),
+  total_cost: z.string().nullable(),
+  total_income: z.string().nullable(),
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),
   closed_at: z.iso.datetime().nullable(),
-  total_cost: z.string().nullable(),
-  total_income: z.string().nullable(),
 });
 export type OrderDto = z.infer<typeof OrderDtoSchema>;
 
@@ -62,3 +63,12 @@ export const PaginatedOrdersDtoSchema = z.object({
 });
 
 export type PaginatedOrdersDto = z.infer<typeof PaginatedOrdersDtoSchema>;
+
+export const OrderInfoDtoSchema = OrderDtoSchema.extend({
+  location: LocationDtoSchema,
+  status_history: z.array(StatusHistoryItemDtoSchema),
+  services: z.array(z.string()),
+  products: z.array(z.string()),
+  comments: z.array(z.string()),
+});
+export type OrderInfoDto = z.infer<typeof OrderInfoDtoSchema>;

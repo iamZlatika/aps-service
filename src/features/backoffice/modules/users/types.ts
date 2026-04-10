@@ -1,5 +1,6 @@
 import type { z } from "zod";
 
+import { type Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { registerUserSchema } from "@/features/backoffice/modules/users/lib/registerUserSchema.ts";
 import {
   type Role,
@@ -17,6 +18,7 @@ export type User = {
   locale: UserLanguage;
   theme: UserTheme;
   avatarUrl: string;
+  location: Location | null;
 };
 
 export type NewUser = z.infer<typeof registerUserSchema>;

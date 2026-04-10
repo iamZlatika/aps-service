@@ -274,9 +274,13 @@
   },
   "orders": {
     "createNew": "Створити нове замовлення",
+    "order": "Замовлення",
     "customerInfo": "Інформація про клієнта",
     "deviceInfo": "Інформація про пристрій",
     "additionalInfo": "Додаткова інформація",
+    "history": {
+      "title": "Історія"
+    },
     "actions": {
       "create": "Створити"
     },

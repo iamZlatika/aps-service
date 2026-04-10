@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { LocationDtoSchema } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { emailRegex } from "@/shared/lib/constants.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
 import {
@@ -18,6 +19,7 @@ export const UserDtoSchema = z.object({
   locale: zodEnumFromConst(USER_LANGUAGES),
   theme: zodEnumFromConst(USER_THEMES),
   avatar_url: z.string(),
+  location: LocationDtoSchema.nullable(),
 });
 export type UserDto = z.infer<typeof UserDtoSchema>;
 

@@ -12,6 +12,9 @@ import { ROLES } from "@/shared/types.ts";
 const OrdersPage = lazy(
   () => import("@/features/backoffice/modules/orders/pages"),
 );
+const OrderPage = lazy(
+  () => import("@/features/backoffice/modules/orders/pages/OrderPage"),
+);
 const CreateOrderPage = lazy(
   () => import("@/features/backoffice/modules/orders/pages/CreateOrderPage"),
 );
@@ -68,6 +71,7 @@ export const backofficeRoutes: RouteObject = {
   children: [
     { path: ORDERS_ROUTES.root, element: <OrdersPage /> },
     { path: ORDERS_ROUTES.createNewOrder, element: <CreateOrderPage /> },
+    { path: ORDERS_ROUTES.order, element: <OrderPage /> },
     { path: CUSTOMERS_ROUTES.root, element: <CustomersPage /> },
     { path: CUSTOMERS_ROUTES.customer, element: <CustomerPage /> },
     { path: USERS_ROUTES.root, element: <UsersPage /> },

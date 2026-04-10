@@ -1,6 +1,8 @@
 import { mapCustomerDtoToCustomer } from "@/features/backoffice/modules/customers/lib/adapters.ts";
+import { mapLocationDtoToLocation } from "@/features/backoffice/modules/dictionaries/lib/adapter.ts";
 import {
   type OrderDto,
+  type OrderInfoDto,
   type PaginatedOrdersDto,
   type StatusDto,
   type StatusHistoryItemDto,
@@ -11,6 +13,7 @@ import type { PaginatedResponse } from "@/features/backoffice/widgets/table/mode
 import type {
   NewOrder,
   Order,
+  OrderInfo,
   OrderStatus,
   StatusHistoryItem,
 } from "../types.ts";
@@ -65,6 +68,20 @@ export function mapOrderDtoToOrder(dto: OrderDto): Order {
     totalCost: dto.total_cost,
   };
 }
+
+export const mapOrderInfoDtoToOrderInfo = (dto: OrderInfoDto): OrderInfo => {
+  return {
+    ...mapOrderDtoToOrder(dto),
+
+    location: mapLocationDtoToLocation(dto.location),
+    statusHistory: dto.status_history.map(
+      mapStatusHistoryItemDtoToStatusHistoryItem,
+    ),
+    services: dto.services,
+    products: dto.products,
+    comments: dto.comments,
+  };
+};
 
 export const mapPaginatedOrdersDtoToResponse = (
   dto: PaginatedOrdersDto,
