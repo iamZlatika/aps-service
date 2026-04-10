@@ -21,16 +21,15 @@ import { usersApi } from "@/features/backoffice/modules/users/api";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { type PaginatedGetAllFn } from "@/shared/api/types.ts";
+import { SEARCH_PAGE_SIZE } from "@/shared/lib/constants.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
-
-const PAGE_SIZE = 30;
 
 const fetchByDictionaryName =
   (apiFn: PaginatedGetAllFn) =>
   (search: string): Promise<SearchableSelectOption[]> =>
     apiFn(
       1,
-      PAGE_SIZE,
+      SEARCH_PAGE_SIZE,
       undefined,
       undefined,
       search ? { name: search } : undefined,
@@ -44,7 +43,7 @@ const fetchCustomersByName = (
   customersApi
     .getAll(
       1,
-      PAGE_SIZE,
+      SEARCH_PAGE_SIZE,
       undefined,
       undefined,
       search ? { name: search } : undefined,
@@ -69,7 +68,7 @@ const fetchCustomersByPhone = (
   customersApi
     .getAll(
       1,
-      PAGE_SIZE,
+      SEARCH_PAGE_SIZE,
       undefined,
       undefined,
       search ? { phone_number: search } : undefined,
@@ -92,7 +91,7 @@ const fetchUsersByName = (search: string): Promise<SearchableSelectOption[]> =>
   usersApi
     .getAll(
       1,
-      PAGE_SIZE,
+      SEARCH_PAGE_SIZE,
       undefined,
       undefined,
       search ? { name: search } : undefined,
@@ -134,7 +133,7 @@ export const useCreateOrder = (
 
   const onSubmit = async (values: NewOrderSchema) => {
     try {
-      await mutation.mutateAsync(values as unknown as NewOrder);
+      await mutation.mutateAsync(values);
     } catch (error) {
       handleFormError(error, setError);
     }

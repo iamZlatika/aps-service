@@ -2,6 +2,7 @@ import { Search, X } from "lucide-react";
 import { type ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Input } from "@/shared/components/ui/input.tsx";
+import { FILTER_DEBOUNCE_MS } from "@/shared/lib/constants.ts";
 
 interface SearchFilterProps {
   fieldName: string;
@@ -17,7 +18,7 @@ const SearchFilter = ({
   placeholder,
   value,
   onChange,
-  debounceMs = 400,
+  debounceMs = FILTER_DEBOUNCE_MS,
   numbersOnly = false,
 }: SearchFilterProps) => {
   const [localValue, setLocalValue] = useState(value);

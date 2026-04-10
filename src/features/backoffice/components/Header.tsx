@@ -1,5 +1,4 @@
-import { LogOut } from "lucide-react";
-import { Moon, Sun } from "lucide-react";
+import { LogOut, Moon, Settings, Sun } from "lucide-react";
 import { memo, type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -11,6 +10,11 @@ import { useUpdateLocale } from "@/features/backoffice/modules/users/hooks/useUp
 import { useUpdateTheme } from "@/features/backoffice/modules/users/hooks/useUpdateTheme.ts";
 import { Avatar, AvatarImage } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/shared/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/shared/components/ui/sidebar";
 import {
   USER_LANGUAGES,
@@ -57,7 +61,7 @@ export const Header = memo(() => {
       </div>
 
       <div className="flex items-center gap-4">
-        <div className="flex flex-col gap-2 lg:flex-row lg:gap-4">
+        <div className="hidden lg:flex lg:flex-row lg:gap-4">
           <SegmentedControl
             onChange={updateLocale.mutate}
             disabled={updateLocale.isPending}
@@ -70,6 +74,32 @@ export const Header = memo(() => {
             value={user?.theme || "dark"}
             options={themeOptions}
           />
+        </div>
+
+        <div className="flex lg:hidden">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Settings className="h-6 w-6" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="p-3">
+              <div className="flex flex-col gap-2">
+                <SegmentedControl
+                  onChange={updateLocale.mutate}
+                  disabled={updateLocale.isPending}
+                  value={user?.locale || "uk"}
+                  options={localeOptions}
+                />
+                <SegmentedControl
+                  onChange={updateTheme.mutate}
+                  disabled={updateTheme.isPending}
+                  value={user?.theme || "dark"}
+                  options={themeOptions}
+                />
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <Link to={PROFILE_LINKS.root()} className="flex items-center space-x-2">

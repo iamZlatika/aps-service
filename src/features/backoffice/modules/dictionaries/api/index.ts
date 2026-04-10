@@ -2,7 +2,12 @@ import {
   createDictionaryApi,
   createTypedDictionaryApi,
 } from "./createDictionaryApi";
-import { OrderStatusDtoSchema, RepairOperationItemSchema } from "./dto";
+import {
+  OrderStatusDtoSchema,
+  ProductDtoSchema,
+  RepairOperationItemSchema,
+  SupplierDtoSchema,
+} from "./dto";
 import { DICTIONARIES_API } from "./endpoints";
 
 export const accessoriesApi = createDictionaryApi({
@@ -46,4 +51,18 @@ export const orderStatusesApi = createTypedDictionaryApi(
     item: (id) => DICTIONARIES_API.orderStatus(id),
   },
   OrderStatusDtoSchema,
+);
+export const suppliersApi = createTypedDictionaryApi(
+  {
+    list: () => DICTIONARIES_API.suppliers(),
+    item: (id) => DICTIONARIES_API.supplier(id),
+  },
+  SupplierDtoSchema,
+);
+export const productsApi = createTypedDictionaryApi(
+  {
+    list: () => DICTIONARIES_API.products(),
+    item: (id) => DICTIONARIES_API.product(id),
+  },
+  ProductDtoSchema,
 );

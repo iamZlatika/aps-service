@@ -1,4 +1,7 @@
+import type { z } from "zod";
+
 import type { Customer } from "@/features/backoffice/modules/customers/types.ts";
+import type { newOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
 
 export type OrderStatus = {
@@ -19,6 +22,7 @@ export type StatusHistoryItem = {
 
 export type Order = {
   id: number;
+  orderNumber: string;
   customer: Customer;
   manager: User;
   assignee: User | null;
@@ -39,14 +43,8 @@ export type Order = {
   createdAt: string;
   updatedAt: string;
   closedAt: string | null;
-  statusHistory: StatusHistoryItem[];
-  items: unknown[];
+  // statusHistory: StatusHistoryItem[];
+  // items: unknown[];
 };
 
-export type NewOrder = Pick<
-  Order,
-  "issueType" | "deviceType" | "manufacturer" | "deviceModel" | "devicePassword"
-> & {
-  customerName: string;
-  customerPhone: string;
-};
+export type NewOrder = z.infer<typeof newOrderSchema>;

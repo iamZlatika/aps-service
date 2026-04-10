@@ -14,8 +14,12 @@ export const newCustomerSchema = z.object({
     .refine((val) => val === "" || emailRegex.test(val), {
       message: i18next.t("validation.email_invalid"),
     })
-    .optional(),
-  comment: z.string().optional(),
+    .optional()
+    .transform((val) => val ?? null),
+  comment: z
+    .string()
+    .optional()
+    .transform((val) => val ?? null),
 });
 
 export const addPhoneSchema = z.object({

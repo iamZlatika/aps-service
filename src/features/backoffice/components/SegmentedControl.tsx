@@ -21,13 +21,13 @@ const SegmentedControl = <T extends string>({
   disabled,
 }: SegmentedControlProps<T>) => {
   return (
-    <div className="flex items-center border rounded-md overflow-hidden flex-1">
+    <div className="flex items-center border rounded-md overflow-hidden">
       {options.map((option, index) => (
-        <div key={option.value} className="flex items-center">
+        <div key={option.value} className="flex flex-1 items-center">
           <Button
             variant={option.value === value ? "default" : "ghost"}
             size="sm"
-            className="rounded-none h-8 px-3"
+            className="rounded-none h-8 px-3 flex-1"
             onClick={() => onChange(option.value)}
             disabled={disabled}
           >

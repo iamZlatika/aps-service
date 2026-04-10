@@ -14,7 +14,6 @@ import { AddButton } from "@/features/backoffice/modules/dictionaries/components
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import { ItemFormDialog } from "@/features/backoffice/widgets/table/components/dialogs";
 import type {
-  BaseItem,
   ColumnConfig,
   FieldConfig,
 } from "@/features/backoffice/widgets/table/models/types.ts";
@@ -66,11 +65,11 @@ const CustomersPage = () => {
 
   const handleAddCustomerSubmit = useCallback(
     async (
-      values: Partial<BaseItem>,
+      values: Record<string, unknown>,
       setError: UseFormSetError<Record<string, string>>,
     ) => {
       try {
-        await addCustomerMutation.mutateAsync(values as unknown as NewCustomer);
+        await addCustomerMutation.mutateAsync(newCustomerSchema.parse(values));
       } catch (error) {
         handleFormError(error, setError);
       }

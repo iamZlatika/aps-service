@@ -40,6 +40,7 @@ export function mapStatusHistoryItemDtoToStatusHistoryItem(
 export function mapOrderDtoToOrder(dto: OrderDto): Order {
   return {
     id: dto.id,
+    orderNumber: dto.order_number,
     customer: mapCustomerDtoToCustomer(dto.customer),
     manager: mapUserDtoToUser(dto.manager),
     assignee: dto.assignee ? mapUserDtoToUser(dto.assignee) : null,
@@ -60,10 +61,10 @@ export function mapOrderDtoToOrder(dto: OrderDto): Order {
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
     closedAt: dto.closed_at,
-    statusHistory: dto.status_history.map(
-      mapStatusHistoryItemDtoToStatusHistoryItem,
-    ),
-    items: dto.items,
+    // statusHistory: dto.status_history.map(
+    //   mapStatusHistoryItemDtoToStatusHistoryItem,
+    // ),
+    // items: dto.items,
   };
 }
 
@@ -83,9 +84,19 @@ export const mapPaginatedOrdersDtoToResponse = (
 export const mapNewOrderToDto = (order: NewOrder) => ({
   customer_name: order.customerName,
   customer_phone: order.customerPhone,
+  customer_email: order.customerEmail,
+  customer_comment: order.customerComment,
   issue_type: order.issueType,
   device_type: order.deviceType,
   manufacturer: order.manufacturer,
   device_model: order.deviceModel,
   device_password: order.devicePassword,
+  device_condition: order.deviceCondition,
+  accessory: order.accessory,
+  intake_note: order.intakeNote,
+  is_urgent: order.isUrgent,
+  estimated_cost: order.estimatedCost,
+  manager_id: order.managerId,
+  assignee_id: order.assigneeId,
+  prepayment: order.prepayment,
 });

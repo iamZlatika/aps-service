@@ -68,7 +68,9 @@
       "intake_notes": "Нотатки при прийманні",
       "manufacturers": "Виробники",
       "repair_operations": "Операції з ремонту",
-      "order_statuses": "Статуси замовлень"
+      "order_statuses": "Статуси замовлень",
+      "products": "Продукти",
+      "suppliers": "Постачальники"
     }
   },
   "errors": {
@@ -259,7 +261,10 @@
       "key": "Системний ключ",
       "name_ua": "Назва (укр.)",
       "name_ru": "Назва (рос.)",
-      "color": "Колір"
+      "color": "Колір",
+      "managerName": "Менеджер",
+      "phone": "Телефон",
+      "website": "Сайт"
     },
     "placeholders": {
       "key": "Тільки латиниця, цифри та _",
@@ -274,6 +279,10 @@
     "additionalInfo": "Додаткова інформація",
     "actions": {
       "create": "Створити"
+    },
+    "table_fields": {
+      "customer": "Ім’я клієнта",
+      "status": "Статус замовлення"
     },
     "form": {
       "customerName": "Ім’я клієнта *",

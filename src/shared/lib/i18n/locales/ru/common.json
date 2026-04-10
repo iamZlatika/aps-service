@@ -69,6 +69,8 @@
       "manufacturers": "Производители",
       "repair_operations": "Операции по ремонту",
       "order_statuses": "Статусы заказов",
+      "products": "Продукты",
+      "suppliers": "Поставщики",
       "accessories_page": {
         "title": "Комплектации"
       }
@@ -262,7 +264,10 @@
       "key": "Системный ключ",
       "name_ua": "Название (укр.)",
       "name_ru": "Название (рус.)",
-      "color": "Цвет"
+      "color": "Цвет",
+      "managerName": "Менеджер",
+      "phone": "Телефон",
+      "website": "Сайт"
     },
     "placeholders": {
       "key": "Только латиница, цифры и _",
@@ -278,6 +283,10 @@
     "actions": {
       "create": "Создать"
     },
+    "table_fields": {
+      "customer": "Имя клиента",
+      "status": "Статус Заказа"
+          },
     "form": {
       "customerName": "Имя клиента *",
       "customerPhone": "Телефон клиента *",

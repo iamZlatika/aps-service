@@ -1,3 +1,6 @@
+import type { z } from "zod";
+
+import type { registerUserSchema } from "@/features/backoffice/modules/users/lib/registerUserSchema.ts";
 import {
   type Role,
   type UserLanguage,
@@ -16,10 +19,4 @@ export type User = {
   avatarUrl: string;
 };
 
-export type NewUser = {
-  email: string;
-  name: string;
-  password: string;
-  password_confirmation: string;
-  role: Role;
-};
+export type NewUser = z.infer<typeof registerUserSchema>;
