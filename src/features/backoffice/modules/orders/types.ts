@@ -43,8 +43,8 @@ export type Order = {
   createdAt: string;
   updatedAt: string;
   closedAt: string | null;
-  // statusHistory: StatusHistoryItem[];
-  // items: unknown[];
+  totalIncome: string | null;
+  totalCost: string | null;
 };
 
 export type NewOrder = z.infer<typeof newOrderSchema>;

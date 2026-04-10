@@ -44,8 +44,8 @@ export const OrderDtoSchema = z.object({
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),
   closed_at: z.iso.datetime().nullable(),
-  // status_history: z.array(StatusHistoryItemDtoSchema),
-  // items: z.array(z.unknown()),
+  total_cost: z.string().nullable(),
+  total_income: z.string().nullable(),
 });
 export type OrderDto = z.infer<typeof OrderDtoSchema>;
 

@@ -15,7 +15,7 @@ import {
 } from "@/features/backoffice/modules/orders/types.ts";
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
-import { get, post } from "@/shared/api/api.ts";
+import { get, post, put } from "@/shared/api/api.ts";
 
 export const ordersApi = {
   getAll: async (
@@ -52,5 +52,8 @@ export const ordersApi = {
 
     const validated = OrderDtoSchema.parse(response.data);
     return mapOrderDtoToOrder(validated);
+  },
+  changeStatus: async (orderId: number, statusId: number): Promise<void> => {
+    await put(ORDERS_API.changeStatus(orderId), { status_id: statusId });
   },
 };

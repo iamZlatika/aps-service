@@ -27,6 +27,7 @@ type RowInteraction<T extends BaseItem> =
 
 type SmartTableProps<T extends BaseItem = BaseItem> = {
   titleKey: string;
+  className?: string;
   api: SmartTableApi<T>;
   queryKeyFn: (
     page: number,
@@ -53,6 +54,7 @@ export const SmartTable = <T extends BaseItem>({
   renderRowActions,
   onRowClick,
   headerActions,
+  className,
 }: SmartTableProps<T>) => {
   const { t } = useTranslation();
 
@@ -80,7 +82,12 @@ export const SmartTable = <T extends BaseItem>({
   } = pagination;
 
   return (
-    <div className="p-2 sm:p-6 max-w-3xl lg:max-w-7xl mx-auto w-full">
+    <div
+      className={cn(
+        "p-2 sm:p-6 max-w-3xl lg:max-w-7xl mx-auto w-full",
+        className,
+      )}
+    >
       <div className="mb-2 sm:mb-3 flex items-center justify-between">
         <h1 className="text-xl sm:text-2xl font-bold">{t(titleKey)}</h1>
         {headerActions}

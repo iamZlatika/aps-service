@@ -2,12 +2,7 @@ import {
   createDictionaryApi,
   createTypedDictionaryApi,
 } from "./createDictionaryApi";
-import {
-  OrderStatusDtoSchema,
-  ProductDtoSchema,
-  RepairOperationItemSchema,
-  SupplierDtoSchema,
-} from "./dto";
+import { OrderStatusDtoSchema, SupplierDtoSchema } from "./dto";
 import { DICTIONARIES_API } from "./endpoints";
 
 export const accessoriesApi = createDictionaryApi({
@@ -38,13 +33,10 @@ export const manufacturersApi = createDictionaryApi({
   list: () => DICTIONARIES_API.manufacturers(),
   item: (id) => DICTIONARIES_API.manufacturer(id),
 });
-export const repairOperationsApi = createTypedDictionaryApi(
-  {
-    list: () => DICTIONARIES_API.repairOperations(),
-    item: (id) => DICTIONARIES_API.repairOperation(id),
-  },
-  RepairOperationItemSchema,
-);
+export const repairOperationsApi = createDictionaryApi({
+  list: () => DICTIONARIES_API.repairOperations(),
+  item: (id) => DICTIONARIES_API.repairOperation(id),
+});
 export const orderStatusesApi = createTypedDictionaryApi(
   {
     list: () => DICTIONARIES_API.orderStatuses(),
@@ -59,10 +51,7 @@ export const suppliersApi = createTypedDictionaryApi(
   },
   SupplierDtoSchema,
 );
-export const productsApi = createTypedDictionaryApi(
-  {
-    list: () => DICTIONARIES_API.products(),
-    item: (id) => DICTIONARIES_API.product(id),
-  },
-  ProductDtoSchema,
-);
+export const productsApi = createDictionaryApi({
+  list: () => DICTIONARIES_API.products(),
+  item: (id) => DICTIONARIES_API.product(id),
+});
