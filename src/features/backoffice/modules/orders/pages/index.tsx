@@ -96,7 +96,7 @@ const OrdersPage = () => {
         return (
           <div className="flex items-center gap-1">
             {isOverdue ? (
-              <ClockAlert className="text-destructive size-4" />
+              <ClockAlert className="text-destructive size-6" />
             ) : (
               <span>{diffDays} дн.</span>
             )}
@@ -234,7 +234,7 @@ const OrdersPage = () => {
       sortable: false,
       renderCell: (value) =>
         value ? (
-          <CircleCheck className="text-green-600 size-5" />
+          <CircleCheck className="text-green-600 size-6" />
         ) : (
           <span>—</span>
         ),
@@ -246,13 +246,16 @@ const OrdersPage = () => {
       sortable: false,
       renderCell: (value) =>
         value ? (
-          <CircleCheck className="text-green-600 size-5" />
+          <CircleCheck className="text-green-600 size-6" />
         ) : (
           <span>—</span>
         ),
     },
   ];
 
+  const onRowClick = (order: Order) => {
+    navigate(`/backoffice/orders/${order.id}`);
+  };
   return (
     <SmartTable
       className="max-w-[2560px] lg:max-w-[2560px]"
@@ -266,7 +269,7 @@ const OrdersPage = () => {
       headerActions={
         <AddButton onClick={() => navigate(ORDERS_LINKS.newOrder())} />
       }
-      // onRowClick={onRowClick}
+      onRowClick={onRowClick}
     />
   );
 };

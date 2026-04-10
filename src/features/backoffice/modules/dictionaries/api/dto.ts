@@ -73,3 +73,12 @@ export const ProductDtoSchema = z.object({
 });
 
 export type Product = z.infer<typeof ProductDtoSchema>;
+
+export const LocationDtoSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  address: z.string(),
+  phone: z.string(),
+});
+
+export type LocationDto = z.infer<typeof LocationDtoSchema>;

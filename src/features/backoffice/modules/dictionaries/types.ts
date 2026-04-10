@@ -21,3 +21,10 @@ export type PaginatedDictionaryItems<T extends BaseItem = DictionaryItem> = {
 };
 
 export type StatusColor = (typeof STATUS_COLORS)[keyof typeof STATUS_COLORS];
+
+export type Location = {
+  id: number;
+  name: string;
+  address: string;
+  phone: string;
+};
