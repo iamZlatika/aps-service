@@ -71,6 +71,7 @@
       "order_statuses": "Статусы заказов",
       "products": "Продукты",
       "suppliers": "Поставщики",
+      "locations": "Локации",
       "accessories_page": {
         "title": "Комплектации"
       }
@@ -267,7 +268,8 @@
       "color": "Цвет",
       "managerName": "Менеджер",
       "phone": "Телефон",
-      "website": "Сайт"
+      "website": "Сайт",
+      "address": "Адресс"
     },
     "placeholders": {
       "key": "Только латиница, цифры и _",

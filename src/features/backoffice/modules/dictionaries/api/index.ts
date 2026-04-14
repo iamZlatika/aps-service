@@ -2,7 +2,11 @@ import {
   createDictionaryApi,
   createTypedDictionaryApi,
 } from "./createDictionaryApi";
-import { OrderStatusDtoSchema, SupplierDtoSchema } from "./dto";
+import {
+  LocationDtoSchema,
+  OrderStatusDtoSchema,
+  SupplierDtoSchema,
+} from "./dto";
 import { DICTIONARIES_API } from "./endpoints";
 
 export const accessoriesApi = createDictionaryApi({
@@ -55,3 +59,10 @@ export const productsApi = createDictionaryApi({
   list: () => DICTIONARIES_API.products(),
   item: (id) => DICTIONARIES_API.product(id),
 });
+export const locationApi = createTypedDictionaryApi(
+  {
+    list: () => DICTIONARIES_API.locations(),
+    item: (id) => DICTIONARIES_API.location(id),
+  },
+  LocationDtoSchema,
+);

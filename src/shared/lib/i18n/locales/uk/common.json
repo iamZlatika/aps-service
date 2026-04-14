@@ -70,7 +70,8 @@
       "repair_operations": "Операції з ремонту",
       "order_statuses": "Статуси замовлень",
       "products": "Продукти",
-      "suppliers": "Постачальники"
+      "suppliers": "Постачальники",
+      "locations": "Локації"
     }
   },
   "errors": {
@@ -264,7 +265,8 @@
       "color": "Колір",
       "managerName": "Менеджер",
       "phone": "Телефон",
-      "website": "Сайт"
+      "website": "Сайт",
+      "address": "Адреса"
     },
     "placeholders": {
       "key": "Тільки латиниця, цифри та _",

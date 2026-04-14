@@ -66,6 +66,9 @@ const SuppliersPage = lazy(
 const ProductsPage = lazy(
   () => import("@/features/backoffice/modules/dictionaries/pages/Products"),
 );
+const LocationsPage = lazy(
+  () => import("@/features/backoffice/modules/dictionaries/pages/Locations"),
+);
 
 export const backofficeRoutes: RouteObject = {
   children: [
@@ -128,6 +131,10 @@ export const backofficeRoutes: RouteObject = {
         {
           path: DICTIONARIES_ROUTES.products,
           element: <ProductsPage />,
+        },
+        {
+          path: DICTIONARIES_ROUTES.locations,
+          element: <LocationsPage />,
         },
       ],
     },

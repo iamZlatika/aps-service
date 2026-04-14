@@ -4,6 +4,7 @@ import {
   Cpu,
   Factory,
   FolderCog,
+  MapPin,
   Package,
   ShoppingCart,
   Smartphone,
@@ -76,6 +77,11 @@ const DictionariesPage = () => {
       title: t("sidebar.dictionaries_list.products"),
       icon: ShoppingCart,
       href: DICTIONARIES_LINKS.products(),
+    },
+    {
+      title: t("sidebar.dictionaries_list.locations"),
+      icon: MapPin,
+      href: DICTIONARIES_LINKS.locations(),
     },
   ];
 
