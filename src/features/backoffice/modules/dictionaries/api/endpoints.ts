@@ -23,4 +23,6 @@ export const DICTIONARIES_API = {
   supplier: (id: number) => `${BASE}/suppliers/${id}`,
   products: () => `${BASE}/products`,
   product: (id: number) => `${BASE}/products/${id}`,
+  locations: () => `${BASE}/locations`,
+  location: (id: number) => `${BASE}/locations/${id}`,
 } as const;
