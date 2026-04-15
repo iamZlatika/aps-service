@@ -72,4 +72,10 @@ export const usersApi = {
   updateTheme: async (theme: UserTheme): Promise<void> => {
     await put(USERS_API.updateTheme(), { theme });
   },
+  updateLocation: async (
+    location_id: number,
+    userId: number,
+  ): Promise<void> => {
+    await put(USERS_API.changeUserLocation(userId), { location_id });
+  },
 };

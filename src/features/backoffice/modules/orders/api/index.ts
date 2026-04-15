@@ -1,7 +1,7 @@
 import {
   type OrderDto,
   OrderDtoSchema,
-  OrderInfoDto,
+  type OrderInfoDto,
   OrderInfoDtoSchema,
   PaginatedOrdersDtoSchema,
 } from "@/features/backoffice/modules/orders/api/dto.ts";
@@ -15,7 +15,7 @@ import {
 import {
   type NewOrder,
   type Order,
-  OrderInfo,
+  type OrderInfo,
 } from "@/features/backoffice/modules/orders/types.ts";
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";

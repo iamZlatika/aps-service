@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type { UseFormSetError } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -10,14 +10,17 @@ import {
   deviceTypesApi,
   intakeNotesApi,
   issueTypesApi,
+  locationApi,
   manufacturersApi,
 } from "@/features/backoffice/modules/dictionaries/api";
+import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
 import type { SearchableSelectOption } from "@/features/backoffice/modules/orders/components/searchable-select/searchableSelect.types.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation.ts";
 import type { NewOrder } from "@/features/backoffice/modules/orders/types.ts";
 import { usersApi } from "@/features/backoffice/modules/users/api";
+import type { User } from "@/features/backoffice/modules/users/types.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { type PaginatedGetAllFn } from "@/shared/api/types.ts";
@@ -116,12 +119,30 @@ type UseCreateOrderReturn = {
     accessories: PaginatedGetAllFn;
     intakeNotes: PaginatedGetAllFn;
   };
+  createItemFns: {
+    deviceConditions: (name: string) => Promise<void>;
+    accessories: (name: string) => Promise<void>;
+  };
+  locations: Location[];
+  isLoadingLocations: boolean;
+  users: User[];
+  isLoadingUsers: boolean;
 };
 
 export const useCreateOrder = (
   setError: UseFormSetError<NewOrderSchema>,
 ): UseCreateOrderReturn => {
   const navigate = useNavigate();
+
+  const { data: locationsData, isLoading: isLoadingLocations } = useQuery({
+    queryKey: queryKeys.dictionaries.locations(),
+    queryFn: () => locationApi.getAll(1, 100),
+  });
+
+  const { data: usersData, isLoading: isLoadingUsers } = useQuery({
+    queryKey: queryKeys.users.list(),
+    queryFn: () => usersApi.getAll(1, 100),
+  });
 
   const mutation = useMutation({
     mutationFn: (data: NewOrder) => ordersApi.addNewOrder(data),
@@ -146,6 +167,10 @@ export const useCreateOrder = (
     fetchCustomersByPhone,
     fetchUsersByName,
     fetchByDictionaryName,
+    locations: locationsData?.items ?? [],
+    isLoadingLocations,
+    users: usersData?.items ?? [],
+    isLoadingUsers,
     dictionaryApis: {
       issueTypes: issueTypesApi.getAll,
       deviceTypes: deviceTypesApi.getAll,
@@ -154,6 +179,12 @@ export const useCreateOrder = (
       deviceConditions: deviceConditionsApi.getAll,
       accessories: accessoriesApi.getAll,
       intakeNotes: intakeNotesApi.getAll,
+    },
+    createItemFns: {
+      deviceConditions: (name: string) =>
+        deviceConditionsApi.create({ name }).then(() => {}),
+      accessories: (name: string) =>
+        accessoriesApi.create({ name }).then(() => {}),
     },
   };
 };

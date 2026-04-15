@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
 import { usersApi } from "@/features/backoffice/modules/users/api";
+import { UserLocationSelect } from "@/features/backoffice/modules/users/components/UserLocationSelect.tsx";
 import { getUserRoleOptions } from "@/features/backoffice/modules/users/data.ts";
 import { registerUserSchema } from "@/features/backoffice/modules/users/lib/registerUserSchema.ts";
 import {
@@ -43,6 +44,13 @@ const UsersPage = () => {
       sortable: true,
       type: "select",
       options: getUserRoleOptions(t),
+    },
+    {
+      key: "location",
+      field: "location",
+      labelKey: "users.table_fields.location",
+      sortable: false,
+      renderCell: (_, item) => <UserLocationSelect user={item} />,
     },
     {
       key: "status",

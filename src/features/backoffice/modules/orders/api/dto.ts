@@ -1,8 +1,9 @@
 import { z } from "zod";
 
 import { CustomerDtoSchema } from "@/features/backoffice/modules/customers/api/dto.ts";
-import { UserDtoSchema } from "@/features/backoffice/modules/users/api/dto.ts";
 import { LocationDtoSchema } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
+import { UserDtoSchema } from "@/features/backoffice/modules/users/api/dto.ts";
+import { DOCUMENTS_TYPES } from "@/shared/types.ts";
 
 export const StatusDtoSchema = z.object({
   id: z.number(),
@@ -22,6 +23,15 @@ export const StatusHistoryItemDtoSchema = z.object({
 });
 export type StatusHistoryItemDto = z.infer<typeof StatusHistoryItemDtoSchema>;
 
+export const DocumentsDtoSchema = z.object({
+  id: z.number(),
+  type: z.enum(DOCUMENTS_TYPES),
+  url: z.string(),
+  name: z.string(),
+  created_at: z.iso.datetime(),
+});
+export type DocumentDto = z.infer<typeof DocumentsDtoSchema>;
+
 export const OrderDtoSchema = z.object({
   id: z.number(),
   order_number: z.string().trim().min(1),
@@ -37,16 +47,19 @@ export const OrderDtoSchema = z.object({
   accessory: z.string().nullable(),
   device_password: z.string().trim().min(1),
   intake_note: z.string().nullable(),
-  prepayment: z.string().nullable(),
+  total_prepayment: z.string(),
+  remaining_to_pay: z.string(),
   due_date: z.iso.datetime(),
   estimated_cost: z.string().nullable(),
   is_urgent: z.boolean(),
   is_called: z.boolean(),
-  total_cost: z.string().nullable(),
-  total_income: z.string().nullable(),
+  location: LocationDtoSchema,
+  total_cost: z.string(),
+  total_income: z.string(),
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),
   closed_at: z.iso.datetime().nullable(),
+  documents: z.array(DocumentsDtoSchema),
 });
 export type OrderDto = z.infer<typeof OrderDtoSchema>;
 

@@ -1,12 +1,14 @@
 import { mapCustomerDtoToCustomer } from "@/features/backoffice/modules/customers/lib/adapters.ts";
 import { mapLocationDtoToLocation } from "@/features/backoffice/modules/dictionaries/lib/adapter.ts";
 import {
+  type DocumentDto,
   type OrderDto,
   type OrderInfoDto,
   type PaginatedOrdersDto,
   type StatusDto,
   type StatusHistoryItemDto,
 } from "@/features/backoffice/modules/orders/api/dto.ts";
+import { type OrderDocument } from "@/features/backoffice/modules/orders/types.ts";
 import { mapUserDtoToUser } from "@/features/backoffice/modules/users/lib/adapters.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
 
@@ -40,6 +42,17 @@ export function mapStatusHistoryItemDtoToStatusHistoryItem(
   };
 }
 
+export function mapDocumentDtoToOrderDocumentStatus(
+  dto: DocumentDto,
+): OrderDocument {
+  return {
+    id: dto.id,
+    type: dto.type,
+    name: dto.name,
+    url: dto.url,
+    createdAt: dto.created_at,
+  };
+}
 export function mapOrderDtoToOrder(dto: OrderDto): Order {
   return {
     id: dto.id,
@@ -56,16 +69,19 @@ export function mapOrderDtoToOrder(dto: OrderDto): Order {
     accessory: dto.accessory,
     devicePassword: dto.device_password,
     intakeNote: dto.intake_note,
-    prepayment: dto.prepayment,
+    totalPrepayment: dto.total_prepayment,
+    remainingToPay: dto.total_prepayment,
     dueDate: dto.due_date,
     estimatedCost: dto.estimated_cost,
     isUrgent: dto.is_urgent,
     isCalled: dto.is_called,
+    location: dto.location,
+    totalCost: dto.total_cost,
+    totalIncome: dto.total_income,
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
     closedAt: dto.closed_at,
-    totalIncome: dto.total_income,
-    totalCost: dto.total_cost,
+    documents: dto.documents.map(mapDocumentDtoToOrderDocumentStatus),
   };
 }
 
@@ -98,20 +114,22 @@ export const mapPaginatedOrdersDtoToResponse = (
 
 export const mapNewOrderToDto = (order: NewOrder) => ({
   customer_name: order.customerName,
-  customer_phone: order.customerPhone,
+  customer_primary_phone: order.customerPrimaryPhone,
+  customer_secondary_phone: order.customerSecondaryPhone,
   customer_email: order.customerEmail,
   customer_comment: order.customerComment,
+  manager_id: order.managerId,
+  assignee_id: order.assigneeId,
+  location_id: order.locationId,
+  prepayment: order.prepayment,
+  is_urgent: order.isUrgent,
   issue_type: order.issueType,
   device_type: order.deviceType,
   manufacturer: order.manufacturer,
   device_model: order.deviceModel,
-  device_password: order.devicePassword,
-  device_condition: order.deviceCondition,
-  accessory: order.accessory,
+  device_condition: order.deviceCondition?.join(", "),
+  accessory: order.accessory?.join(", "),
   intake_note: order.intakeNote,
-  is_urgent: order.isUrgent,
+  device_password: order.devicePassword,
   estimated_cost: order.estimatedCost,
-  manager_id: order.managerId,
-  assignee_id: order.assigneeId,
-  prepayment: order.prepayment,
 });

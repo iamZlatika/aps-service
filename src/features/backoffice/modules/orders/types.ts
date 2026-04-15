@@ -4,6 +4,7 @@ import type { Customer } from "@/features/backoffice/modules/customers/types.ts"
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { newOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
+import { type DocumentType } from "@/shared/types.ts";
 
 export type OrderStatus = {
   id: number;
@@ -18,6 +19,14 @@ export type StatusHistoryItem = {
   id: number;
   status: OrderStatus;
   changedByUser: User;
+  createdAt: string;
+};
+
+export type OrderDocument = {
+  id: number;
+  type: DocumentType;
+  name: string;
+  url: string;
   createdAt: string;
 };
 
@@ -36,16 +45,19 @@ export type Order = {
   accessory: string | null;
   devicePassword: string;
   intakeNote: string | null;
-  prepayment: string | null;
+  totalPrepayment: string;
+  remainingToPay: string;
   dueDate: string;
   estimatedCost: string | null;
   isUrgent: boolean;
   isCalled: boolean;
+  location: Location;
+  totalCost: string;
+  totalIncome: string;
   createdAt: string;
   updatedAt: string;
   closedAt: string | null;
-  totalIncome: string | null;
-  totalCost: string | null;
+  documents: OrderDocument[];
 };
 
 export type NewOrder = z.infer<typeof newOrderSchema>;
