@@ -2,40 +2,90 @@ import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import SearchableSelect from "@/features/backoffice/modules/orders/components/searchable-select";
 import type { SearchableSelectOption } from "@/features/backoffice/modules/orders/components/searchable-select/searchableSelect.types.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
+import { type User } from "@/features/backoffice/modules/users/types.ts";
 import { CardTitle } from "@/shared/components/ui/card";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/components/ui/select.tsx";
 
 type AdditionalInfoSectionProps = {
   fetchUsersByName: (search: string) => Promise<SearchableSelectOption[]>;
-  defaultManager?: { id: number; name: string };
+  defaultManager?: User;
+  locations: Location[];
+  isLoadingLocations?: boolean;
+  users: User[];
+  isLoadingUsers?: boolean;
 };
-
 export const AdditionalInfoSection = ({
   fetchUsersByName,
   defaultManager,
+  locations,
+  isLoadingLocations,
+  users,
+  isLoadingUsers,
 }: AdditionalInfoSectionProps) => {
   const { t } = useTranslation();
   const {
     control,
     register,
     setValue,
+    watch,
     formState: { errors },
   } = useFormContext<NewOrderSchema>();
 
-  const [managerName, setManagerName] = useState(defaultManager?.name ?? "");
   const [assigneeName, setAssigneeName] = useState("");
 
+  const currentManagerId = watch("managerId");
+  const currentLocationId = watch("locationId");
+
+  // Установка менеджера
   useEffect(() => {
-    if (defaultManager) {
-      setManagerName(defaultManager.name);
-      setValue("managerId", defaultManager.id);
+    if (
+      !isLoadingUsers &&
+      users.length > 0 &&
+      defaultManager &&
+      !currentManagerId
+    ) {
+      const hasUser = users.some((u) => u.id === defaultManager.id);
+      if (hasUser) {
+        setValue("managerId", defaultManager.id);
+      }
     }
-  }, [defaultManager, setValue]);
+  }, [isLoadingUsers, users, defaultManager, currentManagerId, setValue]);
+
+  // Установка локации
+  useEffect(() => {
+    const userLocationId = defaultManager?.location?.id;
+    const isReady =
+      !isLoadingLocations &&
+      locations.length > 0 &&
+      !!userLocationId &&
+      !currentLocationId;
+
+    if (isReady) {
+      const hasLocation = locations.some((loc) => loc.id === userLocationId);
+      if (hasLocation) {
+        setValue("locationId", userLocationId);
+      }
+    }
+  }, [
+    isLoadingLocations,
+    locations,
+    defaultManager?.location?.id,
+    setValue,
+    currentLocationId,
+  ]);
 
   return (
     <div className="lg:col-start-1 lg:row-start-2 flex flex-col gap-4">
@@ -45,16 +95,62 @@ export const AdditionalInfoSection = ({
 
       <div className="flex flex-col gap-1">
         <Label className="text-base">{t("orders.form.manager")}</Label>
-        <SearchableSelect
-          value={managerName}
-          onChange={setManagerName}
-          onSelect={(option) => {
-            setManagerName(option.name);
-            setValue("managerId", option.id);
-          }}
-          fetchItems={fetchUsersByName}
-          queryKey={["users", "search-manager"]}
-          error={errors.managerId}
+        <Controller
+          name="managerId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              value={field.value ? String(field.value) : ""}
+              onValueChange={(val) =>
+                field.onChange(val ? Number(val) : undefined)
+              }
+              disabled={!users.length || isLoadingUsers}
+            >
+              <SelectTrigger className="h-11 text-base">
+                <SelectValue
+                  placeholder={isLoadingUsers ? t("loader.default") : "..."}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {users.map((u) => (
+                  <SelectItem key={u.id} value={String(u.id)}>
+                    {u.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <Label className="text-base">{t("orders.form.location")}</Label>
+        <Controller
+          name="locationId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              value={field.value ? String(field.value) : ""}
+              onValueChange={(val) =>
+                field.onChange(val ? Number(val) : undefined)
+              }
+              disabled={!locations.length || isLoadingLocations}
+            >
+              <SelectTrigger className="h-11 text-base">
+                <SelectValue
+                  placeholder={isLoadingLocations ? t("loader.default") : "..."}
+                />
+              </SelectTrigger>
+
+              <SelectContent>
+                {locations.map((loc) => (
+                  <SelectItem key={loc.id} value={String(loc.id)}>
+                    {loc.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
         />
       </div>
 

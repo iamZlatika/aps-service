@@ -7,4 +7,5 @@ export const USERS_API = {
   updateUserStatus: (id: number) => `${BASE}/${id}/status`,
   listUsers: () => BASE,
   registerUser: () => "/backoffice/auth/register",
+  changeUserLocation: (id: number) => `${BASE}/${id}/location`,
 } as const;

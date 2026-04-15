@@ -8,9 +8,13 @@ export const newOrderSchema = z.object({
     .string()
     .trim()
     .min(1, i18next.t("validation.field_required")),
-  customerPhone: z
+  customerPrimaryPhone: z
     .string()
     .regex(/^\+380\d{9}$/, i18next.t("validation.phone_invalid")),
+  customerSecondaryPhone: z
+    .string()
+    .regex(/^\+380\d{9}$/, i18next.t("validation.phone_invalid"))
+    .optional(),
   customerEmail: z
     .string()
     .optional()
@@ -18,10 +22,11 @@ export const newOrderSchema = z.object({
       message: i18next.t("validation.email_invalid"),
     }),
   customerComment: z.string().optional(),
-  managerId: z.number().int().positive().optional(),
+  managerId: z.number().int().positive(),
   assigneeId: z.number().int().positive().optional(),
+  locationId: z.number().int().positive(),
   prepayment: z.string().optional(),
-
+  isUrgent: z.boolean().optional(),
   issueType: z.string().trim().min(1, i18next.t("validation.field_required")),
   deviceType: z.string().trim().min(1, i18next.t("validation.field_required")),
   manufacturer: z
@@ -29,11 +34,10 @@ export const newOrderSchema = z.object({
     .trim()
     .min(1, i18next.t("validation.field_required")),
   deviceModel: z.string().trim().min(1, i18next.t("validation.field_required")),
-  devicePassword: z.string().min(1, i18next.t("validation.field_required")),
-  deviceCondition: z.string().optional(),
-  accessory: z.string().optional(),
+  deviceCondition: z.array(z.string()).optional(),
+  accessory: z.array(z.string()).optional(),
   intakeNote: z.string().optional(),
-  isUrgent: z.boolean().optional(),
+  devicePassword: z.string().min(1, i18next.t("validation.field_required")),
   estimatedCost: z.string().optional(),
 });
 

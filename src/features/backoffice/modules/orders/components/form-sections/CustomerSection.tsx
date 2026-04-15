@@ -44,7 +44,7 @@ export const CustomerSection = ({
               value={field.value ?? ""}
               onChange={field.onChange}
               onSelect={(option: SearchableSelectOption) =>
-                setValue("customerPhone", option.meta?.phone as string)
+                setValue("customerPrimaryPhone", option.meta?.phone as string)
               }
               renderOption={(option) => (
                 <CustomerOption
@@ -63,7 +63,7 @@ export const CustomerSection = ({
       <div className="flex flex-col gap-1">
         <Label className="text-base">{t("orders.form.customerPhone")}</Label>
         <Controller
-          name="customerPhone"
+          name="customerPrimaryPhone"
           control={control}
           render={({ field }) => (
             <SearchableSelect
@@ -90,7 +90,7 @@ export const CustomerSection = ({
               )}
               fetchItems={fetchCustomersByPhone}
               queryKey={["customers", "search-by-phone"]}
-              error={errors.customerPhone}
+              error={errors.customerPrimaryPhone}
             />
           )}
         />

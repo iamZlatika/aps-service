@@ -14,6 +14,7 @@ export const mapUserDtoToUser = (dto: UserDto): User => {
     locale: dto.locale,
     theme: dto.theme,
     avatarUrl: dto.avatar_url,
+    location: dto.location,
   };
 };
 

@@ -22,7 +22,7 @@ const CreateOrderPage = () => {
     resolver: zodResolver(newOrderSchema),
     defaultValues: {
       customerName: "",
-      customerPhone: "",
+      customerPrimaryPhone: "",
       issueType: "",
       deviceType: "",
       manufacturer: "",
@@ -39,6 +39,11 @@ const CreateOrderPage = () => {
     fetchUsersByName,
     fetchByDictionaryName,
     dictionaryApis,
+    createItemFns,
+    locations,
+    isLoadingLocations,
+    users,
+    isLoadingUsers,
   } = useCreateOrder(methods.setError);
 
   return (
@@ -58,12 +63,15 @@ const CreateOrderPage = () => {
               <DeviceSection
                 fetchByDictionaryName={fetchByDictionaryName}
                 dictionaryApis={dictionaryApis}
+                createItemFns={createItemFns}
               />
               <AdditionalInfoSection
                 fetchUsersByName={fetchUsersByName}
-                defaultManager={
-                  user ? { id: user.id, name: user.name } : undefined
-                }
+                defaultManager={user}
+                locations={locations}
+                isLoadingLocations={isLoadingLocations}
+                users={users}
+                isLoadingUsers={isLoadingUsers}
               />
               <Button
                 type="submit"

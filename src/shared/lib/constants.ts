@@ -6,6 +6,12 @@ export const QUERY_STALE_TIME = 5 * 60 * 1000;
 export const QUERY_GC_TIME = 10 * 60 * 1000;
 
 export const SEARCH_DEBOUNCE_MS = 300;
+
+export const ACCESSORY_QUICK_SELECT = [
+  "Чехол",
+  "Пульт",
+  "Зарядное устройство",
+] as const;
 export const FILTER_DEBOUNCE_MS = 400;
 
 export const statusColorMap = {

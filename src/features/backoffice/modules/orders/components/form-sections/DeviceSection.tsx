@@ -1,6 +1,11 @@
+import type { FieldError } from "react-hook-form";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import {
+  type CreateItemFn,
+  MultiSearchableSelect,
+} from "@/features/backoffice/modules/orders/components/multsearchable-select";
 import SearchableSelect from "@/features/backoffice/modules/orders/components/searchable-select";
 import type { SearchableSelectOption } from "@/features/backoffice/modules/orders/components/searchable-select/searchableSelect.types.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
@@ -9,7 +14,10 @@ import type { PaginatedGetAllFn } from "@/shared/api/types.ts";
 import { CardTitle } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
-import { SEARCH_PAGE_SIZE } from "@/shared/lib/constants.ts";
+import {
+  ACCESSORY_QUICK_SELECT,
+  SEARCH_PAGE_SIZE,
+} from "@/shared/lib/constants.ts";
 
 type DictionaryApis = {
   issueTypes: PaginatedGetAllFn;
@@ -26,11 +34,16 @@ type DeviceSectionProps = {
     apiFn: PaginatedGetAllFn,
   ) => (search: string) => Promise<SearchableSelectOption[]>;
   dictionaryApis: DictionaryApis;
+  createItemFns: {
+    deviceConditions: CreateItemFn;
+    accessories: CreateItemFn;
+  };
 };
 
 export const DeviceSection = ({
   fetchByDictionaryName,
   dictionaryApis,
+  createItemFns,
 }: DeviceSectionProps) => {
   const { t } = useTranslation();
   const {
@@ -143,9 +156,9 @@ export const DeviceSection = ({
           name="deviceCondition"
           control={control}
           render={({ field }) => (
-            <SearchableSelect
+            <MultiSearchableSelect
               placeholder={t("orders.placeholders.deviceCondition")}
-              value={field.value ?? ""}
+              value={field.value ?? []}
               onChange={field.onChange}
               fetchItems={fetchByDictionaryName(
                 dictionaryApis.deviceConditions,
@@ -154,7 +167,8 @@ export const DeviceSection = ({
                 1,
                 SEARCH_PAGE_SIZE,
               )}
-              error={errors.deviceCondition}
+              error={errors.deviceCondition as FieldError | undefined}
+              onCreateItem={createItemFns.deviceConditions}
             />
           )}
         />
@@ -166,13 +180,15 @@ export const DeviceSection = ({
           name="accessory"
           control={control}
           render={({ field }) => (
-            <SearchableSelect
+            <MultiSearchableSelect
               placeholder={t("orders.placeholders.accessory")}
-              value={field.value ?? ""}
+              value={field.value ?? []}
               onChange={field.onChange}
               fetchItems={fetchByDictionaryName(dictionaryApis.accessories)}
               queryKey={queryKeys.dictionaries.accessories(1, SEARCH_PAGE_SIZE)}
-              error={errors.accessory}
+              error={errors.accessory as FieldError | undefined}
+              onCreateItem={createItemFns.accessories}
+              quickSelectLabels={[...ACCESSORY_QUICK_SELECT]}
             />
           )}
         />

@@ -7,6 +7,7 @@ import {
   type SearchableSelectInputProps,
   type SearchableSelectOption,
 } from "@/features/backoffice/modules/orders/components/searchable-select/searchableSelect.types.ts";
+import { useDebounce } from "@/shared/hooks/useDebounce.ts";
 import { SEARCH_DEBOUNCE_MS } from "@/shared/lib/constants.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
@@ -23,6 +24,7 @@ interface SearchableSelectProps {
   placeholder?: string;
   disabled?: boolean;
   error?: FieldError;
+  clearOnSelect?: boolean;
 }
 
 const defaultRenderInput = (props: SearchableSelectInputProps) => (
@@ -52,10 +54,10 @@ const SearchableSelect = ({
   placeholder,
   disabled,
   error,
+  clearOnSelect,
 }: SearchableSelectProps) => {
   const [inputValue, setInputValue] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
-  const [debouncedSearch, setDebouncedSearch] = useState(value);
   const [activeIndex, setActiveIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
@@ -67,13 +69,7 @@ const SearchableSelect = ({
     setInputValue(value);
   }, [value]);
 
-  useEffect(() => {
-    const timer = setTimeout(
-      () => setDebouncedSearch(inputValue),
-      SEARCH_DEBOUNCE_MS,
-    );
-    return () => clearTimeout(timer);
-  }, [inputValue]);
+  const debouncedSearch = useDebounce(inputValue, SEARCH_DEBOUNCE_MS);
 
   useEffect(() => {
     setActiveIndex(-1);
@@ -100,9 +96,14 @@ const SearchableSelect = ({
 
   const handleSelect = (option: SearchableSelectOption) => {
     skipBlurRef.current = true;
-    onChange(option.name);
+    if (clearOnSelect) {
+      onChange("");
+      setInputValue("");
+    } else {
+      onChange(option.name);
+      setInputValue(option.name);
+    }
     onSelect?.(option);
-    setInputValue(option.name);
     setIsOpen(false);
     setActiveIndex(-1);
   };

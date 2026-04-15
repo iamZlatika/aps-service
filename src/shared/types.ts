@@ -44,3 +44,6 @@ export const STATUS_COLORS = {
   Black: "black",
   Gray: "gray",
 } as const;
+
+export const DOCUMENTS_TYPES = ["intake_receipt"] as const;
+export type DocumentType = (typeof DOCUMENTS_TYPES)[number];
