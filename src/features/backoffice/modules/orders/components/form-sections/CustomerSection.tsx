@@ -61,7 +61,9 @@ export const CustomerSection = ({
       </div>
 
       <div className="flex flex-col gap-1">
-        <Label className="text-base">{t("orders.form.customerPhone")}</Label>
+        <Label className="text-base">
+          {t("orders.form.customerPrimaryPhone")}
+        </Label>
         <Controller
           name="customerPrimaryPhone"
           control={control}
