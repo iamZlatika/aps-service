@@ -8,6 +8,10 @@ export const newCustomerSchema = z.object({
   phone: z
     .string()
     .regex(/^\+380\d{9}$/, i18next.t("validation.phone_invalid")),
+  secondaryPhone: z
+    .string()
+    .regex(/^\+380\d{9}$/, i18next.t("validation.phone_invalid"))
+    .optional(),
   email: z
     .string()
     .trim()

@@ -12,6 +12,7 @@ export type SearchableSelectInputProps = {
   onFocus: () => void;
   onBlur: () => void;
   onKeyDown: (e: KeyboardEvent) => void;
+  onClear?: () => void;
   placeholder?: string;
   disabled?: boolean;
   hasError: boolean;

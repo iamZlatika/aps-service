@@ -131,6 +131,7 @@ type UseCreateOrderReturn = {
 
 export const useCreateOrder = (
   setError: UseFormSetError<NewOrderSchema>,
+  bypass: () => void,
 ): UseCreateOrderReturn => {
   const navigate = useNavigate();
 
@@ -147,6 +148,7 @@ export const useCreateOrder = (
   const mutation = useMutation({
     mutationFn: (data: NewOrder) => ordersApi.addNewOrder(data),
     onSuccess: () => {
+      bypass();
       navigate(ORDERS_LINKS.root());
       return queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
     },
