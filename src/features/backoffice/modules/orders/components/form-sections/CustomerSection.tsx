@@ -6,14 +6,22 @@ import SearchableSelect from "@/features/backoffice/modules/orders/components/se
 import { CustomerOption } from "@/features/backoffice/modules/orders/components/searchable-select/CustomerOption.tsx";
 import type { SearchableSelectOption } from "@/features/backoffice/modules/orders/components/searchable-select/searchableSelect.types.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
+import type {
+  CustomerByNameMeta,
+  CustomerByPhoneMeta,
+} from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
 import { PhoneMaskInput } from "@/features/backoffice/widgets/table/components/inputs/PhoneMaskInput.tsx";
 import { CardTitle } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
 
 type CustomerSectionProps = {
-  fetchCustomersByName: (search: string) => Promise<SearchableSelectOption[]>;
-  fetchCustomersByPhone: (search: string) => Promise<SearchableSelectOption[]>;
+  fetchCustomersByName: (
+    search: string,
+  ) => Promise<SearchableSelectOption<CustomerByNameMeta>[]>;
+  fetchCustomersByPhone: (
+    search: string,
+  ) => Promise<SearchableSelectOption<CustomerByPhoneMeta>[]>;
 };
 
 export const CustomerSection = ({
@@ -45,9 +53,9 @@ export const CustomerSection = ({
               placeholder={t("orders.placeholders.customerName")}
               value={field.value ?? ""}
               onChange={field.onChange}
-              onSelect={(option: SearchableSelectOption) => {
-                setValue("customerPrimaryPhone", option.meta?.phone as string);
-                const secondaryPhone = (option.meta?.phones as string[])?.[1];
+              onSelect={(option) => {
+                setValue("customerPrimaryPhone", option.meta.phone);
+                const secondaryPhone = option.meta.phones[1];
                 setValue("customerSecondaryPhone", secondaryPhone ?? "");
                 setIsSecondaryPhoneLocked(!!secondaryPhone);
               }}
@@ -59,7 +67,7 @@ export const CustomerSection = ({
               renderOption={(option) => (
                 <CustomerOption
                   name={option.name}
-                  phones={option.meta?.phones as string[]}
+                  phones={option.meta.phones}
                 />
               )}
               fetchItems={fetchCustomersByName}
@@ -81,16 +89,16 @@ export const CustomerSection = ({
             <SearchableSelect
               value={field.value ?? ""}
               onChange={field.onChange}
-              onSelect={(option: SearchableSelectOption) => {
-                setValue("customerName", option.meta?.customerName as string);
-                const secondaryPhone = (option.meta?.phones as string[])?.[1];
+              onSelect={(option) => {
+                setValue("customerName", option.meta.customerName);
+                const secondaryPhone = option.meta.phones[1];
                 setValue("customerSecondaryPhone", secondaryPhone ?? "");
                 setIsSecondaryPhoneLocked(!!secondaryPhone);
               }}
               renderOption={(option) => (
                 <CustomerOption
-                  name={option.meta?.customerName as string}
-                  phones={option.meta?.phones as string[]}
+                  name={option.meta.customerName}
+                  phones={option.meta.phones}
                 />
               )}
               renderInput={(props) => (
@@ -123,9 +131,15 @@ export const CustomerSection = ({
               value={value ?? ""}
               onChange={onChange}
               disabled={isSecondaryPhoneLocked}
+              hasError={!!errors.customerSecondaryPhone}
             />
           )}
         />
+        {errors.customerSecondaryPhone && (
+          <p className="text-sm text-destructive">
+            {errors.customerSecondaryPhone.message}
+          </p>
+        )}
       </div>
       <div className="flex flex-col gap-1">
         <Label className="text-base">

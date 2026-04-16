@@ -1,10 +1,8 @@
 import { type KeyboardEvent } from "react";
 
-export type SearchableSelectOption = {
-  id: number;
-  name: string;
-  meta?: Record<string, unknown>;
-};
+export type SearchableSelectOption<TMeta = undefined> = TMeta extends undefined
+  ? { id: number; name: string }
+  : { id: number; name: string; meta: TMeta };
 
 export type SearchableSelectInputProps = {
   value: string;

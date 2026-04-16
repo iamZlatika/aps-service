@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { addDays, format } from "date-fns";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -9,10 +10,15 @@ import { DeviceSection } from "@/features/backoffice/modules/orders/components/f
 import { LeaveConfirmDialog } from "@/features/backoffice/modules/orders/components/LeaveConfirmDialog.tsx";
 import { useCreateOrder } from "@/features/backoffice/modules/orders/hooks/useCreateOrder.ts";
 import { useLeaveGuard } from "@/features/backoffice/modules/orders/hooks/useLeaveGuard.ts";
+import { useOrderFormDefaults } from "@/features/backoffice/modules/orders/hooks/useOrderFormDefaults.ts";
 import {
   type NewOrderSchema,
   newOrderSchema,
 } from "@/features/backoffice/modules/orders/lib/schema.ts";
+import {
+  fetchCustomersByName,
+  fetchCustomersByPhone,
+} from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Card, CardContent } from "@/shared/components/ui/card";
 
@@ -21,7 +27,7 @@ const CreateOrderPage = () => {
   const { user } = useAuth();
 
   const methods = useForm<NewOrderSchema>({
-    resolver: zodResolver(newOrderSchema),
+    resolver: zodResolver(newOrderSchema()),
     defaultValues: {
       customerName: "",
       customerPrimaryPhone: "",
@@ -31,25 +37,15 @@ const CreateOrderPage = () => {
       manufacturer: "",
       deviceModel: "",
       devicePassword: "",
+      managerId: user?.id,
+      dueDate: format(addDays(new Date(), 5), "yyyy-MM-dd"),
     },
   });
 
   const { blocker, bypass } = useLeaveGuard(methods.formState.isDirty);
-
-  const {
-    onSubmit,
-    isPending,
-    fetchCustomersByName,
-    fetchCustomersByPhone,
-    fetchUsersByName,
-    fetchByDictionaryName,
-    dictionaryApis,
-    createItemFns,
-    locations,
-    isLoadingLocations,
-    users,
-    isLoadingUsers,
-  } = useCreateOrder(methods.setError, bypass);
+  const { onSubmit, isPending } = useCreateOrder(methods.setError, bypass);
+  const { users, isLoadingUsers, locations, isLoadingLocations } =
+    useOrderFormDefaults(methods.setValue, methods.getValues, user);
 
   return (
     <>
@@ -67,18 +63,12 @@ const CreateOrderPage = () => {
                   fetchCustomersByName={fetchCustomersByName}
                   fetchCustomersByPhone={fetchCustomersByPhone}
                 />
-                <DeviceSection
-                  fetchByDictionaryName={fetchByDictionaryName}
-                  dictionaryApis={dictionaryApis}
-                  createItemFns={createItemFns}
-                />
+                <DeviceSection />
                 <AdditionalInfoSection
-                  fetchUsersByName={fetchUsersByName}
-                  defaultManager={user}
-                  locations={locations}
-                  isLoadingLocations={isLoadingLocations}
                   users={users}
                   isLoadingUsers={isLoadingUsers}
+                  locations={locations}
+                  isLoadingLocations={isLoadingLocations}
                 />
                 <Button
                   type="submit"

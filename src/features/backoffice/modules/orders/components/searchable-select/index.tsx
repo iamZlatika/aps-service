@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { type KeyboardEvent } from "react";
 import type { FieldError } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 import {
   type SearchableSelectInputProps,
@@ -14,13 +15,13 @@ import { cn } from "@/shared/lib/utils.ts";
 
 export type { SearchableSelectOption };
 
-interface SearchableSelectProps {
+interface SearchableSelectProps<TMeta = undefined> {
   value: string;
   onChange: (value: string) => void;
-  onSelect?: (option: SearchableSelectOption) => void;
-  renderOption?: (option: SearchableSelectOption) => ReactNode;
+  onSelect?: (option: SearchableSelectOption<TMeta>) => void;
+  renderOption?: (option: SearchableSelectOption<TMeta>) => ReactNode;
   renderInput?: (props: SearchableSelectInputProps) => ReactNode;
-  fetchItems: (search: string) => Promise<SearchableSelectOption[]>;
+  fetchItems: (search: string) => Promise<SearchableSelectOption<TMeta>[]>;
   queryKey: readonly unknown[];
   placeholder?: string;
   disabled?: boolean;
@@ -59,7 +60,7 @@ const defaultRenderInput = (props: SearchableSelectInputProps) => (
   </div>
 );
 
-const SearchableSelect = ({
+function SearchableSelect<TMeta = undefined>({
   value,
   onChange,
   onSelect,
@@ -72,17 +73,17 @@ const SearchableSelect = ({
   disabled,
   error,
   clearOnSelect,
-}: SearchableSelectProps) => {
+}: SearchableSelectProps<TMeta>) {
+  const { t } = useTranslation();
+
   const [inputValue, setInputValue] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
   const skipBlurRef = useRef(false);
-  const isProgrammaticUpdateRef = useRef(false);
 
   useEffect(() => {
-    isProgrammaticUpdateRef.current = true;
     setInputValue(value);
   }, [value]);
 
@@ -111,7 +112,7 @@ const SearchableSelect = ({
     enabled: isOpen,
   });
 
-  const handleSelect = (option: SearchableSelectOption) => {
+  const handleSelect = (option: SearchableSelectOption<TMeta>) => {
     skipBlurRef.current = true;
     if (clearOnSelect) {
       onChange("");
@@ -126,11 +127,6 @@ const SearchableSelect = ({
   };
 
   const handleInputChange = (val: string) => {
-    if (isProgrammaticUpdateRef.current) {
-      isProgrammaticUpdateRef.current = false;
-      setInputValue(val);
-      return;
-    }
     setInputValue(val);
     setIsOpen(true);
   };
@@ -217,7 +213,7 @@ const SearchableSelect = ({
             <div className="px-3 py-2 text-base text-muted-foreground">...</div>
           ) : options.length === 0 ? (
             <div className="px-3 py-2 text-base text-muted-foreground">
-              No results
+              {t("common.noResults")}
             </div>
           ) : (
             <ul ref={listRef} className="max-h-60 overflow-y-auto p-1">
@@ -247,6 +243,6 @@ const SearchableSelect = ({
       )}
     </div>
   );
-};
+}
 
 export default SearchableSelect;

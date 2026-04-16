@@ -1,8 +1,6 @@
-import type { z } from "zod";
-
 import type { Customer } from "@/features/backoffice/modules/customers/types.ts";
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
-import type { newOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
+import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
 import { type DocumentType } from "@/shared/types.ts";
 
@@ -60,7 +58,7 @@ export type Order = {
   documents: OrderDocument[];
 };
 
-export type NewOrder = z.infer<typeof newOrderSchema>;
+export type NewOrder = NewOrderSchema;
 
 export type OrderInfo = Order & {
   location: Location;

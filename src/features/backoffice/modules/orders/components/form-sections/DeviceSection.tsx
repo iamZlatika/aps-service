@@ -1,17 +1,14 @@
-import type { FieldError } from "react-hook-form";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, type FieldError, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import {
-  type CreateItemFn,
-  MultiSearchableSelect,
-} from "@/features/backoffice/modules/orders/components/multsearchable-select";
+import { DueDatePicker } from "@/features/backoffice/modules/orders/components/DueDatePicker.tsx";
+import { MultiSearchableSelect } from "@/features/backoffice/modules/orders/components/multsearchable-select";
 import SearchableSelect from "@/features/backoffice/modules/orders/components/searchable-select";
-import type { SearchableSelectOption } from "@/features/backoffice/modules/orders/components/searchable-select/searchableSelect.types.ts";
+import { useDictionarySection } from "@/features/backoffice/modules/orders/hooks/useDictionarySection.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import type { PaginatedGetAllFn } from "@/shared/api/types.ts";
 import { CardTitle } from "@/shared/components/ui/card";
+import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
 import {
@@ -19,32 +16,8 @@ import {
   SEARCH_PAGE_SIZE,
 } from "@/shared/lib/constants.ts";
 
-type DictionaryApis = {
-  issueTypes: PaginatedGetAllFn;
-  deviceTypes: PaginatedGetAllFn;
-  manufacturers: PaginatedGetAllFn;
-  deviceModels: PaginatedGetAllFn;
-  deviceConditions: PaginatedGetAllFn;
-  accessories: PaginatedGetAllFn;
-  intakeNotes: PaginatedGetAllFn;
-};
-
-type DeviceSectionProps = {
-  fetchByDictionaryName: (
-    apiFn: PaginatedGetAllFn,
-  ) => (search: string) => Promise<SearchableSelectOption[]>;
-  dictionaryApis: DictionaryApis;
-  createItemFns: {
-    deviceConditions: CreateItemFn;
-    accessories: CreateItemFn;
-  };
-};
-
-export const DeviceSection = ({
-  fetchByDictionaryName,
-  dictionaryApis,
-  createItemFns,
-}: DeviceSectionProps) => {
+export const DeviceSection = () => {
+  const { fetchers, createItemFns } = useDictionarySection();
   const { t } = useTranslation();
   const {
     control,
@@ -68,7 +41,7 @@ export const DeviceSection = ({
               placeholder={t("orders.placeholders.issueTypes")}
               value={field.value ?? ""}
               onChange={field.onChange}
-              fetchItems={fetchByDictionaryName(dictionaryApis.issueTypes)}
+              fetchItems={fetchers.issueTypes}
               queryKey={queryKeys.dictionaries.issueTypes(1, SEARCH_PAGE_SIZE)}
               error={errors.issueType}
             />
@@ -86,7 +59,7 @@ export const DeviceSection = ({
               placeholder={t("orders.placeholders.deviceType")}
               value={field.value ?? ""}
               onChange={field.onChange}
-              fetchItems={fetchByDictionaryName(dictionaryApis.deviceTypes)}
+              fetchItems={fetchers.deviceTypes}
               queryKey={queryKeys.dictionaries.deviceTypes(1, SEARCH_PAGE_SIZE)}
               error={errors.deviceType}
             />
@@ -104,7 +77,7 @@ export const DeviceSection = ({
               placeholder={t("orders.placeholders.manufacturer")}
               value={field.value ?? ""}
               onChange={field.onChange}
-              fetchItems={fetchByDictionaryName(dictionaryApis.manufacturers)}
+              fetchItems={fetchers.manufacturers}
               queryKey={queryKeys.dictionaries.manufacturers(
                 1,
                 SEARCH_PAGE_SIZE,
@@ -125,7 +98,7 @@ export const DeviceSection = ({
               placeholder={t("orders.placeholders.deviceModel")}
               value={field.value ?? ""}
               onChange={field.onChange}
-              fetchItems={fetchByDictionaryName(dictionaryApis.deviceModels)}
+              fetchItems={fetchers.deviceModels}
               queryKey={queryKeys.dictionaries.deviceModels(
                 1,
                 SEARCH_PAGE_SIZE,
@@ -160,9 +133,7 @@ export const DeviceSection = ({
               placeholder={t("orders.placeholders.deviceCondition")}
               value={field.value ?? []}
               onChange={field.onChange}
-              fetchItems={fetchByDictionaryName(
-                dictionaryApis.deviceConditions,
-              )}
+              fetchItems={fetchers.deviceConditions}
               queryKey={queryKeys.dictionaries.deviceConditions(
                 1,
                 SEARCH_PAGE_SIZE,
@@ -184,7 +155,7 @@ export const DeviceSection = ({
               placeholder={t("orders.placeholders.accessory")}
               value={field.value ?? []}
               onChange={field.onChange}
-              fetchItems={fetchByDictionaryName(dictionaryApis.accessories)}
+              fetchItems={fetchers.accessories}
               queryKey={queryKeys.dictionaries.accessories(1, SEARCH_PAGE_SIZE)}
               error={errors.accessory as FieldError | undefined}
               onCreateItem={createItemFns.accessories}
@@ -204,12 +175,45 @@ export const DeviceSection = ({
               placeholder={t("orders.placeholders.intakeNotes")}
               value={field.value ?? ""}
               onChange={field.onChange}
-              fetchItems={fetchByDictionaryName(dictionaryApis.intakeNotes)}
+              fetchItems={fetchers.intakeNotes}
               queryKey={queryKeys.dictionaries.intakeNotes(1, SEARCH_PAGE_SIZE)}
               error={errors.intakeNote}
             />
           )}
         />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <Label className="text-base">{t("orders.form.dueDate")}</Label>
+        <Controller
+          name="dueDate"
+          control={control}
+          render={({ field }) => (
+            <DueDatePicker
+              value={field.value}
+              onChange={field.onChange}
+              placeholder={t("orders.placeholders.dueDate")}
+              error={errors.dueDate}
+            />
+          )}
+        />
+      </div>
+
+      <div className="flex items-center gap-2">
+        <Controller
+          name="isUrgent"
+          control={control}
+          render={({ field }) => (
+            <Checkbox
+              id="isUrgent"
+              checked={field.value ?? false}
+              onCheckedChange={field.onChange}
+            />
+          )}
+        />
+        <Label className="text-base" htmlFor="isUrgent">
+          {t("orders.form.isUrgent")}
+        </Label>
       </div>
     </div>
   );
