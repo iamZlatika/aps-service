@@ -70,7 +70,7 @@ export function mapOrderDtoToOrder(dto: OrderDto): Order {
     devicePassword: dto.device_password,
     intakeNote: dto.intake_note,
     totalPrepayment: dto.total_prepayment,
-    remainingToPay: dto.total_prepayment,
+    remainingToPay: dto.remaining_to_pay,
     dueDate: dto.due_date,
     estimatedCost: dto.estimated_cost,
     isUrgent: dto.is_urgent,
@@ -132,4 +132,5 @@ export const mapNewOrderToDto = (order: NewOrder) => ({
   intake_note: order.intakeNote,
   device_password: order.devicePassword,
   estimated_cost: order.estimatedCost,
+  due_date: order.dueDate ? `${order.dueDate} 15:00:00` : undefined,
 });
