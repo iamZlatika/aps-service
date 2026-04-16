@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -26,6 +27,7 @@ export const CustomerSection = ({
     setValue,
     formState: { errors },
   } = useFormContext<NewOrderSchema>();
+  const [isSecondaryPhoneLocked, setIsSecondaryPhoneLocked] = useState(false);
 
   return (
     <div className="lg:col-start-1 lg:row-start-1 flex flex-col gap-4">
@@ -43,9 +45,17 @@ export const CustomerSection = ({
               placeholder={t("orders.placeholders.customerName")}
               value={field.value ?? ""}
               onChange={field.onChange}
-              onSelect={(option: SearchableSelectOption) =>
-                setValue("customerPrimaryPhone", option.meta?.phone as string)
-              }
+              onSelect={(option: SearchableSelectOption) => {
+                setValue("customerPrimaryPhone", option.meta?.phone as string);
+                const secondaryPhone = (option.meta?.phones as string[])?.[1];
+                setValue("customerSecondaryPhone", secondaryPhone ?? "");
+                setIsSecondaryPhoneLocked(!!secondaryPhone);
+              }}
+              onClear={() => {
+                setValue("customerPrimaryPhone", "");
+                setValue("customerSecondaryPhone", "");
+                setIsSecondaryPhoneLocked(false);
+              }}
               renderOption={(option) => (
                 <CustomerOption
                   name={option.name}
@@ -71,9 +81,12 @@ export const CustomerSection = ({
             <SearchableSelect
               value={field.value ?? ""}
               onChange={field.onChange}
-              onSelect={(option: SearchableSelectOption) =>
-                setValue("customerName", option.meta?.customerName as string)
-              }
+              onSelect={(option: SearchableSelectOption) => {
+                setValue("customerName", option.meta?.customerName as string);
+                const secondaryPhone = (option.meta?.phones as string[])?.[1];
+                setValue("customerSecondaryPhone", secondaryPhone ?? "");
+                setIsSecondaryPhoneLocked(!!secondaryPhone);
+              }}
               renderOption={(option) => (
                 <CustomerOption
                   name={option.meta?.customerName as string}
@@ -98,6 +111,22 @@ export const CustomerSection = ({
         />
       </div>
 
+      <div className="flex flex-col gap-1">
+        <Label className="text-base">
+          {t("orders.form.customerSecondaryPhone")}
+        </Label>
+        <Controller
+          control={control}
+          name="customerSecondaryPhone"
+          render={({ field: { onChange, value } }) => (
+            <PhoneMaskInput
+              value={value ?? ""}
+              onChange={onChange}
+              disabled={isSecondaryPhoneLocked}
+            />
+          )}
+        />
+      </div>
       <div className="flex flex-col gap-1">
         <Label className="text-base">
           {t("customers.register_form.email")}

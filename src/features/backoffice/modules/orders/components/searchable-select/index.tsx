@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { X } from "lucide-react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { type KeyboardEvent } from "react";
 import type { FieldError } from "react-hook-form";
@@ -25,28 +26,44 @@ interface SearchableSelectProps {
   disabled?: boolean;
   error?: FieldError;
   clearOnSelect?: boolean;
+  onClear?: () => void;
 }
 
 const defaultRenderInput = (props: SearchableSelectInputProps) => (
-  <input
-    value={props.value}
-    onChange={(e) => props.onChange(e.target.value)}
-    onFocus={props.onFocus}
-    onBlur={props.onBlur}
-    onKeyDown={props.onKeyDown}
-    placeholder={props.placeholder}
-    disabled={props.disabled}
-    className={cn(
-      "flex h-11 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-      props.hasError && "border-destructive",
+  <div className="relative">
+    <input
+      value={props.value}
+      onChange={(e) => props.onChange(e.target.value)}
+      onFocus={props.onFocus}
+      onBlur={props.onBlur}
+      onKeyDown={props.onKeyDown}
+      placeholder={props.placeholder}
+      disabled={props.disabled}
+      className={cn(
+        "flex h-11 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+        props.hasError && "border-destructive",
+        props.onClear && props.value && "pr-8",
+      )}
+    />
+    {props.onClear && props.value && (
+      <button
+        type="button"
+        onMouseDown={() => {
+          props.onClear!();
+        }}
+        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+      >
+        <X size={15} />
+      </button>
     )}
-  />
+  </div>
 );
 
 const SearchableSelect = ({
   value,
   onChange,
   onSelect,
+  onClear,
   renderOption,
   renderInput,
   fetchItems,
@@ -171,12 +188,21 @@ const SearchableSelect = ({
     }
   };
 
+  const handleClear = () => {
+    setInputValue("");
+    onChange("");
+    setIsOpen(false);
+    setActiveIndex(-1);
+    onClear?.();
+  };
+
   const inputProps: SearchableSelectInputProps = {
     value: inputValue,
     onChange: handleInputChange,
     onFocus: handleInputFocus,
     onBlur: handleInputBlur,
     onKeyDown: handleKeyDown,
+    onClear: handleClear,
     placeholder,
     disabled,
     hasError: !!error,

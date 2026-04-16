@@ -12,6 +12,7 @@ interface PhoneMaskInputProps {
   placeholder?: string;
   className?: string;
   hasError?: boolean;
+  disabled?: boolean;
 }
 
 export const PhoneMaskInput = ({
@@ -23,6 +24,7 @@ export const PhoneMaskInput = ({
   placeholder,
   className,
   hasError,
+  disabled,
 }: PhoneMaskInputProps) => {
   const displayValue = value.startsWith("+38")
     ? value.slice(3)
@@ -35,6 +37,7 @@ export const PhoneMaskInput = ({
       className={cn(
         "flex h-11 w-full rounded-md border border-input shadow-sm transition-colors focus-within:ring-1 focus-within:ring-ring",
         hasError && "border-destructive",
+        disabled && "opacity-50 cursor-not-allowed",
         className,
       )}
     >
@@ -52,7 +55,8 @@ export const PhoneMaskInput = ({
         onBlur={onBlur}
         onKeyDown={onKeyDown}
         placeholder={placeholder ?? "0__-___-__-__"}
-        className="flex-1 bg-transparent px-3 py-1 text-base placeholder:text-muted-foreground focus:outline-none rounded-r-md"
+        disabled={disabled}
+        className="flex-1 bg-transparent px-3 py-1 text-base placeholder:text-muted-foreground focus:outline-none rounded-r-md disabled:cursor-not-allowed"
       />
     </div>
   );
