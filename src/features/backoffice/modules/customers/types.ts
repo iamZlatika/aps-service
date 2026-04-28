@@ -3,6 +3,11 @@ import type { z } from "zod";
 import type { newCustomerSchema } from "@/features/backoffice/modules/customers/lib/schemas.ts";
 import { type UserStatus } from "@/shared/types.ts";
 
+export type Telegram = {
+  chatId: number;
+  linkedAt: string;
+  activationToken: string | null;
+};
 export type Customer = {
   id: number;
   name: string;
@@ -10,8 +15,7 @@ export type Customer = {
   email: string | null;
   emailVerifiedAt: string | null;
   hasGoogle: boolean;
-  telegramChatId: number | null;
-  telegramLinkedAt: string | null;
+  telegram: Telegram;
   avatarUrl: string;
   phones: Phone[];
   status: UserStatus;

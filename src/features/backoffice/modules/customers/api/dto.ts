@@ -14,6 +14,12 @@ export type PhoneDto = z.infer<typeof PhoneDtoSchema>;
 export const PhoneDtoArraySchema = z.array(PhoneDtoSchema);
 export type PhoneDtoArray = z.infer<typeof PhoneDtoArraySchema>;
 
+export const TelegramDtoSchema = z.object({
+  chat_id: z.number(),
+  linked_at: z.iso.datetime(),
+  activation_token: z.string().nullable(),
+});
+export type TelegramDto = z.infer<typeof TelegramDtoSchema>;
 export const CustomerDtoSchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -21,8 +27,7 @@ export const CustomerDtoSchema = z.object({
   email: z.string().regex(emailRegex).nullable(),
   email_verified_at: z.string().nullable(),
   has_google: z.boolean(),
-  telegram_chat_id: z.number().nullable(),
-  telegram_linked_at: z.string().nullable(),
+  telegram: TelegramDtoSchema,
   avatar_url: z.string(),
   phones: z.array(PhoneDtoSchema),
   status: zodEnumFromConst(USER_STATUSES),
@@ -36,9 +41,9 @@ export const CustomerDtoSchema = z.object({
     ])
     .nullable(),
   comment: z.string().nullable(),
-  last_order_at: z.string().nullable(),
-  created_at: z.string(),
-  updated_at: z.string(),
+  last_order_at: z.iso.datetime().nullable(),
+  created_at: z.iso.datetime(),
+  updated_at: z.iso.datetime(),
 });
 
 export type CustomerDto = z.infer<typeof CustomerDtoSchema>;

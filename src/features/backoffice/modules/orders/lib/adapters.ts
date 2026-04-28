@@ -1,24 +1,33 @@
 import { mapCustomerDtoToCustomer } from "@/features/backoffice/modules/customers/lib/adapters.ts";
 import { mapLocationDtoToLocation } from "@/features/backoffice/modules/dictionaries/lib/adapter.ts";
-import {
-  type DocumentDto,
-  type OrderDto,
-  type OrderInfoDto,
-  type PaginatedOrdersDto,
-  type StatusDto,
-  type StatusHistoryItemDto,
+import type {
+  DocumentDto,
+  OrderCommentDto,
+  OrderDto,
+  OrderInfoDto,
+  OrderPrepaymentDto,
+  OrderProductDto,
+  OrderServiceDto,
+  PaginatedOrdersDto,
+  StatusDto,
+  StatusHistoryItemDto,
 } from "@/features/backoffice/modules/orders/api/dto.ts";
-import { type OrderDocument } from "@/features/backoffice/modules/orders/types.ts";
+import {
+  type NewOrder,
+  type newOrderProduct,
+  type newOrderService,
+  type Order,
+  type OrderComment,
+  type OrderDocument,
+  type OrderInfo,
+  type OrderPrepayment,
+  type OrderProduct,
+  type OrderService,
+  type OrderStatus,
+  type StatusHistoryItem,
+} from "@/features/backoffice/modules/orders/types.ts";
 import { mapUserDtoToUser } from "@/features/backoffice/modules/users/lib/adapters.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
-
-import type {
-  NewOrder,
-  Order,
-  OrderInfo,
-  OrderStatus,
-  StatusHistoryItem,
-} from "../types.ts";
 
 export function mapStatusDtoToOrderStatus(dto: StatusDto): OrderStatus {
   return {
@@ -84,6 +93,53 @@ export function mapOrderDtoToOrder(dto: OrderDto): Order {
     documents: dto.documents.map(mapDocumentDtoToOrderDocumentStatus),
   };
 }
+export const mapOrderCommentDtoToOrderComment = (
+  dto: OrderCommentDto,
+): OrderComment => ({
+  id: dto.id,
+  user: mapUserDtoToUser(dto.user),
+  body: dto.body,
+  imageUrl: dto.image_url,
+  createdAt: dto.created_at,
+});
+
+export const mapOrderServiceDtoToOrderService = (
+  dto: OrderServiceDto,
+): OrderService => ({
+  id: dto.id,
+  user: dto.user ? mapUserDtoToUser(dto.user) : null,
+  repairOperationId: dto.repair_operation_id,
+  name: dto.name,
+  price: dto.price,
+  costPrice: dto.cost_price,
+  quantity: dto.quantity,
+  createdAt: dto.created_at,
+  updatedAt: dto.updated_at,
+  deletedAt: dto.deleted_at ?? null,
+});
+
+export const mapOrderProductDtoToOrderProduct = (
+  dto: OrderProductDto,
+): OrderProduct => ({
+  id: dto.id,
+  user: dto.user ? mapUserDtoToUser(dto.user) : null,
+  supplierName: dto.supplier_name ?? null,
+  name: dto.name,
+  price: dto.price,
+  purchasePrice: dto.purchase_price,
+  quantity: dto.quantity,
+  createdAt: dto.created_at,
+  updatedAt: dto.updated_at,
+  deletedAt: dto.deleted_at ?? null,
+});
+export const mapPrepaymentDtoToPrepayment = (
+  dto: OrderPrepaymentDto,
+): OrderPrepayment => ({
+  id: dto.id,
+  amount: dto.amount,
+  note: dto.note,
+  createdAt: dto.created_at,
+});
 
 export const mapOrderInfoDtoToOrderInfo = (dto: OrderInfoDto): OrderInfo => {
   return {
@@ -93,9 +149,10 @@ export const mapOrderInfoDtoToOrderInfo = (dto: OrderInfoDto): OrderInfo => {
     statusHistory: dto.status_history.map(
       mapStatusHistoryItemDtoToStatusHistoryItem,
     ),
-    services: dto.services,
-    products: dto.products,
-    comments: dto.comments,
+    services: dto.services.map(mapOrderServiceDtoToOrderService),
+    products: dto.products.map(mapOrderProductDtoToOrderProduct),
+    comments: dto.comments.map(mapOrderCommentDtoToOrderComment),
+    prepayments: dto.prepayments.map(mapPrepaymentDtoToPrepayment),
   };
 };
 
@@ -133,4 +190,19 @@ export const mapNewOrderToDto = (order: NewOrder) => ({
   device_password: order.devicePassword,
   estimated_cost: order.estimatedCost,
   due_date: order.dueDate ? `${order.dueDate} 15:00:00` : undefined,
+});
+
+export const mapNewProductToDto = (product: newOrderProduct) => ({
+  name: product.name,
+  price: product.price,
+  purchase_price: product.purchasePrice,
+  quantity: product.quantity,
+  supplier_name: product.supplierName,
+});
+
+export const mapNewServiceToDto = (service: newOrderService) => ({
+  name: service.name,
+  price: service.price,
+  cost_price: service.costPrice,
+  quantity: service.quantity,
 });

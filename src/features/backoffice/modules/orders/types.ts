@@ -60,10 +60,62 @@ export type Order = {
 
 export type NewOrder = NewOrderSchema;
 
+export type OrderComment = {
+  id: number;
+  user: User;
+  body: string | null;
+  imageUrl: string | null;
+  createdAt: string;
+};
+export type OrderProduct = {
+  id: number;
+  user: null | User;
+  supplierName: null | string;
+  name: string;
+  price: string;
+  purchasePrice: string;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+};
+export type newOrderProduct = Omit<
+  OrderProduct,
+  "id" | "user" | "createdAt" | "updatedAt" | "deletedAt"
+>;
+export type OrderService = {
+  id: number;
+  user: null | User;
+  repairOperationId: number | null;
+  name: string;
+  price: string;
+  costPrice?: string | null;
+  supplierName?: null | string;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+};
+export type newOrderService = Omit<
+  OrderService,
+  "id" | "user" | "createdAt" | "updatedAt" | "deletedAt" | "repairOperationId"
+>;
+
+export type OrderLineItem =
+  | (OrderProduct & { type: "product" })
+  | (OrderService & { type: "service" });
+
+export type OrderPrepayment = {
+  id: number;
+  amount: string;
+  note?: string;
+  createdAt: string;
+};
 export type OrderInfo = Order & {
   location: Location;
   statusHistory: StatusHistoryItem[];
-  services: string[];
-  products: string[];
-  comments: string[];
+  services: OrderService[];
+  products: OrderProduct[];
+  comments: OrderComment[];
+  prepayments: OrderPrepayment[];
 };
