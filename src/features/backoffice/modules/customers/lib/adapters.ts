@@ -3,6 +3,7 @@ import {
   type NewCustomer,
   type NewPhone,
   type Phone,
+  type Telegram,
 } from "@/features/backoffice/modules/customers/types.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
 
@@ -10,6 +11,7 @@ import {
   type CustomerDto,
   type PaginatedCustomersDto,
   type PhoneDto,
+  type TelegramDto,
 } from "../api/dto";
 
 // from dto
@@ -20,6 +22,11 @@ export const mapPhoneDtoToPhone = (phone: PhoneDto): Phone => ({
   phoneVerifiedAt: phone.phone_verified_at,
   isPrimary: phone.is_primary,
 });
+export const mapTelegramDtoToTelegram = (dto: TelegramDto): Telegram => ({
+  chatId: dto.chat_id,
+  linkedAt: dto.linked_at,
+  activationToken: dto.activation_token,
+});
 export const mapCustomerDtoToCustomer = (dto: CustomerDto): Customer => {
   return {
     id: dto.id,
@@ -28,8 +35,7 @@ export const mapCustomerDtoToCustomer = (dto: CustomerDto): Customer => {
     email: dto.email,
     emailVerifiedAt: dto.email_verified_at,
     hasGoogle: dto.has_google,
-    telegramChatId: dto.telegram_chat_id,
-    telegramLinkedAt: dto.telegram_linked_at,
+    telegram: mapTelegramDtoToTelegram(dto.telegram),
     avatarUrl: dto.avatar_url,
     phones: dto.phones.map(mapPhoneDtoToPhone),
     comment: dto.comment,

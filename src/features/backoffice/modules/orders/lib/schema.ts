@@ -54,3 +54,21 @@ export const newOrderSchema = () =>
   });
 
 export type NewOrderSchema = z.infer<ReturnType<typeof newOrderSchema>>;
+
+export const newLineItemSchema = () =>
+  z.object({
+    name: z.string().trim().min(1, i18next.t("validation.field_required")),
+    price: z.string().trim().min(1, i18next.t("validation.field_required")),
+    quantity: z.coerce
+      .number({ error: i18next.t("validation.field_required") })
+      .int()
+      .min(1, i18next.t("validation.minQuantity")),
+    purchasePrice: z.string().optional().default(""),
+    supplierName: z.string().optional(),
+    costPrice: z.string().optional().default(""),
+  });
+
+export type NewLineItemSchema = z.infer<ReturnType<typeof newLineItemSchema>>;
+export type NewLineItemFormValues = z.input<
+  ReturnType<typeof newLineItemSchema>
+>;

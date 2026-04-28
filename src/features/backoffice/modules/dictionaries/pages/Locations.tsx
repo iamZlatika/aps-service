@@ -25,11 +25,22 @@ const LocationsPage = () => {
       labelKey: "dictionaries.table_fields.phone",
       sortable: false,
       type: "phone",
-      renderCell: (value) => (
-        <div className="flex flex-col">
-          <PhoneDropdown phoneNumber={value.toString()} />
-        </div>
-      ),
+      renderCell: (value) => {
+        if (typeof value !== "string") return null;
+
+        return (
+          <div className="flex flex-col">
+            <PhoneDropdown phoneNumber={value} />
+          </div>
+        );
+      },
+    },
+    {
+      key: "schedule",
+      field: "schedule",
+      labelKey: "dictionaries.table_fields.schedule",
+      sortable: false,
+      required: false,
     },
   ];
 

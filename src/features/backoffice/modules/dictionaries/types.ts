@@ -27,4 +27,5 @@ export type Location = {
   name: string;
   address: string;
   phone: string;
+  schedule: string | null;
 };

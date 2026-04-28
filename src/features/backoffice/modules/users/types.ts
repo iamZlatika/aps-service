@@ -19,6 +19,9 @@ export type User = {
   theme: UserTheme;
   avatarUrl: string;
   location: Location | null;
+  servicesPercent: number;
+  partsPercent: number;
+  intakePercent: number;
 };
 
 export type NewUser = z.infer<typeof registerUserSchema>;

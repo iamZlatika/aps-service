@@ -79,6 +79,7 @@ export const LocationDtoSchema = z.object({
   name: z.string(),
   address: z.string(),
   phone: z.string(),
+  schedule: z.string().nullable(),
 });
 
 export type LocationDto = z.infer<typeof LocationDtoSchema>;

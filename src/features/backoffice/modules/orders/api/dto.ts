@@ -77,11 +77,58 @@ export const PaginatedOrdersDtoSchema = z.object({
 
 export type PaginatedOrdersDto = z.infer<typeof PaginatedOrdersDtoSchema>;
 
+export const OrderCommentDtoSchema = z.object({
+  id: z.number(),
+  user: UserDtoSchema,
+  body: z.string().nullable(),
+  image_url: z.string().nullable(),
+  created_at: z.iso.datetime(),
+});
+
+export type OrderCommentDto = z.infer<typeof OrderCommentDtoSchema>;
+
+export const OrderProductSchema = z.object({
+  id: z.number(),
+  user: UserDtoSchema.nullable(),
+  supplier_name: z.string().nullable().optional(),
+  name: z.string(),
+  price: z.string(),
+  purchase_price: z.string(),
+  quantity: z.number(),
+  created_at: z.iso.datetime(),
+  updated_at: z.iso.datetime(),
+  deleted_at: z.iso.datetime().nullable().optional(),
+});
+
+export type OrderProductDto = z.infer<typeof OrderProductSchema>;
+export const OrderServiceSchema = z.object({
+  id: z.number(),
+  user: UserDtoSchema.nullable(),
+  repair_operation_id: z.number().nullable(),
+  name: z.string(),
+  price: z.string(),
+  cost_price: z.string().nullable().optional(),
+  quantity: z.number(),
+  created_at: z.iso.datetime(),
+  updated_at: z.iso.datetime(),
+  deleted_at: z.iso.datetime().nullable().optional(),
+});
+export type OrderServiceDto = z.infer<typeof OrderServiceSchema>;
+
+export const OrderPrepaymentSchema = z.object({
+  id: z.number(),
+  amount: z.string(),
+  note: z.string().optional(),
+  created_at: z.iso.datetime(),
+});
+export type OrderPrepaymentDto = z.infer<typeof OrderPrepaymentSchema>;
+
 export const OrderInfoDtoSchema = OrderDtoSchema.extend({
   location: LocationDtoSchema,
   status_history: z.array(StatusHistoryItemDtoSchema),
-  services: z.array(z.string()),
-  products: z.array(z.string()),
-  comments: z.array(z.string()),
+  services: z.array(OrderServiceSchema),
+  products: z.array(OrderProductSchema),
+  comments: z.array(OrderCommentDtoSchema),
+  prepayments: z.array(OrderPrepaymentSchema),
 });
 export type OrderInfoDto = z.infer<typeof OrderInfoDtoSchema>;

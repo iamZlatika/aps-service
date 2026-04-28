@@ -31,4 +31,5 @@ export const mapLocationDtoToLocation = (dto: LocationDto): Location => ({
   name: dto.name,
   address: dto.address,
   phone: dto.phone,
+  schedule: dto.schedule,
 });

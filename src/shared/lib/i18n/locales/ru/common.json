@@ -2,7 +2,15 @@
   "common": {
     "noResults": "Нет результатов",
     "alreadySelected": "Уже выбрано",
-    "save": "Сохранить"
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "add": "Добавить",
+    "deleteDialog": {
+      "title": "Удаление",
+      "description": "Вы уверены, что хотите удалить эту запись?",
+      "success": "Запись успешно удалена"
+    }
   },
   "header": {
     "user": "Пользователь",
@@ -133,6 +141,7 @@
     "phone_invalid": "Введите номер в формате +38 0XX-XXX-XX-XX",
     "onlyLat": "Только латиница, цифры и _",
     "minCharsIs": "Минимальное количество символов {{chars}}",
+    "minQuantity": "Минимальное значение — 1",
     "colorRequired": "Выберите цвет"
   },
   "search_placeholders": {
@@ -278,7 +287,8 @@
       "managerName": "Менеджер",
       "phone": "Телефон",
       "website": "Сайт",
-      "address": "Адресс"
+      "address": "Адресс",
+      "schedule": "График работы"
     },
     "placeholders": {
       "key": "Только латиница, цифры и _",
@@ -288,6 +298,7 @@
   },
   "orders": {
     "createNew": "Создание заказа",
+    "successAddComment": "Комментарий успешно добавлен",
     "successCreate": "Заказ успешно создан",
     "order": "Заказ",
     "customerInfo": "Информация о клиенте",
@@ -361,6 +372,26 @@
       "prepayment": "Введите сумму предоплаты (необязательно)",
       "location": "Выберите локацию",
       "dueDate": "Выберите дату (необязательно)"
+    },
+    "orderTable": {
+      "name": "Название",
+      "user": "Мастер",
+      "quantity": "Количество",
+      "price": "Цена за ед",
+      "totalPrice": "Стоимость",
+      "purchasePrice": "Себестоимость",
+      "addProduct": "Добавить продукт",
+      "addService": "Добавить услугу",
+      "successAddProduct": "Продукт успешно добавлен",
+      "successAddService": "Услуга успешно добавлена",
+      "form": {
+        "name": "Название *",
+        "price": "Цена *",
+        "purchasePrice": "Себестоимость",
+        "costPrice": "Себестоимость",
+        "quantity": "Количество *",
+        "supplierName": "Поставщик"
+      }
     }
   }
 }

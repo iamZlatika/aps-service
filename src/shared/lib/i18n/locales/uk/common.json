@@ -2,7 +2,15 @@
   "common": {
     "noResults": "Немає результатів",
     "alreadySelected": "Вже вибрано",
-    "save": "Зберегти"
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "delete": "Видалити",
+    "add": "Додати",
+    "deleteDialog": {
+      "title": "Видалення",
+      "description": "Ви впевнені, що хочете видалити цей запис?",
+      "success": "Запис успішно видалено"
+    }
   },
    "header": {
     "user": "Користувач",
@@ -130,6 +138,7 @@
     "phone_invalid": "Введіть номер у форматі +38 0XX-XXX-XX-XX",
     "onlyLat": "Тільки латиниця, цифри та _",
     "minCharsIs": "Мінімальна кількість символів {{chars}}",
+    "minQuantity": "Мінімальне значення — 1",
     "colorRequired": "Виберіть колір"
   },
   "search_placeholders": {
@@ -275,7 +284,8 @@
       "managerName": "Менеджер",
       "phone": "Телефон",
       "website": "Сайт",
-      "address": "Адреса"
+      "address": "Адреса",
+      "schedule": "Графік роботи"
     },
     "placeholders": {
       "key": "Тільки латиниця, цифри та _",
@@ -285,6 +295,7 @@
   },
   "orders": {
     "createNew": "Створити нове замовлення",
+    "successAddComment": "Коментар успішно додано",
     "successCreate": "Замовлення успішно створено",
     "order": "Замовлення",
     "customerInfo": "Інформація про клієнта",
@@ -359,6 +370,26 @@
       "location": "Оберіть локацію",
       "noResults": "Немає результатів",
       "dueDate": "Оберіть дату (необов'язково)"
+    },
+    "orderTable": {
+      "name": "Назва",
+      "user": "Майстер",
+      "quantity": "Кількість",
+      "price": "Ціна за од.",
+      "totalPrice": "Вартість",
+      "purchasePrice": "Собівартість",
+      "addProduct": "Додати продукт",
+      "addService": "Додати послугу",
+      "successAddProduct": "Продукт успішно додано",
+      "successAddService": "Послугу успішно додано",
+      "form": {
+        "name": "Назва *",
+        "price": "Ціна *",
+        "purchasePrice": "Собівартість",
+        "costPrice": "Собівартість",
+        "quantity": "Кількість *",
+        "supplierName": "Постачальник"
+      }
     }
   }
 }

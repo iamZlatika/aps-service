@@ -15,6 +15,9 @@ export const mapUserDtoToUser = (dto: UserDto): User => {
     theme: dto.theme,
     avatarUrl: dto.avatar_url,
     location: dto.location,
+    servicesPercent: dto.services_percent,
+    partsPercent: dto.parts_percent,
+    intakePercent: dto.intake_percent,
   };
 };
 
