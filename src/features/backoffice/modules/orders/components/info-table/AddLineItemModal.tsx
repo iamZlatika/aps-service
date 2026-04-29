@@ -1,13 +1,11 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { useAddLineItem } from "@/features/backoffice/modules/orders/hooks/useAddLineItem.ts";
-import {
-  type NewLineItemFormValues,
-  type NewLineItemSchema,
-  newLineItemSchema,
-} from "@/features/backoffice/modules/orders/lib/schema.ts";
+import SearchableSelect from "@/features/backoffice/modules/orders/components/searchable-select";
+import { useAddLineItemForm } from "@/features/backoffice/modules/orders/hooks/useAddLineItemForm.ts";
+import { useLineItemSubmit } from "@/features/backoffice/modules/orders/hooks/useLineItemSubmit.ts";
+import type { OrderLineItem } from "@/features/backoffice/modules/orders/types.ts";
+import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
   Dialog,
@@ -18,6 +16,13 @@ import {
 } from "@/shared/components/ui/dialog.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/components/ui/select.tsx";
 
 type LineItemType = "product" | "service";
 
@@ -26,6 +31,7 @@ interface AddLineItemModalProps {
   type: LineItemType;
   open: boolean;
   onClose: () => void;
+  editItem?: OrderLineItem;
 }
 
 const AddLineItemModal = ({
@@ -33,32 +39,58 @@ const AddLineItemModal = ({
   type,
   open,
   onClose,
+  editItem,
 }: AddLineItemModalProps) => {
   const { t } = useTranslation();
+
+  const initialValues = editItem
+    ? {
+        name: editItem.name,
+        price: editItem.price,
+        quantity: editItem.quantity,
+        userId: editItem.user?.id,
+        ...(editItem.type === "product"
+          ? {
+              purchasePrice: editItem.purchasePrice ?? "",
+              supplierName: editItem.supplierName ?? "",
+            }
+          : {
+              costPrice: editItem.costPrice ?? "",
+            }),
+      }
+    : undefined;
+
   const {
+    control,
     register,
     handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<NewLineItemFormValues, unknown, NewLineItemSchema>({
-    resolver: zodResolver(newLineItemSchema()),
-    defaultValues: { quantity: 1 },
+    errors,
+    users,
+    isLoadingUsers,
+    fetchNameItems,
+    nameQueryKey,
+    onCreateNameItem,
+    fetchSuppliers,
+    onCreateSupplier,
+  } = useAddLineItemForm({ type, initialValues });
+
+  const { onSubmit, isPending } = useLineItemSubmit({
+    orderId,
+    type,
+    editItemId: editItem?.id,
+    onSuccess: onClose,
   });
 
-  const handleClose = () => {
-    reset();
-    onClose();
-  };
-
-  const { onSubmit, isPending } = useAddLineItem(orderId, type, handleClose);
-
-  const title =
-    type === "product"
+  const title = editItem
+    ? type === "product"
+      ? t("orders.orderTable.editProduct")
+      : t("orders.orderTable.editService")
+    : type === "product"
       ? t("orders.orderTable.addProduct")
       : t("orders.orderTable.addService");
 
   return (
-    <Dialog open={open} onOpenChange={(o) => !o && handleClose()}>
+    <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -66,10 +98,20 @@ const AddLineItemModal = ({
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <Label>{t("orders.orderTable.form.name")}</Label>
-            <Input {...register("name")} />
-            {errors.name && (
-              <p className="text-sm text-destructive">{errors.name.message}</p>
-            )}
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => (
+                <SearchableSelect
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  fetchItems={fetchNameItems}
+                  queryKey={nameQueryKey}
+                  onCreateItem={onCreateNameItem}
+                  error={errors.name}
+                />
+              )}
+            />
           </div>
           <div className="flex flex-col gap-1">
             <Label>{t("orders.orderTable.form.price")}</Label>
@@ -107,15 +149,56 @@ const AddLineItemModal = ({
           {type === "product" && (
             <div className="flex flex-col gap-1">
               <Label>{t("orders.orderTable.form.supplierName")}</Label>
-              <Input {...register("supplierName")} />
+              <Controller
+                name="supplierName"
+                control={control}
+                render={({ field }) => (
+                  <SearchableSelect
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    fetchItems={fetchSuppliers}
+                    queryKey={queryKeys.dictionaries.suppliers()}
+                    onCreateItem={onCreateSupplier}
+                  />
+                )}
+              />
             </div>
           )}
+          <div className="flex flex-col gap-1">
+            <Label>{t("orders.orderTable.form.executor")}</Label>
+            <Controller
+              name="userId"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value ? String(field.value) : ""}
+                  onValueChange={(val) =>
+                    field.onChange(val ? Number(val) : undefined)
+                  }
+                  disabled={!users.length || isLoadingUsers}
+                >
+                  <SelectTrigger className="h-11 text-base">
+                    <SelectValue
+                      placeholder={isLoadingUsers ? t("loader.default") : "..."}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {users.map((u) => (
+                      <SelectItem key={u.id} value={String(u.id)}>
+                        {u.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={handleClose}>
+            <Button type="button" variant="outline" onClick={onClose}>
               {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={isPending}>
-              {t("common.add")}
+              {editItem ? t("common.save") : t("common.add")}
             </Button>
           </DialogFooter>
         </form>

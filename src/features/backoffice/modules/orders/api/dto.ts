@@ -93,7 +93,7 @@ export const OrderProductSchema = z.object({
   supplier_name: z.string().nullable().optional(),
   name: z.string(),
   price: z.string(),
-  purchase_price: z.string(),
+  purchase_price: z.string().nullable().optional(),
   quantity: z.number(),
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),

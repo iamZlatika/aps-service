@@ -73,7 +73,7 @@ export type OrderProduct = {
   supplierName: null | string;
   name: string;
   price: string;
-  purchasePrice: string;
+  purchasePrice: string | null;
   quantity: number;
   createdAt: string;
   updatedAt: string;
@@ -82,7 +82,7 @@ export type OrderProduct = {
 export type newOrderProduct = Omit<
   OrderProduct,
   "id" | "user" | "createdAt" | "updatedAt" | "deletedAt"
->;
+> & { userId?: number | null };
 export type OrderService = {
   id: number;
   user: null | User;
@@ -99,7 +99,7 @@ export type OrderService = {
 export type newOrderService = Omit<
   OrderService,
   "id" | "user" | "createdAt" | "updatedAt" | "deletedAt" | "repairOperationId"
->;
+> & { userId?: number | null };
 
 export type OrderLineItem =
   | (OrderProduct & { type: "product" })

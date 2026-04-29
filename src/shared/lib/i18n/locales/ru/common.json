@@ -382,15 +382,25 @@
       "purchasePrice": "Себестоимость",
       "addProduct": "Добавить продукт",
       "addService": "Добавить услугу",
+      "editProduct": "Редактировать продукт",
+      "editService": "Редактировать услугу",
       "successAddProduct": "Продукт успешно добавлен",
       "successAddService": "Услуга успешно добавлена",
+      "successEditProduct": "Продукт успешно обновлён",
+      "successEditService": "Услуга успешно обновлена",
+      "successAddSupplier": "Поставщик успешно добавлен в словарь",
+      "successAddProductToDict": "Продукт успешно добавлен в словарь",
+      "successAddServiceToDict": "Услуга успешно добавлена в словарь",
+      "products": "Продукты",
+      "services": "Услуги",
       "form": {
         "name": "Название *",
         "price": "Цена *",
         "purchasePrice": "Себестоимость",
         "costPrice": "Себестоимость",
         "quantity": "Количество *",
-        "supplierName": "Поставщик"
+        "supplierName": "Поставщик",
+        "executor": "Исполнитель"
       }
     }
   }
