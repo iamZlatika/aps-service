@@ -58,9 +58,9 @@ export type OrderStatusDto = z.infer<typeof OrderStatusDtoSchema>;
 export const SupplierDtoSchema = z.object({
   id: z.number(),
   name: z.string(),
-  manager_name: z.string(),
-  phone: z.string(),
-  website: z.string(),
+  manager_name: z.string().nullable().optional().default(""),
+  phone: z.string().nullable().optional().default(""),
+  website: z.string().nullable().optional().default(""),
 });
 
 export type Supplier = z.infer<typeof SupplierDtoSchema>;

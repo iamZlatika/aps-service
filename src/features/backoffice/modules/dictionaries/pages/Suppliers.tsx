@@ -18,34 +18,39 @@ const SuppliersPage = () => {
       field: "manager_name",
       labelKey: "dictionaries.table_fields.managerName",
       sortable: true,
+      required: false,
     },
     {
       key: "phone",
       field: "phone",
       labelKey: "dictionaries.table_fields.phone",
       sortable: false,
+      required: false,
       type: "phone",
-      renderCell: (value) => (
-        <div className="flex flex-col">
-          <PhoneDropdown phoneNumber={value.toString()} />
-        </div>
-      ),
+      renderCell: (value) =>
+        value ? (
+          <div className="flex flex-col">
+            <PhoneDropdown phoneNumber={value.toString()} />
+          </div>
+        ) : null,
     },
     {
       key: "website",
       field: "website",
       labelKey: "dictionaries.table_fields.website",
       sortable: false,
-      renderCell: (value) => (
-        <a
-          href={value.toString()}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
-        >
-          {value}
-        </a>
-      ),
+      required: false,
+      renderCell: (value) =>
+        value ? (
+          <a
+            href={value.toString()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+          >
+            {value}
+          </a>
+        ) : null,
     },
   ];
 

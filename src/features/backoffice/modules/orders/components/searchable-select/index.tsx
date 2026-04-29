@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { type KeyboardEvent } from "react";
@@ -11,6 +11,7 @@ import {
 } from "@/features/backoffice/modules/orders/components/searchable-select/searchableSelect.types.ts";
 import { useDebounce } from "@/shared/hooks/useDebounce.ts";
 import { SEARCH_DEBOUNCE_MS } from "@/shared/lib/constants.ts";
+import { notifyError } from "@/shared/lib/errors/services.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
 export type { SearchableSelectOption };
@@ -28,6 +29,7 @@ interface SearchableSelectProps<TMeta = undefined> {
   error?: FieldError;
   clearOnSelect?: boolean;
   onClear?: () => void;
+  onCreateItem?: (name: string) => Promise<void>;
 }
 
 const defaultRenderInput = (props: SearchableSelectInputProps) => (
@@ -73,8 +75,10 @@ function SearchableSelect<TMeta = undefined>({
   disabled,
   error,
   clearOnSelect,
+  onCreateItem,
 }: SearchableSelectProps<TMeta>) {
   const { t } = useTranslation();
+  const queryClientInstance = useQueryClient();
 
   const [inputValue, setInputValue] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
@@ -110,6 +114,19 @@ function SearchableSelect<TMeta = undefined>({
     queryKey: [...queryKey, debouncedSearch],
     queryFn: () => fetchItems(debouncedSearch),
     enabled: isOpen,
+  });
+
+  const canCreate = !!onCreateItem && inputValue.trim().length > 0;
+
+  const { mutate: createItem, isPending: isSaving } = useMutation({
+    mutationFn: (name: string) => onCreateItem!(name),
+    onSuccess: async (_data, name) => {
+      await queryClientInstance.invalidateQueries({ queryKey: [...queryKey] });
+      onChange(name);
+      setInputValue(name);
+      setIsOpen(false);
+    },
+    onError: (error) => notifyError(error),
   });
 
   const handleSelect = (option: SearchableSelectOption<TMeta>) => {
@@ -212,8 +229,23 @@ function SearchableSelect<TMeta = undefined>({
           {isFetching ? (
             <div className="px-3 py-2 text-base text-muted-foreground">...</div>
           ) : options.length === 0 ? (
-            <div className="px-3 py-2 text-base text-muted-foreground">
-              {t("common.noResults")}
+            <div className="flex items-center justify-between px-3 py-2">
+              <span className="text-base text-muted-foreground">
+                {t("common.noResults")}
+              </span>
+              {canCreate && (
+                <button
+                  type="button"
+                  disabled={isSaving}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    createItem(inputValue.trim());
+                  }}
+                  className="ml-2 shrink-0 rounded-sm bg-primary px-2 py-1 text-sm text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+                >
+                  {isSaving ? "..." : t("common.save")}
+                </button>
+              )}
             </div>
           ) : (
             <ul ref={listRef} className="max-h-60 overflow-y-auto p-1">

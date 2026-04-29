@@ -1,3 +1,6 @@
+export const calcLineItemTotal = (price: string, quantity: number): string =>
+  (parseFloat(price) * quantity).toFixed();
+
 const WRAP_AT = 25;
 const MAX_CHARS = 47;
 

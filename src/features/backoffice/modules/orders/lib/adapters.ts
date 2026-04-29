@@ -126,7 +126,7 @@ export const mapOrderProductDtoToOrderProduct = (
   supplierName: dto.supplier_name ?? null,
   name: dto.name,
   price: dto.price,
-  purchasePrice: dto.purchase_price,
+  purchasePrice: dto.purchase_price ?? null,
   quantity: dto.quantity,
   createdAt: dto.created_at,
   updatedAt: dto.updated_at,
@@ -195,14 +195,16 @@ export const mapNewOrderToDto = (order: NewOrder) => ({
 export const mapNewProductToDto = (product: newOrderProduct) => ({
   name: product.name,
   price: product.price,
-  purchase_price: product.purchasePrice,
+  purchase_price: product.purchasePrice || null,
   quantity: product.quantity,
   supplier_name: product.supplierName,
+  user_id: product.userId ?? null,
 });
 
 export const mapNewServiceToDto = (service: newOrderService) => ({
   name: service.name,
   price: service.price,
-  cost_price: service.costPrice,
+  cost_price: service.costPrice || null,
   quantity: service.quantity,
+  user_id: service.userId ?? null,
 });

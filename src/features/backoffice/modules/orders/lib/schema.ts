@@ -66,6 +66,7 @@ export const newLineItemSchema = () =>
     purchasePrice: z.string().optional().default(""),
     supplierName: z.string().optional(),
     costPrice: z.string().optional().default(""),
+    userId: z.number().int().positive().optional(),
   });
 
 export type NewLineItemSchema = z.infer<ReturnType<typeof newLineItemSchema>>;

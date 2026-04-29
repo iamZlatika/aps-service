@@ -380,15 +380,25 @@
       "purchasePrice": "Собівартість",
       "addProduct": "Додати продукт",
       "addService": "Додати послугу",
+      "editProduct": "Редагувати продукт",
+      "editService": "Редагувати послугу",
       "successAddProduct": "Продукт успішно додано",
       "successAddService": "Послугу успішно додано",
+      "successEditProduct": "Продукт успішно оновлено",
+      "successEditService": "Послугу успішно оновлено",
+      "successAddSupplier": "Постачальника успішно додано до словника",
+      "successAddProductToDict": "Продукт успішно додано до словника",
+      "successAddServiceToDict": "Послугу успішно додано до словника",
+      "products": "Продукти",
+      "services": "Послуги",
       "form": {
         "name": "Назва *",
         "price": "Ціна *",
         "purchasePrice": "Собівартість",
         "costPrice": "Собівартість",
         "quantity": "Кількість *",
-        "supplierName": "Постачальник"
+        "supplierName": "Постачальник",
+        "executor": "Виконавець"
       }
     }
   }

@@ -7,15 +7,8 @@ import {
 import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { DeleteConfirmDialog } from "@/features/backoffice/modules/orders/components/info-table/DeleteConfirmDialog.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/shared/components/ui/dialog.tsx";
 import {
   Table,
   TableBody,
@@ -25,17 +18,27 @@ import {
   TableRow,
 } from "@/shared/components/ui/table.tsx";
 
-export type InfoTableColumn<T> = {
-  key: string;
-  label: string;
-  collapsible?: boolean;
-  render?: (row: T) => ReactNode;
-};
+export type InfoTableColumn<T> =
+  | {
+      key: keyof T & string;
+      label: string;
+      collapsible?: boolean;
+      render?: (row: T) => ReactNode;
+    }
+  | {
+      key: string;
+      label: string;
+      collapsible?: boolean;
+      render: (row: T) => ReactNode;
+    };
 
 interface InfoTableProps<T extends { id: string | number }> {
   columns: InfoTableColumn<T>[];
   data: T[];
   onDelete: (item: T) => void;
+  isDeleting?: boolean;
+  onRowClick?: (item: T) => void;
+  getRowKey?: (row: T) => string | number;
   onAddProduct?: () => void;
   onAddService?: () => void;
   deleteDialogTitle?: string;
@@ -47,6 +50,9 @@ export const InfoTable = <T extends { id: string | number }>({
   columns,
   data,
   onDelete,
+  isDeleting,
+  onRowClick,
+  getRowKey,
   onAddProduct,
   onAddService,
   deleteDialogTitle,
@@ -119,7 +125,11 @@ export const InfoTable = <T extends { id: string | number }>({
         </TableHeader>
         <TableBody>
           {data.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow
+              key={getRowKey ? getRowKey(row) : row.id}
+              onClick={() => onRowClick?.(row)}
+              className={onRowClick ? "cursor-pointer" : ""}
+            >
               {columns.map((col) => {
                 if (col.collapsible && collapsedKeys.has(col.key)) return null;
                 return (
@@ -135,7 +145,11 @@ export const InfoTable = <T extends { id: string | number }>({
                   variant="ghost"
                   size="icon"
                   className="text-muted-foreground hover:text-destructive"
-                  onClick={() => setPendingDelete(row)}
+                  disabled={isDeleting}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPendingDelete(row);
+                  }}
                 >
                   <Trash2 />
                 </Button>
@@ -150,22 +164,20 @@ export const InfoTable = <T extends { id: string | number }>({
           {onAddProduct !== undefined && (
             <Button
               variant="ghost"
-              size="sm"
-              className="text-muted-foreground"
+              className="text-base text-muted-foreground"
               onClick={onAddProduct}
             >
-              <Plus size={14} />
+              <Plus size={16} />
               {t("orders.orderTable.addProduct")}
             </Button>
           )}
           {onAddService !== undefined && (
             <Button
               variant="ghost"
-              size="sm"
-              className="text-muted-foreground"
+              className="text-base text-muted-foreground"
               onClick={onAddService}
             >
-              <Plus size={14} />
+              <Plus size={16} />
               {t("orders.orderTable.addService")}
             </Button>
           )}
@@ -178,29 +190,13 @@ export const InfoTable = <T extends { id: string | number }>({
         </div>
       )}
 
-      <Dialog
+      <DeleteConfirmDialog
         open={pendingDelete !== null}
-        onOpenChange={(open) => !open && setPendingDelete(null)}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {deleteDialogTitle ?? t("common.deleteDialog.title")}
-            </DialogTitle>
-            <DialogDescription>
-              {deleteDialogDescription ?? t("common.deleteDialog.description")}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setPendingDelete(null)}>
-              {t("common.cancel")}
-            </Button>
-            <Button variant="destructive" onClick={handleConfirmDelete}>
-              {t("common.delete")}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setPendingDelete(null)}
+        title={deleteDialogTitle}
+        description={deleteDialogDescription}
+      />
     </div>
   );
 };
