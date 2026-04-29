@@ -2,7 +2,7 @@ import type { Customer } from "@/features/backoffice/modules/customers/types.ts"
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
-import { type DocumentType } from "@/shared/types.ts";
+import { type DocumentType, type PaymentType } from "@/shared/types.ts";
 
 export type OrderStatus = {
   id: number;
@@ -43,7 +43,7 @@ export type Order = {
   accessory: string | null;
   devicePassword: string;
   intakeNote: string | null;
-  totalPrepayment: string;
+  totalPaid: string;
   remainingToPay: string;
   dueDate: string;
   estimatedCost: string | null;
@@ -69,7 +69,7 @@ export type OrderComment = {
 };
 export type OrderProduct = {
   id: number;
-  user: null | User;
+  manager: null | User;
   supplierName: null | string;
   name: string;
   price: string;
@@ -78,14 +78,15 @@ export type OrderProduct = {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+  deletedByUser?: User | null;
 };
 export type newOrderProduct = Omit<
   OrderProduct,
-  "id" | "user" | "createdAt" | "updatedAt" | "deletedAt"
-> & { userId?: number | null };
+  "id" | "manager" | "createdAt" | "updatedAt" | "deletedAt"
+> & { managerId?: number | null };
 export type OrderService = {
   id: number;
-  user: null | User;
+  manager: null | User;
   repairOperationId: number | null;
   name: string;
   price: string;
@@ -95,27 +96,43 @@ export type OrderService = {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+  deletedByUser?: User | null;
 };
 export type newOrderService = Omit<
   OrderService,
-  "id" | "user" | "createdAt" | "updatedAt" | "deletedAt" | "repairOperationId"
-> & { userId?: number | null };
+  | "id"
+  | "manager"
+  | "createdAt"
+  | "updatedAt"
+  | "deletedAt"
+  | "repairOperationId"
+> & { managerId?: number | null };
 
 export type OrderLineItem =
   | (OrderProduct & { type: "product" })
   | (OrderService & { type: "service" });
 
-export type OrderPrepayment = {
+export type OrderPayment = {
   id: number;
+  type: PaymentType;
   amount: string;
-  note?: string;
+  note: string | null;
+  manager: User | null;
   createdAt: string;
 };
+
+export type NewOrderPayment = Omit<
+  OrderPayment,
+  "id" | "createdAt" | "manager"
+> & {
+  managerId: number;
+};
+
 export type OrderInfo = Order & {
   location: Location;
   statusHistory: StatusHistoryItem[];
   services: OrderService[];
   products: OrderProduct[];
   comments: OrderComment[];
-  prepayments: OrderPrepayment[];
+  payments: OrderPayment[];
 };

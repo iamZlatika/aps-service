@@ -23,7 +23,7 @@ import {
 } from "@/features/backoffice/modules/customers/types.ts";
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
-import { del, get, post, put } from "@/shared/api/api.ts";
+import { buildPaginatedParams, del, get, post, put } from "@/shared/api/api.ts";
 import { type UserStatus } from "@/shared/types.ts";
 
 export const customersApi = {
@@ -34,19 +34,13 @@ export const customersApi = {
     sortType?: SortType,
     filters?: Record<string, string>,
   ): Promise<PaginatedResponse<Customer>> => {
-    const params = new URLSearchParams({
-      page: String(page),
-      per_page: String(perPage),
-    });
-    if (sortColumn && sortType && sortType !== "none") {
-      params.set("sort_column", sortColumn);
-      params.set("sort_type", sortType);
-    }
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value) params.set(key, value);
-      });
-    }
+    const params = buildPaginatedParams(
+      page,
+      perPage,
+      sortColumn,
+      sortType,
+      filters,
+    );
     const response = await get(
       `${CUSTOMERS_API.customers()}?${params.toString()}`,
     );

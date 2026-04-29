@@ -73,11 +73,12 @@ export const useAddLineItemForm = ({
     formState: { errors },
   } = useForm<NewLineItemFormValues, unknown, NewLineItemSchema>({
     resolver: zodResolver(newLineItemSchema()),
-    defaultValues: initialValues ?? { quantity: 1, userId: user?.id },
+    defaultValues: initialValues ?? { quantity: 1, managerId: user?.id },
   });
 
-  const selectedUserId = useWatch({ control, name: "userId" });
-  const executorName = users.find((u) => u.id === selectedUserId)?.name ?? "";
+  const selectedManagerId = useWatch({ control, name: "managerId" });
+  const executorName =
+    users.find((u) => u.id === selectedManagerId)?.name ?? "";
 
   const fetchNameItems =
     type === "service" ? fetchRepairOperations : fetchProducts;

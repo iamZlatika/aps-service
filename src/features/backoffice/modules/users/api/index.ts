@@ -14,7 +14,7 @@ import {
 } from "@/features/backoffice/modules/users/types.ts";
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
-import { get, post, put } from "@/shared/api/api.ts";
+import { buildPaginatedParams, get, post, put } from "@/shared/api/api.ts";
 import {
   type UserLanguage,
   type UserStatus,
@@ -29,19 +29,13 @@ export const usersApi = {
     sortType?: SortType,
     filters?: Record<string, string>,
   ): Promise<PaginatedResponse<User>> => {
-    const params = new URLSearchParams({
-      page: String(page),
-      per_page: String(perPage),
-    });
-    if (sortColumn && sortType && sortType !== "none") {
-      params.set("sort_column", sortColumn);
-      params.set("sort_type", sortType);
-    }
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value) params.set(key, value);
-      });
-    }
+    const params = buildPaginatedParams(
+      page,
+      perPage,
+      sortColumn,
+      sortType,
+      filters,
+    );
     const response = await get(`${USERS_API.listUsers()}?${params.toString()}`);
     const validated = PaginatedUsersDtoSchema.parse(response);
     return mapPaginatedUsersDtoToResponse(validated);

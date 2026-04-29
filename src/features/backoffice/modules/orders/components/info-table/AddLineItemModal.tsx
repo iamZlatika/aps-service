@@ -48,7 +48,7 @@ const AddLineItemModal = ({
         name: editItem.name,
         price: editItem.price,
         quantity: editItem.quantity,
-        userId: editItem.user?.id,
+        managerId: editItem.manager?.id,
         ...(editItem.type === "product"
           ? {
               purchasePrice: editItem.purchasePrice ?? "",
@@ -167,7 +167,7 @@ const AddLineItemModal = ({
           <div className="flex flex-col gap-1">
             <Label>{t("orders.orderTable.form.executor")}</Label>
             <Controller
-              name="userId"
+              name="managerId"
               control={control}
               render={({ field }) => (
                 <Select

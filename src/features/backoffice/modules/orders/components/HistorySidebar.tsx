@@ -10,7 +10,6 @@ import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { Button } from "@/shared/components/ui/button";
 import { Progress } from "@/shared/components/ui/progress.tsx";
 import { Textarea } from "@/shared/components/ui/textarea.tsx";
-import { notifyError } from "@/shared/lib/errors/services.ts";
 
 interface PendingImage {
   file: File;
@@ -43,7 +42,6 @@ const HistorySidebar = ({ orderId }: HistorySidebarProps) => {
         queryKey: queryKeys.orders.detail(orderId),
       });
     },
-    onError: notifyError,
   });
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {

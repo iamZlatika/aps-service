@@ -17,9 +17,14 @@ import {
 interface StatusSelectProps {
   orderId: number;
   status: OrderStatus;
+  onSuccess?: () => void;
 }
 
-export const StatusSelect = ({ orderId, status }: StatusSelectProps) => {
+export const StatusSelect = ({
+  orderId,
+  status,
+  onSuccess,
+}: StatusSelectProps) => {
   const { i18n } = useTranslation();
   const isUk = i18n.language === "uk";
 
@@ -30,8 +35,13 @@ export const StatusSelect = ({ orderId, status }: StatusSelectProps) => {
 
   const mutation = useMutation({
     mutationFn: (statusId: number) => ordersApi.changeStatus(orderId, statusId),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: queryKeys.orders.all }),
+    onSuccess: () => {
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+      }
+    },
   });
 
   const displayName = isUk ? status.nameUa : status.nameRu;

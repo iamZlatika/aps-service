@@ -298,6 +298,7 @@
   },
   "orders": {
     "createNew": "Создание заказа",
+    "remainingToPay": "К оплате",
     "successAddComment": "Комментарий успешно добавлен",
     "successCreate": "Заказ успешно создан",
     "order": "Заказ",
@@ -401,6 +402,24 @@
         "quantity": "Количество *",
         "supplierName": "Поставщик",
         "executor": "Исполнитель"
+      }
+    },
+    "payments": {
+      "title": "Оплаты",
+      "addPayment": "Добавить оплату",
+      "successAdd": "Оплата успешно добавлена",
+      "totalPaid": "Итого оплачено",
+      "table": {
+        "type": "Тип",
+        "amount": "Сумма",
+        "note": "Заметки",
+        "manager": "Принял",
+        "date": "Дата"
+      },
+      "types": {
+        "prepayment": "Предоплата",
+        "payment": "Оплата",
+        "refund": "Возврат"
       }
     }
   }
