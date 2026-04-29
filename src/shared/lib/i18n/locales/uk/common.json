@@ -295,6 +295,7 @@
   },
   "orders": {
     "createNew": "Створити нове замовлення",
+    "remainingToPay": "До оплати",
     "successAddComment": "Коментар успішно додано",
     "successCreate": "Замовлення успішно створено",
     "order": "Замовлення",
@@ -399,6 +400,24 @@
         "quantity": "Кількість *",
         "supplierName": "Постачальник",
         "executor": "Виконавець"
+      }
+    },
+    "payments": {
+      "title": "Оплати",
+      "addPayment": "Додати оплату",
+      "successAdd": "Оплату успішно додано",
+      "totalPaid": "Всього оплачено",
+      "table": {
+        "type": "Тип",
+        "amount": "Сума",
+        "note": "Нотатки",
+        "manager": "Прийняв",
+        "date": "Дата"
+      },
+      "types": {
+        "prepayment": "Передоплата",
+        "payment": "Оплата",
+        "refund": "Повернення"
       }
     }
   }

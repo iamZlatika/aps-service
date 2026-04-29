@@ -2,6 +2,7 @@ import i18next from "i18next";
 import { z } from "zod";
 
 import { emailRegex } from "@/shared/lib/constants.ts";
+import { PAYMENTS } from "@/shared/types.ts";
 
 export const newOrderSchema = () =>
   z.object({
@@ -66,10 +67,21 @@ export const newLineItemSchema = () =>
     purchasePrice: z.string().optional().default(""),
     supplierName: z.string().optional(),
     costPrice: z.string().optional().default(""),
-    userId: z.number().int().positive().optional(),
+    managerId: z.number().int().positive().optional(),
   });
 
 export type NewLineItemSchema = z.infer<ReturnType<typeof newLineItemSchema>>;
 export type NewLineItemFormValues = z.input<
   ReturnType<typeof newLineItemSchema>
 >;
+
+export const newPaymentSchema = () =>
+  z.object({
+    type: z.enum([PAYMENTS.PREPAYMENT, PAYMENTS.PAYMENT, PAYMENTS.REFUND]),
+    amount: z.string().trim().min(1, i18next.t("validation.field_required")),
+    note: z.string().optional(),
+    managerId: z.number().int().positive(),
+  });
+
+export type NewPaymentSchema = z.infer<ReturnType<typeof newPaymentSchema>>;
+export type NewPaymentFormValues = z.input<ReturnType<typeof newPaymentSchema>>;

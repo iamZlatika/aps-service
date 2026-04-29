@@ -35,7 +35,7 @@ export const mapCustomerDtoToCustomer = (dto: CustomerDto): Customer => {
     email: dto.email,
     emailVerifiedAt: dto.email_verified_at,
     hasGoogle: dto.has_google,
-    telegram: mapTelegramDtoToTelegram(dto.telegram),
+    telegram: dto.telegram ? mapTelegramDtoToTelegram(dto.telegram) : null,
     avatarUrl: dto.avatar_url,
     phones: dto.phones.map(mapPhoneDtoToPhone),
     comment: dto.comment,

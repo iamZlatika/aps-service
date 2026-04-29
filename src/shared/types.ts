@@ -45,5 +45,13 @@ export const STATUS_COLORS = {
   Gray: "gray",
 } as const;
 
+export const PAYMENTS = {
+  PREPAYMENT: "prepayment",
+  PAYMENT: "payment",
+  REFUND: "refund",
+} as const;
+
+export type PaymentType = (typeof PAYMENTS)[keyof typeof PAYMENTS];
+
 export const DOCUMENTS_TYPES = ["intake_receipt"] as const;
 export type DocumentType = (typeof DOCUMENTS_TYPES)[number];

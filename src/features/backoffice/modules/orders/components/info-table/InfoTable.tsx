@@ -35,7 +35,7 @@ export type InfoTableColumn<T> =
 interface InfoTableProps<T extends { id: string | number }> {
   columns: InfoTableColumn<T>[];
   data: T[];
-  onDelete: (item: T) => void;
+  onDelete?: (item: T) => void;
   isDeleting?: boolean;
   onRowClick?: (item: T) => void;
   getRowKey?: (row: T) => string | number;
@@ -44,6 +44,7 @@ interface InfoTableProps<T extends { id: string | number }> {
   deleteDialogTitle?: string;
   deleteDialogDescription?: string;
   children?: ReactNode;
+  footer?: ReactNode;
 }
 
 export const InfoTable = <T extends { id: string | number }>({
@@ -58,6 +59,7 @@ export const InfoTable = <T extends { id: string | number }>({
   deleteDialogTitle,
   deleteDialogDescription,
   children,
+  footer,
 }: InfoTableProps<T>) => {
   const { t } = useTranslation();
   const [pendingDelete, setPendingDelete] = useState<T | null>(null);
@@ -74,7 +76,7 @@ export const InfoTable = <T extends { id: string | number }>({
     });
 
   const handleConfirmDelete = () => {
-    if (pendingDelete) {
+    if (pendingDelete && onDelete) {
       onDelete(pendingDelete);
       setPendingDelete(null);
     }
@@ -120,7 +122,7 @@ export const InfoTable = <T extends { id: string | number }>({
                 </TableHead>
               );
             })}
-            <TableHead className="w-10" />
+            {onDelete !== undefined && <TableHead className="w-10" />}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -140,20 +142,22 @@ export const InfoTable = <T extends { id: string | number }>({
                   </TableCell>
                 );
               })}
-              <TableCell className="w-10 text-right">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-muted-foreground hover:text-destructive"
-                  disabled={isDeleting}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPendingDelete(row);
-                  }}
-                >
-                  <Trash2 />
-                </Button>
-              </TableCell>
+              {onDelete !== undefined && (
+                <TableCell className="w-10 text-right">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-muted-foreground hover:text-destructive"
+                    disabled={isDeleting}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setPendingDelete(row);
+                    }}
+                  >
+                    <Trash2 />
+                  </Button>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
@@ -184,19 +188,22 @@ export const InfoTable = <T extends { id: string | number }>({
         </div>
       )}
 
-      {children && (
-        <div className="flex items-center gap-2 border-t px-2 py-1.5">
-          {children}
+      {(children || footer) && (
+        <div className="flex items-center justify-between gap-2 border-t px-2 py-1.5">
+          <div className="flex items-center gap-2">{children}</div>
+          {footer && <div className="pr-2">{footer}</div>}
         </div>
       )}
 
-      <DeleteConfirmDialog
-        open={pendingDelete !== null}
-        onConfirm={handleConfirmDelete}
-        onCancel={() => setPendingDelete(null)}
-        title={deleteDialogTitle}
-        description={deleteDialogDescription}
-      />
+      {onDelete !== undefined && (
+        <DeleteConfirmDialog
+          open={pendingDelete !== null}
+          onConfirm={handleConfirmDelete}
+          onCancel={() => setPendingDelete(null)}
+          title={deleteDialogTitle}
+          description={deleteDialogDescription}
+        />
+      )}
     </div>
   );
 };

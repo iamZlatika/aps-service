@@ -46,7 +46,7 @@ export const useLineItemSubmit = ({
           purchasePrice: data.purchasePrice ?? "",
           supplierName: data.supplierName ?? null,
           quantity: data.quantity,
-          userId: data.userId ?? null,
+          managerId: data.managerId ?? null,
         };
         return isEdit
           ? ordersApi.editProductInOrder(orderId, payload, editItemId)
@@ -57,7 +57,7 @@ export const useLineItemSubmit = ({
         price: data.price,
         costPrice: data.costPrice ?? "",
         quantity: data.quantity,
-        userId: data.userId ?? null,
+        managerId: data.managerId ?? null,
       };
       return isEdit
         ? ordersApi.editServiceInOrder(orderId, payload, editItemId)

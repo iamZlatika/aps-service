@@ -27,7 +27,7 @@ export const CustomerDtoSchema = z.object({
   email: z.string().regex(emailRegex).nullable(),
   email_verified_at: z.string().nullable(),
   has_google: z.boolean(),
-  telegram: TelegramDtoSchema,
+  telegram: TelegramDtoSchema.nullable(),
   avatar_url: z.string(),
   phones: z.array(PhoneDtoSchema),
   status: zodEnumFromConst(USER_STATUSES),

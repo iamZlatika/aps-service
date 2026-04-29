@@ -11,4 +11,5 @@ export const ORDERS_API = {
   addService: (id: number) => `${BASE}/${id}/services`,
   changeService: (orderId: number, serviceId: number) =>
     `${BASE}/${orderId}/services/${serviceId}`,
+  makePayment: (orderId: number) => `${BASE}/${orderId}/payments`,
 };

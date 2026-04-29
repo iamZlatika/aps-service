@@ -5,7 +5,7 @@ import type {
   OrderCommentDto,
   OrderDto,
   OrderInfoDto,
-  OrderPrepaymentDto,
+  OrderPaymentDto,
   OrderProductDto,
   OrderServiceDto,
   PaginatedOrdersDto,
@@ -14,13 +14,14 @@ import type {
 } from "@/features/backoffice/modules/orders/api/dto.ts";
 import {
   type NewOrder,
+  type NewOrderPayment,
   type newOrderProduct,
   type newOrderService,
   type Order,
   type OrderComment,
   type OrderDocument,
   type OrderInfo,
-  type OrderPrepayment,
+  type OrderPayment,
   type OrderProduct,
   type OrderService,
   type OrderStatus,
@@ -78,7 +79,7 @@ export function mapOrderDtoToOrder(dto: OrderDto): Order {
     accessory: dto.accessory,
     devicePassword: dto.device_password,
     intakeNote: dto.intake_note,
-    totalPrepayment: dto.total_prepayment,
+    totalPaid: dto.total_paid,
     remainingToPay: dto.remaining_to_pay,
     dueDate: dto.due_date,
     estimatedCost: dto.estimated_cost,
@@ -107,8 +108,8 @@ export const mapOrderServiceDtoToOrderService = (
   dto: OrderServiceDto,
 ): OrderService => ({
   id: dto.id,
-  user: dto.user ? mapUserDtoToUser(dto.user) : null,
-  repairOperationId: dto.repair_operation_id,
+  manager: dto.manager ? mapUserDtoToUser(dto.manager) : null,
+  repairOperationId: dto.repair_operation_id ?? null,
   name: dto.name,
   price: dto.price,
   costPrice: dto.cost_price,
@@ -116,13 +117,16 @@ export const mapOrderServiceDtoToOrderService = (
   createdAt: dto.created_at,
   updatedAt: dto.updated_at,
   deletedAt: dto.deleted_at ?? null,
+  deletedByUser: dto.deleted_by_user
+    ? mapUserDtoToUser(dto.deleted_by_user)
+    : null,
 });
 
 export const mapOrderProductDtoToOrderProduct = (
   dto: OrderProductDto,
 ): OrderProduct => ({
   id: dto.id,
-  user: dto.user ? mapUserDtoToUser(dto.user) : null,
+  manager: dto.manager ? mapUserDtoToUser(dto.manager) : null,
   supplierName: dto.supplier_name ?? null,
   name: dto.name,
   price: dto.price,
@@ -131,13 +135,16 @@ export const mapOrderProductDtoToOrderProduct = (
   createdAt: dto.created_at,
   updatedAt: dto.updated_at,
   deletedAt: dto.deleted_at ?? null,
+  deletedByUser: dto.deleted_by_user
+    ? mapUserDtoToUser(dto.deleted_by_user)
+    : null,
 });
-export const mapPrepaymentDtoToPrepayment = (
-  dto: OrderPrepaymentDto,
-): OrderPrepayment => ({
+export const mapPaymentDtoToPayment = (dto: OrderPaymentDto): OrderPayment => ({
   id: dto.id,
+  type: dto.type,
   amount: dto.amount,
   note: dto.note,
+  manager: dto.manager ? mapUserDtoToUser(dto.manager) : null,
   createdAt: dto.created_at,
 });
 
@@ -152,7 +159,7 @@ export const mapOrderInfoDtoToOrderInfo = (dto: OrderInfoDto): OrderInfo => {
     services: dto.services.map(mapOrderServiceDtoToOrderService),
     products: dto.products.map(mapOrderProductDtoToOrderProduct),
     comments: dto.comments.map(mapOrderCommentDtoToOrderComment),
-    prepayments: dto.prepayments.map(mapPrepaymentDtoToPrepayment),
+    payments: dto.payments.map(mapPaymentDtoToPayment),
   };
 };
 
@@ -198,7 +205,7 @@ export const mapNewProductToDto = (product: newOrderProduct) => ({
   purchase_price: product.purchasePrice || null,
   quantity: product.quantity,
   supplier_name: product.supplierName,
-  user_id: product.userId ?? null,
+  manager_id: product.managerId ?? null,
 });
 
 export const mapNewServiceToDto = (service: newOrderService) => ({
@@ -206,5 +213,11 @@ export const mapNewServiceToDto = (service: newOrderService) => ({
   price: service.price,
   cost_price: service.costPrice || null,
   quantity: service.quantity,
-  user_id: service.userId ?? null,
+  manager_id: service.managerId ?? null,
+});
+export const mapNewPaymentToDto = (payment: NewOrderPayment) => ({
+  type: payment.type,
+  amount: payment.amount,
+  manager_id: payment.managerId,
+  note: payment.note,
 });

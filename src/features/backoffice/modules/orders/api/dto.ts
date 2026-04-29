@@ -3,7 +3,8 @@ import { z } from "zod";
 import { CustomerDtoSchema } from "@/features/backoffice/modules/customers/api/dto.ts";
 import { LocationDtoSchema } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { UserDtoSchema } from "@/features/backoffice/modules/users/api/dto.ts";
-import { DOCUMENTS_TYPES } from "@/shared/types.ts";
+import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
+import { DOCUMENTS_TYPES, PAYMENTS } from "@/shared/types.ts";
 
 export const StatusDtoSchema = z.object({
   id: z.number(),
@@ -47,7 +48,7 @@ export const OrderDtoSchema = z.object({
   accessory: z.string().nullable(),
   device_password: z.string().trim().min(1),
   intake_note: z.string().nullable(),
-  total_prepayment: z.string(),
+  total_paid: z.string(),
   remaining_to_pay: z.string(),
   due_date: z.iso.datetime(),
   estimated_cost: z.string().nullable(),
@@ -89,7 +90,7 @@ export type OrderCommentDto = z.infer<typeof OrderCommentDtoSchema>;
 
 export const OrderProductSchema = z.object({
   id: z.number(),
-  user: UserDtoSchema.nullable(),
+  manager: UserDtoSchema.nullable(),
   supplier_name: z.string().nullable().optional(),
   name: z.string(),
   price: z.string(),
@@ -98,13 +99,14 @@ export const OrderProductSchema = z.object({
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),
   deleted_at: z.iso.datetime().nullable().optional(),
+  deleted_by_user: UserDtoSchema.nullable().optional(),
 });
 
 export type OrderProductDto = z.infer<typeof OrderProductSchema>;
 export const OrderServiceSchema = z.object({
   id: z.number(),
-  user: UserDtoSchema.nullable(),
-  repair_operation_id: z.number().nullable(),
+  manager: UserDtoSchema.nullable(),
+  repair_operation_id: z.number().nullable().optional(),
   name: z.string(),
   price: z.string(),
   cost_price: z.string().nullable().optional(),
@@ -112,16 +114,19 @@ export const OrderServiceSchema = z.object({
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),
   deleted_at: z.iso.datetime().nullable().optional(),
+  deleted_by_user: UserDtoSchema.nullable().optional(),
 });
 export type OrderServiceDto = z.infer<typeof OrderServiceSchema>;
 
-export const OrderPrepaymentSchema = z.object({
+export const OrderPaymentSchema = z.object({
   id: z.number(),
+  type: zodEnumFromConst(PAYMENTS),
   amount: z.string(),
-  note: z.string().optional(),
+  note: z.string().nullable(),
+  manager: UserDtoSchema.nullable(),
   created_at: z.iso.datetime(),
 });
-export type OrderPrepaymentDto = z.infer<typeof OrderPrepaymentSchema>;
+export type OrderPaymentDto = z.infer<typeof OrderPaymentSchema>;
 
 export const OrderInfoDtoSchema = OrderDtoSchema.extend({
   location: LocationDtoSchema,
@@ -129,6 +134,6 @@ export const OrderInfoDtoSchema = OrderDtoSchema.extend({
   services: z.array(OrderServiceSchema),
   products: z.array(OrderProductSchema),
   comments: z.array(OrderCommentDtoSchema),
-  prepayments: z.array(OrderPrepaymentSchema),
+  payments: z.array(OrderPaymentSchema),
 });
 export type OrderInfoDto = z.infer<typeof OrderInfoDtoSchema>;

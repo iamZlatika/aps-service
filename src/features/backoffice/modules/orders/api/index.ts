@@ -5,6 +5,7 @@ import {
   OrderDtoSchema,
   type OrderInfoDto,
   OrderInfoDtoSchema,
+  OrderPaymentSchema,
   type OrderProductDto,
   OrderProductSchema,
   type OrderServiceDto,
@@ -14,6 +15,7 @@ import {
 import { ORDERS_API } from "@/features/backoffice/modules/orders/api/endpoints.ts";
 import {
   mapNewOrderToDto,
+  mapNewPaymentToDto,
   mapNewProductToDto,
   mapNewServiceToDto,
   mapOrderCommentDtoToOrderComment,
@@ -22,20 +24,23 @@ import {
   mapOrderProductDtoToOrderProduct,
   mapOrderServiceDtoToOrderService,
   mapPaginatedOrdersDtoToResponse,
+  mapPaymentDtoToPayment,
 } from "@/features/backoffice/modules/orders/lib/adapters.ts";
 import {
   type NewOrder,
+  type NewOrderPayment,
   type newOrderProduct,
   type newOrderService,
   type Order,
   type OrderComment,
   type OrderInfo,
+  type OrderPayment,
   type OrderProduct,
   type OrderService,
 } from "@/features/backoffice/modules/orders/types.ts";
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
-import { del, get, post, put } from "@/shared/api/api.ts";
+import { buildPaginatedParams, del, get, post, put } from "@/shared/api/api.ts";
 
 export const ordersApi = {
   getAll: async (
@@ -45,19 +50,13 @@ export const ordersApi = {
     sortType?: SortType,
     filters?: Record<string, string>,
   ): Promise<PaginatedResponse<Order>> => {
-    const params = new URLSearchParams({
-      page: String(page),
-      per_page: String(perPage),
-    });
-    if (sortColumn && sortType && sortType !== "none") {
-      params.set("sort_column", sortColumn);
-      params.set("sort_type", sortType);
-    }
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value) params.set(key, value);
-      });
-    }
+    const params = buildPaginatedParams(
+      page,
+      perPage,
+      sortColumn,
+      sortType,
+      filters,
+    );
     const response = await get(`${ORDERS_API.orders()}?${params.toString()}`);
     const validatedData = PaginatedOrdersDtoSchema.parse(response);
     return mapPaginatedOrdersDtoToResponse(validatedData);
@@ -162,5 +161,17 @@ export const ordersApi = {
     serviceId: number,
   ): Promise<void> => {
     await del<void>(ORDERS_API.changeService(orderId, serviceId));
+  },
+  makePayment: async (
+    orderId: number,
+    prepayment: NewOrderPayment,
+  ): Promise<OrderPayment> => {
+    const payload = mapNewPaymentToDto(prepayment);
+    const response = await post<typeof payload, { data: OrderPayment }>(
+      ORDERS_API.makePayment(orderId),
+      payload,
+    );
+    const validated = OrderPaymentSchema.parse(response.data);
+    return mapPaymentDtoToPayment(validated);
   },
 };

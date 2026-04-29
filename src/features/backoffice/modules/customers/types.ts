@@ -15,7 +15,7 @@ export type Customer = {
   email: string | null;
   emailVerifiedAt: string | null;
   hasGoogle: boolean;
-  telegram: Telegram;
+  telegram: Telegram | null;
   avatarUrl: string;
   phones: Phone[];
   status: UserStatus;
