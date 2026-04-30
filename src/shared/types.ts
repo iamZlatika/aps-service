@@ -53,5 +53,5 @@ export const PAYMENTS = {
 
 export type PaymentType = (typeof PAYMENTS)[keyof typeof PAYMENTS];
 
-export const DOCUMENTS_TYPES = ["intake_receipt"] as const;
+export const DOCUMENTS_TYPES = ["intake_receipt", "closing_receipt"] as const;
 export type DocumentType = (typeof DOCUMENTS_TYPES)[number];

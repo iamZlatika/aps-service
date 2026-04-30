@@ -22,6 +22,7 @@ export const DeviceSection = () => {
   const {
     control,
     register,
+    setValue,
     formState: { errors },
   } = useFormContext<NewOrderSchema>();
 
@@ -207,7 +208,12 @@ export const DeviceSection = () => {
             <Checkbox
               id="isUrgent"
               checked={field.value ?? false}
-              onCheckedChange={field.onChange}
+              onCheckedChange={(checked) => {
+                field.onChange(checked);
+                const date = new Date();
+                date.setDate(date.getDate() + (checked ? 1 : 5));
+                setValue("dueDate", date.toISOString().split("T")[0]);
+              }}
             />
           )}
         />

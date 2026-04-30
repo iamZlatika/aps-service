@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { type ChangeEvent, useEffect, useRef, useState } from "react";
+import { type ChangeEvent, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import AvatarEditorDialog from "@/features/backoffice/modules/profile/components/avatar/components/AvatarEditorDialog.tsx";
@@ -24,25 +24,9 @@ const UserAvatar = ({ userName, userAvatarUrl }: UserAvatarProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const [imgSrc, setImgSrc] = useState(userAvatarUrl || "/default.webp");
 
   const uploadMutation = useAvatarUpload();
   const deleteMutation = useAvatarDelete();
-
-  useEffect(() => {
-    if (!userAvatarUrl) return;
-    let cancelled = false;
-    const img = new Image();
-    img.src = userAvatarUrl;
-    img.onload = () => {
-      if (!cancelled) setImgSrc(userAvatarUrl);
-    };
-    return () => {
-      cancelled = true;
-      img.onload = null;
-      img.src = "";
-    };
-  }, [userAvatarUrl]);
 
   const hasCustomAvatar = isCustomAvatar(userAvatarUrl);
 
@@ -70,7 +54,7 @@ const UserAvatar = ({ userName, userAvatarUrl }: UserAvatarProps) => {
             height: isMobile ? 100 : AVATAR_DISPLAY_SIZE,
           }}
         >
-          <AvatarImage src={imgSrc} alt={userName || "User avatar"} />
+          <AvatarImage src={userAvatarUrl} alt={userName || "User avatar"} />
         </Avatar>
 
         {deleteMutation.isPending && (

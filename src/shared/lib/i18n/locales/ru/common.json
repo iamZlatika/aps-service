@@ -148,7 +148,8 @@
     "dictionaries_name": "Поиск по названию",
     "users_name": "Поиск по имени",
     "customer_name": "Поиск по имени клиента",
-    "customer_phone": "Поиск по номеру телефона"
+    "customer_phone": "Поиск по номеру телефона",
+    "orders_any_match": "Найти заказ, бренд, модель или номер телефона"
   },
   "breadcrumbs": {
     "home": "Главная",

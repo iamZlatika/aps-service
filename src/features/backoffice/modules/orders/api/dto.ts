@@ -4,7 +4,7 @@ import { CustomerDtoSchema } from "@/features/backoffice/modules/customers/api/d
 import { LocationDtoSchema } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { UserDtoSchema } from "@/features/backoffice/modules/users/api/dto.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
-import { DOCUMENTS_TYPES, PAYMENTS } from "@/shared/types.ts";
+import { PAYMENTS } from "@/shared/types.ts";
 
 export const StatusDtoSchema = z.object({
   id: z.number(),
@@ -26,7 +26,7 @@ export type StatusHistoryItemDto = z.infer<typeof StatusHistoryItemDtoSchema>;
 
 export const DocumentsDtoSchema = z.object({
   id: z.number(),
-  type: z.enum(DOCUMENTS_TYPES),
+  type: z.string(),
   url: z.string(),
   name: z.string(),
   created_at: z.iso.datetime(),
@@ -90,7 +90,7 @@ export type OrderCommentDto = z.infer<typeof OrderCommentDtoSchema>;
 
 export const OrderProductSchema = z.object({
   id: z.number(),
-  manager: UserDtoSchema.nullable(),
+  manager: UserDtoSchema,
   supplier_name: z.string().nullable().optional(),
   name: z.string(),
   price: z.string(),
@@ -105,7 +105,7 @@ export const OrderProductSchema = z.object({
 export type OrderProductDto = z.infer<typeof OrderProductSchema>;
 export const OrderServiceSchema = z.object({
   id: z.number(),
-  manager: UserDtoSchema.nullable(),
+  manager: UserDtoSchema,
   repair_operation_id: z.number().nullable().optional(),
   name: z.string(),
   price: z.string(),

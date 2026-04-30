@@ -108,7 +108,7 @@ export const mapOrderServiceDtoToOrderService = (
   dto: OrderServiceDto,
 ): OrderService => ({
   id: dto.id,
-  manager: dto.manager ? mapUserDtoToUser(dto.manager) : null,
+  manager: mapUserDtoToUser(dto.manager),
   repairOperationId: dto.repair_operation_id ?? null,
   name: dto.name,
   price: dto.price,
@@ -126,7 +126,7 @@ export const mapOrderProductDtoToOrderProduct = (
   dto: OrderProductDto,
 ): OrderProduct => ({
   id: dto.id,
-  manager: dto.manager ? mapUserDtoToUser(dto.manager) : null,
+  manager: mapUserDtoToUser(dto.manager),
   supplierName: dto.supplier_name ?? null,
   name: dto.name,
   price: dto.price,
