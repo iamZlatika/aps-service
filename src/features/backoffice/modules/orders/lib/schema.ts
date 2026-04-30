@@ -29,7 +29,6 @@ export const newOrderSchema = () =>
       }),
     customerComment: z.string().optional(),
     managerId: z.number().int().positive(),
-    assigneeId: z.number().int().positive().optional(),
     locationId: z.number().int().positive(),
     prepayment: z.string().optional(),
     isUrgent: z.boolean().optional(),

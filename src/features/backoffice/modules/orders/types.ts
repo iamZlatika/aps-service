@@ -33,7 +33,6 @@ export type Order = {
   orderNumber: string;
   customer: Customer;
   manager: User;
-  assignee: User | null;
   status: OrderStatus;
   issueType: string;
   deviceType: string;

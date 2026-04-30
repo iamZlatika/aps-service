@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -47,21 +48,33 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
       {selectedOrder && (
         <div className="flex h-full">
           <div className="flex-1 overflow-y-auto p-2 sm:p-6">
-            <div className="mb-6 flex flex-wrap items-center gap-3">
-              <h1 className="text-2xl font-bold">
-                {t("orders.order")} {selectedOrder.orderNumber}
-              </h1>
-              <StatusSelect
-                orderId={orderId}
-                status={selectedOrder.status}
-                onSuccess={handleStatusSuccess}
-              />
-              <span className="text-muted-foreground text-2xl">
-                {t("orders.remainingToPay")}:{" "}
-                <span className="font-medium text-2xl">
-                  {selectedOrder.remainingToPay} ₴
+            <div className="mb-6">
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl font-bold">
+                  {t("orders.order")} {selectedOrder.orderNumber}
+                </h1>
+                <StatusSelect
+                  orderId={orderId}
+                  status={selectedOrder.status}
+                  onSuccess={handleStatusSuccess}
+                />
+                <span className="text-muted-foreground text-2xl">
+                  {t("orders.remainingToPay")}:{" "}
+                  <span className="font-medium text-2xl">
+                    {selectedOrder.remainingToPay} ₴
+                  </span>
                 </span>
-              </span>
+              </div>
+              <div className="mt-1">
+                <p className="text-muted-foreground text-base font-medium">
+                  {t("orders.acceptedBy")}: {selectedOrder.manager.name}
+                </p>
+                <p className="text-muted-foreground text-sm">
+                  {selectedOrder.closedAt
+                    ? `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")} — ${t("orders.closedAt")}: ${format(new Date(selectedOrder.closedAt), "dd.MM.yyyy")}`
+                    : `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")}`}
+                </p>
+              </div>
             </div>
             <div className="flex flex-col gap-6">
               <ProductsAndServicesCard

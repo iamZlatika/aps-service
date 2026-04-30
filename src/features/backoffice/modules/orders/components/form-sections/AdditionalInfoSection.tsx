@@ -2,9 +2,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
-import { AssigneeSelect } from "@/features/backoffice/modules/orders/components/AssigneeSelect.tsx";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
-import { fetchUsersByName } from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
 import { type User } from "@/features/backoffice/modules/users/types.ts";
 import { CardTitle } from "@/shared/components/ui/card";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
@@ -112,24 +110,6 @@ export const AdditionalInfoSection = ({
             {errors.locationId.message}
           </p>
         )}
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <Label className="text-base">{t("orders.form.assignee")}</Label>
-        <Controller
-          name="assigneeId"
-          control={control}
-          render={({ field, fieldState }) => (
-            <AssigneeSelect
-              value={field.value}
-              onChange={field.onChange}
-              fetchItems={fetchUsersByName}
-              queryKey={["users", "search-assignee"]}
-              placeholder={t("orders.placeholders.assignee")}
-              error={fieldState.error}
-            />
-          )}
-        />
       </div>
 
       <div className="flex flex-col gap-1">

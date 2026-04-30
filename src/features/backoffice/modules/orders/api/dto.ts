@@ -38,7 +38,6 @@ export const OrderDtoSchema = z.object({
   order_number: z.string().trim().min(1),
   customer: CustomerDtoSchema,
   manager: UserDtoSchema,
-  assignee: UserDtoSchema.nullable(),
   status: StatusDtoSchema,
   issue_type: z.string().trim().min(1),
   device_type: z.string().trim().min(1),
