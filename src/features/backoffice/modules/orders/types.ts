@@ -2,7 +2,7 @@ import type { Customer } from "@/features/backoffice/modules/customers/types.ts"
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
-import { type DocumentType, type PaymentType } from "@/shared/types.ts";
+import { type PaymentType } from "@/shared/types.ts";
 
 export type OrderStatus = {
   id: number;
@@ -22,7 +22,7 @@ export type StatusHistoryItem = {
 
 export type OrderDocument = {
   id: number;
-  type: DocumentType;
+  type: string;
   name: string;
   url: string;
   createdAt: string;
@@ -69,7 +69,7 @@ export type OrderComment = {
 };
 export type OrderProduct = {
   id: number;
-  manager: null | User;
+  manager: User;
   supplierName: null | string;
   name: string;
   price: string;
@@ -83,10 +83,10 @@ export type OrderProduct = {
 export type newOrderProduct = Omit<
   OrderProduct,
   "id" | "manager" | "createdAt" | "updatedAt" | "deletedAt"
-> & { managerId?: number | null };
+> & { managerId: number | null };
 export type OrderService = {
   id: number;
-  manager: null | User;
+  manager: User;
   repairOperationId: number | null;
   name: string;
   price: string;
@@ -106,7 +106,7 @@ export type newOrderService = Omit<
   | "updatedAt"
   | "deletedAt"
   | "repairOperationId"
-> & { managerId?: number | null };
+> & { managerId: number | null };
 
 export type OrderLineItem =
   | (OrderProduct & { type: "product" })

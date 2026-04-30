@@ -38,7 +38,9 @@ const OrdersPage = () => {
       labelKey: "orders.table_fields.status",
       sortable: false,
       renderCell: (value, item) => (
-        <StatusSelect orderId={item.id} status={value as OrderStatus} />
+        <div onClick={(e) => e.stopPropagation()}>
+          <StatusSelect orderId={item.id} status={value as OrderStatus} />
+        </div>
       ),
     },
     {
@@ -112,7 +114,9 @@ const OrdersPage = () => {
       labelKey: "orders.table_fields.status",
       sortable: false,
       renderCell: (value, item) => (
-        <StatusSelect orderId={item.id} status={value as OrderStatus} />
+        <div onClick={(e) => e.stopPropagation()}>
+          <StatusSelect orderId={item.id} status={value as OrderStatus} />
+        </div>
       ),
     },
     {
@@ -262,9 +266,8 @@ const OrdersPage = () => {
       titleKey="breadcrumbs.orders"
       api={ordersApi}
       queryKeyFn={queryKeys.orders.list}
-      searchPlaceholder="search_placeholders.customer_phone"
-      searchField="phone_number"
-      searchNumbersOnly
+      searchPlaceholder="search_placeholders.orders_any_match"
+      searchField="any_match"
       columns={isMobile ? mobileColumns : columns}
       headerActions={
         <AddButton onClick={() => navigate(ORDERS_LINKS.newOrder())} />

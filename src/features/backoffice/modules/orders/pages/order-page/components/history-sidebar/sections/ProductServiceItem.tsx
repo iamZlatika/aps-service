@@ -1,3 +1,4 @@
+import { Box, Cog } from "lucide-react";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -16,6 +17,7 @@ export const ProductServiceItem = memo(({ item }: ProductServiceItemProps) => {
 
   const userName = item.user?.name ?? "—";
   const isDeleted = item.event === "deleted";
+  const Icon = item.type === "product" ? Box : Cog;
   const actionKey = `orders.history.${item.type}.${item.event}`;
   const labelKey = `orders.history.${item.type}.label`;
   const pcsKey = `orders.history.${item.type}.pcs`;
@@ -29,7 +31,10 @@ export const ProductServiceItem = memo(({ item }: ProductServiceItemProps) => {
           <>
             <span className="text-destructive">{t(actionKey)}</span>
             <span className="text-destructive">{t(labelKey)}</span>
-            <span>{item.name}</span>
+            <span className="flex items-center gap-1">
+              <Icon className="h-3.5 w-3.5" />
+              {item.name}
+            </span>
           </>
         ) : (
           <>
@@ -38,7 +43,10 @@ export const ProductServiceItem = memo(({ item }: ProductServiceItemProps) => {
             <span className="text-green-600 font-medium">
               {item.quantity} {t(pcsKey)}
             </span>
-            <span>{item.name}</span>
+            <span className="flex items-center gap-1">
+              <Icon className="h-3.5 w-3.5" />
+              {item.name}
+            </span>
           </>
         )}
       </div>

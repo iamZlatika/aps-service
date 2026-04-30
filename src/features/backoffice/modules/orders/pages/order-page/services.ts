@@ -40,7 +40,7 @@ export function mapProducts(items: OrderProduct[]): HistoryProduct[] {
       {
         ...base,
         date: item.createdAt,
-        user: item.manager ?? undefined,
+        user: item.manager,
         event: "added",
       },
     ];
@@ -73,7 +73,7 @@ export function mapServices(items: OrderService[]): HistoryService[] {
       {
         ...base,
         date: item.createdAt,
-        user: item.manager ?? undefined,
+        user: item.manager,
         event: "added",
       },
     ];

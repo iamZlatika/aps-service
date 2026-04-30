@@ -1,3 +1,4 @@
+import { Box, Cog } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -72,11 +73,21 @@ export const ProductsAndServicesCard = ({
       {
         key: "name",
         label: t("orders.orderTable.name"),
+        render: (row) => (
+          <span className="flex items-center gap-1.5">
+            {row.type === "product" ? (
+              <Box className="h-3.5 w-3.5 shrink-0" />
+            ) : (
+              <Cog className="h-3.5 w-3.5 shrink-0" />
+            )}
+            {row.name}
+          </span>
+        ),
       },
       {
         key: "manager",
         label: t("orders.orderTable.user"),
-        render: (row) => row.manager?.name ?? "—",
+        render: (row) => row.manager.name,
       },
       {
         key: "quantity",
@@ -95,7 +106,10 @@ export const ProductsAndServicesCard = ({
         key: "purchase_price",
         label: t("orders.orderTable.purchasePrice"),
         collapsible: true,
-        render: (row) => (row.type === "product" ? row.purchasePrice : "—"),
+        render: (row) =>
+          row.type === "product"
+            ? (row.purchasePrice ?? "—")
+            : (row.costPrice ?? "—"),
       },
     ],
     [t],
@@ -111,6 +125,7 @@ export const ProductsAndServicesCard = ({
               className="text-base"
               onClick={() => toggleFilter("product")}
             >
+              <Box className="h-4 w-4" />
               {t("orders.orderTable.products")}
             </Button>
             <Button
@@ -118,6 +133,7 @@ export const ProductsAndServicesCard = ({
               className="text-base"
               onClick={() => toggleFilter("service")}
             >
+              <Cog className="h-4 w-4" />
               {t("orders.orderTable.services")}
             </Button>
           </div>
