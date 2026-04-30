@@ -1,12 +1,13 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
-import HistorySidebar from "@/features/backoffice/modules/orders/components/HistorySidebar.tsx";
 import { StatusSelect } from "@/features/backoffice/modules/orders/components/StatusSelect.tsx";
 import { useOrder } from "@/features/backoffice/modules/orders/hooks/useOrder.ts";
+import { HistorySidebar } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/HistorySidebar.tsx";
 import { PaymentsCard } from "@/features/backoffice/modules/orders/pages/order-page/components/PaymentsCard.tsx";
 import { ProductsAndServicesCard } from "@/features/backoffice/modules/orders/pages/order-page/components/ProductsAndServicesCard.tsx";
+import { buildOrderHistory } from "@/features/backoffice/modules/orders/pages/order-page/services.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import Loader from "@/shared/components/common/Loader.tsx";
@@ -21,6 +22,11 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   const { t } = useTranslation();
   const { selectedOrder, isLoading, isError, error, refetch } =
     useOrder(orderId);
+
+  const history = useMemo(
+    () => (selectedOrder ? buildOrderHistory(selectedOrder) : []),
+    [selectedOrder],
+  );
 
   const handleStatusSuccess = useCallback(
     () =>
@@ -65,7 +71,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
               <PaymentsCard orderId={orderId} selectedOrder={selectedOrder} />
             </div>
           </div>
-          <HistorySidebar orderId={selectedOrder.id} />
+          <HistorySidebar orderId={selectedOrder.id} history={history} />
         </div>
       )}
     </QueryPageGuard>

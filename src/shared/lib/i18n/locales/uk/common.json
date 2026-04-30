@@ -303,7 +303,37 @@
     "deviceInfo": "Інформація про пристрій",
     "additionalInfo": "Додаткова інформація",
     "history": {
-      "title": "Історія"
+      "title": "Історія",
+      "status": {
+        "created": "створив замовлення",
+        "closed": "успішно закрив замовлення",
+        "changed": "змінив статус на"
+      },
+      "product": {
+        "added": "додав",
+        "deleted": "видалив",
+        "pcs": "шт.",
+        "label": "товар"
+      },
+      "service": {
+        "added": "додав",
+        "deleted": "видалив",
+        "pcs": "шт.",
+        "label": "послугу"
+      },
+      "comment": {
+        "addedText": "додав коментар",
+        "addedPhoto": "додав фото"
+      },
+      "payment": {
+        "received": "отримав",
+        "refunded": "повернув",
+        "types": {
+          "payment": "оплату",
+          "prepayment": "передоплату",
+          "refund": "повернення"
+        }
+      }
     },
     "actions": {
       "create": "Створити"

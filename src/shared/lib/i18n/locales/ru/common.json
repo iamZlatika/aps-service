@@ -306,7 +306,37 @@
     "deviceInfo": "Информация о устройстве",
     "additionalInfo": "Дополнительная информация",
     "history": {
-      "title": "История"
+      "title": "История",
+      "status": {
+        "created": "создал заказ",
+        "closed": "успешно закрыл заказ",
+        "changed": "изменил статус на"
+      },
+      "product": {
+        "added": "добавил",
+        "deleted": "удалил",
+        "pcs": "шт.",
+        "label": "товар"
+      },
+      "service": {
+        "added": "добавил",
+        "deleted": "удалил",
+        "pcs": "шт.",
+        "label": "услугу"
+      },
+      "comment": {
+        "addedText": "добавил комментарий",
+        "addedPhoto": "добавил фото"
+      },
+      "payment": {
+        "received": "получил",
+        "refunded": "вернул",
+        "types": {
+          "payment": "оплату",
+          "prepayment": "предоплату",
+          "refund": "возврат"
+        }
+      }
     },
     "actions": {
       "create": "Создать"

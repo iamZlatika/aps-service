@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
 
 import { orderStatusesApi } from "@/features/backoffice/modules/dictionaries/api";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
+import { useIsUkLocale } from "@/features/backoffice/modules/orders/hooks/useIsUkLocale.ts";
 import type { OrderStatus } from "@/features/backoffice/modules/orders/types.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
@@ -25,8 +25,7 @@ export const StatusSelect = ({
   status,
   onSuccess,
 }: StatusSelectProps) => {
-  const { i18n } = useTranslation();
-  const isUk = i18n.language === "uk";
+  const isUk = useIsUkLocale();
 
   const { data } = useQuery({
     queryKey: queryKeys.dictionaries.orderStatuses(),

@@ -1,6 +1,5 @@
 import { type User } from "@sentry/react";
 import { CircleCheck, ClockAlert } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import type { Customer } from "@/features/backoffice/modules/customers/types.ts";
@@ -8,6 +7,7 @@ import { AddButton } from "@/features/backoffice/modules/dictionaries/components
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
 import { PhoneDropdown } from "@/features/backoffice/modules/orders/components/PhoneDropdown.tsx";
 import { StatusSelect } from "@/features/backoffice/modules/orders/components/StatusSelect.tsx";
+import { useIsUkLocale } from "@/features/backoffice/modules/orders/hooks/useIsUkLocale.ts";
 import { renderWrappedText } from "@/features/backoffice/modules/orders/lib/cellFormatters.tsx";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation.ts";
 import {
@@ -21,7 +21,8 @@ import { useIsMobile } from "@/shared/hooks/useMobile.ts";
 
 const OrdersPage = () => {
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
+  const isUk = useIsUkLocale();
+  const locale = isUk ? "uk-UA" : "ru-RU";
   const isMobile = useIsMobile();
 
   const mobileColumns: ColumnConfig<Order>[] = [
@@ -121,7 +122,6 @@ const OrdersPage = () => {
       sortable: false,
       renderCell: (value) => {
         const date = new Date(value as string);
-        const locale = i18n.language === "uk" ? "uk-UA" : "ru-RU";
         return (
           <div className="flex flex-col">
             <span>
