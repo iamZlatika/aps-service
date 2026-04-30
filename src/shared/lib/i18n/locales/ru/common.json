@@ -300,6 +300,9 @@
   "orders": {
     "createNew": "Создание заказа",
     "remainingToPay": "К оплате",
+    "acceptedBy": "Принял",
+    "createdAt": "Создан",
+    "closedAt": "Закрыт",
     "successAddComment": "Комментарий успешно добавлен",
     "successCreate": "Заказ успешно создан",
     "order": "Заказ",

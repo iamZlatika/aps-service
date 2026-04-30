@@ -48,7 +48,7 @@ export const StatusSelect = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="group flex items-center gap-1 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full">
+        <button className="group flex items-center gap-1 cursor-pointer focus:outline-none rounded-full">
           <StatusBadge
             name={displayName}
             color={status.color}

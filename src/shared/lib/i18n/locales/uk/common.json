@@ -297,6 +297,9 @@
   "orders": {
     "createNew": "Створити нове замовлення",
     "remainingToPay": "До оплати",
+    "acceptedBy": "Прийняв",
+    "createdAt": "Створено",
+    "closedAt": "Закрито",
     "successAddComment": "Коментар успішно додано",
     "successCreate": "Замовлення успішно створено",
     "order": "Замовлення",
