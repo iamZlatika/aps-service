@@ -19,6 +19,8 @@ export const StatusItem = memo(({ item }: StatusItemProps) => {
 
   const isNew = item.status.key === "new";
   const isClosed = item.status.key === "closed";
+  const requiresContact =
+    item.status.key === "waiting_for_approval" || item.status.key === "ready";
 
   const actionKey = isNew
     ? "orders.history.status.created"
@@ -33,6 +35,11 @@ export const StatusItem = memo(({ item }: StatusItemProps) => {
         <span className="text-muted-foreground">{t(actionKey)}</span>
         <StatusBadge name={statusName} color={item.status.color} />
       </div>
+      {requiresContact && (
+        <div className="mt-1 text-orange-500 font-medium">
+          {t("orders.history.status.contact_required")}
+        </div>
+      )}
     </HistoryItemWrapper>
   );
 });

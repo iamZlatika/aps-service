@@ -60,9 +60,18 @@ export type HistoryPayment = {
   note?: string;
   event: "added" | "deleted";
 };
+export type HistoryCallItem = {
+  type: "call";
+  id: number;
+  date: string;
+  user: User | null;
+  isCalled: boolean;
+};
+
 export type OrderHistoryItem =
   | HistoryStatus
   | HistoryService
   | HistoryProduct
   | HistoryComment
-  | HistoryPayment;
+  | HistoryPayment
+  | HistoryCallItem;

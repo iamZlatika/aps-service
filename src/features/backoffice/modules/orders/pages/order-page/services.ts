@@ -1,4 +1,5 @@
 import type {
+  HistoryCallItem,
   HistoryComment,
   HistoryPayment,
   HistoryProduct,
@@ -7,6 +8,7 @@ import type {
   OrderHistoryItem,
 } from "@/features/backoffice/modules/orders/pages/order-page/types.ts";
 import type {
+  CallHistoryItem,
   OrderComment,
   OrderInfo,
   OrderPayment,
@@ -134,10 +136,25 @@ export function mapPayments(items: OrderPayment[]): HistoryPayment[] {
   });
 }
 
+export function mapCallHistory(items: CallHistoryItem[]): HistoryCallItem[] {
+  return items.map((item) => ({
+    type: "call" as const,
+    id: item.id,
+    date: item.createdAt,
+    user: item.user,
+    isCalled: item.isCalled,
+  }));
+}
+
 export function buildOrderHistory(
   order: Pick<
     OrderInfo,
-    "statusHistory" | "products" | "services" | "comments" | "payments"
+    | "statusHistory"
+    | "products"
+    | "services"
+    | "comments"
+    | "payments"
+    | "callHistory"
   >,
 ): OrderHistoryItem[] {
   return [
@@ -146,5 +163,6 @@ export function buildOrderHistory(
     ...mapServices(order.services),
     ...mapComments(order.comments),
     ...mapPayments(order.payments),
+    ...mapCallHistory(order.callHistory),
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }

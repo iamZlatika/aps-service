@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { AuthRoutes } from "@/features/auth/api/routes.ts";
+import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard.tsx";
 import { StatusSelect } from "@/features/backoffice/modules/orders/components/StatusSelect.tsx";
 import { useOrder } from "@/features/backoffice/modules/orders/hooks/useOrder.ts";
 import { HistorySidebar } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/HistorySidebar.tsx";
@@ -16,8 +17,6 @@ import { queryKeys } from "@/shared/api/queryKeys.ts";
 import Loader from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
-
-import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard.tsx";
 
 import { OrderInfoCard } from "./components/order-info-fields/OrderInfoCard.tsx";
 

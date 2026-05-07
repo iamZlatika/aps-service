@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { CommentsForm } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/CommentsForm.tsx";
+import { CallHistoryItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/CallHistoryItem.tsx";
 import { CommentItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/CommentItem.tsx";
 import { PaymentItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/PaymentItem.tsx";
 import { ProductServiceItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/ProductServiceItem.tsx";
@@ -50,6 +51,14 @@ export const HistorySidebar = ({ orderId, history }: HistorySidebarProps) => {
             return (
               <CommentItem
                 key={`comment-${historyItem.id}`}
+                item={historyItem}
+              />
+            );
+          }
+          if (historyItem.type === "call") {
+            return (
+              <CallHistoryItem
+                key={`call-${historyItem.id}`}
                 item={historyItem}
               />
             );
