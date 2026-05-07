@@ -11,6 +11,12 @@
       "title": "Видалення",
       "description": "Ви впевнені, що хочете видалити цей запис?",
       "success": "Запис успішно видалено"
+    },
+    "phone_dropdown": {
+      "call": "Телефон",
+      "whatsapp": "WhatsApp",
+      "viber": "Viber",
+      "telegram": "Telegram"
     }
   },
   "header": {

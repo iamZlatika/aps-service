@@ -110,6 +110,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                   <CustomerInfoCard
                     customer={selectedOrder.customer}
                     showStatusToggle={false}
+                    onSuccess={handleStatusSuccess}
                   />
                 </div>
               </div>

@@ -1,9 +1,9 @@
 import { suppliersApi } from "@/features/backoffice/modules/dictionaries/api";
 import { type Supplier } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { DictionaryTablePage } from "@/features/backoffice/modules/dictionaries/components/DictionaryTablePage.tsx";
-import { PhoneDropdown } from "@/features/backoffice/modules/orders/components/PhoneDropdown.tsx";
 import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { PhoneDropdown } from "@/shared/components/common/PhoneDropdown.tsx";
 
 const SuppliersPage = () => {
   const columns: ColumnConfig<Supplier>[] = [

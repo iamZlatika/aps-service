@@ -14,11 +14,15 @@ type UseCustomerInfoReturn = {
 
 export const useCustomerInfo = (
   customerId: number | null,
+  onSuccess?: () => void,
 ): UseCustomerInfoReturn => {
   const changeInfoMutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: EditedCustomer }) =>
       customersApi.changeCustomerInfo(id, data),
-    onSuccess: updateCustomerCache,
+    onSuccess: async (updatedCustomer) => {
+      await updateCustomerCache(updatedCustomer);
+      onSuccess?.();
+    },
   });
 
   const handleChangeInfo = (data: EditedCustomer) => {

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import type { Customer } from "@/features/backoffice/modules/customers/types.ts";
 import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
-import { PhoneDropdown } from "@/features/backoffice/modules/orders/components/PhoneDropdown.tsx";
 import { StatusSelect } from "@/features/backoffice/modules/orders/components/StatusSelect.tsx";
 import { useIsUkLocale } from "@/features/backoffice/modules/orders/hooks/useIsUkLocale.ts";
 import { renderWrappedText } from "@/features/backoffice/modules/orders/lib/cellFormatters.tsx";
@@ -17,6 +16,7 @@ import { type User } from "@/features/backoffice/modules/users/types.ts";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { PhoneDropdown } from "@/shared/components/common/PhoneDropdown.tsx";
 import { useIsMobile } from "@/shared/hooks/useMobile.ts";
 
 const isCustomer = (value: unknown): value is Customer =>

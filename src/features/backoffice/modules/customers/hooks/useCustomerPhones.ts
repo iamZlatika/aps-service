@@ -14,6 +14,7 @@ import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 export const useCustomerPhones = (
   customerId: number | null,
   customer: Customer | undefined,
+  onSuccess?: () => void,
 ) => {
   const [isAddOpened, setIsAddOpened] = useState(false);
   const [isDeleteOpened, setIsDeleteOpened] = useState(false);
@@ -33,20 +34,23 @@ export const useCustomerPhones = (
       customerId: number;
       phoneId: number;
     }) => customersApi.changePrimaryPhone(cId, phoneId),
-    onSuccess: (_, variables) =>
-      queryClient.invalidateQueries({
+    onSuccess: async (_, variables) => {
+      await queryClient.invalidateQueries({
         queryKey: queryKeys.customers.detail(variables.customerId),
-      }),
+      });
+      onSuccess?.();
+    },
   });
 
   const addNewPhoneMutation = useMutation({
     mutationFn: (data: NewPhone) =>
       customersApi.addSecondaryPhone(customerId!, data),
-    onSuccess: () => {
+    onSuccess: async () => {
       setIsAddOpened(false);
-      return queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: queryKeys.customers.detail(customerId!),
       });
+      onSuccess?.();
     },
   });
 
@@ -69,10 +73,11 @@ export const useCustomerPhones = (
   const deletePhoneMutation = useMutation({
     mutationFn: (phoneId: number) =>
       customersApi.deleteSecondaryPhone(customerId!, phoneId),
-    onSuccess: () => {
-      return queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: queryKeys.customers.detail(customerId!),
       });
+      onSuccess?.();
     },
   });
 

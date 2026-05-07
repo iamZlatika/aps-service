@@ -26,6 +26,7 @@ import type { FieldConfig } from "@/features/backoffice/widgets/table/models/typ
 import { AcceptButton } from "@/shared/components/common/buttons/AcceptButton.tsx";
 import { CancelButton } from "@/shared/components/common/buttons/CancelButton.tsx";
 import { FormField } from "@/shared/components/common/FormField.tsx";
+import { PhoneDropdown } from "@/shared/components/common/PhoneDropdown.tsx";
 import { Avatar, AvatarImage } from "@/shared/components/ui/avatar.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { CardTitle } from "@/shared/components/ui/card.tsx";
@@ -36,17 +37,19 @@ import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 interface CustomerInfoCardProps {
   customer: CustomerInfo;
   showStatusToggle?: boolean;
+  onSuccess?: () => void;
 }
 
 export const CustomerInfoCard = ({
   customer,
   showStatusToggle = true,
+  onSuccess,
 }: CustomerInfoCardProps) => {
   const { t } = useTranslation();
   const [isInfoEditing, setIsInfoEditing] = useState(false);
 
-  const { handleChangeInfo } = useCustomerInfo(customer.id);
-  const { handleRatingChange } = useCustomerRating(customer.id);
+  const { handleChangeInfo } = useCustomerInfo(customer.id, onSuccess);
+  const { handleRatingChange } = useCustomerRating(customer.id, onSuccess);
   const {
     isConfirmOpened,
     setIsConfirmOpened,
@@ -66,7 +69,7 @@ export const CustomerInfoCard = ({
     changeIsPrimaryMutation,
     isAddPending,
     isDeletePending,
-  } = useCustomerPhones(customer.id, customer);
+  } = useCustomerPhones(customer.id, customer, onSuccess);
 
   const phoneFields: FieldConfig[] = [
     {
@@ -225,7 +228,7 @@ export const CustomerInfoCard = ({
                     })
                   }
                 />
-                <span className="text-sm">{phone.phoneNumber}</span>
+                <PhoneDropdown phoneNumber={phone.phoneNumber} size="md" />
                 <Button
                   variant="ghost"
                   size="icon"

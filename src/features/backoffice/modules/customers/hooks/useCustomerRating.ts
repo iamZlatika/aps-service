@@ -14,13 +14,15 @@ type UseCustomerRatingReturn = {
 
 export const useCustomerRating = (
   customerId: number | null,
+  onSuccess?: () => void,
 ): UseCustomerRatingReturn => {
   const changeRatingMutation = useMutation({
     mutationFn: ({ id, rating }: { id: number; rating: RatingValue }) =>
       customersApi.changeCustomerRating(id, rating!),
-    onSuccess: (updatedCustomer) => {
-      updateCustomerCache(updatedCustomer);
+    onSuccess: async (updatedCustomer) => {
+      await updateCustomerCache(updatedCustomer);
       toast.success(i18next.t("customers.profile.rating_updated"));
+      onSuccess?.();
     },
   });
 
