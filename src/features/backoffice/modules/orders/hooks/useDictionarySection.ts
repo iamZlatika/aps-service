@@ -1,4 +1,6 @@
+import i18next from "i18next";
 import { useMemo } from "react";
+import { toast } from "sonner";
 
 import {
   accessoriesApi,
@@ -10,6 +12,13 @@ import {
   manufacturersApi,
 } from "@/features/backoffice/modules/dictionaries/api";
 import { fetchByDictionaryName } from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
+
+const createWithToast =
+  (apiFn: (payload: { name: string }) => Promise<unknown>) =>
+  async (name: string) => {
+    await apiFn({ name });
+    toast.success(i18next.t("common.successAdd"));
+  };
 
 export const useDictionarySection = () =>
   useMemo(
@@ -24,10 +33,13 @@ export const useDictionarySection = () =>
         intakeNotes: fetchByDictionaryName(intakeNotesApi.getAll),
       },
       createItemFns: {
-        deviceConditions: (name: string) =>
-          deviceConditionsApi.create({ name }).then(() => {}),
-        accessories: (name: string) =>
-          accessoriesApi.create({ name }).then(() => {}),
+        issueTypes: createWithToast(issueTypesApi.create),
+        deviceTypes: createWithToast(deviceTypesApi.create),
+        manufacturers: createWithToast(manufacturersApi.create),
+        deviceModels: createWithToast(deviceModelsApi.create),
+        deviceConditions: createWithToast(deviceConditionsApi.create),
+        accessories: createWithToast(accessoriesApi.create),
+        intakeNotes: createWithToast(intakeNotesApi.create),
       },
     }),
     [],

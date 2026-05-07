@@ -2,7 +2,8 @@ import i18next from "i18next";
 import { z } from "zod";
 
 import { emailRegex } from "@/shared/lib/constants.ts";
-import { PAYMENTS } from "@/shared/types.ts";
+import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
+import { PAYMENT_METHODS, PAYMENTS } from "@/shared/types.ts";
 
 export const newOrderSchema = () =>
   z.object({
@@ -31,6 +32,7 @@ export const newOrderSchema = () =>
     managerId: z.number().int().positive(),
     locationId: z.number().int().positive(),
     prepayment: z.string().optional(),
+    prepaymentMethod: zodEnumFromConst(PAYMENT_METHODS),
     isUrgent: z.boolean().optional(),
     issueType: z.string().trim().min(1, i18next.t("validation.field_required")),
     deviceType: z
@@ -55,7 +57,7 @@ export const newOrderSchema = () =>
 
 export type NewOrderSchema = z.infer<ReturnType<typeof newOrderSchema>>;
 
-export const newLineItemSchema = () =>
+export const newOrderItemSchema = () =>
   z.object({
     name: z.string().trim().min(1, i18next.t("validation.field_required")),
     price: z.string().trim().min(1, i18next.t("validation.field_required")),
@@ -69,14 +71,42 @@ export const newLineItemSchema = () =>
     managerId: z.number().int().positive().optional(),
   });
 
-export type NewLineItemSchema = z.infer<ReturnType<typeof newLineItemSchema>>;
-export type NewLineItemFormValues = z.input<
-  ReturnType<typeof newLineItemSchema>
+export type NewOrderItemSchema = z.infer<ReturnType<typeof newOrderItemSchema>>;
+export type NewOrderItemFormValues = z.input<
+  ReturnType<typeof newOrderItemSchema>
+>;
+
+export const editOrderInfoSchema = () =>
+  z.object({
+    dueDate: z.string().optional(),
+    issueType: z.string().trim().min(1, i18next.t("validation.field_required")),
+    deviceType: z
+      .string()
+      .trim()
+      .min(1, i18next.t("validation.field_required")),
+    manufacturer: z
+      .string()
+      .trim()
+      .min(1, i18next.t("validation.field_required")),
+    deviceModel: z
+      .string()
+      .trim()
+      .min(1, i18next.t("validation.field_required")),
+    devicePassword: z.string().min(1, i18next.t("validation.field_required")),
+    deviceCondition: z.array(z.string()).optional(),
+    accessory: z.array(z.string()).optional(),
+    intakeNote: z.string().optional(),
+    estimatedCost: z.string().optional(),
+  });
+
+export type EditOrderInfoFormValues = z.input<
+  ReturnType<typeof editOrderInfoSchema>
 >;
 
 export const newPaymentSchema = () =>
   z.object({
     type: z.enum([PAYMENTS.PREPAYMENT, PAYMENTS.PAYMENT, PAYMENTS.REFUND]),
+    method: zodEnumFromConst(PAYMENT_METHODS),
     amount: z.string().trim().min(1, i18next.t("validation.field_required")),
     note: z.string().optional(),
     managerId: z.number().int().positive(),

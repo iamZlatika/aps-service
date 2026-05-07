@@ -33,7 +33,7 @@ export const HistorySidebar = ({ orderId, history }: HistorySidebarProps) => {
           ) {
             return (
               <ProductServiceItem
-                key={`${historyItem.type}-${historyItem.id}-${historyItem.date}`}
+                key={`${historyItem.type}-${historyItem.id}-${historyItem.event}`}
                 item={historyItem}
               />
             );
@@ -41,7 +41,7 @@ export const HistorySidebar = ({ orderId, history }: HistorySidebarProps) => {
           if (historyItem.type === "payment") {
             return (
               <PaymentItem
-                key={`payment-${historyItem.id}`}
+                key={`payment-${historyItem.id}-${historyItem.event}`}
                 item={historyItem}
               />
             );

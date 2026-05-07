@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select.tsx";
+import { PAYMENT_METHODS } from "@/shared/types.ts";
 
 type AdditionalInfoSectionProps = {
   users: User[];
@@ -117,16 +118,37 @@ export const AdditionalInfoSection = ({
         <Input
           placeholder={t("orders.placeholders.estimatedCost")}
           className="h-11 text-base md:text-base"
-          inputMode="numeric"
-          onInput={(e) => {
-            e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "");
-          }}
           {...register("estimatedCost")}
         />
       </div>
 
       <div className="flex flex-col gap-1">
         <Label className="text-base">{t("orders.form.prepayment")}</Label>
+        <Controller
+          name="prepaymentMethod"
+          control={control}
+          render={({ field }) => (
+            <div className="flex gap-x-4 py-1">
+              {Object.values(PAYMENT_METHODS).map((method) => (
+                <div key={method} className="flex items-center gap-1.5">
+                  <Checkbox
+                    id={`pm-${method}`}
+                    checked={field.value === method}
+                    onCheckedChange={(checked) => {
+                      if (checked) field.onChange(method);
+                    }}
+                  />
+                  <label
+                    htmlFor={`pm-${method}`}
+                    className="cursor-pointer text-sm"
+                  >
+                    {t(`orders.paymentMethods.${method}`)}
+                  </label>
+                </div>
+              ))}
+            </div>
+          )}
+        />
         <Input
           placeholder={t("orders.placeholders.prepayment")}
           className="h-11 text-base md:text-base"

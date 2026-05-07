@@ -21,7 +21,7 @@ export const UserDtoSchema = z.object({
   avatar_url: z.string(),
   location: LocationDtoSchema.nullable(),
   services_percent: z.number(),
-  parts_percent: z.number(),
+  products_percent: z.number(),
   intake_percent: z.number(),
 });
 export type UserDto = z.infer<typeof UserDtoSchema>;

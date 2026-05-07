@@ -12,11 +12,12 @@ import type {
   StatusDto,
   StatusHistoryItemDto,
 } from "@/features/backoffice/modules/orders/api/dto.ts";
+import type { EditOrderInfoFormValues } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import {
   type NewOrder,
   type NewOrderPayment,
-  type newOrderProduct,
-  type newOrderService,
+  type NewOrderProduct,
+  type NewOrderService,
   type Order,
   type OrderComment,
   type OrderDocument,
@@ -113,6 +114,7 @@ export const mapOrderServiceDtoToOrderService = (
   price: dto.price,
   costPrice: dto.cost_price,
   quantity: dto.quantity,
+  completedAt: dto.completed_at,
   createdAt: dto.created_at,
   updatedAt: dto.updated_at,
   deletedAt: dto.deleted_at ?? null,
@@ -131,6 +133,7 @@ export const mapOrderProductDtoToOrderProduct = (
   price: dto.price,
   purchasePrice: dto.purchase_price ?? null,
   quantity: dto.quantity,
+  completedAt: dto.completed_at,
   createdAt: dto.created_at,
   updatedAt: dto.updated_at,
   deletedAt: dto.deleted_at ?? null,
@@ -141,10 +144,15 @@ export const mapOrderProductDtoToOrderProduct = (
 export const mapPaymentDtoToPayment = (dto: OrderPaymentDto): OrderPayment => ({
   id: dto.id,
   type: dto.type,
+  method: dto.method,
   amount: dto.amount,
   note: dto.note,
   manager: dto.manager ? mapUserDtoToUser(dto.manager) : null,
   createdAt: dto.created_at,
+  deletedAt: dto.deleted_at,
+  deletedByUser: dto.deleted_by_user
+    ? mapUserDtoToUser(dto.deleted_by_user)
+    : null,
 });
 
 export const mapOrderInfoDtoToOrderInfo = (dto: OrderInfoDto): OrderInfo => {
@@ -173,7 +181,37 @@ export const mapPaginatedOrdersDtoToResponse = (
   },
 });
 
+export const mapOrderInfoToEditFormValues = (
+  order: OrderInfo,
+): EditOrderInfoFormValues => ({
+  dueDate: order.dueDate?.split(/[T ]/)[0] ?? "",
+  issueType: order.issueType ?? "",
+  deviceType: order.deviceType ?? "",
+  manufacturer: order.manufacturer ?? "",
+  deviceModel: order.deviceModel ?? "",
+  devicePassword: order.devicePassword ?? "",
+  deviceCondition: order.deviceCondition?.split(", ").filter(Boolean) ?? [],
+  accessory: order.accessory?.split(", ").filter(Boolean) ?? [],
+  intakeNote: order.intakeNote ?? "",
+  estimatedCost: order.estimatedCost ?? "",
+});
+
 // to dto
+
+export const mapEditOrderInfoToDto = (data: EditOrderInfoFormValues) => ({
+  due_date: data.dueDate ? `${data.dueDate} 15:00:00` : undefined,
+  issue_type: data.issueType,
+  device_type: data.deviceType,
+  manufacturer: data.manufacturer,
+  device_model: data.deviceModel,
+  device_password: data.devicePassword,
+  device_condition: data.deviceCondition?.length
+    ? data.deviceCondition.join(", ")
+    : null,
+  accessory: data.accessory?.length ? data.accessory.join(", ") : null,
+  intake_note: data.intakeNote || null,
+  estimated_cost: data.estimatedCost || null,
+});
 
 export const mapNewOrderToDto = (order: NewOrder) => ({
   customer_name: order.customerName,
@@ -184,6 +222,7 @@ export const mapNewOrderToDto = (order: NewOrder) => ({
   manager_id: order.managerId,
   location_id: order.locationId,
   prepayment: order.prepayment,
+  prepayment_method: order.prepaymentMethod,
   is_urgent: order.isUrgent,
   issue_type: order.issueType,
   device_type: order.deviceType,
@@ -197,7 +236,7 @@ export const mapNewOrderToDto = (order: NewOrder) => ({
   due_date: order.dueDate ? `${order.dueDate} 15:00:00` : undefined,
 });
 
-export const mapNewProductToDto = (product: newOrderProduct) => ({
+export const mapNewProductToDto = (product: NewOrderProduct) => ({
   name: product.name,
   price: product.price,
   purchase_price: product.purchasePrice || null,
@@ -206,7 +245,7 @@ export const mapNewProductToDto = (product: newOrderProduct) => ({
   manager_id: product.managerId ?? null,
 });
 
-export const mapNewServiceToDto = (service: newOrderService) => ({
+export const mapNewServiceToDto = (service: NewOrderService) => ({
   name: service.name,
   price: service.price,
   cost_price: service.costPrice || null,
@@ -218,4 +257,5 @@ export const mapNewPaymentToDto = (payment: NewOrderPayment) => ({
   amount: payment.amount,
   manager_id: payment.managerId,
   note: payment.note,
+  method: payment.method,
 });

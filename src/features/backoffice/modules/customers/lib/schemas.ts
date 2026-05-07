@@ -3,6 +3,19 @@ import { z } from "zod";
 
 import { emailRegex } from "@/shared/lib/constants.ts";
 
+export const editCustomerInfoSchema = z.object({
+  name: z.string().trim().min(1, i18next.t("validation.field_required")),
+  email: z
+    .string()
+    .trim()
+    .refine((val) => val === "" || emailRegex.test(val), {
+      message: i18next.t("validation.email_invalid"),
+    }),
+  comment: z.string(),
+});
+
+export type EditCustomerInfoFormValues = z.infer<typeof editCustomerInfoSchema>;
+
 export const newCustomerSchema = z.object({
   name: z.string().trim().min(1, i18next.t("validation.field_required")),
   phone: z

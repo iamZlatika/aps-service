@@ -4,9 +4,10 @@ import type { newCustomerSchema } from "@/features/backoffice/modules/customers/
 import { type UserStatus } from "@/shared/types.ts";
 
 export type Telegram = {
-  chatId: number;
-  linkedAt: string;
-  activationToken: string | null;
+  chatId: number | null;
+  linkedAt: string | null;
+  link: string;
+  qrCode: string;
 };
 export type Customer = {
   id: number;
@@ -15,7 +16,6 @@ export type Customer = {
   email: string | null;
   emailVerifiedAt: string | null;
   hasGoogle: boolean;
-  telegram: Telegram | null;
   avatarUrl: string;
   phones: Phone[];
   status: UserStatus;
@@ -25,7 +25,9 @@ export type Customer = {
   createdAt: string;
   updatedAt: string;
 };
-
+export type CustomerInfo = Customer & {
+  telegram: Telegram | null;
+};
 export type Phone = {
   id: number;
   phoneNumber: string;
@@ -38,3 +40,14 @@ export type NewPhone = Pick<Phone, "phoneNumber">;
 export type NewCustomer = z.infer<typeof newCustomerSchema>;
 
 export type RatingValue = 1 | 2 | 3 | 4 | 5 | null;
+
+export type EditedCustomer = {
+  name: string;
+  email: string | null;
+  comment: string | null;
+};
+
+export type TelegramLink = {
+  link: string;
+  qrCode: string;
+};

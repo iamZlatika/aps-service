@@ -22,6 +22,7 @@ type UseCommentFormReturn = {
   setComment: (value: string) => void;
   clearPendingImage: () => void;
   handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleFile: (file: File) => void;
   handleSend: () => void;
 };
 
@@ -48,10 +49,7 @@ export function useCommentForm(orderId: number): UseCommentFormReturn {
     },
   });
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
+  const handleFile = (file: File) => {
     setPendingImage({ file, previewUrl: "", progress: 0 });
 
     const reader = new FileReader();
@@ -78,6 +76,12 @@ export function useCommentForm(orderId: number): UseCommentFormReturn {
     };
 
     reader.readAsDataURL(file);
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    handleFile(file);
     e.target.value = "";
   };
 
@@ -93,6 +97,7 @@ export function useCommentForm(orderId: number): UseCommentFormReturn {
     setComment,
     clearPendingImage: () => setPendingImage(null),
     handleFileChange,
+    handleFile,
     handleSend: () => sendComment(undefined),
   };
 }

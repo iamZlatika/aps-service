@@ -15,9 +15,10 @@ export const PhoneDtoArraySchema = z.array(PhoneDtoSchema);
 export type PhoneDtoArray = z.infer<typeof PhoneDtoArraySchema>;
 
 export const TelegramDtoSchema = z.object({
-  chat_id: z.number(),
-  linked_at: z.iso.datetime(),
-  activation_token: z.string().nullable(),
+  chat_id: z.number().nullable(),
+  linked_at: z.iso.datetime().nullable(),
+  link: z.string(),
+  qr_code: z.string(),
 });
 export type TelegramDto = z.infer<typeof TelegramDtoSchema>;
 export const CustomerDtoSchema = z.object({
@@ -27,7 +28,6 @@ export const CustomerDtoSchema = z.object({
   email: z.string().regex(emailRegex).nullable(),
   email_verified_at: z.string().nullable(),
   has_google: z.boolean(),
-  telegram: TelegramDtoSchema.nullable(),
   avatar_url: z.string(),
   phones: z.array(PhoneDtoSchema),
   status: zodEnumFromConst(USER_STATUSES),
@@ -48,6 +48,12 @@ export const CustomerDtoSchema = z.object({
 
 export type CustomerDto = z.infer<typeof CustomerDtoSchema>;
 
+export const CustomerInfoDtoSchema = CustomerDtoSchema.extend({
+  telegram: TelegramDtoSchema.nullable(),
+});
+
+export type CustomerInfoDto = z.infer<typeof CustomerInfoDtoSchema>;
+
 export const PaginatedCustomersDtoSchema = z.object({
   data: z.array(CustomerDtoSchema),
   meta: z.object({
@@ -61,3 +67,10 @@ export const PaginatedCustomersDtoSchema = z.object({
 });
 
 export type PaginatedCustomersDto = z.infer<typeof PaginatedCustomersDtoSchema>;
+
+export const TelegramDtoLinkSchema = z.object({
+  link: z.string(),
+  qr_code: z.string(),
+});
+
+export type TelegramDtoLink = z.infer<typeof TelegramDtoLinkSchema>;

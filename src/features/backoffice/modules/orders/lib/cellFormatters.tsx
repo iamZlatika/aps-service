@@ -1,4 +1,4 @@
-export const calcLineItemTotal = (price: string, quantity: number): string =>
+export const calcOrderItemTotal = (price: string, quantity: number): string =>
   (parseFloat(price) * quantity).toFixed();
 
 const WRAP_AT = 25;

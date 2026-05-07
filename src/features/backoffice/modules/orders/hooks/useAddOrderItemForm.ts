@@ -19,11 +19,12 @@ import {
 } from "@/features/backoffice/modules/dictionaries/api";
 import type { SearchableSelectOption } from "@/features/backoffice/modules/orders/components/searchable-select";
 import {
-  type NewLineItemFormValues,
-  type NewLineItemSchema,
-  newLineItemSchema,
+  type NewOrderItemFormValues,
+  type NewOrderItemSchema,
+  newOrderItemSchema,
 } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import { fetchByDictionaryName } from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
+import type { OrderItemType } from "@/features/backoffice/modules/orders/types.ts";
 import { usersApi } from "@/features/backoffice/modules/users/api";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
@@ -32,18 +33,16 @@ const fetchRepairOperations = fetchByDictionaryName(repairOperationsApi.getAll);
 const fetchProducts = fetchByDictionaryName(productsApi.getAll);
 const fetchSuppliers = fetchByDictionaryName(suppliersApi.getAll);
 
-type LineItemType = "product" | "service";
-
-type UseAddLineItemFormParams = {
-  type: LineItemType;
-  initialValues?: Partial<NewLineItemFormValues>;
+type UseAddOrderItemFormParams = {
+  type: OrderItemType;
+  initialValues?: Partial<NewOrderItemFormValues>;
 };
 
-type UseAddLineItemFormReturn = {
-  control: Control<NewLineItemFormValues, unknown>;
-  register: UseFormRegister<NewLineItemFormValues>;
-  handleSubmit: UseFormHandleSubmit<NewLineItemFormValues, NewLineItemSchema>;
-  errors: FieldErrors<NewLineItemFormValues>;
+type UseAddOrderItemFormReturn = {
+  control: Control<NewOrderItemFormValues, unknown>;
+  register: UseFormRegister<NewOrderItemFormValues>;
+  handleSubmit: UseFormHandleSubmit<NewOrderItemFormValues, NewOrderItemSchema>;
+  errors: FieldErrors<NewOrderItemFormValues>;
   users: User[];
   isLoadingUsers: boolean;
   fetchNameItems: (search: string) => Promise<SearchableSelectOption[]>;
@@ -53,10 +52,10 @@ type UseAddLineItemFormReturn = {
   onCreateSupplier: (name: string) => Promise<void>;
 };
 
-export const useAddLineItemForm = ({
+export const useAddOrderItemForm = ({
   type,
   initialValues,
-}: UseAddLineItemFormParams): UseAddLineItemFormReturn => {
+}: UseAddOrderItemFormParams): UseAddOrderItemFormReturn => {
   const { user } = useAuth();
 
   const { data: usersData, isLoading: isLoadingUsers } = useQuery({
@@ -71,8 +70,8 @@ export const useAddLineItemForm = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<NewLineItemFormValues, unknown, NewLineItemSchema>({
-    resolver: zodResolver(newLineItemSchema()),
+  } = useForm<NewOrderItemFormValues, unknown, NewOrderItemSchema>({
+    resolver: zodResolver(newOrderItemSchema()),
     defaultValues: initialValues ?? { quantity: 1, managerId: user?.id },
   });
 

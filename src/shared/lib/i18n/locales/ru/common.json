@@ -3,6 +3,7 @@
     "noResults": "Нет результатов",
     "alreadySelected": "Уже выбрано",
     "save": "Сохранить",
+    "successAdd": "Успешно добавлено",
     "cancel": "Отмена",
     "delete": "Удалить",
     "add": "Добавить",
@@ -173,6 +174,10 @@
   },
   "profile": {
     "settings": "Настройки профиля",
+    "your_rate": "Ваша ставка",
+    "services_percent": "Процент за услуги",
+    "products_percent": "Процент за продукты",
+    "intake_percent": "Процент за приёмку",
     "user_info": {
       "name_too_short": "Имя должно содержать минимум 3 символа",
       "invalid_email": "Некорректный email",
@@ -270,10 +275,22 @@
       "delete": "Удалить",
       "delete_confirm": "Вы действительно хотите удалить номер {{number}}?",
       "add_phone": "Добавить телефон",
-      "delete_phone": "Удалить телефон"
+      "delete_phone": "Удалить телефон",
+      "subscribe_telegram": "Подписаться на Telegram",
+      "revoke_telegram": "Сбросить подписку"
     },
     "profile": {
-      "phones": "Телефоны"
+      "phones": "Телефоны",
+      "telegram": "Telegram",
+      "telegram_link": "Ссылка для подписки",
+      "telegram_subscribed": "Клиент уже подписан на Telegram бот",
+      "telegram_revoked": "Подписка сброшена",
+      "revoke_telegram_warning": "Подписка на бот будет полностью сброшена. Клиент перестанет получать уведомления.",
+      "revoke_telegram_description": "Используйте только если клиент сменил Telegram аккаунт или потерял к нему доступ. После сброса потребуется повторная подписка.",
+      "rating_updated": "Рейтинг обновлён",
+      "name_placeholder": "Введите имя клиента",
+      "email_placeholder": "Введите почту клиента",
+      "comment_placeholder": "Введите комментарий о клиенте"
     }
   },
   "dictionaries": {
@@ -300,12 +317,15 @@
   "orders": {
     "createNew": "Создание заказа",
     "remainingToPay": "К оплате",
+    "overpayment": "Переплата",
     "acceptedBy": "Принял",
     "createdAt": "Создан",
     "closedAt": "Закрыт",
     "successAddComment": "Комментарий успешно добавлен",
     "successCreate": "Заказ успешно создан",
+    "successUpdate": "Информация о заказе обновлена",
     "order": "Заказ",
+    "orderInfo": "Информация о заказе",
     "customerInfo": "Информация о клиенте",
     "deviceInfo": "Информация о устройстве",
     "additionalInfo": "Дополнительная информация",
@@ -335,12 +355,17 @@
       "payment": {
         "received": "получил",
         "refunded": "вернул",
+        "deleted": "удалил",
         "types": {
           "payment": "оплату",
           "prepayment": "предоплату",
           "refund": "возврат"
         }
       }
+    },
+    "paymentMethods": {
+      "cash": "Наличные",
+      "card": "Карта"
     },
     "actions": {
       "create": "Создать"
@@ -378,6 +403,7 @@
       "estimatedCost": "Ориентировочная стоимость",
       "prepayment": "Предоплата",
       "isUrgent": "Срочно",
+      "isCalled": "Позвонил",
       "issueType": "Причина обращения *",
       "deviceType": "Тип устройства *",
       "manufacturer": "Бренд *",
@@ -428,6 +454,11 @@
       "successAddServiceToDict": "Услуга успешно добавлена в словарь",
       "products": "Продукты",
       "services": "Услуги",
+      "totalCost": "Общая стоимость",
+      "readOnly": {
+        "product": "Товар уже учтён, т.к. заказ был закрыт",
+        "service": "Услуга уже учтена, т.к. заказ был закрыт"
+      },
       "form": {
         "name": "Название *",
         "price": "Цена *",
@@ -442,9 +473,11 @@
       "title": "Оплаты",
       "addPayment": "Добавить оплату",
       "successAdd": "Оплата успешно добавлена",
+      "paymentMethod": "Способ оплаты",
       "totalPaid": "Итого оплачено",
       "table": {
         "type": "Тип",
+        "method": "Метод",
         "amount": "Сумма",
         "note": "Заметки",
         "manager": "Принял",

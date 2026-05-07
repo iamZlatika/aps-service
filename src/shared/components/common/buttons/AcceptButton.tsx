@@ -7,16 +7,19 @@ interface AcceptButtonProps {
   onClick?: (e: MouseEvent) => void;
   disabled?: boolean;
   type?: "submit" | "reset" | "button";
+  form?: string;
 }
 
 export const AcceptButton = ({
   onClick,
   disabled,
   type,
+  form,
 }: AcceptButtonProps) => {
   return (
     <Button
       type={type}
+      form={form}
       variant="ghost"
       size="icon"
       className="text-green-600 hover:bg-green-50 hover:text-green-700"

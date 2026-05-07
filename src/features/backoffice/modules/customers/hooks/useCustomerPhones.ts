@@ -19,9 +19,7 @@ export const useCustomerPhones = (
   const [isDeleteOpened, setIsDeleteOpened] = useState(false);
   const [phoneToDelete, setPhoneToDelete] = useState<number | null>(null);
 
-  const sortedPhones = customer?.phones
-    .slice()
-    .sort((a, b) => Number(b.isPrimary) - Number(a.isPrimary));
+  const phones = customer?.phones;
 
   const phoneNumberToDelete = phoneToDelete
     ? (customer?.phones.find((p) => p.id === phoneToDelete)?.phoneNumber ?? "")
@@ -35,11 +33,10 @@ export const useCustomerPhones = (
       customerId: number;
       phoneId: number;
     }) => customersApi.changePrimaryPhone(cId, phoneId),
-    onSuccess: (_, variables) => {
+    onSuccess: (_, variables) =>
       queryClient.invalidateQueries({
         queryKey: queryKeys.customers.detail(variables.customerId),
-      });
-    },
+      }),
   });
 
   const addNewPhoneMutation = useMutation({
@@ -92,7 +89,7 @@ export const useCustomerPhones = (
   }, []);
 
   return {
-    sortedPhones,
+    phones,
     phoneNumberToDelete,
     isAddOpened,
     setIsAddOpened,

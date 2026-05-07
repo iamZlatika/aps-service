@@ -2,10 +2,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 
 import { customersApi } from "@/features/backoffice/modules/customers/api";
+import { updateCustomerCache } from "@/features/backoffice/modules/customers/lib/cache.ts";
 import type { Customer } from "@/features/backoffice/modules/customers/types.ts";
-import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
-import { queryClient } from "@/shared/api/queryClient.ts";
-import { queryKeys } from "@/shared/api/queryKeys.ts";
 import type { UserStatus } from "@/shared/types.ts";
 
 export const useCustomerStatus = (
@@ -20,25 +18,7 @@ export const useCustomerStatus = (
   const changeStatusMutation = useMutation({
     mutationFn: ({ id, status }: { id: number; status: UserStatus }) =>
       customersApi.changeCustomerStatus(id, status),
-    onSuccess: (updatedCustomer) => {
-      queryClient.setQueryData(
-        queryKeys.customers.detail(updatedCustomer.id),
-        updatedCustomer,
-      );
-
-      queryClient.setQueriesData<PaginatedResponse<Customer>>(
-        { queryKey: queryKeys.customers.list() },
-        (oldData) => {
-          if (!oldData) return oldData;
-          return {
-            ...oldData,
-            items: oldData.items.map((item) =>
-              item.id === updatedCustomer.id ? updatedCustomer : item,
-            ),
-          };
-        },
-      );
-    },
+    onSuccess: updateCustomerCache,
   });
 
   const handleConfirm = useCallback(() => {

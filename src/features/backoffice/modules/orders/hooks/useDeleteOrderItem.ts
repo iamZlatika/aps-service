@@ -3,18 +3,20 @@ import i18next from "i18next";
 import { toast } from "sonner";
 
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
-import type { OrderLineItem } from "@/features/backoffice/modules/orders/types.ts";
+import type { OrderItem } from "@/features/backoffice/modules/orders/types.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
-type UseDeleteLineItemReturn = {
-  onDelete: (item: OrderLineItem) => void;
+type UseDeleteOrderItemReturn = {
+  onDelete: (item: OrderItem) => void;
   isPending: boolean;
 };
 
-export const useDeleteLineItem = (orderId: number): UseDeleteLineItemReturn => {
+export const useDeleteOrderItem = (
+  orderId: number,
+): UseDeleteOrderItemReturn => {
   const mutation = useMutation({
-    mutationFn: (item: OrderLineItem) =>
+    mutationFn: (item: OrderItem) =>
       item.type === "product"
         ? ordersApi.deleteProductInOrder(orderId, item.id)
         : ordersApi.deleteServiceInOrder(orderId, item.id),

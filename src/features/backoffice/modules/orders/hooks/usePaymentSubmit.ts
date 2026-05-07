@@ -29,6 +29,7 @@ export const usePaymentSubmit = ({
         amount: data.amount,
         note: data.note || null,
         managerId: data.managerId,
+        method: data.method,
       }),
     onSuccess: () => {
       toast.success(i18next.t("orders.payments.successAdd"));

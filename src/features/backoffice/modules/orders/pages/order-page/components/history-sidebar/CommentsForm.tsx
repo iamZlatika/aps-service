@@ -19,6 +19,7 @@ export const CommentsForm = ({ orderId }: CommentsFormProps) => {
     setComment,
     clearPendingImage,
     handleFileChange,
+    handleFile,
     handleSend,
   } = useCommentForm(orderId);
 
@@ -74,6 +75,21 @@ export const CommentsForm = ({ orderId }: CommentsFormProps) => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               disabled={isPending}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey && canSend) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+              onPaste={(e) => {
+                const file = Array.from(e.clipboardData.files).find((f) =>
+                  f.type.startsWith("image/"),
+                );
+                if (file) {
+                  e.preventDefault();
+                  handleFile(file);
+                }
+              }}
             />
           </div>
 

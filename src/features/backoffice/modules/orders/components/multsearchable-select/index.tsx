@@ -21,6 +21,7 @@ interface MultiSearchableSelectProps {
   error?: FieldError;
   onCreateItem?: CreateItemFn;
   quickSelectLabels?: string[];
+  dropUp?: boolean;
 }
 
 export const MultiSearchableSelect = ({
@@ -32,6 +33,7 @@ export const MultiSearchableSelect = ({
   error,
   onCreateItem,
   quickSelectLabels,
+  dropUp,
 }: MultiSearchableSelectProps) => {
   const { t } = useTranslation();
 
@@ -131,7 +133,12 @@ export const MultiSearchableSelect = ({
         />
       </div>
       {isOpen && (
-        <div className="absolute z-50 mt-1 w-full rounded-md border bg-popover text-popover-foreground shadow-md">
+        <div
+          className={cn(
+            "absolute z-50 w-full rounded-md border bg-popover text-popover-foreground shadow-md",
+            dropUp ? "bottom-full mb-1" : "mt-1",
+          )}
+        >
           {isFetching ? (
             <div className="px-3 py-2 text-base text-muted-foreground">...</div>
           ) : options.length === 0 ? (

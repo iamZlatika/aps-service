@@ -1,19 +1,23 @@
 import { format } from "date-fns";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
+import { AuthRoutes } from "@/features/auth/api/routes.ts";
 import { StatusSelect } from "@/features/backoffice/modules/orders/components/StatusSelect.tsx";
 import { useOrder } from "@/features/backoffice/modules/orders/hooks/useOrder.ts";
 import { HistorySidebar } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/HistorySidebar.tsx";
 import { PaymentsCard } from "@/features/backoffice/modules/orders/pages/order-page/components/PaymentsCard.tsx";
 import { ProductsAndServicesCard } from "@/features/backoffice/modules/orders/pages/order-page/components/ProductsAndServicesCard.tsx";
 import { buildOrderHistory } from "@/features/backoffice/modules/orders/pages/order-page/services.ts";
+import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import Loader from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
+
+import { OrderInfoCard } from "./components/order-info-fields/OrderInfoCard.tsx";
 
 interface OrderPageContentProps {
   orderId: number;
@@ -21,8 +25,18 @@ interface OrderPageContentProps {
 
 const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { selectedOrder, isLoading, isError, error, refetch } =
     useOrder(orderId);
+
+  useEffect(() => {
+    const root = AuthRoutes.backofficeRoot();
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") navigate(`${root}/${ORDERS_ROUTES.root}`);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [navigate]);
 
   const history = useMemo(
     () => (selectedOrder ? buildOrderHistory(selectedOrder) : []),
@@ -59,8 +73,13 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                   onSuccess={handleStatusSuccess}
                 />
                 <span className="text-muted-foreground text-2xl">
-                  {t("orders.remainingToPay")}:{" "}
-                  <span className="font-medium text-2xl">
+                  {parseFloat(selectedOrder.remainingToPay) < 0
+                    ? t("orders.overpayment")
+                    : t("orders.remainingToPay")}
+                  :{" "}
+                  <span
+                    className={`font-medium text-2xl ${parseFloat(selectedOrder.remainingToPay) < 0 ? "text-destructive" : "text-green-500"}`}
+                  >
                     {selectedOrder.remainingToPay} ₴
                   </span>
                 </span>
@@ -82,6 +101,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                 selectedOrder={selectedOrder}
               />
               <PaymentsCard orderId={orderId} selectedOrder={selectedOrder} />
+              <OrderInfoCard order={selectedOrder} />
             </div>
           </div>
           <HistorySidebar orderId={selectedOrder.id} history={history} />
@@ -93,7 +113,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
 
 const OrderPage = () => {
   const { id } = useParams<{ id: string }>();
-  const orderId = parseInt(id!, 10);
+  const orderId = id ? parseInt(id, 10) : NaN;
 
   if (!Number.isFinite(orderId)) {
     return <NotFoundPage />;

@@ -1,25 +1,34 @@
 import {
   type CustomerDto,
   CustomerDtoSchema,
+  type CustomerInfoDto,
+  CustomerInfoDtoSchema,
   PaginatedCustomersDtoSchema,
   type PhoneDto,
   type PhoneDtoArray,
   PhoneDtoArraySchema,
   PhoneDtoSchema,
+  type TelegramDtoLink,
+  TelegramDtoLinkSchema,
 } from "@/features/backoffice/modules/customers/api/dto.ts";
 import { CUSTOMERS_API } from "@/features/backoffice/modules/customers/api/endpoints";
 import {
   mapCustomerDtoToCustomer,
+  mapCustomerInfoDtoToCustomerInfo,
   mapNewCustomerToDto,
   mapPaginatedCustomersDtoToResponse,
   mapPhoneDtoToPhone,
   mapPhoneToPhoneDto,
+  mapTelegramDtoLinkToTelegramLink,
 } from "@/features/backoffice/modules/customers/lib/adapters.ts";
 import {
   type Customer,
+  type CustomerInfo,
+  type EditedCustomer,
   type NewCustomer,
   type NewPhone,
   type Phone,
+  type TelegramLink,
 } from "@/features/backoffice/modules/customers/types.ts";
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
@@ -58,12 +67,12 @@ export const customersApi = {
     const validated = CustomerDtoSchema.parse(response.data);
     return mapCustomerDtoToCustomer(validated);
   },
-  getCustomer: async (id: number): Promise<Customer> => {
-    const response = await get<{ data: CustomerDto }>(
+  getCustomer: async (id: number): Promise<CustomerInfo> => {
+    const response = await get<{ data: CustomerInfoDto }>(
       `${CUSTOMERS_API.customer(id)}`,
     );
-    const validatedData = CustomerDtoSchema.parse(response.data);
-    return mapCustomerDtoToCustomer(validatedData);
+    const validatedData = CustomerInfoDtoSchema.parse(response.data);
+    return mapCustomerInfoDtoToCustomerInfo(validatedData);
   },
   changeCustomerStatus: async (
     id: number,
@@ -109,5 +118,37 @@ export const customersApi = {
     phoneId: number,
   ): Promise<void> => {
     await del<void>(CUSTOMERS_API.deleteSecondaryPhone(customerId, phoneId));
+  },
+  changeCustomerInfo: async (
+    id: number,
+    data: EditedCustomer,
+  ): Promise<Customer> => {
+    const response = await put<EditedCustomer, { data: CustomerDto }>(
+      CUSTOMERS_API.customer(id),
+      data,
+    );
+    const validatedData = CustomerDtoSchema.parse(response.data);
+    return mapCustomerDtoToCustomer(validatedData);
+  },
+  changeCustomerRating: async (
+    id: number,
+    rating: number,
+  ): Promise<Customer> => {
+    const response = await put<{ rating: number }, { data: CustomerDto }>(
+      CUSTOMERS_API.changeRating(id),
+      { rating },
+    );
+    const validatedData = CustomerDtoSchema.parse(response.data);
+    return mapCustomerDtoToCustomer(validatedData);
+  },
+  getTelegramLink: async (id: number): Promise<TelegramLink> => {
+    const response = await post<void, { data: TelegramDtoLink }>(
+      CUSTOMERS_API.getTelegramLink(id),
+    );
+    const validatedData = TelegramDtoLinkSchema.parse(response.data);
+    return mapTelegramDtoLinkToTelegramLink(validatedData);
+  },
+  revokeTelegramLink: async (id: number): Promise<void> => {
+    await del<void>(CUSTOMERS_API.revokeTelegramLink(id));
   },
 };

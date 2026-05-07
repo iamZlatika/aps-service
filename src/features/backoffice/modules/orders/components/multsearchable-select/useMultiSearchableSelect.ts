@@ -195,9 +195,12 @@ export const useMultiSearchableSelect = ({
           handleSelect(options[activeIndex]);
         }
       } else if (e.key === "Escape") {
-        setIsOpen(false);
-        setInputValue("");
-        setActiveIndex(-1);
+        if (isOpen) {
+          e.stopPropagation();
+          setIsOpen(false);
+          setInputValue("");
+          setActiveIndex(-1);
+        }
       } else if (e.key === "," && inputValue.trim()) {
         e.preventDefault();
         onChange([...value, inputValue.trim()]);

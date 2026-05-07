@@ -4,9 +4,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
-import { AdditionalInfoSection } from "@/features/backoffice/modules/orders/components/form-sections/AdditionalInfoSection.tsx";
-import { CustomerSection } from "@/features/backoffice/modules/orders/components/form-sections/CustomerSection.tsx";
-import { DeviceSection } from "@/features/backoffice/modules/orders/components/form-sections/DeviceSection.tsx";
 import { LeaveConfirmDialog } from "@/features/backoffice/modules/orders/components/LeaveConfirmDialog.tsx";
 import { useCreateOrder } from "@/features/backoffice/modules/orders/hooks/useCreateOrder.ts";
 import { useLeaveGuard } from "@/features/backoffice/modules/orders/hooks/useLeaveGuard.ts";
@@ -21,6 +18,11 @@ import {
 } from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Card, CardContent } from "@/shared/components/ui/card";
+import { PAYMENT_METHODS } from "@/shared/types.ts";
+
+import { AdditionalInfoSection } from "./form-sections/AdditionalInfoSection.tsx";
+import { CustomerSection } from "./form-sections/CustomerSection.tsx";
+import { DeviceSection } from "./form-sections/DeviceSection.tsx";
 
 const CreateOrderPage = () => {
   const { t } = useTranslation();
@@ -38,6 +40,7 @@ const CreateOrderPage = () => {
       deviceModel: "",
       devicePassword: "",
       managerId: user?.id,
+      prepaymentMethod: PAYMENT_METHODS.CASH,
       dueDate: format(addDays(new Date(), 5), "yyyy-MM-dd"),
     },
   });

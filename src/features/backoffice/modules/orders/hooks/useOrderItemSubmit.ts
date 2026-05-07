@@ -3,42 +3,41 @@ import i18next from "i18next";
 import { toast } from "sonner";
 
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
-import type { NewLineItemSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
+import type { NewOrderItemSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type {
+  OrderItemType,
   OrderProduct,
   OrderService,
 } from "@/features/backoffice/modules/orders/types.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
-type LineItemType = "product" | "service";
-
-type UseLineItemSubmitParams = {
+type UseOrderItemSubmitParams = {
   orderId: number;
-  type: LineItemType;
+  type: OrderItemType;
   editItemId?: number;
   onSuccess: () => void;
 };
 
-type UseLineItemSubmitReturn = {
-  onSubmit: (data: NewLineItemSchema) => void;
+type UseOrderItemSubmitReturn = {
+  onSubmit: (data: NewOrderItemSchema) => void;
   isPending: boolean;
 };
 
-export const useLineItemSubmit = ({
+export const useOrderItemSubmit = ({
   orderId,
   type,
   editItemId,
   onSuccess,
-}: UseLineItemSubmitParams): UseLineItemSubmitReturn => {
+}: UseOrderItemSubmitParams): UseOrderItemSubmitReturn => {
   const isEdit = editItemId !== undefined;
 
   const mutation = useMutation<
     OrderProduct | OrderService,
     Error,
-    NewLineItemSchema
+    NewOrderItemSchema
   >({
-    mutationFn: (data: NewLineItemSchema) => {
+    mutationFn: (data: NewOrderItemSchema) => {
       if (type === "product") {
         const payload = {
           name: data.name,
@@ -64,14 +63,17 @@ export const useLineItemSubmit = ({
         : ordersApi.addServiceToOrder(orderId, payload);
     },
     onSuccess: () => {
-      const key = isEdit
-        ? type === "product"
-          ? "orders.orderTable.successEditProduct"
-          : "orders.orderTable.successEditService"
-        : type === "product"
-          ? "orders.orderTable.successAddProduct"
-          : "orders.orderTable.successAddService";
-      toast.success(i18next.t(key));
+      const toastKeys = {
+        product: {
+          add: "orders.orderTable.successAddProduct",
+          edit: "orders.orderTable.successEditProduct",
+        },
+        service: {
+          add: "orders.orderTable.successAddService",
+          edit: "orders.orderTable.successEditService",
+        },
+      };
+      toast.success(i18next.t(toastKeys[type][isEdit ? "edit" : "add"]));
       onSuccess();
       return queryClient.invalidateQueries({
         queryKey: queryKeys.orders.detail(orderId),

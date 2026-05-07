@@ -1,11 +1,5 @@
-import {
-  ArrowLeftToLine,
-  ArrowRightFromLine,
-  Plus,
-  Trash2,
-} from "lucide-react";
+import { ArrowLeftToLine, ArrowRightFromLine, Trash2 } from "lucide-react";
 import { type ReactNode, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 import { DeleteConfirmDialog } from "@/features/backoffice/modules/orders/components/info-table/DeleteConfirmDialog.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
@@ -37,10 +31,9 @@ interface InfoTableProps<T extends { id: string | number }> {
   data: T[];
   onDelete?: (item: T) => void;
   isDeleting?: boolean;
+  isUnchangeable?: (item: T) => boolean;
   onRowClick?: (item: T) => void;
   getRowKey?: (row: T) => string | number;
-  onAddProduct?: () => void;
-  onAddService?: () => void;
   deleteDialogTitle?: string;
   deleteDialogDescription?: string;
   children?: ReactNode;
@@ -52,16 +45,14 @@ export const InfoTable = <T extends { id: string | number }>({
   data,
   onDelete,
   isDeleting,
+  isUnchangeable,
   onRowClick,
   getRowKey,
-  onAddProduct,
-  onAddService,
   deleteDialogTitle,
   deleteDialogDescription,
   children,
   footer,
 }: InfoTableProps<T>) => {
-  const { t } = useTranslation();
   const [pendingDelete, setPendingDelete] = useState<T | null>(null);
   const [collapsedKeys, setCollapsedKeys] = useState<Set<string>>(new Set());
 
@@ -148,7 +139,7 @@ export const InfoTable = <T extends { id: string | number }>({
                     variant="ghost"
                     size="icon"
                     className="text-muted-foreground hover:text-destructive"
-                    disabled={isDeleting}
+                    disabled={isDeleting || isUnchangeable?.(row)}
                     onClick={(e) => {
                       e.stopPropagation();
                       setPendingDelete(row);
@@ -162,31 +153,6 @@ export const InfoTable = <T extends { id: string | number }>({
           ))}
         </TableBody>
       </Table>
-
-      {(onAddProduct !== undefined || onAddService !== undefined) && (
-        <div className="flex items-center gap-1 border-t px-2 py-1.5">
-          {onAddProduct !== undefined && (
-            <Button
-              variant="ghost"
-              className="text-base text-muted-foreground"
-              onClick={onAddProduct}
-            >
-              <Plus size={16} />
-              {t("orders.orderTable.addProduct")}
-            </Button>
-          )}
-          {onAddService !== undefined && (
-            <Button
-              variant="ghost"
-              className="text-base text-muted-foreground"
-              onClick={onAddService}
-            >
-              <Plus size={16} />
-              {t("orders.orderTable.addService")}
-            </Button>
-          )}
-        </div>
-      )}
 
       {(children || footer) && (
         <div className="flex items-center justify-between gap-2 border-t px-2 py-1.5">

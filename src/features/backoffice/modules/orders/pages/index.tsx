@@ -1,4 +1,3 @@
-import { type User } from "@sentry/react";
 import { CircleCheck, ClockAlert } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -14,10 +13,23 @@ import {
   type Order,
   type OrderStatus,
 } from "@/features/backoffice/modules/orders/types.ts";
+import { type User } from "@/features/backoffice/modules/users/types.ts";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { useIsMobile } from "@/shared/hooks/useMobile.ts";
+
+const isCustomer = (value: unknown): value is Customer =>
+  typeof value === "object" && value !== null && "phones" in value;
+
+const isUser = (value: unknown): value is User =>
+  typeof value === "object" && value !== null && "role" in value;
+
+const isOrderStatus = (value: unknown): value is OrderStatus =>
+  typeof value === "object" &&
+  value !== null &&
+  "nameRu" in value &&
+  "color" in value;
 
 const OrdersPage = () => {
   const navigate = useNavigate();
@@ -25,55 +37,8 @@ const OrdersPage = () => {
   const locale = isUk ? "uk-UA" : "ru-RU";
   const isMobile = useIsMobile();
 
-  const mobileColumns: ColumnConfig<Order>[] = [
-    {
-      key: "orderNumber",
-      field: "orderNumber",
-      labelKey: "orders.table_fields.number",
-      sortable: false,
-    },
-    {
-      key: "status",
-      field: "status",
-      labelKey: "orders.table_fields.status",
-      sortable: false,
-      renderCell: (value, item) => (
-        <div onClick={(e) => e.stopPropagation()}>
-          <StatusSelect orderId={item.id} status={value as OrderStatus} />
-        </div>
-      ),
-    },
-    {
-      key: "deviceType",
-      field: "deviceType",
-      labelKey: "orders.table_fields.deviceType",
-      sortable: false,
-    },
-    {
-      key: "deviceModel",
-      field: "deviceModel",
-      labelKey: "orders.table_fields.deviceModel",
-      sortable: false,
-    },
-    {
-      key: "customerName",
-      field: "customer",
-      labelKey: "orders.table_fields.customer",
-      sortable: false,
-      renderCell: (value) => {
-        const customer = value as Customer;
-        const primaryPhone = customer.phones.find((p) => p.isPrimary);
-        return (
-          <div className="flex flex-col">
-            <span>{customer.name}</span>
-            {primaryPhone && (
-              <PhoneDropdown phoneNumber={primaryPhone.phoneNumber} />
-            )}
-          </div>
-        );
-      },
-    },
-  ];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   const columns: ColumnConfig<Order>[] = [
     {
@@ -89,8 +54,6 @@ const OrdersPage = () => {
       sortable: false,
       renderCell: (value) => {
         const date = new Date(value as string);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
         date.setHours(0, 0, 0, 0);
         const diffDays = Math.round(
           (date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
@@ -107,17 +70,19 @@ const OrdersPage = () => {
         );
       },
     },
-
     {
       key: "status",
       field: "status",
       labelKey: "orders.table_fields.status",
       sortable: false,
-      renderCell: (value, item) => (
-        <div onClick={(e) => e.stopPropagation()}>
-          <StatusSelect orderId={item.id} status={value as OrderStatus} />
-        </div>
-      ),
+      renderCell: (value, item) => {
+        if (!isOrderStatus(value)) return null;
+        return (
+          <div onClick={(e) => e.stopPropagation()}>
+            <StatusSelect orderId={item.id} status={value} />
+          </div>
+        );
+      },
     },
     {
       key: "updatedAt",
@@ -148,14 +113,11 @@ const OrdersPage = () => {
       labelKey: "orders.table_fields.customer",
       sortable: false,
       renderCell: (value) => {
-        const customer = value as Customer;
-
-        const primaryPhone = customer.phones.find((p) => p.isPrimary);
-
+        if (!isCustomer(value)) return null;
+        const primaryPhone = value.phones.find((p) => p.isPrimary);
         return (
           <div className="flex flex-col">
-            <span>{customer.name}</span>
-
+            <span>{value.name}</span>
             {primaryPhone && (
               <PhoneDropdown phoneNumber={primaryPhone.phoneNumber} />
             )}
@@ -169,10 +131,10 @@ const OrdersPage = () => {
       labelKey: "orders.table_fields.manager",
       sortable: false,
       renderCell: (value) => {
-        const user = value as User;
+        if (!isUser(value)) return null;
         return (
           <div className="flex flex-col">
-            <span>{user.name}</span>
+            <span>{value.name}</span>
           </div>
         );
       },
@@ -256,6 +218,16 @@ const OrdersPage = () => {
         ),
     },
   ];
+
+  const mobileColumns = (
+    [
+      "orderNumber",
+      "status",
+      "deviceType",
+      "deviceModel",
+      "customerName",
+    ] as const
+  ).map((key) => columns.find((col) => col.key === key)!);
 
   const onRowClick = (order: Order) => {
     navigate(`/backoffice/orders/${order.id}`);

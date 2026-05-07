@@ -45,7 +45,7 @@ export function mapProducts(items: OrderProduct[]): HistoryProduct[] {
       },
     ];
 
-    if (item.deletedAt !== null) {
+    if (item.deletedAt) {
       events.push({
         ...base,
         date: item.deletedAt,
@@ -78,7 +78,7 @@ export function mapServices(items: OrderService[]): HistoryService[] {
       },
     ];
 
-    if (item.deletedAt !== null) {
+    if (item.deletedAt) {
       events.push({
         ...base,
         date: item.deletedAt,
@@ -103,15 +103,35 @@ export function mapComments(items: OrderComment[]): HistoryComment[] {
 }
 
 export function mapPayments(items: OrderPayment[]): HistoryPayment[] {
-  return items.map((item) => ({
-    type: "payment" as const,
-    id: item.id,
-    date: item.createdAt,
-    user: item.manager ?? undefined,
-    paymentType: item.type,
-    amount: parseFloat(item.amount) || 0,
-    note: item.note ?? undefined,
-  }));
+  return items.flatMap((item) => {
+    const base = {
+      type: "payment" as const,
+      id: item.id,
+      paymentType: item.type,
+      amount: parseFloat(item.amount) || 0,
+      note: item.note ?? undefined,
+    };
+
+    const events: HistoryPayment[] = [
+      {
+        ...base,
+        date: item.createdAt,
+        user: item.manager ?? undefined,
+        event: "added",
+      },
+    ];
+
+    if (item.deletedAt) {
+      events.push({
+        ...base,
+        date: item.deletedAt,
+        user: item.deletedByUser ?? item.manager ?? undefined,
+        event: "deleted",
+      });
+    }
+
+    return events;
+  });
 }
 
 export function buildOrderHistory(

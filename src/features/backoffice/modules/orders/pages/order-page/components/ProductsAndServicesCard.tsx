@@ -2,31 +2,27 @@ import { Box, Cog } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import AddLineItemModal from "@/features/backoffice/modules/orders/components/info-table/AddLineItemModal.tsx";
-import {
-  InfoTable,
-  type InfoTableColumn,
-} from "@/features/backoffice/modules/orders/components/info-table/InfoTable.tsx";
-import { useDeleteLineItem } from "@/features/backoffice/modules/orders/hooks/useDeleteLineItem.ts";
-import { calcLineItemTotal } from "@/features/backoffice/modules/orders/lib/cellFormatters.tsx";
+import AddOrderItemModal from "@/features/backoffice/modules/orders/components/info-table/AddOrderItemModal.tsx";
+import { type InfoTableColumn } from "@/features/backoffice/modules/orders/components/info-table/InfoTable.tsx";
+import { OrderTableCard } from "@/features/backoffice/modules/orders/components/order-table-card/OrderTableCard.tsx";
+import { useDeleteOrderItem } from "@/features/backoffice/modules/orders/hooks/useDeleteOrderItem.ts";
+import { calcOrderItemTotal } from "@/features/backoffice/modules/orders/lib/cellFormatters.tsx";
 import { type ModalState } from "@/features/backoffice/modules/orders/pages/order-page/types.ts";
 import {
   type OrderInfo,
-  type OrderLineItem,
+  type OrderItem,
 } from "@/features/backoffice/modules/orders/types.ts";
-import { Button } from "@/shared/components/ui/button.tsx";
-import { Card, CardContent } from "@/shared/components/ui/card.tsx";
 
 interface ProductsAndServicesCardProps {
   orderId: number;
   selectedOrder: OrderInfo;
 }
+
 export const ProductsAndServicesCard = ({
   orderId,
   selectedOrder,
 }: ProductsAndServicesCardProps) => {
-  const [filter, setFilter] = useState({ product: true, service: true });
-  const { onDelete, isPending: isDeleting } = useDeleteLineItem(orderId);
+  const { onDelete, isPending: isDeleting } = useDeleteOrderItem(orderId);
   const [modalState, setModalState] = useState<ModalState>(null);
   const { t } = useTranslation();
 
@@ -37,16 +33,7 @@ export const ProductsAndServicesCard = ({
         ? modalState.type
         : null;
 
-  const toggleFilter = (type: "product" | "service") => {
-    setFilter((prev) => {
-      const other = type === "product" ? "service" : "product";
-      if (prev[type] && !prev[other])
-        return { product: !prev.product, service: !prev.service };
-      return { ...prev, [type]: !prev[type] };
-    });
-  };
-
-  const lineItems = useMemo<OrderLineItem[]>(() => {
+  const orderItems = useMemo<OrderItem[]>(() => {
     const products = selectedOrder.products.map((p) => ({
       ...p,
       type: "product" as const,
@@ -63,99 +50,97 @@ export const ProductsAndServicesCard = ({
       );
   }, [selectedOrder?.products, selectedOrder?.services]);
 
-  const filteredItems = useMemo(
-    () => lineItems.filter((item) => filter[item.type]),
-    [lineItems, filter],
+  const totalCost = useMemo(
+    () =>
+      orderItems
+        .reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0)
+        .toFixed(),
+    [orderItems],
   );
 
-  const columns = useMemo<InfoTableColumn<OrderLineItem>[]>(
-    () => [
-      {
-        key: "name",
-        label: t("orders.orderTable.name"),
-        render: (row) => (
-          <span className="flex items-center gap-1.5">
-            {row.type === "product" ? (
-              <Box className="h-3.5 w-3.5 shrink-0" />
-            ) : (
-              <Cog className="h-3.5 w-3.5 shrink-0" />
-            )}
-            {row.name}
-          </span>
-        ),
-      },
-      {
-        key: "manager",
-        label: t("orders.orderTable.user"),
-        render: (row) => row.manager.name,
-      },
-      {
-        key: "quantity",
-        label: t("orders.orderTable.quantity"),
-      },
-      {
-        key: "price",
-        label: t("orders.orderTable.price"),
-      },
-      {
-        key: "total_price",
-        label: t("orders.orderTable.totalPrice"),
-        render: (row) => calcLineItemTotal(row.price, row.quantity),
-      },
-      {
-        key: "purchase_price",
-        label: t("orders.orderTable.purchasePrice"),
-        collapsible: true,
-        render: (row) =>
-          row.type === "product"
-            ? (row.purchasePrice ?? "—")
-            : (row.costPrice ?? "—"),
-      },
-    ],
-    [t],
-  );
+  const columns: InfoTableColumn<OrderItem>[] = [
+    {
+      key: "name",
+      label: t("orders.orderTable.name"),
+      render: (row) => (
+        <span className="flex items-center gap-1.5">
+          {row.type === "product" ? (
+            <Box className="h-4 w-4 shrink-0 text-purple-500" />
+          ) : (
+            <Cog className="h-4 w-4 shrink-0 text-blue-500" />
+          )}
+          {row.name}
+        </span>
+      ),
+    },
+    {
+      key: "manager",
+      label: t("orders.orderTable.user"),
+      render: (row) => row.manager.name,
+    },
+    {
+      key: "quantity",
+      label: t("orders.orderTable.quantity"),
+    },
+    {
+      key: "price",
+      label: t("orders.orderTable.price"),
+    },
+    {
+      key: "total_price",
+      label: t("orders.orderTable.totalPrice"),
+      render: (row) => calcOrderItemTotal(row.price, row.quantity),
+    },
+    {
+      key: "purchase_price",
+      label: t("orders.orderTable.purchasePrice"),
+      collapsible: true,
+      render: (row) =>
+        row.type === "product"
+          ? (row.purchasePrice ?? "—")
+          : (row.costPrice ?? "—"),
+    },
+  ];
+
+  const buttons = [
+    {
+      label: t("orders.orderTable.addProduct"),
+      onClick: () => setModalState({ mode: "add", type: "product" }),
+    },
+    {
+      label: t("orders.orderTable.addService"),
+      onClick: () => setModalState({ mode: "add", type: "service" }),
+    },
+  ];
 
   return (
     <>
-      <Card className="p-2 sm:p-6">
-        <CardContent>
-          <div className="mb-3 flex gap-2">
-            <Button
-              variant={filter.product ? "default" : "outline"}
-              className="text-base"
-              onClick={() => toggleFilter("product")}
-            >
-              <Box className="h-4 w-4" />
-              {t("orders.orderTable.products")}
-            </Button>
-            <Button
-              variant={filter.service ? "default" : "outline"}
-              className="text-base"
-              onClick={() => toggleFilter("service")}
-            >
-              <Cog className="h-4 w-4" />
-              {t("orders.orderTable.services")}
-            </Button>
-          </div>
-          <InfoTable
-            columns={columns}
-            data={filteredItems}
-            onDelete={onDelete}
-            isDeleting={isDeleting}
-            onRowClick={(item) => setModalState({ mode: "edit", item })}
-            getRowKey={(row) => `${row.type}-${row.id}`}
-            onAddProduct={() => setModalState({ mode: "add", type: "product" })}
-            onAddService={() => setModalState({ mode: "add", type: "service" })}
-          />
-        </CardContent>
-      </Card>
+      <OrderTableCard
+        buttons={buttons}
+        columns={columns}
+        data={orderItems}
+        onDelete={onDelete}
+        isDeleting={isDeleting}
+        isUnchangeable={(item) => !!item.completedAt}
+        onRowClick={(item) =>
+          setModalState({ mode: "edit", item, readOnly: !!item.completedAt })
+        }
+        getRowKey={(row) => `${row.type}-${row.id}`}
+        footer={
+          <span className="text-sm text-muted-foreground">
+            {t("orders.orderTable.totalCost")}:{" "}
+            <span className="font-medium text-foreground">{totalCost} ₴</span>
+          </span>
+        }
+      />
       {modalState !== null && modalType !== null && (
-        <AddLineItemModal
+        <AddOrderItemModal
           orderId={orderId}
           type={modalType}
           open
           onClose={() => setModalState(null)}
           editItem={modalState.mode === "edit" ? modalState.item : undefined}
+          readOnly={modalState.mode === "edit" ? !!modalState.readOnly : false}
         />
       )}
     </>

@@ -17,7 +17,8 @@ const OrderPage = lazy(
     import("@/features/backoffice/modules/orders/pages/order-page/OrderPage.tsx"),
 );
 const CreateOrderPage = lazy(
-  () => import("@/features/backoffice/modules/orders/pages/CreateOrderPage"),
+  () =>
+    import("../../features/backoffice/modules/orders/pages/create-order-page"),
 );
 const CustomersPage = lazy(
   () => import("@/features/backoffice/modules/customers/pages"),

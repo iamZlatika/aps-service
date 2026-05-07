@@ -51,7 +51,14 @@ export const PAYMENTS = {
   REFUND: "refund",
 } as const;
 
+export const PAYMENT_METHODS = {
+  CASH: "cash",
+  CARD: "card",
+} as const;
+
 export type PaymentType = (typeof PAYMENTS)[keyof typeof PAYMENTS];
+export type PaymentMethodType =
+  (typeof PAYMENT_METHODS)[keyof typeof PAYMENT_METHODS];
 
 export const DOCUMENTS_TYPES = ["intake_receipt", "closing_receipt"] as const;
 export type DocumentType = (typeof DOCUMENTS_TYPES)[number];

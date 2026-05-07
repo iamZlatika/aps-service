@@ -14,6 +14,7 @@ import {
 } from "@/features/backoffice/modules/orders/api/dto.ts";
 import { ORDERS_API } from "@/features/backoffice/modules/orders/api/endpoints.ts";
 import {
+  mapEditOrderInfoToDto,
   mapNewOrderToDto,
   mapNewPaymentToDto,
   mapNewProductToDto,
@@ -26,11 +27,12 @@ import {
   mapPaginatedOrdersDtoToResponse,
   mapPaymentDtoToPayment,
 } from "@/features/backoffice/modules/orders/lib/adapters.ts";
+import type { EditOrderInfoFormValues } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import {
   type NewOrder,
   type NewOrderPayment,
-  type newOrderProduct,
-  type newOrderService,
+  type NewOrderProduct,
+  type NewOrderService,
   type Order,
   type OrderComment,
   type OrderInfo,
@@ -75,12 +77,25 @@ export const ordersApi = {
   changeStatus: async (orderId: number, statusId: number): Promise<void> => {
     await put(ORDERS_API.changeStatus(orderId), { status_id: statusId });
   },
+  changeIsCalled: async (orderId: number, isCalled: boolean): Promise<void> => {
+    await put(ORDERS_API.changeIsCalled(orderId), { is_called: isCalled });
+  },
+  changeIsUrgent: async (orderId: number, isUrgent: boolean): Promise<void> => {
+    await put(ORDERS_API.changeIsUrgent(orderId), { is_urgent: isUrgent });
+  },
   getOrder: async (id: number): Promise<OrderInfo> => {
     const response = await get<{ data: OrderInfoDto }>(
       `${ORDERS_API.order(id)}`,
     );
     const validatedData = OrderInfoDtoSchema.parse(response.data);
     return mapOrderInfoDtoToOrderInfo(validatedData);
+  },
+  changeOrderInfo: async (
+    orderId: number,
+    data: EditOrderInfoFormValues,
+  ): Promise<void> => {
+    const payload = mapEditOrderInfoToDto(data);
+    await put(ORDERS_API.order(orderId), payload);
   },
   postComment: async (
     id: number,
@@ -101,7 +116,7 @@ export const ordersApi = {
   },
   addProductToOrder: async (
     orderId: number,
-    data: newOrderProduct,
+    data: NewOrderProduct,
   ): Promise<OrderProduct> => {
     const payload = mapNewProductToDto(data);
 
@@ -114,7 +129,7 @@ export const ordersApi = {
   },
   editProductInOrder: async (
     orderId: number,
-    data: newOrderProduct,
+    data: NewOrderProduct,
     productId: number,
   ): Promise<OrderProduct> => {
     const payload = mapNewProductToDto(data);
@@ -133,7 +148,7 @@ export const ordersApi = {
   },
   addServiceToOrder: async (
     orderId: number,
-    data: newOrderService,
+    data: NewOrderService,
   ): Promise<OrderService> => {
     const payload = mapNewServiceToDto(data);
     const response = await post<typeof payload, { data: OrderServiceDto }>(
@@ -145,7 +160,7 @@ export const ordersApi = {
   },
   editServiceInOrder: async (
     orderId: number,
-    data: newOrderService,
+    data: NewOrderService,
     serviceId: number,
   ): Promise<OrderService> => {
     const payload = mapNewServiceToDto(data);
@@ -173,5 +188,8 @@ export const ordersApi = {
     );
     const validated = OrderPaymentSchema.parse(response.data);
     return mapPaymentDtoToPayment(validated);
+  },
+  deletePayment: async (orderId: number, paymentId: number): Promise<void> => {
+    await del<void>(ORDERS_API.deletePayment(orderId, paymentId));
   },
 };

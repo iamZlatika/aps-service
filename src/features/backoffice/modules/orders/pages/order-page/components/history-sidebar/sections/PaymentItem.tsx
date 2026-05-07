@@ -12,13 +12,30 @@ export const PaymentItem = memo(({ item }: PaymentItemProps) => {
   const { t } = useTranslation();
 
   const userName = item.user?.name ?? "—";
+  const isDeleted = item.event === "deleted";
   const isRefund = item.paymentType === "refund";
+
+  if (isDeleted) {
+    return (
+      <HistoryItemWrapper date={item.date}>
+        <div className="flex flex-wrap items-center gap-1">
+          <span className="font-medium">— {userName} —</span>
+          <span className="text-destructive">
+            {t("orders.history.payment.deleted")}
+          </span>
+          <span className="text-destructive">
+            {t(`orders.history.payment.types.${item.paymentType}`)}
+          </span>
+          <span className="text-destructive font-medium">{item.amount} ₴</span>
+        </div>
+      </HistoryItemWrapper>
+    );
+  }
 
   return (
     <HistoryItemWrapper date={item.date}>
       <div className="flex flex-wrap items-center gap-1">
         <span className="font-medium">— {userName} —</span>
-        {/* no design tokens for payment/refund states yet — intentional */}
         {isRefund ? (
           <span className="text-rose-700">
             {t("orders.history.payment.refunded")} {Math.abs(item.amount)} ₴

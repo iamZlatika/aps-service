@@ -1,5 +1,5 @@
 import {
-  type OrderLineItem,
+  type OrderItem,
   type OrderStatus,
 } from "@/features/backoffice/modules/orders/types.ts";
 import { type User } from "@/features/backoffice/modules/users/types.ts";
@@ -7,7 +7,7 @@ import { type PaymentType } from "@/shared/types.ts";
 
 export type ModalState =
   | { mode: "add"; type: "product" | "service" }
-  | { mode: "edit"; item: OrderLineItem }
+  | { mode: "edit"; item: OrderItem; readOnly?: boolean }
   | null;
 
 export type HistoryStatus = {
@@ -58,6 +58,7 @@ export type HistoryPayment = {
   paymentType: PaymentType;
   amount: number;
   note?: string;
+  event: "added" | "deleted";
 };
 export type OrderHistoryItem =
   | HistoryStatus

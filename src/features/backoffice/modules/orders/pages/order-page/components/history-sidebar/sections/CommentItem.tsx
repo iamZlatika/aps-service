@@ -30,7 +30,7 @@ export const CommentItem = memo(({ item }: CommentItemProps) => {
               {t("orders.history.comment.addedText")}
             </span>
           </div>
-          <blockquote className="border-l-2 border-muted-foreground/40 pl-3 text-muted-foreground italic">
+          <blockquote className="border-l-2 border-muted-foreground/40 pl-3 text-muted-foreground italic whitespace-pre-wrap">
             {item.text}
           </blockquote>
         </>

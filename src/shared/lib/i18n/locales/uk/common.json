@@ -3,6 +3,7 @@
     "noResults": "Немає результатів",
     "alreadySelected": "Вже вибрано",
     "save": "Зберегти",
+    "successAdd": "Успішно додано",
     "cancel": "Скасувати",
     "delete": "Видалити",
     "add": "Додати",
@@ -170,6 +171,10 @@
   },
   "profile": {
     "settings": "Налаштування профілю",
+    "your_rate": "Ваша ставка",
+    "services_percent": "Відсоток за послуги",
+    "products_percent": "Відсоток за продукти",
+    "intake_percent": "Відсоток за приймання",
     "user_info": {
       "name_too_short": "Ім’я повинно містити щонайменше 3 символи",
       "invalid_email": "Некоректний email",
@@ -267,10 +272,22 @@
       "delete": "Видалити",
       "delete_confirm": "Ви дійсно хочете видалити номер {{number}}?",
       "add_phone": "Додати телефон",
-      "delete_phone": "Видалити телефон"
+      "delete_phone": "Видалити телефон",
+      "subscribe_telegram": "Підписатись на Telegram",
+      "revoke_telegram": "Скасувати підписку"
     },
     "profile": {
-      "phones": "Телефони"
+      "phones": "Телефони",
+      "telegram": "Telegram",
+      "telegram_link": "Посилання для підписки",
+      "telegram_subscribed": "Клієнт вже підписаний на Telegram бот",
+      "telegram_revoked": "Підписку скинуто",
+      "revoke_telegram_warning": "Підписку до бота буде повністю скинуто. Клієнт перестане отримувати сповіщення.",
+      "revoke_telegram_description": "Використовуйте лише якщо клієнт змінив Telegram акаунт або втратив до нього доступ. Після скидання потрібна повторна підписка.",
+      "rating_updated": "Рейтинг оновлено",
+      "name_placeholder": "Введіть ім'я клієнта",
+      "email_placeholder": "Введіть пошту клієнта",
+      "comment_placeholder": "Введіть коментар про клієнта"
     }
   },
   "dictionaries": {
@@ -297,12 +314,15 @@
   "orders": {
     "createNew": "Створити нове замовлення",
     "remainingToPay": "До оплати",
+    "overpayment": "Переплата",
     "acceptedBy": "Прийняв",
     "createdAt": "Створено",
     "closedAt": "Закрито",
     "successAddComment": "Коментар успішно додано",
     "successCreate": "Замовлення успішно створено",
+    "successUpdate": "Інформацію про замовлення оновлено",
     "order": "Замовлення",
+    "orderInfo": "Інформація про замовлення",
     "customerInfo": "Інформація про клієнта",
     "deviceInfo": "Інформація про пристрій",
     "additionalInfo": "Додаткова інформація",
@@ -332,12 +352,17 @@
       "payment": {
         "received": "отримав",
         "refunded": "повернув",
+        "deleted": "видалив",
         "types": {
           "payment": "оплату",
           "prepayment": "передоплату",
           "refund": "повернення"
         }
       }
+    },
+    "paymentMethods": {
+      "cash": "Готівка",
+      "card": "Картка"
     },
     "actions": {
       "create": "Створити"
@@ -375,6 +400,7 @@
       "estimatedCost": "Орієнтовна вартість",
       "prepayment": "Передоплата",
       "isUrgent": "Терміново",
+      "isCalled": "Подзвонив",
       "issueType": "Причина звернення *",
       "deviceType": "Тип пристрою *",
       "manufacturer": "Бренд *",
@@ -426,6 +452,11 @@
       "successAddServiceToDict": "Послугу успішно додано до словника",
       "products": "Продукти",
       "services": "Послуги",
+      "totalCost": "Загальна вартість",
+      "readOnly": {
+        "product": "Товар вже враховано, оскільки замовлення було закрито",
+        "service": "Послугу вже враховано, оскільки замовлення було закрито"
+      },
       "form": {
         "name": "Назва *",
         "price": "Ціна *",
@@ -440,9 +471,11 @@
       "title": "Оплати",
       "addPayment": "Додати оплату",
       "successAdd": "Оплату успішно додано",
+      "paymentMethod": "Спосіб оплати",
       "totalPaid": "Всього оплачено",
       "table": {
         "type": "Тип",
+        "method": "Метод",
         "amount": "Сума",
         "note": "Нотатки",
         "manager": "Прийняв",

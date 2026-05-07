@@ -40,11 +40,15 @@ export default defineConfig({
       },
     },
   },
-  // esbuild: {
-  //   drop: ["console", "debugger"],
-  // },
+  esbuild: {
+    drop: ["console", "debugger"],
+  },
   server: {
     port: 3000,
     open: true,
+    host: true,
+    hmr: {
+      host: "192.168.0.106",
+    },
   },
 });

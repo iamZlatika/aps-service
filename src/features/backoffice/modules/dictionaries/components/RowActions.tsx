@@ -1,8 +1,5 @@
-import {
-  DeleteButton,
-  EditButton,
-} from "@/features/backoffice/widgets/table/components/buttons";
 import type { BaseItem } from "@/features/backoffice/widgets/table/models/types.ts";
+import { DeleteButton, EditButton } from "@/shared/components/common/buttons";
 
 interface RowActionsProps<T extends BaseItem> {
   item: T;

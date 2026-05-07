@@ -1,18 +1,14 @@
-import { Plus } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  InfoTable,
-  type InfoTableColumn,
-} from "@/features/backoffice/modules/orders/components/info-table/InfoTable.tsx";
+import { type InfoTableColumn } from "@/features/backoffice/modules/orders/components/info-table/InfoTable.tsx";
+import { OrderTableCard } from "@/features/backoffice/modules/orders/components/order-table-card/OrderTableCard.tsx";
+import { useDeletePayment } from "@/features/backoffice/modules/orders/hooks/useDeletePayment.ts";
 import AddPaymentModal from "@/features/backoffice/modules/orders/pages/order-page/components/AddPaymentModal.tsx";
 import type {
   OrderInfo,
   OrderPayment,
 } from "@/features/backoffice/modules/orders/types.ts";
-import { Button } from "@/shared/components/ui/button.tsx";
-import { Card, CardContent } from "@/shared/components/ui/card.tsx";
 import { PAYMENTS, type PaymentType } from "@/shared/types.ts";
 
 const PAYMENT_TYPE_ORDER = [
@@ -21,8 +17,6 @@ const PAYMENT_TYPE_ORDER = [
   PAYMENTS.REFUND,
 ] as const;
 
-type PaymentFilter = Record<PaymentType, boolean>;
-
 interface PaymentsCardProps {
   orderId: number;
   selectedOrder: OrderInfo;
@@ -30,113 +24,71 @@ interface PaymentsCardProps {
 
 export const PaymentsCard = ({ orderId, selectedOrder }: PaymentsCardProps) => {
   const { t } = useTranslation();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [filter, setFilter] = useState<PaymentFilter>({
-    prepayment: true,
-    payment: true,
-    refund: true,
-  });
+  const [modalType, setModalType] = useState<PaymentType | null>(null);
+  const { onDelete, isPending: isDeleting } = useDeletePayment(orderId);
 
-  const toggleFilter = (type: PaymentType) => {
-    setFilter((prev) => {
-      const isSolo =
-        prev[type] &&
-        PAYMENT_TYPE_ORDER.every((pt) => pt === type || !prev[pt]);
-      if (isSolo) {
-        const currentIndex = PAYMENT_TYPE_ORDER.indexOf(type);
-        const nextType =
-          PAYMENT_TYPE_ORDER[(currentIndex + 1) % PAYMENT_TYPE_ORDER.length];
-        return {
-          prepayment: false,
-          payment: false,
-          refund: false,
-          [nextType]: true,
-        };
-      }
-      return { ...prev, [type]: !prev[type] };
-    });
-  };
+  const activePayments = selectedOrder.payments.filter((p) => !p.deletedAt);
 
-  const filteredPayments = useMemo(
-    () => selectedOrder.payments.filter((p) => filter[p.type]),
-    [selectedOrder.payments, filter],
-  );
+  const columns: InfoTableColumn<OrderPayment>[] = [
+    {
+      key: "type",
+      label: t("orders.payments.table.type"),
+      render: (row) => t(`orders.payments.types.${row.type}`),
+    },
+    {
+      key: "method",
+      label: t("orders.payments.table.method"),
+      render: (row) => t(`orders.paymentMethods.${row.method}`),
+    },
+    {
+      key: "manager",
+      label: t("orders.payments.table.manager"),
+      render: (row) => row.manager?.name ?? "—",
+    },
+    {
+      key: "createdAt",
+      label: t("orders.payments.table.date"),
+      render: (row) => new Date(row.createdAt).toLocaleDateString(),
+    },
+    {
+      key: "note",
+      label: t("orders.payments.table.note"),
+      render: (row) => row.note ?? "—",
+    },
+    {
+      key: "amount",
+      label: t("orders.payments.table.amount"),
+    },
+  ];
 
-  const columns = useMemo<InfoTableColumn<OrderPayment>[]>(
-    () => [
-      {
-        key: "type",
-        label: t("orders.payments.table.type"),
-        render: (row) => t(`orders.payments.types.${row.type}`),
-      },
-
-      {
-        key: "note",
-        label: t("orders.payments.table.note"),
-        render: (row) => row.note ?? "—",
-      },
-      {
-        key: "manager",
-        label: t("orders.payments.table.manager"),
-        render: (row) => row.manager?.name ?? "—",
-      },
-      {
-        key: "createdAt",
-        label: t("orders.payments.table.date"),
-        render: (row) => new Date(row.createdAt).toLocaleDateString(),
-      },
-      {
-        key: "amount",
-        label: t("orders.payments.table.amount"),
-      },
-    ],
-    [t],
-  );
+  const buttons = PAYMENT_TYPE_ORDER.map((type) => ({
+    label: t(`orders.payments.types.${type}`),
+    onClick: () => setModalType(type),
+  }));
 
   return (
     <>
-      <Card className="p-2 sm:p-6">
-        <CardContent>
-          <div className="mb-3 flex gap-2">
-            {PAYMENT_TYPE_ORDER.map((type) => (
-              <Button
-                key={type}
-                variant={filter[type] ? "default" : "outline"}
-                className="text-base"
-                onClick={() => toggleFilter(type)}
-              >
-                {t(`orders.payments.types.${type}`)}
-              </Button>
-            ))}
-          </div>
-          <InfoTable
-            columns={columns}
-            data={filteredPayments}
-            footer={
-              <span className="text-sm text-muted-foreground">
-                {t("orders.payments.totalPaid")}:{" "}
-                <span className="font-medium text-foreground">
-                  {selectedOrder.totalPaid} ₴
-                </span>
-              </span>
-            }
-          >
-            <Button
-              variant="ghost"
-              className="text-base text-muted-foreground"
-              onClick={() => setModalOpen(true)}
-            >
-              <Plus size={16} />
-              {t("orders.payments.addPayment")}
-            </Button>
-          </InfoTable>
-        </CardContent>
-      </Card>
-      {modalOpen && (
+      <OrderTableCard
+        buttons={buttons}
+        columns={columns}
+        data={activePayments}
+        onDelete={onDelete}
+        isDeleting={isDeleting}
+        footer={
+          <span className="text-sm text-muted-foreground">
+            {t("orders.payments.totalPaid")}:{" "}
+            <span className="font-medium text-foreground">
+              {selectedOrder.totalPaid} ₴
+            </span>
+          </span>
+        }
+      />
+      {modalType !== null && (
         <AddPaymentModal
           orderId={orderId}
+          type={modalType}
           open
-          onClose={() => setModalOpen(false)}
+          onClose={() => setModalType(null)}
         />
       )}
     </>

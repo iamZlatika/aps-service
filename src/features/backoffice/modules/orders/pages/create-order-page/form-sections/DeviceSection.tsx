@@ -45,6 +45,7 @@ export const DeviceSection = () => {
               fetchItems={fetchers.issueTypes}
               queryKey={queryKeys.dictionaries.issueTypes(1, SEARCH_PAGE_SIZE)}
               error={errors.issueType}
+              onCreateItem={createItemFns.issueTypes}
             />
           )}
         />
@@ -63,6 +64,7 @@ export const DeviceSection = () => {
               fetchItems={fetchers.deviceTypes}
               queryKey={queryKeys.dictionaries.deviceTypes(1, SEARCH_PAGE_SIZE)}
               error={errors.deviceType}
+              onCreateItem={createItemFns.deviceTypes}
             />
           )}
         />
@@ -84,6 +86,7 @@ export const DeviceSection = () => {
                 SEARCH_PAGE_SIZE,
               )}
               error={errors.manufacturer}
+              onCreateItem={createItemFns.manufacturers}
             />
           )}
         />
@@ -105,6 +108,7 @@ export const DeviceSection = () => {
                 SEARCH_PAGE_SIZE,
               )}
               error={errors.deviceModel}
+              onCreateItem={createItemFns.deviceModels}
             />
           )}
         />
@@ -179,6 +183,7 @@ export const DeviceSection = () => {
               fetchItems={fetchers.intakeNotes}
               queryKey={queryKeys.dictionaries.intakeNotes(1, SEARCH_PAGE_SIZE)}
               error={errors.intakeNote}
+              onCreateItem={createItemFns.intakeNotes}
             />
           )}
         />

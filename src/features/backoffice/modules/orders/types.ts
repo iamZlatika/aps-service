@@ -2,7 +2,7 @@ import type { Customer } from "@/features/backoffice/modules/customers/types.ts"
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
-import { type PaymentType } from "@/shared/types.ts";
+import { type PaymentMethodType, type PaymentType } from "@/shared/types.ts";
 
 export type OrderStatus = {
   id: number;
@@ -74,14 +74,21 @@ export type OrderProduct = {
   price: string;
   purchasePrice: string | null;
   quantity: number;
+  completedAt: string | null;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
-  deletedByUser?: User | null;
+  deletedByUser: User | null;
 };
-export type newOrderProduct = Omit<
+export type NewOrderProduct = Omit<
   OrderProduct,
-  "id" | "manager" | "createdAt" | "updatedAt" | "deletedAt"
+  | "id"
+  | "manager"
+  | "createdAt"
+  | "updatedAt"
+  | "deletedAt"
+  | "completedAt"
+  | "deletedByUser"
 > & { managerId: number | null };
 export type OrderService = {
   id: number;
@@ -94,10 +101,11 @@ export type OrderService = {
   quantity: number;
   createdAt: string;
   updatedAt: string;
+  completedAt: string | null;
   deletedAt: string | null;
-  deletedByUser?: User | null;
+  deletedByUser: User | null;
 };
-export type newOrderService = Omit<
+export type NewOrderService = Omit<
   OrderService,
   | "id"
   | "manager"
@@ -105,24 +113,31 @@ export type newOrderService = Omit<
   | "updatedAt"
   | "deletedAt"
   | "repairOperationId"
+  | "completedAt"
+  | "deletedByUser"
 > & { managerId: number | null };
 
-export type OrderLineItem =
+export type OrderItemType = "product" | "service";
+
+export type OrderItem =
   | (OrderProduct & { type: "product" })
   | (OrderService & { type: "service" });
 
 export type OrderPayment = {
   id: number;
   type: PaymentType;
+  method: PaymentMethodType;
   amount: string;
   note: string | null;
   manager: User | null;
   createdAt: string;
+  deletedAt: string | null;
+  deletedByUser: User | null;
 };
 
 export type NewOrderPayment = Omit<
   OrderPayment,
-  "id" | "createdAt" | "manager"
+  "id" | "createdAt" | "manager" | "deletedAt" | "deletedByUser"
 > & {
   managerId: number;
 };

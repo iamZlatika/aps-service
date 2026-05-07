@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { ManagerSelect } from "@/features/backoffice/modules/orders/components/ManagerSelect.tsx";
 import { usePaymentSubmit } from "@/features/backoffice/modules/orders/hooks/usePaymentSubmit.ts";
 import {
   type NewPaymentFormValues,
@@ -13,6 +14,7 @@ import {
 import { usersApi } from "@/features/backoffice/modules/users/api";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
+import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
 import {
   Dialog,
   DialogContent,
@@ -22,22 +24,21 @@ import {
 } from "@/shared/components/ui/dialog.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/components/ui/select.tsx";
-import { PAYMENTS } from "@/shared/types.ts";
+import { PAYMENT_METHODS, PAYMENTS, type PaymentType } from "@/shared/types.ts";
 
 interface AddPaymentModalProps {
   orderId: number;
+  type: PaymentType;
   open: boolean;
   onClose: () => void;
 }
 
-const AddPaymentModal = ({ orderId, open, onClose }: AddPaymentModalProps) => {
+const AddPaymentModal = ({
+  orderId,
+  type,
+  open,
+  onClose,
+}: AddPaymentModalProps) => {
   const { t } = useTranslation();
   const { user } = useAuth();
 
@@ -55,7 +56,8 @@ const AddPaymentModal = ({ orderId, open, onClose }: AddPaymentModalProps) => {
   } = useForm<NewPaymentFormValues, unknown, NewPaymentSchema>({
     resolver: zodResolver(newPaymentSchema()),
     defaultValues: {
-      type: PAYMENTS.PAYMENT,
+      type,
+      method: PAYMENT_METHODS.CASH,
       managerId: user?.id,
     },
   });
@@ -65,41 +67,15 @@ const AddPaymentModal = ({ orderId, open, onClose }: AddPaymentModalProps) => {
     onSuccess: onClose,
   });
 
-  const isRefund = useWatch({ control, name: "type" }) === PAYMENTS.REFUND;
+  const isRefund = type === PAYMENTS.REFUND;
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent>
+      <DialogContent onEscapeKeyDown={(e) => e.stopPropagation()}>
         <DialogHeader>
-          <DialogTitle>{t("orders.payments.addPayment")}</DialogTitle>
+          <DialogTitle>{t(`orders.payments.types.${type}`)}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <Label>{t("orders.payments.table.type")}</Label>
-            <Controller
-              name="type"
-              control={control}
-              render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="h-11 text-base">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={PAYMENTS.PAYMENT}>
-                      {t("orders.payments.types.payment")}
-                    </SelectItem>
-                    <SelectItem value={PAYMENTS.PREPAYMENT}>
-                      {t("orders.payments.types.prepayment")}
-                    </SelectItem>
-                    <SelectItem value={PAYMENTS.REFUND}>
-                      {t("orders.payments.types.refund")}
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-          </div>
-
           <div className="flex flex-col gap-1">
             <Label>{t("orders.payments.table.amount")}</Label>
             {isRefund ? (
@@ -124,6 +100,36 @@ const AddPaymentModal = ({ orderId, open, onClose }: AddPaymentModalProps) => {
           </div>
 
           <div className="flex flex-col gap-1">
+            <Label>{t("orders.payments.paymentMethod")}</Label>
+            <Controller
+              name="method"
+              control={control}
+              render={({ field }) => (
+                <div className="flex gap-4 py-1">
+                  {Object.values(PAYMENT_METHODS).map((method) => (
+                    <label
+                      key={method}
+                      htmlFor={`method-${method}`}
+                      className="flex cursor-pointer select-none items-center gap-1.5"
+                    >
+                      <Checkbox
+                        id={`method-${method}`}
+                        checked={field.value === method}
+                        onCheckedChange={(checked) => {
+                          if (checked) field.onChange(method);
+                        }}
+                      />
+                      <span className="text-sm">
+                        {t(`orders.paymentMethods.${method}`)}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
             <Label>{t("orders.payments.table.note")}</Label>
             <Input {...register("note")} />
           </div>
@@ -134,26 +140,12 @@ const AddPaymentModal = ({ orderId, open, onClose }: AddPaymentModalProps) => {
               name="managerId"
               control={control}
               render={({ field }) => (
-                <Select
-                  value={field.value ? String(field.value) : ""}
-                  onValueChange={(val) =>
-                    field.onChange(val ? Number(val) : undefined)
-                  }
-                  disabled={!users.length || isLoadingUsers}
-                >
-                  <SelectTrigger className="h-11 text-base">
-                    <SelectValue
-                      placeholder={isLoadingUsers ? t("loader.default") : "..."}
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {users.map((u) => (
-                      <SelectItem key={u.id} value={String(u.id)}>
-                        {u.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <ManagerSelect
+                  value={field.value}
+                  onChange={field.onChange}
+                  users={users}
+                  isLoading={isLoadingUsers}
+                />
               )}
             />
           </div>

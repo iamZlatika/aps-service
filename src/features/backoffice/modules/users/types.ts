@@ -20,7 +20,7 @@ export type User = {
   avatarUrl: string;
   location: Location | null;
   servicesPercent: number;
-  partsPercent: number;
+  productsPercent: number;
   intakePercent: number;
 };
 
