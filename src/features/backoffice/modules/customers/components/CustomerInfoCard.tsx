@@ -35,9 +35,13 @@ import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 
 interface CustomerInfoCardProps {
   customer: CustomerInfo;
+  showStatusToggle?: boolean;
 }
 
-export const CustomerInfoCard = ({ customer }: CustomerInfoCardProps) => {
+export const CustomerInfoCard = ({
+  customer,
+  showStatusToggle = true,
+}: CustomerInfoCardProps) => {
   const { t } = useTranslation();
   const [isInfoEditing, setIsInfoEditing] = useState(false);
 
@@ -48,7 +52,7 @@ export const CustomerInfoCard = ({ customer }: CustomerInfoCardProps) => {
     setIsConfirmOpened,
     handleConfirm,
     isStatusPending,
-  } = useCustomerStatus(customer.id, customer);
+  } = useCustomerStatus(showStatusToggle ? customer.id : null, customer);
   const {
     phones,
     phoneNumberToDelete,
@@ -166,7 +170,7 @@ export const CustomerInfoCard = ({ customer }: CustomerInfoCardProps) => {
     </button>
   );
 
-  const leftAction = (
+  const leftAction = showStatusToggle ? (
     <button
       onClick={() => setIsConfirmOpened(true)}
       className={
@@ -181,7 +185,7 @@ export const CustomerInfoCard = ({ customer }: CustomerInfoCardProps) => {
         <Lock className="h-4 w-4" />
       )}
     </button>
-  );
+  ) : undefined;
 
   return (
     <>
@@ -253,28 +257,30 @@ export const CustomerInfoCard = ({ customer }: CustomerInfoCardProps) => {
         onConfirm={handleDeletePhone}
         isPending={isDeletePending}
       />
-      <DeleteConfirmDialog
-        isOpen={isConfirmOpened}
-        onOpenChange={setIsConfirmOpened}
-        title={
-          customer.status === "active"
-            ? t("customers.actions.block")
-            : t("customers.actions.unblock")
-        }
-        description={
-          customer.status === "active"
-            ? t("customers.actions.block_confirm", { name: customer.name })
-            : t("customers.actions.unblock_confirm", { name: customer.name })
-        }
-        cancelLabel={t("customers.actions.cancel")}
-        confirmLabel={
-          customer.status === "active"
-            ? t("customers.actions.block")
-            : t("customers.actions.unblock")
-        }
-        onConfirm={handleConfirm}
-        isPending={isStatusPending}
-      />
+      {showStatusToggle && (
+        <DeleteConfirmDialog
+          isOpen={isConfirmOpened}
+          onOpenChange={setIsConfirmOpened}
+          title={
+            customer.status === "active"
+              ? t("customers.actions.block")
+              : t("customers.actions.unblock")
+          }
+          description={
+            customer.status === "active"
+              ? t("customers.actions.block_confirm", { name: customer.name })
+              : t("customers.actions.unblock_confirm", { name: customer.name })
+          }
+          cancelLabel={t("customers.actions.cancel")}
+          confirmLabel={
+            customer.status === "active"
+              ? t("customers.actions.block")
+              : t("customers.actions.unblock")
+          }
+          onConfirm={handleConfirm}
+          isPending={isStatusPending}
+        />
+      )}
       <ItemFormDialog
         isOpen={isAddOpened}
         onOpenChange={setIsAddOpened}

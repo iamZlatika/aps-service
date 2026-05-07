@@ -1,6 +1,10 @@
-import { mapCustomerDtoToCustomer } from "@/features/backoffice/modules/customers/lib/adapters.ts";
+import {
+  mapCustomerDtoToCustomer,
+  mapCustomerInfoDtoToCustomerInfo,
+} from "@/features/backoffice/modules/customers/lib/adapters.ts";
 import { mapLocationDtoToLocation } from "@/features/backoffice/modules/dictionaries/lib/adapter.ts";
 import type {
+  CallHistoryDto,
   DocumentDto,
   OrderCommentDto,
   OrderDto,
@@ -14,6 +18,7 @@ import type {
 } from "@/features/backoffice/modules/orders/api/dto.ts";
 import type { EditOrderInfoFormValues } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import {
+  type CallHistoryItem,
   type NewOrder,
   type NewOrderPayment,
   type NewOrderProduct,
@@ -155,10 +160,21 @@ export const mapPaymentDtoToPayment = (dto: OrderPaymentDto): OrderPayment => ({
     : null,
 });
 
+export function mapCallHistoryDtoToCallHistoryItem(
+  dto: CallHistoryDto,
+): CallHistoryItem {
+  return {
+    id: dto.id,
+    isCalled: dto.is_called,
+    user: dto.changed_by_user ? mapUserDtoToUser(dto.changed_by_user) : null,
+    createdAt: dto.created_at,
+  };
+}
+
 export const mapOrderInfoDtoToOrderInfo = (dto: OrderInfoDto): OrderInfo => {
   return {
     ...mapOrderDtoToOrder(dto),
-
+    customer: mapCustomerInfoDtoToCustomerInfo(dto.customer),
     location: mapLocationDtoToLocation(dto.location),
     statusHistory: dto.status_history.map(
       mapStatusHistoryItemDtoToStatusHistoryItem,
@@ -167,6 +183,7 @@ export const mapOrderInfoDtoToOrderInfo = (dto: OrderInfoDto): OrderInfo => {
     products: dto.products.map(mapOrderProductDtoToOrderProduct),
     comments: dto.comments.map(mapOrderCommentDtoToOrderComment),
     payments: dto.payments.map(mapPaymentDtoToPayment),
+    callHistory: dto.call_history.map(mapCallHistoryDtoToCallHistoryItem),
   };
 };
 

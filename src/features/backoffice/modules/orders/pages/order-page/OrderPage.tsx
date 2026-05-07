@@ -17,6 +17,8 @@ import Loader from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
 
+import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard.tsx";
+
 import { OrderInfoCard } from "./components/order-info-fields/OrderInfoCard.tsx";
 
 interface OrderPageContentProps {
@@ -101,7 +103,17 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                 selectedOrder={selectedOrder}
               />
               <PaymentsCard orderId={orderId} selectedOrder={selectedOrder} />
-              <OrderInfoCard order={selectedOrder} />
+              <div className="flex gap-6 items-start">
+                <div className="flex-1 min-w-0">
+                  <OrderInfoCard order={selectedOrder} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <CustomerInfoCard
+                    customer={selectedOrder.customer}
+                    showStatusToggle={false}
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <HistorySidebar orderId={selectedOrder.id} history={history} />

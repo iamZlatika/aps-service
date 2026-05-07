@@ -1,6 +1,9 @@
 import { z } from "zod";
 
-import { CustomerDtoSchema } from "@/features/backoffice/modules/customers/api/dto.ts";
+import {
+  CustomerDtoSchema,
+  CustomerInfoDtoSchema,
+} from "@/features/backoffice/modules/customers/api/dto.ts";
 import { LocationDtoSchema } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { UserDtoSchema } from "@/features/backoffice/modules/users/api/dto.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
@@ -132,12 +135,23 @@ export const OrderPaymentSchema = z.object({
 });
 export type OrderPaymentDto = z.infer<typeof OrderPaymentSchema>;
 
+export const CallHistoryDtoSchema = z.object({
+  id: z.number(),
+  is_called: z.boolean(),
+  changed_by_user: UserDtoSchema.nullable(),
+  created_at: z.iso.datetime(),
+});
+
+export type CallHistoryDto = z.infer<typeof CallHistoryDtoSchema>;
+
 export const OrderInfoDtoSchema = OrderDtoSchema.extend({
+  customer: CustomerInfoDtoSchema,
   location: LocationDtoSchema,
   status_history: z.array(StatusHistoryItemDtoSchema),
   services: z.array(OrderServiceSchema),
   products: z.array(OrderProductSchema),
   comments: z.array(OrderCommentDtoSchema),
   payments: z.array(OrderPaymentSchema),
+  call_history: z.array(CallHistoryDtoSchema),
 });
 export type OrderInfoDto = z.infer<typeof OrderInfoDtoSchema>;

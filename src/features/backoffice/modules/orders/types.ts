@@ -1,4 +1,7 @@
-import type { Customer } from "@/features/backoffice/modules/customers/types.ts";
+import {
+  type Customer,
+  type CustomerInfo,
+} from "@/features/backoffice/modules/customers/types.ts";
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
@@ -20,6 +23,12 @@ export type StatusHistoryItem = {
   createdAt: string;
 };
 
+export type CallHistoryItem = {
+  id: number;
+  isCalled: boolean;
+  user: User | null;
+  createdAt: string;
+};
 export type OrderDocument = {
   id: number;
   type: string;
@@ -142,11 +151,13 @@ export type NewOrderPayment = Omit<
   managerId: number;
 };
 
-export type OrderInfo = Order & {
+export type OrderInfo = Omit<Order, "customer"> & {
+  customer: CustomerInfo;
   location: Location;
   statusHistory: StatusHistoryItem[];
   services: OrderService[];
   products: OrderProduct[];
   comments: OrderComment[];
   payments: OrderPayment[];
+  callHistory: CallHistoryItem[];
 };
