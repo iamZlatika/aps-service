@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { addDays, format } from "date-fns";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import { LeaveConfirmDialog } from "@/features/backoffice/modules/orders/components/LeaveConfirmDialog.tsx";
@@ -11,6 +12,7 @@ import { useOrderFormDefaults } from "@/features/backoffice/modules/orders/hooks
 import {
   type NewOrderSchema,
   newOrderSchema,
+  prefillStateSchema,
 } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import {
   fetchCustomersByName,
@@ -27,13 +29,21 @@ import { DeviceSection } from "./form-sections/DeviceSection.tsx";
 const CreateOrderPage = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const { state } = useLocation();
+
+  const parsed = prefillStateSchema.safeParse(state);
+  const prefillCustomer = parsed.success ? parsed.data.customer : undefined;
+
+  const primaryPhone = prefillCustomer?.phones.find((p) => p.isPrimary);
 
   const methods = useForm<NewOrderSchema>({
     resolver: zodResolver(newOrderSchema()),
     defaultValues: {
-      customerName: "",
-      customerPrimaryPhone: "",
+      customerName: prefillCustomer?.name ?? "",
+      customerPrimaryPhone: primaryPhone?.phoneNumber ?? "",
       customerSecondaryPhone: "",
+      customerEmail: prefillCustomer?.email ?? "",
+      customerComment: prefillCustomer?.comment ?? "",
       issueType: "",
       deviceType: "",
       manufacturer: "",
@@ -65,6 +75,7 @@ const CreateOrderPage = () => {
                 <CustomerSection
                   fetchCustomersByName={fetchCustomersByName}
                   fetchCustomersByPhone={fetchCustomersByPhone}
+                  isPrefilled={!!prefillCustomer}
                 />
                 <DeviceSection />
                 <AdditionalInfoSection

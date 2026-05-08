@@ -2,13 +2,13 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { HistoryItemWrapper } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/HistoryItemWrapper.tsx";
-import type { HistoryCallItem } from "@/features/backoffice/modules/orders/pages/order-page/types.ts";
+import type { HistoryCall } from "@/features/backoffice/modules/orders/pages/order-page/types.ts";
 
-interface CallHistoryItemProps {
-  item: HistoryCallItem;
+interface CallItemProps {
+  item: HistoryCall;
 }
 
-export const CallHistoryItem = memo(({ item }: CallHistoryItemProps) => {
+export const CallItem = memo(({ item }: CallItemProps) => {
   const { t } = useTranslation();
 
   if (item.isCalled) {

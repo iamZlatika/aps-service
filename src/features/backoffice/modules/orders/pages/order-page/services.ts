@@ -1,5 +1,5 @@
 import type {
-  HistoryCallItem,
+  HistoryCall,
   HistoryComment,
   HistoryPayment,
   HistoryProduct,
@@ -51,7 +51,7 @@ export function mapProducts(items: OrderProduct[]): HistoryProduct[] {
       events.push({
         ...base,
         date: item.deletedAt,
-        user: item.deletedByUser ?? item.manager ?? undefined,
+        user: item.deletedByUser ?? item.manager,
         event: "deleted",
       });
     }
@@ -84,7 +84,7 @@ export function mapServices(items: OrderService[]): HistoryService[] {
       events.push({
         ...base,
         date: item.deletedAt,
-        user: item.deletedByUser ?? item.manager ?? undefined,
+        user: item.deletedByUser ?? item.manager,
         event: "deleted",
       });
     }
@@ -118,7 +118,7 @@ export function mapPayments(items: OrderPayment[]): HistoryPayment[] {
       {
         ...base,
         date: item.createdAt,
-        user: item.manager ?? undefined,
+        user: item.manager,
         event: "added",
       },
     ];
@@ -127,7 +127,7 @@ export function mapPayments(items: OrderPayment[]): HistoryPayment[] {
       events.push({
         ...base,
         date: item.deletedAt,
-        user: item.deletedByUser ?? item.manager ?? undefined,
+        user: item.deletedByUser ?? item.manager,
         event: "deleted",
       });
     }
@@ -136,7 +136,7 @@ export function mapPayments(items: OrderPayment[]): HistoryPayment[] {
   });
 }
 
-export function mapCallHistory(items: CallHistoryItem[]): HistoryCallItem[] {
+export function mapCallHistory(items: CallHistoryItem[]): HistoryCall[] {
   return items.map((item) => ({
     type: "call" as const,
     id: item.id,

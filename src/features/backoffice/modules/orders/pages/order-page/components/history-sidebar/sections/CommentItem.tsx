@@ -17,7 +17,7 @@ export const CommentItem = memo(({ item }: CommentItemProps) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const { download, isPending: isDownloading } = useDownloadImage();
 
-  const userName = item.user?.name ?? "—";
+  const userName = item.user.name;
   const image = item.image;
 
   return (

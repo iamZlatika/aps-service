@@ -22,11 +22,13 @@ type CustomerSectionProps = {
   fetchCustomersByPhone: (
     search: string,
   ) => Promise<SearchableSelectOption<CustomerByPhoneMeta>[]>;
+  isPrefilled?: boolean;
 };
 
 export const CustomerSection = ({
   fetchCustomersByName,
   fetchCustomersByPhone,
+  isPrefilled = false,
 }: CustomerSectionProps) => {
   const { t } = useTranslation();
   const {
@@ -45,78 +47,99 @@ export const CustomerSection = ({
 
       <div className="flex flex-col gap-1">
         <Label className="text-base">{t("orders.form.customerName")}</Label>
-        <Controller
-          name="customerName"
-          control={control}
-          render={({ field }) => (
-            <SearchableSelect
-              placeholder={t("orders.placeholders.customerName")}
-              value={field.value ?? ""}
-              onChange={field.onChange}
-              onSelect={(option) => {
-                setValue("customerPrimaryPhone", option.meta.phone);
-                const secondaryPhone = option.meta.phones[1];
-                setValue("customerSecondaryPhone", secondaryPhone ?? "");
-                setIsSecondaryPhoneLocked(!!secondaryPhone);
-              }}
-              onClear={() => {
-                setValue("customerPrimaryPhone", "");
-                setValue("customerSecondaryPhone", "");
-                setIsSecondaryPhoneLocked(false);
-              }}
-              renderOption={(option) => (
-                <CustomerOption
-                  name={option.name}
-                  phones={option.meta.phones}
-                />
-              )}
-              fetchItems={fetchCustomersByName}
-              queryKey={["customers", "search-by-name"]}
-              error={errors.customerName}
-            />
-          )}
-        />
+        {isPrefilled ? (
+          <Input
+            className="h-11 text-base md:text-base"
+            {...register("customerName")}
+          />
+        ) : (
+          <Controller
+            name="customerName"
+            control={control}
+            render={({ field }) => (
+              <SearchableSelect
+                placeholder={t("orders.placeholders.customerName")}
+                value={field.value ?? ""}
+                onChange={field.onChange}
+                onSelect={(option) => {
+                  setValue("customerPrimaryPhone", option.meta.phone);
+                  const secondaryPhone = option.meta.phones[1];
+                  setValue("customerSecondaryPhone", secondaryPhone ?? "");
+                  setIsSecondaryPhoneLocked(!!secondaryPhone);
+                }}
+                onClear={() => {
+                  setValue("customerPrimaryPhone", "");
+                  setValue("customerSecondaryPhone", "");
+                  setIsSecondaryPhoneLocked(false);
+                }}
+                renderOption={(option) => (
+                  <CustomerOption
+                    name={option.name}
+                    phones={option.meta.phones}
+                  />
+                )}
+                fetchItems={fetchCustomersByName}
+                queryKey={["customers", "search-by-name"]}
+                error={errors.customerName}
+              />
+            )}
+          />
+        )}
       </div>
 
       <div className="flex flex-col gap-1">
         <Label className="text-base">
           {t("orders.form.customerPrimaryPhone")}
         </Label>
-        <Controller
-          name="customerPrimaryPhone"
-          control={control}
-          render={({ field }) => (
-            <SearchableSelect
-              value={field.value ?? ""}
-              onChange={field.onChange}
-              onSelect={(option) => {
-                setValue("customerName", option.meta.customerName);
-                const secondaryPhone = option.meta.phones[1];
-                setValue("customerSecondaryPhone", secondaryPhone ?? "");
-                setIsSecondaryPhoneLocked(!!secondaryPhone);
-              }}
-              renderOption={(option) => (
-                <CustomerOption
-                  name={option.meta.customerName}
-                  phones={option.meta.phones}
-                />
-              )}
-              renderInput={(props) => (
-                <PhoneMaskInput
-                  value={props.value}
-                  onChange={props.onChange}
-                  onFocus={props.onFocus}
-                  onBlur={props.onBlur}
-                  onKeyDown={props.onKeyDown}
-                  hasError={props.hasError}
-                />
-              )}
-              fetchItems={fetchCustomersByPhone}
-              queryKey={["customers", "search-by-phone"]}
-              error={errors.customerPrimaryPhone}
-            />
-          )}
-        />
+        {isPrefilled ? (
+          <Controller
+            name="customerPrimaryPhone"
+            control={control}
+            render={({ field }) => (
+              <PhoneMaskInput
+                value={field.value ?? ""}
+                onChange={field.onChange}
+                hasError={!!errors.customerPrimaryPhone}
+              />
+            )}
+          />
+        ) : (
+          <Controller
+            name="customerPrimaryPhone"
+            control={control}
+            render={({ field }) => (
+              <SearchableSelect
+                value={field.value ?? ""}
+                onChange={field.onChange}
+                onSelect={(option) => {
+                  setValue("customerName", option.meta.customerName);
+                  const secondaryPhone = option.meta.phones[1];
+                  setValue("customerSecondaryPhone", secondaryPhone ?? "");
+                  setIsSecondaryPhoneLocked(!!secondaryPhone);
+                }}
+                renderOption={(option) => (
+                  <CustomerOption
+                    name={option.meta.customerName}
+                    phones={option.meta.phones}
+                  />
+                )}
+                renderInput={(props) => (
+                  <PhoneMaskInput
+                    value={props.value}
+                    onChange={props.onChange}
+                    onFocus={props.onFocus}
+                    onBlur={props.onBlur}
+                    onKeyDown={props.onKeyDown}
+                    hasError={props.hasError}
+                  />
+                )}
+                fetchItems={fetchCustomersByPhone}
+                queryKey={["customers", "search-by-phone"]}
+                error={errors.customerPrimaryPhone}
+              />
+            )}
+          />
+        )}
       </div>
 
       <div className="flex flex-col gap-1">
@@ -141,6 +164,7 @@ export const CustomerSection = ({
           </p>
         )}
       </div>
+
       <div className="flex flex-col gap-1">
         <Label className="text-base">
           {t("customers.register_form.email")}

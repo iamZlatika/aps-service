@@ -114,3 +114,14 @@ export const newPaymentSchema = () =>
 
 export type NewPaymentSchema = z.infer<ReturnType<typeof newPaymentSchema>>;
 export type NewPaymentFormValues = z.input<ReturnType<typeof newPaymentSchema>>;
+
+export const prefillStateSchema = z.object({
+  customer: z.object({
+    name: z.string(),
+    email: z.string().nullable(),
+    comment: z.string().nullable(),
+    phones: z.array(
+      z.object({ phoneNumber: z.string(), isPrimary: z.boolean() }),
+    ),
+  }),
+});

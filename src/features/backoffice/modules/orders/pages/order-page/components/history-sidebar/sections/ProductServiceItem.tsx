@@ -15,7 +15,7 @@ interface ProductServiceItemProps {
 export const ProductServiceItem = memo(({ item }: ProductServiceItemProps) => {
   const { t } = useTranslation();
 
-  const userName = item.user?.name ?? "—";
+  const userName = item.user.name;
   const isDeleted = item.event === "deleted";
   const Icon = item.type === "product" ? Box : Cog;
   const actionKey = `orders.history.${item.type}.${item.event}`;

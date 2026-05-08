@@ -5,7 +5,11 @@ import {
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
-import { type PaymentMethodType, type PaymentType } from "@/shared/types.ts";
+import {
+  type DocumentType,
+  type PaymentMethodType,
+  type PaymentType,
+} from "@/shared/types.ts";
 
 export type OrderStatus = {
   id: number;
@@ -31,7 +35,7 @@ export type CallHistoryItem = {
 };
 export type OrderDocument = {
   id: number;
-  type: string;
+  type: DocumentType;
   name: string;
   url: string;
   createdAt: string;
@@ -138,7 +142,7 @@ export type OrderPayment = {
   method: PaymentMethodType;
   amount: string;
   note: string | null;
-  manager: User | null;
+  manager: User;
   createdAt: string;
   deletedAt: string | null;
   deletedByUser: User | null;

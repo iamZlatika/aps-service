@@ -15,7 +15,7 @@ export const StatusItem = memo(({ item }: StatusItemProps) => {
   const isUk = useIsUkLocale();
 
   const statusName = isUk ? item.status.nameUa : item.status.nameRu;
-  const userName = item.user?.name ?? "—";
+  const userName = item.user.name;
 
   const isNew = item.status.key === "new";
   const isClosed = item.status.key === "closed";

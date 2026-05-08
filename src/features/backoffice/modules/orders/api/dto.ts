@@ -7,7 +7,7 @@ import {
 import { LocationDtoSchema } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { UserDtoSchema } from "@/features/backoffice/modules/users/api/dto.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
-import { PAYMENT_METHODS, PAYMENTS } from "@/shared/types.ts";
+import { DOCUMENTS_TYPES, PAYMENT_METHODS, PAYMENTS } from "@/shared/types.ts";
 
 export const StatusDtoSchema = z.object({
   id: z.number(),
@@ -29,7 +29,7 @@ export type StatusHistoryItemDto = z.infer<typeof StatusHistoryItemDtoSchema>;
 
 export const DocumentsDtoSchema = z.object({
   id: z.number(),
-  type: z.string(),
+  type: z.enum(DOCUMENTS_TYPES),
   url: z.string(),
   name: z.string(),
   created_at: z.iso.datetime(),
@@ -128,7 +128,7 @@ export const OrderPaymentSchema = z.object({
   method: zodEnumFromConst(PAYMENT_METHODS),
   amount: z.string(),
   note: z.string().nullable(),
-  manager: UserDtoSchema.nullable(),
+  manager: UserDtoSchema,
   created_at: z.iso.datetime(),
   deleted_at: z.iso.datetime().nullable(),
   deleted_by_user: UserDtoSchema.nullable(),

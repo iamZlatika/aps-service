@@ -43,6 +43,7 @@ import {
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
 import { buildPaginatedParams, del, get, post, put } from "@/shared/api/api.ts";
+import { apiClient } from "@/shared/api/apiClient.ts";
 
 export const ordersApi = {
   getAll: async (
@@ -191,5 +192,33 @@ export const ordersApi = {
   },
   deletePayment: async (orderId: number, paymentId: number): Promise<void> => {
     await del<void>(ORDERS_API.deletePayment(orderId, paymentId));
+  },
+  downloadDocument: async (
+    orderId: number,
+    documentId: number,
+    filename: string,
+  ): Promise<void> => {
+    const response = await apiClient.get(
+      ORDERS_API.downloadDocument(orderId, documentId),
+      { responseType: "blob" },
+    );
+    const objectUrl = URL.createObjectURL(new Blob([response.data]));
+    const a = document.createElement("a");
+    a.href = objectUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 100);
+  },
+  fetchDocumentBlob: async (
+    orderId: number,
+    documentId: number,
+  ): Promise<Blob> => {
+    const response = await apiClient.get(
+      ORDERS_API.downloadDocument(orderId, documentId),
+      { responseType: "blob" },
+    );
+    return new Blob([response.data], { type: "application/pdf" });
   },
 };

@@ -16,4 +16,6 @@ export const ORDERS_API = {
   makePayment: (orderId: number) => `${BASE}/${orderId}/payments`,
   deletePayment: (orderId: number, paymentId: number) =>
     `${BASE}/${orderId}/payments/${paymentId}`,
+  downloadDocument: (orderId: number, documentId: number) =>
+    `${BASE}/${orderId}/documents/${documentId}/download`,
 };

@@ -152,7 +152,7 @@ export const mapPaymentDtoToPayment = (dto: OrderPaymentDto): OrderPayment => ({
   method: dto.method,
   amount: dto.amount,
   note: dto.note,
-  manager: dto.manager ? mapUserDtoToUser(dto.manager) : null,
+  manager: mapUserDtoToUser(dto.manager),
   createdAt: dto.created_at,
   deletedAt: dto.deleted_at,
   deletedByUser: dto.deleted_by_user

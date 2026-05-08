@@ -1,5 +1,6 @@
 import { format } from "date-fns";
-import { useCallback, useEffect, useMemo } from "react";
+import { Printer, Users } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -19,6 +20,7 @@ import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
 
 import { OrderInfoCard } from "./components/order-info-fields/OrderInfoCard.tsx";
+import { PrintDialog } from "./components/PrintDialog.tsx";
 
 interface OrderPageContentProps {
   orderId: number;
@@ -38,6 +40,8 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [navigate]);
+
+  const [isPrintOpen, setIsPrintOpen] = useState(false);
 
   const history = useMemo(
     () => (selectedOrder ? buildOrderHistory(selectedOrder) : []),
@@ -61,63 +65,92 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
       onRetry={refetch}
     >
       {selectedOrder && (
-        <div className="flex h-full">
-          <div className="flex-1 overflow-y-auto p-2 sm:p-6">
-            <div className="mb-6">
-              <div className="flex items-center gap-3">
-                <h1 className="text-2xl font-bold">
-                  {t("orders.order")} {selectedOrder.orderNumber}
-                </h1>
-                <StatusSelect
+        <>
+          <div className="flex h-full">
+            <div className="flex-1 overflow-y-auto p-2 sm:p-6">
+              <div className="mb-6">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <h1 className="text-2xl font-bold">
+                      {t("orders.order")} {selectedOrder.orderNumber}
+                    </h1>
+                    <StatusSelect
+                      orderId={orderId}
+                      status={selectedOrder.status}
+                      onSuccess={handleStatusSuccess}
+                    />
+                    <span className="text-muted-foreground text-2xl">
+                      {parseFloat(selectedOrder.remainingToPay) < 0
+                        ? t("orders.overpayment")
+                        : t("orders.remainingToPay")}
+                      :{" "}
+                      <span
+                        className={`font-medium text-2xl ${parseFloat(selectedOrder.remainingToPay) < 0 ? "text-destructive" : "text-green-500"}`}
+                      >
+                        {selectedOrder.remainingToPay} ₴
+                      </span>
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      className="h-12 w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"
+                      onClick={() =>
+                        navigate(
+                          `${AuthRoutes.backofficeRoot()}/${ORDERS_ROUTES.createNewOrder}`,
+                          { state: { customer: selectedOrder.customer } },
+                        )
+                      }
+                    >
+                      <Users className="h-5 w-5" />
+                    </button>
+                    <button
+                      className="h-12 w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"
+                      onClick={() => setIsPrintOpen(true)}
+                    >
+                      <Printer className="h-5 w-5" />
+                    </button>
+                  </div>
+                </div>
+                <div className="mt-1">
+                  <p className="text-muted-foreground text-base font-medium">
+                    {t("orders.acceptedBy")}: {selectedOrder.manager.name}
+                  </p>
+                  <p className="text-muted-foreground text-sm">
+                    {selectedOrder.closedAt
+                      ? `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")} — ${t("orders.closedAt")}: ${format(new Date(selectedOrder.closedAt), "dd.MM.yyyy")}`
+                      : `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")}`}
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-6">
+                <ProductsAndServicesCard
                   orderId={orderId}
-                  status={selectedOrder.status}
-                  onSuccess={handleStatusSuccess}
+                  selectedOrder={selectedOrder}
                 />
-                <span className="text-muted-foreground text-2xl">
-                  {parseFloat(selectedOrder.remainingToPay) < 0
-                    ? t("orders.overpayment")
-                    : t("orders.remainingToPay")}
-                  :{" "}
-                  <span
-                    className={`font-medium text-2xl ${parseFloat(selectedOrder.remainingToPay) < 0 ? "text-destructive" : "text-green-500"}`}
-                  >
-                    {selectedOrder.remainingToPay} ₴
-                  </span>
-                </span>
-              </div>
-              <div className="mt-1">
-                <p className="text-muted-foreground text-base font-medium">
-                  {t("orders.acceptedBy")}: {selectedOrder.manager.name}
-                </p>
-                <p className="text-muted-foreground text-sm">
-                  {selectedOrder.closedAt
-                    ? `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")} — ${t("orders.closedAt")}: ${format(new Date(selectedOrder.closedAt), "dd.MM.yyyy")}`
-                    : `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")}`}
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-6">
-              <ProductsAndServicesCard
-                orderId={orderId}
-                selectedOrder={selectedOrder}
-              />
-              <PaymentsCard orderId={orderId} selectedOrder={selectedOrder} />
-              <div className="flex gap-6 items-start">
-                <div className="flex-1 min-w-0">
-                  <OrderInfoCard order={selectedOrder} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <CustomerInfoCard
-                    customer={selectedOrder.customer}
-                    showStatusToggle={false}
-                    onSuccess={handleStatusSuccess}
-                  />
+                <PaymentsCard orderId={orderId} selectedOrder={selectedOrder} />
+                <div className="flex gap-6 items-start">
+                  <div className="flex-1 min-w-0">
+                    <OrderInfoCard order={selectedOrder} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <CustomerInfoCard
+                      customer={selectedOrder.customer}
+                      showStatusToggle={false}
+                      onSuccess={handleStatusSuccess}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
+            <HistorySidebar orderId={selectedOrder.id} history={history} />
           </div>
-          <HistorySidebar orderId={selectedOrder.id} history={history} />
-        </div>
+          <PrintDialog
+            isOpen={isPrintOpen}
+            onOpenChange={setIsPrintOpen}
+            orderId={orderId}
+            documents={selectedOrder.documents}
+          />
+        </>
       )}
     </QueryPageGuard>
   );

@@ -11,7 +11,7 @@ interface PaymentItemProps {
 export const PaymentItem = memo(({ item }: PaymentItemProps) => {
   const { t } = useTranslation();
 
-  const userName = item.user?.name ?? "—";
+  const userName = item.user.name;
   const isDeleted = item.event === "deleted";
   const isRefund = item.paymentType === "refund";
 

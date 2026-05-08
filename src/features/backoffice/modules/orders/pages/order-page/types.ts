@@ -14,14 +14,14 @@ export type HistoryStatus = {
   type: "status";
   id: number;
   date: string;
-  user?: User;
+  user: User;
   status: OrderStatus;
 };
 export type HistoryService = {
   type: "service";
   id: number;
   date: string;
-  user?: User;
+  user: User;
   name: string;
   price: number;
   costPrice: number;
@@ -33,7 +33,7 @@ export type HistoryProduct = {
   type: "product";
   id: number;
   date: string;
-  user?: User;
+  user: User;
   name: string;
   price: number;
   purchasePrice: number;
@@ -45,7 +45,7 @@ export type HistoryComment = {
   type: "comment";
   id: number;
   date: string;
-  user?: User;
+  user: User;
   text?: string;
   image?: string;
 };
@@ -54,13 +54,13 @@ export type HistoryPayment = {
   type: "payment";
   id: number;
   date: string;
-  user?: User;
+  user: User;
   paymentType: PaymentType;
   amount: number;
   note?: string;
   event: "added" | "deleted";
 };
-export type HistoryCallItem = {
+export type HistoryCall = {
   type: "call";
   id: number;
   date: string;
@@ -74,4 +74,4 @@ export type OrderHistoryItem =
   | HistoryProduct
   | HistoryComment
   | HistoryPayment
-  | HistoryCallItem;
+  | HistoryCall;

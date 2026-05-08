@@ -38,7 +38,9 @@ export const StatusSelect = ({
       if (onSuccess) {
         onSuccess();
       } else {
-        queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+        return queryClient.invalidateQueries({
+          queryKey: queryKeys.orders.all,
+        });
       }
     },
   });
