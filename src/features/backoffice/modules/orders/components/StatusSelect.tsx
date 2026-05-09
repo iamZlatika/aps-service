@@ -1,8 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 import { orderStatusesApi } from "@/features/backoffice/modules/dictionaries/api";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
-import { useIsUkLocale } from "@/features/backoffice/modules/orders/hooks/useIsUkLocale.ts";
+import { CloseOrderModal } from "@/features/backoffice/modules/orders/components/CloseOrderModal.tsx";
 import type { OrderStatus } from "@/features/backoffice/modules/orders/types.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
@@ -13,19 +14,25 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu.tsx";
+import { useLocalizedName } from "@/shared/hooks/useLocalizedName.ts";
+
+const CLOSED_STATUS_KEY = "closed";
 
 interface StatusSelectProps {
   orderId: number;
   status: OrderStatus;
+  remainingToPay?: string;
   onSuccess?: () => void;
 }
 
 export const StatusSelect = ({
   orderId,
   status,
+  remainingToPay = "0",
   onSuccess,
 }: StatusSelectProps) => {
-  const isUk = useIsUkLocale();
+  const getLocalizedName = useLocalizedName();
+  const [closedStatusId, setClosedStatusId] = useState<number | null>(null);
 
   const { data } = useQuery({
     queryKey: queryKeys.dictionaries.orderStatuses(),
@@ -45,31 +52,60 @@ export const StatusSelect = ({
     },
   });
 
-  const displayName = isUk ? status.nameUa : status.nameRu;
+  const displayName = getLocalizedName(status);
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button className="group flex items-center gap-1 cursor-pointer focus:outline-none rounded-full">
-          <StatusBadge
-            name={displayName}
-            color={status.color}
-            isPending={mutation.isPending}
-            selectable
-          />
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {data?.items.map((s) => (
-          <DropdownMenuItem
-            key={s.id}
-            onSelect={() => mutation.mutate(s.id)}
-            disabled={s.id === status.id || mutation.isPending}
-          >
-            <StatusBadge name={isUk ? s.name_ua : s.name_ru} color={s.color} />
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className="group flex items-center gap-1 cursor-pointer focus:outline-none rounded-full">
+            <StatusBadge
+              name={displayName}
+              color={status.color}
+              isPending={mutation.isPending}
+              selectable
+            />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          {data?.items.map((s) => (
+            <DropdownMenuItem
+              key={s.id}
+              onSelect={() => {
+                if (s.key === CLOSED_STATUS_KEY) {
+                  setClosedStatusId(s.id);
+                } else {
+                  mutation.mutate(s.id);
+                }
+              }}
+              disabled={s.id === status.id || mutation.isPending}
+            >
+              <StatusBadge
+                name={getLocalizedName({
+                  nameRu: s.name_ru,
+                  nameUa: s.name_ua,
+                })}
+                color={s.color}
+              />
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {closedStatusId !== null && (
+        <CloseOrderModal
+          open
+          onClose={() => setClosedStatusId(null)}
+          orderId={orderId}
+          statusId={closedStatusId}
+          remainingToPay={remainingToPay}
+          onSuccess={
+            onSuccess ??
+            (() =>
+              queryClient.invalidateQueries({ queryKey: queryKeys.orders.all }))
+          }
+        />
+      )}
+    </>
   );
 };

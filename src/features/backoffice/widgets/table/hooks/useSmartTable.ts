@@ -25,6 +25,7 @@ interface UseSmartTableParams<T extends BaseItem = BaseItem> {
   columns: { field: string; filterable?: boolean }[];
   searchField: string;
   tableKey: string;
+  extraFilterKeys?: string[];
 }
 
 export const useSmartTable = <T extends BaseItem>({
@@ -33,13 +34,19 @@ export const useSmartTable = <T extends BaseItem>({
   columns,
   searchField,
   tableKey,
+  extraFilterKeys,
 }: UseSmartTableParams<T>) => {
   const { page, setPage } = usePageParam();
   const { perPage, setPerPage, perPageOptions } = usePerPage(tableKey);
   const { sort, toggleSort } = useSortParams();
 
   const { filters, setFilter, resetFilters } = useFilterParams();
-  const sanitized = sanitizeFilters(filters, columns, searchField);
+  const sanitized = sanitizeFilters(
+    filters,
+    columns,
+    searchField,
+    extraFilterKeys,
+  );
 
   const queryKey = queryKeyFn(page, perPage, sort.column, sort.type, sanitized);
 

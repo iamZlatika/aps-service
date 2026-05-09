@@ -1,4 +1,11 @@
-import { addDays, format, isBefore, parse, startOfDay } from "date-fns";
+import {
+  addDays,
+  format,
+  isBefore,
+  isSameDay,
+  parse,
+  startOfDay,
+} from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { FieldError } from "react-hook-form";
@@ -69,7 +76,10 @@ export const DueDatePicker = ({
             mode="single"
             selected={selected}
             onSelect={handleSelect}
-            disabled={(date) => isBefore(startOfDay(date), today)}
+            disabled={(date) =>
+              isBefore(startOfDay(date), today) &&
+              !(selected && isSameDay(date, selected))
+            }
             modifiers={{ suggested: [suggested] }}
             modifiersClassNames={{
               suggested: "ring-1 ring-primary ring-inset rounded-md",

@@ -1,8 +1,8 @@
 import { Download, PrinterCheck } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useDocumentActions } from "@/features/backoffice/modules/orders/pages/order-page/hooks/useDocumentActions.ts";
+import { useDocumentActions } from "@/features/backoffice/modules/orders/hooks/useDocumentActions.ts";
 import type { OrderDocument } from "@/features/backoffice/modules/orders/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
@@ -34,8 +34,16 @@ export const PrintDialog = ({
   const intakeDoc = documents.find((d) => d.type === "intake_receipt");
   const closingDoc = documents.find((d) => d.type === "closing_receipt");
 
-  const [intakeChecked, setIntakeChecked] = useState(!closingDoc);
-  const [closingChecked, setClosingChecked] = useState(!!closingDoc);
+  const hasClosingDoc = !!closingDoc;
+
+  const [intakeChecked, setIntakeChecked] = useState(!hasClosingDoc);
+  const [closingChecked, setClosingChecked] = useState(hasClosingDoc);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setIntakeChecked(!hasClosingDoc);
+    setClosingChecked(hasClosingDoc);
+  }, [isOpen, hasClosingDoc]);
 
   const selectedDocs = [
     intakeChecked && intakeDoc ? intakeDoc : null,

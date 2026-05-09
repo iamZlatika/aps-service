@@ -77,7 +77,7 @@ export const fetchUsersByName = (
     )
     .then((r) => r.items.map((u) => ({ id: u.id, name: u.name })));
 
-export const fetchByDictionaryName =
+export const createNameSearchFetcher =
   (apiFn: PaginatedGetAllFn) =>
   (search: string): Promise<SearchableSelectOption[]> =>
     apiFn(

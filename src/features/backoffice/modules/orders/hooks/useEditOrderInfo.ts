@@ -35,7 +35,7 @@ export const useEditOrderInfo = (
   const { reset } = form;
 
   useEffect(() => {
-    reset(mapOrderInfoToEditFormValues(order));
+    reset(mapOrderInfoToEditFormValues(order), { keepDirtyValues: true });
   }, [order, reset]);
 
   const mutation = useMutation({
@@ -44,7 +44,7 @@ export const useEditOrderInfo = (
     onSuccess: () => {
       toast.success(i18next.t("orders.successUpdate"));
       onSuccess();
-      queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: queryKeys.orders.detail(orderId),
       });
     },

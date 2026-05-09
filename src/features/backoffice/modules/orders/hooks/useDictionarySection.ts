@@ -11,7 +11,7 @@ import {
   issueTypesApi,
   manufacturersApi,
 } from "@/features/backoffice/modules/dictionaries/api";
-import { fetchByDictionaryName } from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
+import { createNameSearchFetcher } from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
 
 const createWithToast =
   (apiFn: (payload: { name: string }) => Promise<unknown>) =>
@@ -24,13 +24,13 @@ export const useDictionarySection = () =>
   useMemo(
     () => ({
       fetchers: {
-        issueTypes: fetchByDictionaryName(issueTypesApi.getAll),
-        deviceTypes: fetchByDictionaryName(deviceTypesApi.getAll),
-        manufacturers: fetchByDictionaryName(manufacturersApi.getAll),
-        deviceModels: fetchByDictionaryName(deviceModelsApi.getAll),
-        deviceConditions: fetchByDictionaryName(deviceConditionsApi.getAll),
-        accessories: fetchByDictionaryName(accessoriesApi.getAll),
-        intakeNotes: fetchByDictionaryName(intakeNotesApi.getAll),
+        issueTypes: createNameSearchFetcher(issueTypesApi.getAll),
+        deviceTypes: createNameSearchFetcher(deviceTypesApi.getAll),
+        manufacturers: createNameSearchFetcher(manufacturersApi.getAll),
+        deviceModels: createNameSearchFetcher(deviceModelsApi.getAll),
+        deviceConditions: createNameSearchFetcher(deviceConditionsApi.getAll),
+        accessories: createNameSearchFetcher(accessoriesApi.getAll),
+        intakeNotes: createNameSearchFetcher(intakeNotesApi.getAll),
       },
       createItemFns: {
         issueTypes: createWithToast(issueTypesApi.create),

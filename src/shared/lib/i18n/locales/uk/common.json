@@ -321,6 +321,13 @@
     "createNew": "Створити нове замовлення",
     "remainingToPay": "До оплати",
     "overpayment": "Переплата",
+    "closeOrder": "Закриття замовлення",
+    "closeOrderOnly": "Закрити",
+    "closeAndPrint": "Закрити та роздрукувати",
+    "takeFromClient": "Взяти з клієнта",
+    "returnToClient": "Повернути клієнту",
+    "paymentNoteOnClose": "Оплата при закритті",
+    "refundNoteOnClose": "Повернення при закритті",
     "acceptedBy": "Прийняв",
     "createdAt": "Створено",
     "closedAt": "Закрито",
@@ -507,6 +514,19 @@
       "cancel": "Скасувати",
       "download": "Завантажити",
       "print_error": "Не вдалося відкрити діалог друку"
+    },
+    "filters": {
+      "all": "Всі",
+      "schastlivaya": "Щаслива",
+      "active": "Активні",
+      "urgent": "Термінові",
+      "statuses": {
+        "ready": "Готовий",
+        "negotiation": "Узгодження",
+        "waiting_part": "Чекає запчастину",
+        "in_progress": "В роботі",
+        "with_partners": "У партнерів"
+      }
     }
   }
 }

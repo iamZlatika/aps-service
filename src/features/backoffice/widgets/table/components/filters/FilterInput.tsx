@@ -3,6 +3,7 @@ import { type ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Input } from "@/shared/components/ui/input.tsx";
 import { FILTER_DEBOUNCE_MS } from "@/shared/lib/constants.ts";
+import { cn } from "@/shared/lib/utils.ts";
 
 interface SearchFilterProps {
   fieldName: string;
@@ -11,6 +12,7 @@ interface SearchFilterProps {
   onChange: (fieldName: string, value: string) => void;
   debounceMs?: number;
   numbersOnly?: boolean;
+  className?: string;
 }
 
 const SearchFilter = ({
@@ -20,6 +22,7 @@ const SearchFilter = ({
   onChange,
   debounceMs = FILTER_DEBOUNCE_MS,
   numbersOnly = false,
+  className,
 }: SearchFilterProps) => {
   const [localValue, setLocalValue] = useState(value);
 
@@ -71,7 +74,7 @@ const SearchFilter = ({
   }, []);
 
   return (
-    <div className="relative w-full max-w-sm mb-4">
+    <div className={cn("relative w-full max-w-sm mb-4", className)}>
       <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
       <Input

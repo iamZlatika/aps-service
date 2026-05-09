@@ -41,6 +41,8 @@ type SmartTableProps<T extends BaseItem = BaseItem> = {
   searchField?: string;
   searchNumbersOnly?: boolean;
   headerActions?: ReactNode;
+  extraFilterKeys?: string[];
+  filterBar?: ReactNode;
 } & RowInteraction<T>;
 
 export const SmartTable = <T extends BaseItem>({
@@ -55,6 +57,8 @@ export const SmartTable = <T extends BaseItem>({
   onRowClick,
   headerActions,
   className,
+  extraFilterKeys,
+  filterBar,
 }: SmartTableProps<T>) => {
   const { t } = useTranslation();
 
@@ -69,6 +73,7 @@ export const SmartTable = <T extends BaseItem>({
     columns,
     searchField: searchField ?? "name",
     tableKey: titleKey,
+    extraFilterKeys,
   });
 
   const {
@@ -93,14 +98,20 @@ export const SmartTable = <T extends BaseItem>({
         {headerActions}
       </div>
 
-      {searchField && (
-        <SearchFilter
-          fieldName={searchField}
-          placeholder={t(searchPlaceholder)}
-          value={filters[searchField ?? "name"] ?? ""}
-          onChange={setFilter}
-          numbersOnly={searchNumbersOnly}
-        />
+      {(searchField || filterBar) && (
+        <div className="flex items-center gap-4 mb-4 min-w-0">
+          {searchField && (
+            <SearchFilter
+              fieldName={searchField}
+              placeholder={t(searchPlaceholder)}
+              value={filters[searchField ?? "name"] ?? ""}
+              onChange={setFilter}
+              numbersOnly={searchNumbersOnly}
+              className="mb-0 flex-none w-56 sm:w-[30rem]"
+            />
+          )}
+          {filterBar && <div className="flex-1 min-w-0">{filterBar}</div>}
+        </div>
       )}
       {isError ? (
         <div className="rounded-md border p-8 text-center">

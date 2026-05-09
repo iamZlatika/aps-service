@@ -58,9 +58,7 @@ export function mapStatusHistoryItemDtoToStatusHistoryItem(
   };
 }
 
-export function mapDocumentDtoToOrderDocumentStatus(
-  dto: DocumentDto,
-): OrderDocument {
+export function mapDocumentDtoToOrderDocument(dto: DocumentDto): OrderDocument {
   return {
     id: dto.id,
     type: dto.type,
@@ -96,7 +94,7 @@ export function mapOrderDtoToOrder(dto: OrderDto): Order {
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
     closedAt: dto.closed_at,
-    documents: dto.documents.map(mapDocumentDtoToOrderDocumentStatus),
+    documents: dto.documents.map(mapDocumentDtoToOrderDocument),
   };
 }
 export const mapOrderCommentDtoToOrderComment = (

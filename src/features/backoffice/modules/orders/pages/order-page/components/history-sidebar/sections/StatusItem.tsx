@@ -1,10 +1,10 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useIsUkLocale } from "@/features/backoffice/modules/orders/hooks/useIsUkLocale.ts";
 import { HistoryItemWrapper } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/HistoryItemWrapper.tsx";
 import type { HistoryStatus } from "@/features/backoffice/modules/orders/pages/order-page/types.ts";
 import { StatusBadge } from "@/shared/components/common/StatusBadge.tsx";
+import { useLocalizedName } from "@/shared/hooks/useLocalizedName.ts";
 
 interface StatusItemProps {
   item: HistoryStatus;
@@ -12,9 +12,9 @@ interface StatusItemProps {
 
 export const StatusItem = memo(({ item }: StatusItemProps) => {
   const { t } = useTranslation();
-  const isUk = useIsUkLocale();
+  const getLocalizedName = useLocalizedName();
 
-  const statusName = isUk ? item.status.nameUa : item.status.nameRu;
+  const statusName = getLocalizedName(item.status);
   const userName = item.user.name;
 
   const isNew = item.status.key === "new";

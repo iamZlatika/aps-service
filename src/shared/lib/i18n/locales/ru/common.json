@@ -324,6 +324,13 @@
     "createNew": "Создание заказа",
     "remainingToPay": "К оплате",
     "overpayment": "Переплата",
+    "closeOrder": "Закрытие заказа",
+    "closeOrderOnly": "Закрыть",
+    "closeAndPrint": "Закрыть и распечатать",
+    "takeFromClient": "Взять с клиента",
+    "returnToClient": "Вернуть клиенту",
+    "paymentNoteOnClose": "Оплата при закрытии",
+    "refundNoteOnClose": "Возврат при закрытии",
     "acceptedBy": "Принял",
     "createdAt": "Создан",
     "closedAt": "Закрыт",
@@ -509,6 +516,19 @@
       "cancel": "Отмена",
       "download": "Скачать",
       "print_error": "Не удалось открыть диалог печати"
+    },
+    "filters": {
+      "all": "Все",
+      "schastlivaya": "Счастливая",
+      "active": "Активные",
+      "urgent": "Срочные",
+      "statuses": {
+        "ready": "Готов",
+        "negotiation": "Согласование",
+        "waiting_part": "Ждет запчасть",
+        "in_progress": "В работе",
+        "with_partners": "У партнеров"
+      }
     }
   }
 }

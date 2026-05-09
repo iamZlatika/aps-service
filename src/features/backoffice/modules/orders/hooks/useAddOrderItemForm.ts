@@ -7,7 +7,6 @@ import {
   useForm,
   type UseFormHandleSubmit,
   type UseFormRegister,
-  useWatch,
 } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -23,15 +22,17 @@ import {
   type NewOrderItemSchema,
   newOrderItemSchema,
 } from "@/features/backoffice/modules/orders/lib/schema.ts";
-import { fetchByDictionaryName } from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
+import { createNameSearchFetcher } from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
 import type { OrderItemType } from "@/features/backoffice/modules/orders/types.ts";
 import { usersApi } from "@/features/backoffice/modules/users/api";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
-const fetchRepairOperations = fetchByDictionaryName(repairOperationsApi.getAll);
-const fetchProducts = fetchByDictionaryName(productsApi.getAll);
-const fetchSuppliers = fetchByDictionaryName(suppliersApi.getAll);
+const fetchRepairOperations = createNameSearchFetcher(
+  repairOperationsApi.getAll,
+);
+const fetchProducts = createNameSearchFetcher(productsApi.getAll);
+const fetchSuppliers = createNameSearchFetcher(suppliersApi.getAll);
 
 type UseAddOrderItemFormParams = {
   type: OrderItemType;
@@ -75,10 +76,6 @@ export const useAddOrderItemForm = ({
     defaultValues: initialValues ?? { quantity: 1, managerId: user?.id },
   });
 
-  const selectedManagerId = useWatch({ control, name: "managerId" });
-  const executorName =
-    users.find((u) => u.id === selectedManagerId)?.name ?? "";
-
   const fetchNameItems =
     type === "service" ? fetchRepairOperations : fetchProducts;
 
@@ -97,7 +94,7 @@ export const useAddOrderItemForm = ({
         });
 
   const onCreateSupplier = (name: string): Promise<void> =>
-    suppliersApi.create({ name, manager_name: executorName }).then(() => {
+    suppliersApi.create({ name }).then(() => {
       toast.success(i18next.t("orders.orderTable.successAddSupplier"));
     });
 

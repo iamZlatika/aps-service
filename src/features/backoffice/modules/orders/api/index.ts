@@ -53,13 +53,29 @@ export const ordersApi = {
     sortType?: SortType,
     filters?: Record<string, string>,
   ): Promise<PaginatedResponse<Order>> => {
+    const {
+      search,
+      status_id,
+      "status_ids[]": statusIdsParam,
+      ...rest
+    } = filters ?? {};
+
     const params = buildPaginatedParams(
       page,
       perPage,
       sortColumn,
       sortType,
-      filters,
+      rest,
     );
+
+    if (search) params.append("any_match", search);
+    if (status_id) {
+      status_id.split(",").forEach((id) => params.append("status_ids[]", id));
+    }
+    if (statusIdsParam) {
+      params.append("status_ids[]", statusIdsParam);
+    }
+
     const response = await get(`${ORDERS_API.orders()}?${params.toString()}`);
     const validatedData = PaginatedOrdersDtoSchema.parse(response);
     return mapPaginatedOrdersDtoToResponse(validatedData);

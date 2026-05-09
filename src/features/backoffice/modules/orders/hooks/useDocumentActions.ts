@@ -10,6 +10,7 @@ type DownloadRef = DocRef & { filename: string };
 
 type UseDocumentActionsReturn = {
   print: (docs: DocRef[]) => void;
+  printAsync: (docs: DocRef[]) => Promise<void>;
   download: (docs: DownloadRef[]) => void;
   isPending: boolean;
 };
@@ -87,6 +88,7 @@ export function useDocumentActions(): UseDocumentActionsReturn {
 
   return {
     print: (docs) => printMutation.mutate(docs),
+    printAsync: (docs) => printMutation.mutateAsync(docs),
     download: (docs) => downloadMutation.mutate(docs),
     isPending: printMutation.isPending || downloadMutation.isPending,
   };

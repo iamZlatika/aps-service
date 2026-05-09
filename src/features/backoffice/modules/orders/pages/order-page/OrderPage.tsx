@@ -77,6 +77,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                     <StatusSelect
                       orderId={orderId}
                       status={selectedOrder.status}
+                      remainingToPay={selectedOrder.remainingToPay}
                       onSuccess={handleStatusSuccess}
                     />
                     <span className="text-muted-foreground text-2xl">
