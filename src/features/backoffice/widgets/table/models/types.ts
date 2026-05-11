@@ -44,6 +44,7 @@ export type ColumnConfig<
   field: K;
   labelKey: string;
   sortable: boolean;
+  sortKey?: string;
   className?: string;
   required?: boolean;
   type?: "input" | "select" | "phone" | "card";

@@ -1,8 +1,8 @@
 export const calcOrderItemTotal = (price: string, quantity: number): string =>
   (parseFloat(price) * quantity).toFixed();
 
-const WRAP_AT = 25;
-const MAX_CHARS = 47;
+const WRAP_AT = 20;
+const MAX_CHARS = 40;
 
 export const renderWrappedText = (value: unknown) => {
   const text = (value as string) ?? "";

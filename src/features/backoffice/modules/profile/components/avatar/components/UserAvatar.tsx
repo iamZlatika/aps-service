@@ -1,8 +1,11 @@
 import { X } from "lucide-react";
-import { type ChangeEvent, useRef, useState } from "react";
+import { type ChangeEvent, lazy, Suspense, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import AvatarEditorDialog from "@/features/backoffice/modules/profile/components/avatar/components/AvatarEditorDialog.tsx";
+const AvatarEditorDialog = lazy(
+  () =>
+    import("@/features/backoffice/modules/profile/components/avatar/components/AvatarEditorDialog.tsx"),
+);
 import { useAvatarDelete } from "@/features/backoffice/modules/profile/components/avatar/hooks/useAvatarDelete.ts";
 import { useAvatarUpload } from "@/features/backoffice/modules/profile/components/avatar/hooks/useAvatarUpload.ts";
 import EditButton from "@/features/backoffice/modules/profile/components/buttons/EditButton.tsx";
@@ -89,13 +92,15 @@ const UserAvatar = ({ userName, userAvatarUrl }: UserAvatarProps) => {
         onChange={handleFileChange}
       />
 
-      <AvatarEditorDialog
-        image={selectedImage}
-        open={isEditorOpen}
-        isPending={uploadMutation.isPending}
-        onOpenChange={setIsEditorOpen}
-        onSave={handleUpload}
-      />
+      <Suspense>
+        <AvatarEditorDialog
+          image={selectedImage}
+          open={isEditorOpen}
+          isPending={uploadMutation.isPending}
+          onOpenChange={setIsEditorOpen}
+          onSave={handleUpload}
+        />
+      </Suspense>
     </div>
   );
 };

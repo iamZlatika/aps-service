@@ -89,7 +89,7 @@ export const SmartTable = <T extends BaseItem>({
   return (
     <div
       className={cn(
-        "p-2 sm:p-6 max-w-3xl lg:max-w-7xl mx-auto w-full",
+        "p-2 sm:p-4 max-w-3xl lg:max-w-7xl mx-auto w-full",
         className,
       )}
     >

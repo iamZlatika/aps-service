@@ -29,7 +29,10 @@ export const useCreateOrder = (
       bypass();
       toast.success(i18next.t("orders.successCreate"));
       navigate(ORDERS_LINKS.root());
-      return queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+      return queryClient.invalidateQueries({
+        queryKey: queryKeys.customers.all,
+      });
     },
   });
 

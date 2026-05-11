@@ -1,9 +1,14 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 
 import { orderStatusesApi } from "@/features/backoffice/modules/dictionaries/api";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
-import { CloseOrderModal } from "@/features/backoffice/modules/orders/components/CloseOrderModal.tsx";
+
+const CloseOrderModal = lazy(() =>
+  import("@/features/backoffice/modules/orders/components/CloseOrderModal.tsx").then(
+    (m) => ({ default: m.CloseOrderModal }),
+  ),
+);
 import type { OrderStatus } from "@/features/backoffice/modules/orders/types.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
@@ -93,18 +98,22 @@ export const StatusSelect = ({
       </DropdownMenu>
 
       {closedStatusId !== null && (
-        <CloseOrderModal
-          open
-          onClose={() => setClosedStatusId(null)}
-          orderId={orderId}
-          statusId={closedStatusId}
-          remainingToPay={remainingToPay}
-          onSuccess={
-            onSuccess ??
-            (() =>
-              queryClient.invalidateQueries({ queryKey: queryKeys.orders.all }))
-          }
-        />
+        <Suspense>
+          <CloseOrderModal
+            open
+            onClose={() => setClosedStatusId(null)}
+            orderId={orderId}
+            statusId={closedStatusId}
+            remainingToPay={remainingToPay}
+            onSuccess={
+              onSuccess ??
+              (() =>
+                queryClient.invalidateQueries({
+                  queryKey: queryKeys.orders.all,
+                }))
+            }
+          />
+        </Suspense>
       )}
     </>
   );

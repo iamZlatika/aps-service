@@ -1,6 +1,13 @@
 import { format } from "date-fns";
 import { Printer, Users } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -20,7 +27,12 @@ import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
 
 import { OrderInfoCard } from "./components/order-info-fields/OrderInfoCard.tsx";
-import { PrintDialog } from "./components/PrintDialog.tsx";
+
+const PrintDialog = lazy(() =>
+  import("./components/PrintDialog.tsx").then((m) => ({
+    default: m.PrintDialog,
+  })),
+);
 
 interface OrderPageContentProps {
   orderId: number;
@@ -145,12 +157,14 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
             </div>
             <HistorySidebar orderId={selectedOrder.id} history={history} />
           </div>
-          <PrintDialog
-            isOpen={isPrintOpen}
-            onOpenChange={setIsPrintOpen}
-            orderId={orderId}
-            documents={selectedOrder.documents}
-          />
+          <Suspense>
+            <PrintDialog
+              isOpen={isPrintOpen}
+              onOpenChange={setIsPrintOpen}
+              orderId={orderId}
+              documents={selectedOrder.documents}
+            />
+          </Suspense>
         </>
       )}
     </QueryPageGuard>

@@ -12,6 +12,7 @@ import { cn } from "@/shared/lib/utils.ts";
 interface ColumnHeader {
   key: string;
   field: string;
+  sortKey?: string;
   labelKey: string;
   sortable: boolean;
   className?: string;
@@ -42,13 +43,19 @@ export const SortableTableHeader = ({
               col.sortable && "cursor-pointer select-none",
               col.className,
             )}
-            onClick={col.sortable ? () => onToggleSort(col.field) : undefined}
+            onClick={
+              col.sortable
+                ? () => onToggleSort(col.sortKey ?? col.field)
+                : undefined
+            }
           >
             <div className="flex items-center gap-1">
               {col.sortable &&
-                (sort.column === col.field && sort.type === "asc" ? (
+                (sort.column === (col.sortKey ?? col.field) &&
+                sort.type === "asc" ? (
                   <ArrowUp className="h-4 w-4" />
-                ) : sort.column === col.field && sort.type === "desc" ? (
+                ) : sort.column === (col.sortKey ?? col.field) &&
+                  sort.type === "desc" ? (
                   <ArrowDown className="h-4 w-4" />
                 ) : (
                   <ArrowUpDown className="h-4 w-4 text-muted-foreground" />

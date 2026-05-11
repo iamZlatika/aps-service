@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { type InfoTableColumn } from "@/features/backoffice/modules/orders/components/info-table/InfoTable.tsx";
 import { OrderTableCard } from "@/features/backoffice/modules/orders/components/order-table-card/OrderTableCard.tsx";
 import { useDeletePayment } from "@/features/backoffice/modules/orders/hooks/useDeletePayment.ts";
-import AddPaymentModal from "@/features/backoffice/modules/orders/pages/order-page/components/AddPaymentModal.tsx";
+
+const AddPaymentModal = lazy(
+  () =>
+    import("@/features/backoffice/modules/orders/pages/order-page/components/AddPaymentModal.tsx"),
+);
 import type {
   OrderInfo,
   OrderPayment,
@@ -84,12 +88,14 @@ export const PaymentsCard = ({ orderId, selectedOrder }: PaymentsCardProps) => {
         }
       />
       {modalType !== null && (
-        <AddPaymentModal
-          orderId={orderId}
-          type={modalType}
-          open
-          onClose={() => setModalType(null)}
-        />
+        <Suspense>
+          <AddPaymentModal
+            orderId={orderId}
+            type={modalType}
+            open
+            onClose={() => setModalType(null)}
+          />
+        </Suspense>
       )}
     </>
   );

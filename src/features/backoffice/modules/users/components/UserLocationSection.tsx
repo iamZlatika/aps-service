@@ -35,7 +35,7 @@ export const UserLocationSection = ({ user }: UserLocationSectionProps) => {
     onSuccess: () => {
       setPendingLocationId(null);
       return queryClient.invalidateQueries({
-        queryKey: queryKeys.users.detail(user.id),
+        queryKey: queryKeys.users.all,
       });
     },
   });

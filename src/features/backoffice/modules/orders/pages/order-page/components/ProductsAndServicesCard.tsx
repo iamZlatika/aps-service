@@ -1,8 +1,11 @@
 import { Box, Cog } from "lucide-react";
-import { useMemo, useState } from "react";
+import { lazy, Suspense, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import AddOrderItemModal from "@/features/backoffice/modules/orders/components/info-table/AddOrderItemModal.tsx";
+const AddOrderItemModal = lazy(
+  () =>
+    import("@/features/backoffice/modules/orders/components/info-table/AddOrderItemModal.tsx"),
+);
 import { type InfoTableColumn } from "@/features/backoffice/modules/orders/components/info-table/InfoTable.tsx";
 import { OrderTableCard } from "@/features/backoffice/modules/orders/components/order-table-card/OrderTableCard.tsx";
 import { useDeleteOrderItem } from "@/features/backoffice/modules/orders/hooks/useDeleteOrderItem.ts";
@@ -134,14 +137,18 @@ export const ProductsAndServicesCard = ({
         }
       />
       {modalState !== null && modalType !== null && (
-        <AddOrderItemModal
-          orderId={orderId}
-          type={modalType}
-          open
-          onClose={() => setModalState(null)}
-          editItem={modalState.mode === "edit" ? modalState.item : undefined}
-          readOnly={modalState.mode === "edit" ? !!modalState.readOnly : false}
-        />
+        <Suspense>
+          <AddOrderItemModal
+            orderId={orderId}
+            type={modalType}
+            open
+            onClose={() => setModalState(null)}
+            editItem={modalState.mode === "edit" ? modalState.item : undefined}
+            readOnly={
+              modalState.mode === "edit" ? !!modalState.readOnly : false
+            }
+          />
+        </Suspense>
       )}
     </>
   );

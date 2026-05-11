@@ -40,6 +40,13 @@ const CustomersPage = () => {
       field: "lastOrderAt",
       labelKey: "customers.table_fields.lastOrderAt",
       sortable: true,
+      sortKey: "last_order_at",
+      renderCell: (value) => {
+        if (!value) return <span>—</span>;
+        const date = new Date(value as string);
+        const formatted = `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}`;
+        return <span>{formatted}</span>;
+      },
     },
     {
       key: "phones",

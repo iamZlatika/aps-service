@@ -21,7 +21,7 @@ const Layout = () => {
         <div className="flex flex-1 flex-col">
           <Header />
           <Breadcrumbs />
-          <main className="flex-1 overflow-y-auto bg-muted">
+          <main className="flex-1 overflow-y-auto overflow-x-hidden bg-muted">
             <ErrorBoundary
               FallbackComponent={ErrorFallback}
               resetKeys={[location.pathname]}
