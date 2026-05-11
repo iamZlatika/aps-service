@@ -29,3 +29,4 @@ export type Location = {
   phone: string;
   schedule: string | null;
 };
+

@@ -83,3 +83,13 @@ export const LocationDtoSchema = z.object({
 });
 
 export type LocationDto = z.infer<typeof LocationDtoSchema>;
+
+export const BankCardDtoSchema = z.object({
+  id: z.number(),
+  owner_name: z.string(),
+  number: z.string(),
+  pretty_number: z.string(),
+  is_active: z.boolean(),
+});
+
+export type BankCardDto = z.infer<typeof BankCardDtoSchema>;

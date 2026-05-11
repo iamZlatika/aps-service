@@ -14,4 +14,5 @@ export const DICTIONARIES_LINKS = {
   suppliers: () => `${BASE}/suppliers`,
   products: () => `${BASE}/products`,
   locations: () => `${BASE}/locations`,
+  bankCards: () => `${BASE}/bank-cards`,
 } as const;

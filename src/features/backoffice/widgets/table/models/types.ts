@@ -32,7 +32,7 @@ export interface FieldConfig {
   label: string;
   placeholder?: string;
   required?: boolean;
-  type?: "input" | "select" | "phone";
+  type?: "input" | "select" | "phone" | "card";
   inputType?: string;
   options?: SelectOption[];
 }
@@ -46,11 +46,12 @@ export type ColumnConfig<
   sortable: boolean;
   className?: string;
   required?: boolean;
-  type?: "input" | "select" | "phone";
+  type?: "input" | "select" | "phone" | "card";
   options?: { value: string; label: string }[];
   renderCell?: (value: T[K], item: T) => ReactNode;
   filterable?: boolean;
   filterType?: "text" | "select" | "range";
+  formField?: boolean;
 };
 
 export type BaseItem = {

@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 
 import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
 import { RowActions } from "@/features/backoffice/modules/dictionaries/components/RowActions.tsx";
-import type { DictionaryItem } from "@/features/backoffice/modules/dictionaries/types.ts";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import {
   DeleteConfirmDialog,
@@ -12,17 +11,18 @@ import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSort
 import { useTableActions } from "@/features/backoffice/widgets/table/hooks/useTableActions.ts";
 import { toFieldConfigs } from "@/features/backoffice/widgets/table/lib/toFieldConfigs.ts";
 import type {
+  BaseItem,
   ColumnConfig,
   SmartTableApi,
 } from "@/features/backoffice/widgets/table/models/types.ts";
 
-interface DictionaryApi<T extends DictionaryItem> extends SmartTableApi<T> {
+interface DictionaryApi<T extends BaseItem> extends SmartTableApi<T> {
   create: (values: Partial<T>) => Promise<T>;
   update: (id: number, values: Partial<T>) => Promise<T>;
   remove: (id: number) => Promise<void>;
 }
 
-interface DictionaryTablePageProps<T extends DictionaryItem> {
+interface DictionaryTablePageProps<T extends BaseItem> {
   titleKey: string;
   api: DictionaryApi<T>;
   queryKeyFn: (
@@ -34,14 +34,21 @@ interface DictionaryTablePageProps<T extends DictionaryItem> {
   ) => readonly unknown[];
   columns: ColumnConfig<T>[];
   searchPlaceholder?: string;
+  searchField?: string;
+  searchNumbersOnly?: boolean;
+  getItemName?: (item: T) => string;
 }
 
-export const DictionaryTablePage = <T extends DictionaryItem>({
+export const DictionaryTablePage = <T extends BaseItem>({
   titleKey,
   api,
   queryKeyFn,
   columns,
   searchPlaceholder = "search_placeholders.dictionaries_name",
+  searchField = "name",
+  searchNumbersOnly,
+  getItemName = (item) =>
+    ((item as Record<string, unknown>)["name"] as string) ?? "",
 }: DictionaryTablePageProps<T>) => {
   const { t } = useTranslation();
 
@@ -62,7 +69,8 @@ export const DictionaryTablePage = <T extends DictionaryItem>({
         queryKeyFn={queryKeyFn}
         searchPlaceholder={searchPlaceholder}
         columns={columns}
-        searchField="name"
+        searchField={searchField}
+        searchNumbersOnly={searchNumbersOnly}
         headerActions={<AddButton onClick={() => addModal.setOpen(true)} />}
         renderRowActions={(item) => (
           <RowActions
@@ -89,7 +97,7 @@ export const DictionaryTablePage = <T extends DictionaryItem>({
         onOpenChange={deleteModal.setOpen}
         title={t("table.delete_modal.title")}
         description={t("table.delete_modal.description", {
-          name: deleteModal.item?.name,
+          name: deleteModal.item ? getItemName(deleteModal.item) : "",
         })}
         cancelLabel={t("table.delete_modal.cancel")}
         confirmLabel={t("table.delete_modal.confirm")}

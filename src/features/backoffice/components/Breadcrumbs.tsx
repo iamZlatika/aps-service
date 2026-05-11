@@ -29,6 +29,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   "intake-notes": "breadcrumbs.intakeNotes",
   manufacturers: "breadcrumbs.manufacturers",
   services: "breadcrumbs.services",
+  "bank-cards": "breadcrumbs.bankCards",
 };
 
 export const Breadcrumbs = () => {

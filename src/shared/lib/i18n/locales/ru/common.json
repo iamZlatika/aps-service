@@ -92,6 +92,7 @@
       "products": "Продукты",
       "suppliers": "Поставщики",
       "locations": "Локации",
+      "bank_cards": "Банковские карты",
       "accessories_page": {
         "title": "Комплектации"
       }
@@ -157,7 +158,8 @@
     "users_name": "Поиск по имени",
     "customer_name": "Поиск по имени клиента",
     "customer_phone": "Поиск по номеру телефона",
-    "orders_any_match": "Найти заказ, бренд, модель или номер телефона"
+    "orders_any_match": "Найти заказ, бренд, модель или номер телефона",
+    "card_number": "Поиск по номеру карты"
   },
   "breadcrumbs": {
     "home": "Главная",
@@ -177,7 +179,8 @@
     "intakeNotes": "Заметки приёмщика",
     "manufacturers": "Бренды",
     "services": "Услуги",
-    "orderStatuses": "Статусы заказов"
+    "orderStatuses": "Статусы заказов",
+    "bankCards": "Банковские карты"
   },
   "profile": {
     "settings": "Настройки профиля",
@@ -313,7 +316,10 @@
       "phone": "Телефон",
       "website": "Сайт",
       "address": "Адресс",
-      "schedule": "График работы"
+      "schedule": "График работы",
+      "ownerName": "Владелец карты",
+      "cardNumber": "Номер карты",
+      "isActive": "Активна"
     },
     "placeholders": {
       "key": "Только латиница, цифры и _",

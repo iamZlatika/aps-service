@@ -17,10 +17,16 @@ interface DictionaryApiRoutes {
   item: (id: number) => string;
 }
 
-export const createTypedDictionaryApi = <T extends BaseItem>(
+export const createTypedDictionaryApi = <
+  TDto extends BaseItem,
+  TOut extends BaseItem = TDto,
+>(
   routes: DictionaryApiRoutes,
-  itemSchema: z.ZodType<T>,
+  itemSchema: z.ZodType<TDto>,
+  map?: (dto: TDto) => TOut,
 ) => {
+  const resolve = map ?? ((dto: TDto) => dto as unknown as TOut);
+
   const paginatedSchema = z.object({
     data: z.array(itemSchema),
     links: PaginationLinksDtoSchema,
@@ -34,7 +40,7 @@ export const createTypedDictionaryApi = <T extends BaseItem>(
       sortColumn?: string | null,
       sortType?: SortType,
       filters?: Record<string, string>,
-    ): Promise<PaginatedDictionaryItems<T>> => {
+    ): Promise<PaginatedDictionaryItems<TOut>> => {
       const params = buildPaginatedParams(
         page,
         perPage,
@@ -46,23 +52,26 @@ export const createTypedDictionaryApi = <T extends BaseItem>(
         `${routes.list()}?${params.toString()}`,
       );
       const validated = paginatedSchema.parse(response);
-      return mapPaginatedItems(validated.data, validated.meta);
+      return mapPaginatedItems(validated.data.map(resolve), validated.meta);
     },
 
-    create: async (data: Partial<T>): Promise<T> => {
-      const response = await post<Partial<T>, { data: unknown }>(
+    create: async (data: Partial<TDto>): Promise<TOut> => {
+      const response = await post<Partial<TDto>, { data: unknown }>(
         routes.list(),
         data,
       );
-      return itemSchema.parse(response.data);
+      return resolve(itemSchema.parse(response.data));
     },
 
-    update: async (id: number, data: Record<string, unknown>): Promise<T> => {
+    update: async (
+      id: number,
+      data: Record<string, unknown>,
+    ): Promise<TOut> => {
       const response = await put<Record<string, unknown>, { data: unknown }>(
         routes.item(id),
         data,
       );
-      return itemSchema.parse(response.data);
+      return resolve(itemSchema.parse(response.data));
     },
 
     remove: async (id: number): Promise<void> => {

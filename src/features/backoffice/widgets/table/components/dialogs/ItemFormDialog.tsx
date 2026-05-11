@@ -22,6 +22,7 @@ import {
 } from "@/shared/components/ui/select.tsx";
 
 import { buildEditSchema } from "../../lib/buildEditSchema.ts";
+import { CardNumberMaskInput } from "../inputs/CardNumberMaskInput.tsx";
 import { PhoneMaskInput } from "../inputs/PhoneMaskInput.tsx";
 
 interface ItemFormDialogProps {
@@ -148,6 +149,19 @@ export const ItemFormDialog = ({
                       onChange={onChange}
                       placeholder={field.placeholder}
                       className={errors[field.key] ? "border-red-500" : ""}
+                    />
+                  )}
+                />
+              ) : field.type === "card" ? (
+                <Controller
+                  control={control}
+                  name={field.key}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <CardNumberMaskInput
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      hasError={!!errors[field.key]}
                     />
                   )}
                 />

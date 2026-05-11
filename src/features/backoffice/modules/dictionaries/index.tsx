@@ -2,6 +2,7 @@ import {
   AlertCircle,
   Container,
   Cpu,
+  CreditCard,
   Factory,
   FolderCog,
   MapPin,
@@ -82,6 +83,11 @@ const DictionariesPage = () => {
       title: t("sidebar.dictionaries_list.locations"),
       icon: MapPin,
       href: DICTIONARIES_LINKS.locations(),
+    },
+    {
+      title: t("sidebar.dictionaries_list.bank_cards"),
+      icon: CreditCard,
+      href: DICTIONARIES_LINKS.bankCards(),
     },
   ];
 

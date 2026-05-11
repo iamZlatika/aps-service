@@ -91,7 +91,8 @@
       "order_statuses": "Статуси замовлень",
       "products": "Продукти",
       "suppliers": "Постачальники",
-      "locations": "Локації"
+      "locations": "Локації",
+      "bank_cards": "Банківські картки"
     }
   },
   "errors": {
@@ -154,7 +155,8 @@
     "users_name": "Пошук по імені",
     "customer_name": "Пошук по імені клієнта",
     "customer_phone": "Пошук за номером телефону",
-    "orders_any_match": "Знайти замовлення, бренд, модель або номер телефону"
+    "orders_any_match": "Знайти замовлення, бренд, модель або номер телефону",
+    "card_number": "Пошук за номером картки"
   },
   "breadcrumbs": {
     "home": "Головна",
@@ -174,7 +176,8 @@
     "intakeNotes": "Нотатки приймача",
     "manufacturers": "Бренди",
     "services": "Послуги",
-    "orderStatuses": "Статуси замовлень"
+    "orderStatuses": "Статуси замовлень",
+    "bankCards": "Банківські картки"
   },
   "profile": {
     "settings": "Налаштування профілю",
@@ -310,7 +313,10 @@
       "phone": "Телефон",
       "website": "Сайт",
       "address": "Адреса",
-      "schedule": "Графік роботи"
+      "schedule": "Графік роботи",
+      "ownerName": "Власник картки",
+      "cardNumber": "Номер картки",
+      "isActive": "Активна"
     },
     "placeholders": {
       "key": "Тільки латиниця, цифри та _",

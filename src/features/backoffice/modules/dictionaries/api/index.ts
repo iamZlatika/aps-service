@@ -1,8 +1,11 @@
+import { put } from "@/shared/api/api.ts";
+
 import {
   createDictionaryApi,
   createTypedDictionaryApi,
 } from "./createDictionaryApi";
 import {
+  BankCardDtoSchema,
   LocationDtoSchema,
   OrderStatusDtoSchema,
   SupplierDtoSchema,
@@ -66,3 +69,19 @@ export const locationApi = createTypedDictionaryApi(
   },
   LocationDtoSchema,
 );
+export const bankCardsApi = {
+  ...createTypedDictionaryApi(
+    {
+      list: () => DICTIONARIES_API.bankCards(),
+      item: (id) => DICTIONARIES_API.bankCard(id),
+    },
+    BankCardDtoSchema,
+  ),
+  toggleActive: async (id: number, isActive: boolean) => {
+    const response = await put<{ is_active: boolean }, { data: unknown }>(
+      DICTIONARIES_API.bankCardToggleActive(id),
+      { is_active: isActive },
+    );
+    return BankCardDtoSchema.parse(response.data);
+  },
+};
