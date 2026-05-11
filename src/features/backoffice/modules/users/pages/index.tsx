@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 import { type UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
 import { usersApi } from "@/features/backoffice/modules/users/api";
@@ -28,6 +29,7 @@ import { type UserStatus } from "@/shared/types.ts";
 
 const UsersPage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const columns: ColumnConfig<User>[] = [
@@ -154,6 +156,10 @@ const UsersPage = () => {
     },
   ];
 
+  const onRowClick = (user: User) => {
+    navigate(`/backoffice/users/${user.id}`);
+  };
+
   return (
     <>
       <SmartTable
@@ -163,6 +169,7 @@ const UsersPage = () => {
         searchPlaceholder="search_placeholders.users_name"
         columns={columns}
         headerActions={<AddButton onClick={() => setIsAddOpen(true)} />}
+        onRowClick={onRowClick}
       />
 
       <DeleteConfirmDialog

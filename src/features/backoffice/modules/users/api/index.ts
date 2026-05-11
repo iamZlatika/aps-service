@@ -6,8 +6,10 @@ import {
 import { USERS_API } from "@/features/backoffice/modules/users/api/endpoints";
 import {
   mapPaginatedUsersDtoToResponse,
+  mapSalarySettingsToDto,
   mapUserDtoToUser,
 } from "@/features/backoffice/modules/users/lib/adapters.ts";
+import { type SalarySettings } from "@/features/backoffice/modules/users/lib/salarySettingsSchema.ts";
 import {
   type NewUser,
   type User,
@@ -45,6 +47,24 @@ export const usersApi = {
     const response = await get<{ data: UserDto }>(USERS_API.me());
     const validatedData = UserDtoSchema.parse(response.data);
     return mapUserDtoToUser(validatedData);
+  },
+
+  getUser: async (id: number): Promise<User> => {
+    const response = await get<{ data: UserDto }>(USERS_API.user(id));
+    const validated = UserDtoSchema.parse(response.data);
+    return mapUserDtoToUser(validated);
+  },
+
+  updateSalarySettings: async (
+    id: number,
+    data: SalarySettings,
+  ): Promise<User> => {
+    const response = await put<
+      ReturnType<typeof mapSalarySettingsToDto>,
+      { data: UserDto }
+    >(USERS_API.changeUserSalarySettings(id), mapSalarySettingsToDto(data));
+    const validated = UserDtoSchema.parse(response.data);
+    return mapUserDtoToUser(validated);
   },
 
   updateUserStatus: async (id: number, status: UserStatus): Promise<void> => {

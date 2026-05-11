@@ -26,7 +26,12 @@ const CustomersPage = lazy(
 const CustomerPage = lazy(
   () => import("@/features/backoffice/modules/customers/pages/CustomerPage"),
 );
-const UsersPage = lazy(() => import("@/features/backoffice/modules/users"));
+const UsersPage = lazy(
+  () => import("../../features/backoffice/modules/users/pages"),
+);
+const UserPage = lazy(
+  () => import("@/features/backoffice/modules/users/pages/UserPage"),
+);
 const ProfilePage = lazy(() => import("@/features/backoffice/modules/profile"));
 const DictionariesPage = lazy(
   () => import("@/features/backoffice/modules/dictionaries"),
@@ -82,6 +87,7 @@ export const backofficeRoutes: RouteObject = {
     { path: CUSTOMERS_ROUTES.root, element: <CustomersPage /> },
     { path: CUSTOMERS_ROUTES.customer, element: <CustomerPage /> },
     { path: USERS_ROUTES.root, element: <UsersPage /> },
+    { path: USERS_ROUTES.user, element: <UserPage /> },
     { path: PROFILE_ROUTES.root, element: <ProfilePage /> },
 
     // super admin panel

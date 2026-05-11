@@ -185,6 +185,7 @@
   "profile": {
     "settings": "Настройки профиля",
     "your_rate": "Ваша ставка",
+    "master_rate": "Ставка мастера",
     "services_percent": "Процент за услуги",
     "products_percent": "Процент за продукты",
     "intake_percent": "Процент за приёмку",

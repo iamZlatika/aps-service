@@ -1,3 +1,4 @@
+import { type SalarySettings } from "@/features/backoffice/modules/users/lib/salarySettingsSchema.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types";
 
 import type { PaginatedUsersDto } from "../api/dto";
@@ -20,6 +21,12 @@ export const mapUserDtoToUser = (dto: UserDto): User => {
     intakePercent: dto.intake_percent,
   };
 };
+
+export const mapSalarySettingsToDto = (data: SalarySettings) => ({
+  services_percent: data.servicesPercent,
+  products_percent: data.productsPercent,
+  intake_percent: data.intakePercent,
+});
 
 export const mapPaginatedUsersDtoToResponse = (
   dto: PaginatedUsersDto,

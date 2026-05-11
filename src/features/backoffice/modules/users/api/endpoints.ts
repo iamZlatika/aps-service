@@ -1,11 +1,15 @@
 const BASE = "/backoffice/users";
 
 export const USERS_API = {
+  registerUser: () => "/backoffice/auth/register",
+
   me: () => `${BASE}/me`,
   updateLocale: () => `${BASE}/locale`,
   updateTheme: () => `${BASE}/theme`,
-  updateUserStatus: (id: number) => `${BASE}/${id}/status`,
+
   listUsers: () => BASE,
-  registerUser: () => "/backoffice/auth/register",
+  user: (id: number) => `${BASE}/${id}`,
+  updateUserStatus: (id: number) => `${BASE}/${id}/status`,
   changeUserLocation: (id: number) => `${BASE}/${id}/location`,
+  changeUserSalarySettings: (id: number) => `${BASE}/${id}/salary-setting`,
 } as const;
