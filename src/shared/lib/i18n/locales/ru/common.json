@@ -60,7 +60,7 @@
     }
   },
   "pages": {
-    "repair_operations": {
+    "services": {
       "options": {
         "cleaning": "Чистка",
         "diagnostics": "Диагностика",
@@ -87,7 +87,7 @@
       "device_types": "Типы устройств",
       "intake_notes": "Заметки при приемке",
       "manufacturers": "Бренды",
-      "repair_operations": "Операции по ремонту",
+      "services": "Услуги",
       "order_statuses": "Статусы заказов",
       "products": "Продукты",
       "suppliers": "Поставщики",
@@ -108,6 +108,7 @@
     "forbidden_description": "У вас нет прав для просмотра этой страницы.",
     "go_to_orders": "Перейти к заказам",
     "forbidden_action": "Недостаточно прав для выполнения операции",
+    "name_taken": "Это название уже занято",
     "network": "Нет подключения к интернету. Проверьте соединение.",
     "error_id": "Код ошибки"
   },
@@ -175,7 +176,7 @@
     "deviceTypes": "Типы устройств",
     "intakeNotes": "Заметки приёмщика",
     "manufacturers": "Бренды",
-    "repairOperations": "Ремонтные операции",
+    "services": "Услуги",
     "orderStatuses": "Статусы заказов"
   },
   "profile": {

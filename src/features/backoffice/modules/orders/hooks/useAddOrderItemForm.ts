@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import {
   productsApi,
-  repairOperationsApi,
+  servicesApi,
   suppliersApi,
 } from "@/features/backoffice/modules/dictionaries/api";
 import type { SearchableSelectOption } from "@/features/backoffice/modules/orders/components/searchable-select";
@@ -28,9 +28,7 @@ import { usersApi } from "@/features/backoffice/modules/users/api";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
-const fetchRepairOperations = createNameSearchFetcher(
-  repairOperationsApi.getAll,
-);
+const fetchServices = createNameSearchFetcher(servicesApi.getAll);
 const fetchProducts = createNameSearchFetcher(productsApi.getAll);
 const fetchSuppliers = createNameSearchFetcher(suppliersApi.getAll);
 
@@ -76,17 +74,16 @@ export const useAddOrderItemForm = ({
     defaultValues: initialValues ?? { quantity: 1, managerId: user?.id },
   });
 
-  const fetchNameItems =
-    type === "service" ? fetchRepairOperations : fetchProducts;
+  const fetchNameItems = type === "service" ? fetchServices : fetchProducts;
 
   const nameQueryKey =
     type === "service"
-      ? queryKeys.dictionaries.repairOperations()
+      ? queryKeys.dictionaries.services()
       : queryKeys.dictionaries.products();
 
   const onCreateNameItem = (name: string): Promise<void> =>
     type === "service"
-      ? repairOperationsApi.create({ name }).then(() => {
+      ? servicesApi.create({ name }).then(() => {
           toast.success(i18next.t("orders.orderTable.successAddServiceToDict"));
         })
       : productsApi.create({ name }).then(() => {

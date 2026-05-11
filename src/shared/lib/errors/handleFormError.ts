@@ -25,12 +25,18 @@ export function handleFormError<TFieldValues extends FieldValues>(
   const { data, message } = error;
 
   if (data?.errors) {
+    const builtInMessageMap: Record<string, string> = {
+      "The name has already been taken.": i18next.t("errors.name_taken"),
+    };
+
     Object.entries(data.errors).forEach(([field, messages]) => {
       const mappedField =
         options?.fieldMap?.[field] ?? (field as Path<TFieldValues>);
       const originalMessage = messages.join(", ");
       const mappedMessage =
-        options?.messageMap?.[originalMessage] ?? originalMessage;
+        options?.messageMap?.[originalMessage] ??
+        builtInMessageMap[originalMessage] ??
+        originalMessage;
 
       setError(mappedField, {
         type: "server",

@@ -7,7 +7,7 @@ export const DICTIONARIES_ROUTES = {
   deviceTypes: "dictionaries/device-types",
   intakeNotes: "dictionaries/intake-notes",
   manufacturers: "dictionaries/manufacturers",
-  repairOperations: "dictionaries/repair-operations",
+  services: "dictionaries/services",
   orderStatuses: "dictionaries/order-statuses",
   suppliers: "dictionaries/suppliers",
   products: "dictionaries/products",

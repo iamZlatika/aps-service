@@ -37,9 +37,9 @@ export const manufacturersApi = createDictionaryApi({
   list: () => DICTIONARIES_API.manufacturers(),
   item: (id) => DICTIONARIES_API.manufacturer(id),
 });
-export const repairOperationsApi = createDictionaryApi({
-  list: () => DICTIONARIES_API.repairOperations(),
-  item: (id) => DICTIONARIES_API.repairOperation(id),
+export const servicesApi = createDictionaryApi({
+  list: () => DICTIONARIES_API.services(),
+  item: (id) => DICTIONARIES_API.service(id),
 });
 export const orderStatusesApi = createTypedDictionaryApi(
   {

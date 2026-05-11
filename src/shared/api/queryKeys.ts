@@ -55,7 +55,7 @@ export const queryKeys = {
     deviceTypes: makeEntityKey(["dictionaries"], "device-types"),
     intakeNotes: makeEntityKey(["dictionaries"], "intake-notes"),
     manufacturers: makeEntityKey(["dictionaries"], "manufacturers"),
-    repairOperations: makeEntityKey(["dictionaries"], "repair-operations"),
+    services: makeEntityKey(["dictionaries"], "services"),
     orderStatuses: makeEntityKey(["dictionaries"], "order-statuses"),
     suppliers: makeEntityKey(["dictionaries"], "suppliers"),
     products: makeEntityKey(["dictionaries"], "products"),

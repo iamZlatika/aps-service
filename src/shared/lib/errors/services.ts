@@ -41,5 +41,11 @@ export function notifyError(
     return;
   }
 
-  toast.error(error.message || fallback);
+  const SERVER_MESSAGE_MAP: Record<string, string> = {
+    "The name has already been taken.": i18next.t("errors.name_taken"),
+  };
+
+  const message =
+    SERVER_MESSAGE_MAP[error.message] ?? error.message ?? fallback;
+  toast.error(message);
 }

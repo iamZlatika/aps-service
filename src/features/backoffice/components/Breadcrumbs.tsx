@@ -28,7 +28,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   "device-types": "breadcrumbs.deviceTypes",
   "intake-notes": "breadcrumbs.intakeNotes",
   manufacturers: "breadcrumbs.manufacturers",
-  "repair-operations": "breadcrumbs.repairOperations",
+  services: "breadcrumbs.services",
 };
 
 export const Breadcrumbs = () => {

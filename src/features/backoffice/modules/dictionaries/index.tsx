@@ -59,9 +59,9 @@ const DictionariesPage = () => {
       href: DICTIONARIES_LINKS.manufacturers(),
     },
     {
-      title: t("sidebar.dictionaries_list.repair_operations"),
+      title: t("sidebar.dictionaries_list.services"),
       icon: Wrench,
-      href: DICTIONARIES_LINKS.repairOperations(),
+      href: DICTIONARIES_LINKS.services(),
     },
     {
       title: t("sidebar.dictionaries_list.order_statuses"),

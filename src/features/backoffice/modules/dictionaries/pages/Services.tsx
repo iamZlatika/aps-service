@@ -1,10 +1,10 @@
-import { repairOperationsApi } from "@/features/backoffice/modules/dictionaries/api";
+import { servicesApi } from "@/features/backoffice/modules/dictionaries/api";
 import { DictionaryTablePage } from "@/features/backoffice/modules/dictionaries/components/DictionaryTablePage.tsx";
 import { type DictionaryItem } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
-const RepairOperationsPage = () => {
+const ServicesPage = () => {
   const columns: ColumnConfig<DictionaryItem>[] = [
     {
       key: "name",
@@ -16,12 +16,12 @@ const RepairOperationsPage = () => {
 
   return (
     <DictionaryTablePage
-      titleKey="sidebar.dictionaries_list.repair_operations"
-      api={repairOperationsApi}
-      queryKeyFn={queryKeys.dictionaries.repairOperations}
+      titleKey="sidebar.dictionaries_list.services"
+      api={servicesApi}
+      queryKeyFn={queryKeys.dictionaries.services}
       columns={columns}
     />
   );
 };
 
-export default RepairOperationsPage;
+export default ServicesPage;
