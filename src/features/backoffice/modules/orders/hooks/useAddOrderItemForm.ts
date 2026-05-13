@@ -16,7 +16,6 @@ import {
   servicesApi,
   suppliersApi,
 } from "@/features/backoffice/modules/dictionaries/api";
-import type { SearchableSelectOption } from "@/features/backoffice/modules/orders/components/searchable-select";
 import {
   type NewOrderItemFormValues,
   type NewOrderItemSchema,
@@ -27,6 +26,7 @@ import type { OrderItemType } from "@/features/backoffice/modules/orders/types.t
 import { usersApi } from "@/features/backoffice/modules/users/api";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import type { SearchableSelectOption } from "@/widgets/searchable-select";
 
 const fetchServices = createNameSearchFetcher(servicesApi.getAll);
 const fetchProducts = createNameSearchFetcher(productsApi.getAll);

@@ -2,8 +2,6 @@ import { Controller, type FieldError, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { DueDatePicker } from "@/features/backoffice/modules/orders/components/DueDatePicker.tsx";
-import { MultiSearchableSelect } from "@/features/backoffice/modules/orders/components/multsearchable-select";
-import SearchableSelect from "@/features/backoffice/modules/orders/components/searchable-select";
 import { useDictionarySection } from "@/features/backoffice/modules/orders/hooks/useDictionarySection.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
@@ -15,6 +13,8 @@ import {
   ACCESSORY_QUICK_SELECT,
   SEARCH_PAGE_SIZE,
 } from "@/shared/lib/constants.ts";
+import { MultiSearchableSelect } from "@/widgets/multi-searchable-select";
+import SearchableSelect from "@/widgets/searchable-select";
 
 export const DeviceSection = () => {
   const { fetchers, createItemFns } = useDictionarySection();
@@ -119,6 +119,8 @@ export const DeviceSection = () => {
         <Input
           placeholder={t("orders.placeholders.devicePassword")}
           className="h-11 text-base md:text-base"
+          autoCapitalize="none"
+          autoCorrect="off"
           {...register("devicePassword")}
         />
         {errors.devicePassword && (

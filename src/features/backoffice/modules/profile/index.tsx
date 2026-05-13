@@ -74,6 +74,16 @@ const ProfilePage = () => {
         rightAction={rightAction}
       >
         <CardTitle className="text-xl font-bold mb-4 text-center">
+          {t("profile.your_balance")}
+        </CardTitle>
+        <div className="h-11 rounded-md border border-input bg-muted px-3 text-base flex items-center justify-center mb-6">
+          {new Intl.NumberFormat("uk-UA", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }).format(parseFloat(user.balance))}{" "}
+          ₴
+        </div>
+        <CardTitle className="text-xl font-bold mb-4 text-center">
           {t("profile.your_rate")}
         </CardTitle>
         <div className="grid grid-cols-3 divide-x divide-border mb-6">

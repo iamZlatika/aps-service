@@ -74,7 +74,7 @@ const SearchFilter = ({
   }, []);
 
   return (
-    <div className={cn("relative w-full max-w-sm mb-4", className)}>
+    <div className={cn("relative w-full mb-4", className)}>
       <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
       <Input

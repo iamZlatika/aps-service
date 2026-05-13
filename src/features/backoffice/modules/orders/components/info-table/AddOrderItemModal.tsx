@@ -7,7 +7,6 @@ import {
   getOrderItemModalTitle,
 } from "@/features/backoffice/modules/orders/components/info-table/services.ts";
 import { ManagerSelect } from "@/features/backoffice/modules/orders/components/ManagerSelect.tsx";
-import SearchableSelect from "@/features/backoffice/modules/orders/components/searchable-select";
 import { useAddOrderItemForm } from "@/features/backoffice/modules/orders/hooks/useAddOrderItemForm.ts";
 import { useOrderItemSubmit } from "@/features/backoffice/modules/orders/hooks/useOrderItemSubmit.ts";
 import type {
@@ -25,6 +24,7 @@ import {
 } from "@/shared/components/ui/dialog.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
+import SearchableSelect from "@/widgets/searchable-select";
 
 interface AddOrderItemModalProps {
   orderId: number;

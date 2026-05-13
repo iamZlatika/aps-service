@@ -29,7 +29,7 @@ interface DisplayFieldProps {
 }
 
 export const DisplayField = ({ value }: DisplayFieldProps) => (
-  <div className="h-11 rounded-md border border-gray-100 bg-gray-100 px-3 text-base flex items-center">
+  <div className="h-11 rounded-md border border-input bg-muted px-3 text-base flex items-center">
     {value || <span className="text-muted-foreground">—</span>}
   </div>
 );

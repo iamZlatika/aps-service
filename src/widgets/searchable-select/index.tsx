@@ -5,16 +5,21 @@ import { type KeyboardEvent } from "react";
 import type { FieldError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import {
-  type SearchableSelectInputProps,
-  type SearchableSelectOption,
-} from "@/features/backoffice/modules/orders/components/searchable-select/searchableSelect.types.ts";
 import { useDebounce } from "@/shared/hooks/useDebounce.ts";
+import { useIsMobile } from "@/shared/hooks/useMobile.ts";
 import { SEARCH_DEBOUNCE_MS } from "@/shared/lib/constants.ts";
 import { notifyError } from "@/shared/lib/errors/services.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
-export type { SearchableSelectOption };
+import {
+  type SearchableSelectInputProps,
+  type SearchableSelectOption,
+} from "./types.ts";
+
+export type { SearchableSelectInputProps, SearchableSelectOption };
+
+const ITEM_HEIGHT = 36;
+const LIST_PADDING = 8;
 
 interface SearchableSelectProps<TMeta = undefined> {
   value: string;
@@ -31,6 +36,7 @@ interface SearchableSelectProps<TMeta = undefined> {
   onClear?: () => void;
   onCreateItem?: (name: string) => Promise<void>;
   dropUp?: boolean;
+  maxVisible?: number;
 }
 
 const defaultRenderInput = (props: SearchableSelectInputProps) => (
@@ -78,9 +84,12 @@ function SearchableSelect<TMeta = undefined>({
   clearOnSelect,
   onCreateItem,
   dropUp,
+  maxVisible,
 }: SearchableSelectProps<TMeta>) {
   const { t } = useTranslation();
   const queryClientInstance = useQueryClient();
+  const isMobile = useIsMobile();
+  const visibleCount = maxVisible ?? (isMobile ? 3 : 5);
 
   const [inputValue, setInputValue] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
@@ -255,7 +264,11 @@ function SearchableSelect<TMeta = undefined>({
               )}
             </div>
           ) : (
-            <ul ref={listRef} className="max-h-60 overflow-y-auto p-1">
+            <ul
+              ref={listRef}
+              style={{ maxHeight: visibleCount * ITEM_HEIGHT + LIST_PADDING }}
+              className="overflow-y-auto p-1"
+            >
               {options.map((option, index) => (
                 <li
                   key={option.id}

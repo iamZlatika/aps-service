@@ -10,8 +10,15 @@ export const useUpdateTheme = () => {
   return useMutation({
     mutationFn: (theme: UserTheme) => usersApi.updateTheme(theme),
     onSuccess: (_data, theme) => {
-      document.documentElement.classList.toggle("dark", theme === "dark");
-      queryClient.invalidateQueries({ queryKey: queryKeys.auth.user() });
+      if (theme === "system") {
+        const isDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        document.documentElement.classList.toggle("dark", isDark);
+      } else {
+        document.documentElement.classList.toggle("dark", theme === "dark");
+      }
+      return queryClient.invalidateQueries({ queryKey: queryKeys.auth.user() });
     },
   });
 };

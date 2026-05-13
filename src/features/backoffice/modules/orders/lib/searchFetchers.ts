@@ -1,8 +1,8 @@
 import { customersApi } from "@/features/backoffice/modules/customers/api";
-import type { SearchableSelectOption } from "@/features/backoffice/modules/orders/components/searchable-select/searchableSelect.types.ts";
 import { usersApi } from "@/features/backoffice/modules/users/api";
 import type { PaginatedGetAllFn } from "@/shared/api/types.ts";
 import { SEARCH_PAGE_SIZE } from "@/shared/lib/constants.ts";
+import type { SearchableSelectOption } from "@/widgets/searchable-select";
 
 export type CustomerByNameMeta = {
   phone: string;

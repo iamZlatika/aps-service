@@ -125,8 +125,8 @@ const CustomersPage = () => {
         api={customersApi}
         queryKeyFn={queryKeys.customers.list}
         searchPlaceholder="search_placeholders.customer_phone"
-        searchField="phone_number"
-        searchNumbersOnly
+        searchField="any_match"
+        searchInputClassName="mb-0 flex-none w-full sm:w-[30rem]"
         columns={columns}
         headerActions={<AddButton onClick={() => setIsAddOpen(true)} />}
         onRowClick={onRowClick}

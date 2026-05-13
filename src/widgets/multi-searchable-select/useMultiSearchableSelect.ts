@@ -14,10 +14,10 @@ import {
   useState,
 } from "react";
 
-import { type SearchableSelectOption } from "@/features/backoffice/modules/orders/components/searchable-select";
 import { useDebounce } from "@/shared/hooks/useDebounce.ts";
 import { SEARCH_DEBOUNCE_MS } from "@/shared/lib/constants.ts";
 import { notifyError } from "@/shared/lib/errors/services.ts";
+import { type SearchableSelectOption } from "@/widgets/searchable-select";
 
 import { type CreateItemFn } from "./types.ts";
 

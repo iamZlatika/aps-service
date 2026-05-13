@@ -2,9 +2,7 @@ import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import SearchableSelect from "@/features/backoffice/modules/orders/components/searchable-select";
-import { CustomerOption } from "@/features/backoffice/modules/orders/components/searchable-select/CustomerOption.tsx";
-import type { SearchableSelectOption } from "@/features/backoffice/modules/orders/components/searchable-select/searchableSelect.types.ts";
+import { CustomerOption } from "@/features/backoffice/modules/orders/components/CustomerOption.tsx";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type {
   CustomerByNameMeta,
@@ -14,6 +12,8 @@ import { PhoneMaskInput } from "@/features/backoffice/widgets/table/components/i
 import { CardTitle } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
+import type { SearchableSelectOption } from "@/widgets/searchable-select";
+import SearchableSelect from "@/widgets/searchable-select";
 
 type CustomerSectionProps = {
   fetchCustomersByName: (

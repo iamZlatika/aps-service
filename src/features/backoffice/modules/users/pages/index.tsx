@@ -52,7 +52,11 @@ const UsersPage = () => {
       field: "location",
       labelKey: "users.table_fields.location",
       sortable: false,
-      renderCell: (_, item) => <UserLocationSelect user={item} />,
+      renderCell: (_, item) => (
+        <div onClick={(e) => e.stopPropagation()}>
+          <UserLocationSelect user={item} />
+        </div>
+      ),
     },
     {
       key: "status",

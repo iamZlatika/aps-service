@@ -35,7 +35,7 @@ const UserPage = () => {
     onSuccess: () => {
       setIsConfirmOpen(false);
       return queryClient.invalidateQueries({
-        queryKey: queryKeys.users.detail(userId!),
+        queryKey: queryKeys.users.all,
       });
     },
   });

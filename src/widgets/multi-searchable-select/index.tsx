@@ -2,15 +2,19 @@ import { X } from "lucide-react";
 import { type FieldError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { type SearchableSelectOption } from "@/features/backoffice/modules/orders/components/searchable-select";
 import { Badge } from "@/shared/components/ui/badge.tsx";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
+import { useIsMobile } from "@/shared/hooks/useMobile.ts";
 import { cn } from "@/shared/lib/utils.ts";
+import { type SearchableSelectOption } from "@/widgets/searchable-select";
 
 import { type CreateItemFn } from "./types.ts";
 import { useMultiSearchableSelect } from "./useMultiSearchableSelect.ts";
 
 export type { CreateItemFn } from "./types.ts";
+
+const ITEM_HEIGHT = 36;
+const LIST_PADDING = 8;
 
 interface MultiSearchableSelectProps {
   value: string[];
@@ -22,6 +26,7 @@ interface MultiSearchableSelectProps {
   onCreateItem?: CreateItemFn;
   quickSelectLabels?: string[];
   dropUp?: boolean;
+  maxVisible?: number;
 }
 
 export const MultiSearchableSelect = ({
@@ -34,8 +39,11 @@ export const MultiSearchableSelect = ({
   onCreateItem,
   quickSelectLabels,
   dropUp,
+  maxVisible,
 }: MultiSearchableSelectProps) => {
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
+  const visibleCount = maxVisible ?? (isMobile ? 3 : 5);
 
   const {
     inputValue,
@@ -165,7 +173,8 @@ export const MultiSearchableSelect = ({
           ) : (
             <ul
               ref={listRef}
-              className="max-h-60 overflow-y-auto p-1"
+              style={{ maxHeight: visibleCount * ITEM_HEIGHT + LIST_PADDING }}
+              className="overflow-y-auto p-1"
               onMouseDown={(e) => {
                 const li = (e.target as HTMLElement).closest(
                   "[data-option-id]",

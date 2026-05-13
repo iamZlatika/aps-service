@@ -8,8 +8,6 @@ import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { DueDatePicker } from "@/features/backoffice/modules/orders/components/DueDatePicker.tsx";
-import { MultiSearchableSelect } from "@/features/backoffice/modules/orders/components/multsearchable-select";
-import SearchableSelect from "@/features/backoffice/modules/orders/components/searchable-select";
 import { useDictionarySection } from "@/features/backoffice/modules/orders/hooks/useDictionarySection.ts";
 import type { EditOrderInfoFormValues } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type { OrderInfo } from "@/features/backoffice/modules/orders/types.ts";
@@ -17,6 +15,8 @@ import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { FormField } from "@/shared/components/common/FormField.tsx";
 import { SEARCH_PAGE_SIZE } from "@/shared/lib/constants.ts";
 import { formatDate } from "@/shared/lib/utils.ts";
+import { MultiSearchableSelect } from "@/widgets/multi-searchable-select";
+import SearchableSelect from "@/widgets/searchable-select";
 
 import { DisplayField, LabeledField } from "../field-primitives.tsx";
 
@@ -168,6 +168,8 @@ export const OrderInfoFields = ({
             {...register("devicePassword")}
             error={errors.devicePassword}
             className="h-11 text-base md:text-base"
+            autoCapitalize="none"
+            autoCorrect="off"
           />
         ) : (
           <DisplayField value={order.devicePassword} />

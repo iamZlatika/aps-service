@@ -51,7 +51,18 @@ export const useAuth = () => {
   });
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", user?.theme === "dark");
+    const applyDark = (isDark: boolean) =>
+      document.documentElement.classList.toggle("dark", isDark);
+
+    if (!user?.theme || user.theme === "system") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      applyDark(mediaQuery.matches);
+      const handler = (e: MediaQueryListEvent) => applyDark(e.matches);
+      mediaQuery.addEventListener("change", handler);
+      return () => mediaQuery.removeEventListener("change", handler);
+    }
+
+    applyDark(user.theme === "dark");
   }, [user?.theme]);
 
   const logout = () => {

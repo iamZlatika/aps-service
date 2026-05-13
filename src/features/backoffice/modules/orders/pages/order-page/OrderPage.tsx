@@ -84,7 +84,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
       {selectedOrder && (
         <>
           <div className="flex h-full">
-            <div className="flex-1 overflow-y-auto p-2 sm:p-6">
+            <div className="flex-1 overflow-y-auto p-2 sm:p-6 [scrollbar-gutter:stable]">
               <div>
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">

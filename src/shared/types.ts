@@ -23,6 +23,7 @@ export type UserLanguage = (typeof USER_LANGUAGES)[keyof typeof USER_LANGUAGES];
 export const USER_THEMES = {
   DARK: "dark",
   LIGHT: "light",
+  SYSTEM: "system",
 } as const;
 
 export type UserTheme = (typeof USER_THEMES)[keyof typeof USER_THEMES];

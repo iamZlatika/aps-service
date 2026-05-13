@@ -1,4 +1,4 @@
-import { LogOut, Moon, Settings, Sun } from "lucide-react";
+import { LogOut, Monitor, Moon, Settings, Sun } from "lucide-react";
 import { memo, type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -53,6 +53,7 @@ export const Header = memo(() => {
   const themeOptions: { label: string | ReactNode; value: UserTheme }[] = [
     { label: <Sun size={16} />, value: "light" },
     { label: <Moon size={16} />, value: "dark" },
+    { label: <Monitor size={16} />, value: "system" },
   ];
   return (
     <header className="flex min-h-16 items-center justify-between border-b px-4 bg-background">
@@ -71,7 +72,7 @@ export const Header = memo(() => {
           <SegmentedControl
             onChange={updateTheme.mutate}
             disabled={updateTheme.isPending}
-            value={user?.theme || "dark"}
+            value={user?.theme || "system"}
             options={themeOptions}
           />
         </div>
@@ -94,7 +95,7 @@ export const Header = memo(() => {
                 <SegmentedControl
                   onChange={updateTheme.mutate}
                   disabled={updateTheme.isPending}
-                  value={user?.theme || "dark"}
+                  value={user?.theme || "system"}
                   options={themeOptions}
                 />
               </div>
