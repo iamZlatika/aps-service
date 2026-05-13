@@ -41,31 +41,33 @@ export const Breadcrumbs = () => {
   if (segments.length <= 1) return null;
 
   return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        {segments.map((segment, index) => {
-          const path = "/" + segments.slice(0, index + 1).join("/");
-          const isLast = index === segments.length - 1;
-          const labelKey = SEGMENT_LABELS[segment];
+    <div className="bg-muted border-b border-border px-4 sm:px-6 py-2">
+      <Breadcrumb>
+        <BreadcrumbList>
+          {segments.map((segment, index) => {
+            const path = "/" + segments.slice(0, index + 1).join("/");
+            const isLast = index === segments.length - 1;
+            const labelKey = SEGMENT_LABELS[segment];
 
-          if (!labelKey) return null;
+            if (!labelKey) return null;
 
-          return (
-            <Fragment key={path}>
-              {index > 0 && <BreadcrumbSeparator />}
-              <BreadcrumbItem>
-                {isLast ? (
-                  <BreadcrumbPage>{t(labelKey)}</BreadcrumbPage>
-                ) : (
-                  <BreadcrumbLink asChild>
-                    <Link to={path}>{t(labelKey)}</Link>
-                  </BreadcrumbLink>
-                )}
-              </BreadcrumbItem>
-            </Fragment>
-          );
-        })}
-      </BreadcrumbList>
-    </Breadcrumb>
+            return (
+              <Fragment key={path}>
+                {index > 0 && <BreadcrumbSeparator />}
+                <BreadcrumbItem>
+                  {isLast ? (
+                    <BreadcrumbPage>{t(labelKey)}</BreadcrumbPage>
+                  ) : (
+                    <BreadcrumbLink asChild>
+                      <Link to={path}>{t(labelKey)}</Link>
+                    </BreadcrumbLink>
+                  )}
+                </BreadcrumbItem>
+              </Fragment>
+            );
+          })}
+        </BreadcrumbList>
+      </Breadcrumb>
+    </div>
   );
 };

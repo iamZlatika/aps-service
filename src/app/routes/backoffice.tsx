@@ -20,6 +20,10 @@ const CreateOrderPage = lazy(
   () =>
     import("../../features/backoffice/modules/orders/pages/create-order-page"),
 );
+const FiltersSettingsPage = lazy(
+  () =>
+    import("../../features/backoffice/modules/orders/pages/filters-settings-page"),
+);
 const CustomersPage = lazy(
   () => import("@/features/backoffice/modules/customers/pages"),
 );
@@ -84,6 +88,10 @@ export const backofficeRoutes: RouteObject = {
     { path: ORDERS_ROUTES.root, element: <OrdersPage /> },
     { path: ORDERS_ROUTES.createNewOrder, element: <CreateOrderPage /> },
     { path: ORDERS_ROUTES.order, element: <OrderPage /> },
+    {
+      path: ORDERS_ROUTES.orderFilterSettings,
+      element: <FiltersSettingsPage />,
+    },
     { path: CUSTOMERS_ROUTES.root, element: <CustomersPage /> },
     { path: CUSTOMERS_ROUTES.customer, element: <CustomerPage /> },
     { path: USERS_ROUTES.root, element: <UsersPage /> },

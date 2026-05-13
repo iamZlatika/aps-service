@@ -1,6 +1,8 @@
+import { FunnelPlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
+import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
 const SCHASTLIVAYA_LOCATION_ID = "1";
@@ -42,6 +44,7 @@ const FilterTab = ({
 export const OrdersFilterBar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const currentStatusIds = searchParams.get("status_ids[]");
   const currentStatusId = searchParams.get("status_id");
@@ -70,6 +73,13 @@ export const OrdersFilterBar = () => {
   return (
     <div className="overflow-x-auto">
       <div className="flex items-end gap-5 border-b min-w-max">
+        <button
+          type="button"
+          onClick={() => navigate(ORDERS_LINKS.filterSettings())}
+          className="pb-2 -mb-px text-muted-foreground hover:text-foreground transition-colors focus:outline-none"
+        >
+          <FunnelPlus className="size-5" />
+        </button>
         <FilterTab
           label={t("orders.filters.all")}
           active={isAll}

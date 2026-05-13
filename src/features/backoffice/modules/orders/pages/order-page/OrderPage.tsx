@@ -134,6 +134,9 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                     <p className="text-muted-foreground text-base font-medium">
                       {t("orders.acceptedBy")}: {selectedOrder.manager.name}
                     </p>
+                    <p className="text-muted-foreground text-base font-medium">
+                      {t("orders.form.location")}: {selectedOrder.location.name}
+                    </p>
                     <p className="text-muted-foreground text-sm">
                       {selectedOrder.closedAt
                         ? `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")} — ${t("orders.closedAt")}: ${format(new Date(selectedOrder.closedAt), "dd.MM.yyyy")}`
@@ -147,7 +150,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                         type="button"
                         onClick={() => setActiveTab(tab)}
                         className={cn(
-                          "pb-2 text-sm whitespace-nowrap transition-colors focus:outline-none border-b-2",
+                          "pb-2 text-base whitespace-nowrap transition-colors focus:outline-none border-b-2",
                           activeTab === tab
                             ? "text-foreground font-medium border-primary"
                             : "text-muted-foreground hover:text-foreground border-transparent",
