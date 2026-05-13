@@ -25,3 +25,5 @@ export type User = {
 };
 
 export type NewUser = z.infer<typeof registerUserSchema>;
+
+export type Me = User & { balance: string };

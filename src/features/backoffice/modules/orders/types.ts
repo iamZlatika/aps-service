@@ -9,6 +9,7 @@ import {
   type DocumentType,
   type PaymentMethodType,
   type PaymentType,
+  type TransactionStatus,
 } from "@/shared/types.ts";
 
 export type OrderStatus = {
@@ -154,7 +155,20 @@ export type NewOrderPayment = Omit<
 > & {
   managerId: number;
 };
-
+export type OrderTransaction = {
+  id: number;
+  amount: string;
+  type: string;
+  label: string;
+  status: TransactionStatus;
+  user: User | null;
+  orderId: number;
+  orderNumber: string;
+  orderServiceId: number | null;
+  orderProductId: number | null;
+  createdAt: string;
+  updatedAt: string;
+};
 export type OrderInfo = Omit<Order, "customer"> & {
   customer: CustomerInfo;
   location: Location;
@@ -164,4 +178,5 @@ export type OrderInfo = Omit<Order, "customer"> & {
   comments: OrderComment[];
   payments: OrderPayment[];
   callHistory: CallHistoryItem[];
+  transactions: OrderTransaction[];
 };

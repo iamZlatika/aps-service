@@ -1,16 +1,20 @@
 import {
+  type MeDto,
+  MeDtoSchema,
   PaginatedUsersDtoSchema,
   type UserDto,
   UserDtoSchema,
 } from "@/features/backoffice/modules/users/api/dto.ts";
 import { USERS_API } from "@/features/backoffice/modules/users/api/endpoints";
 import {
+  mapMeDtoToMe,
   mapPaginatedUsersDtoToResponse,
   mapSalarySettingsToDto,
   mapUserDtoToUser,
 } from "@/features/backoffice/modules/users/lib/adapters.ts";
 import { type SalarySettings } from "@/features/backoffice/modules/users/lib/salarySettingsSchema.ts";
 import {
+  type Me,
   type NewUser,
   type User,
 } from "@/features/backoffice/modules/users/types.ts";
@@ -43,10 +47,9 @@ export const usersApi = {
     return mapPaginatedUsersDtoToResponse(validated);
   },
 
-  getMe: async (): Promise<User> => {
-    const response = await get<{ data: UserDto }>(USERS_API.me());
-    const validatedData = UserDtoSchema.parse(response.data);
-    return mapUserDtoToUser(validatedData);
+  getMe: async (): Promise<Me> => {
+    const response = await get<{ data: MeDto }>(USERS_API.me());
+    return mapMeDtoToMe(MeDtoSchema.parse(response.data));
   },
 
   getUser: async (id: number): Promise<User> => {

@@ -26,6 +26,11 @@ export const UserDtoSchema = z.object({
 });
 export type UserDto = z.infer<typeof UserDtoSchema>;
 
+export const MeDtoSchema = UserDtoSchema.extend({
+  balance: z.string(),
+});
+export type MeDto = z.infer<typeof MeDtoSchema>;
+
 export const PaginatedUsersDtoSchema = z.object({
   data: z.array(UserDtoSchema),
   meta: z.object({

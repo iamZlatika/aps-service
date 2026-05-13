@@ -25,7 +25,9 @@ import { queryKeys } from "@/shared/api/queryKeys.ts";
 import Loader from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
+import { cn } from "@/shared/lib/utils.ts";
 
+import { FinanceTab } from "./components/FinanceTab.tsx";
 import { OrderInfoCard } from "./components/order-info-fields/OrderInfoCard.tsx";
 
 const PrintDialog = lazy(() =>
@@ -33,6 +35,8 @@ const PrintDialog = lazy(() =>
     default: m.PrintDialog,
   })),
 );
+
+type OrderTab = "order" | "finance";
 
 interface OrderPageContentProps {
   orderId: number;
@@ -54,6 +58,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   }, [navigate]);
 
   const [isPrintOpen, setIsPrintOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<OrderTab>("order");
 
   const history = useMemo(
     () => (selectedOrder ? buildOrderHistory(selectedOrder) : []),
@@ -80,7 +85,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
         <>
           <div className="flex h-full">
             <div className="flex-1 overflow-y-auto p-2 sm:p-6">
-              <div className="mb-6">
+              <div>
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <h1 className="text-2xl font-bold">
@@ -124,36 +129,66 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                     </button>
                   </div>
                 </div>
-                <div className="mt-1">
-                  <p className="text-muted-foreground text-base font-medium">
-                    {t("orders.acceptedBy")}: {selectedOrder.manager.name}
-                  </p>
-                  <p className="text-muted-foreground text-sm">
-                    {selectedOrder.closedAt
-                      ? `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")} — ${t("orders.closedAt")}: ${format(new Date(selectedOrder.closedAt), "dd.MM.yyyy")}`
-                      : `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")}`}
-                  </p>
+                <div className="mt-1 flex items-end justify-between">
+                  <div>
+                    <p className="text-muted-foreground text-base font-medium">
+                      {t("orders.acceptedBy")}: {selectedOrder.manager.name}
+                    </p>
+                    <p className="text-muted-foreground text-sm">
+                      {selectedOrder.closedAt
+                        ? `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")} — ${t("orders.closedAt")}: ${format(new Date(selectedOrder.closedAt), "dd.MM.yyyy")}`
+                        : `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")}`}
+                    </p>
+                  </div>
+                  <div className="flex gap-5">
+                    {(["order", "finance"] as OrderTab[]).map((tab) => (
+                      <button
+                        key={tab}
+                        type="button"
+                        onClick={() => setActiveTab(tab)}
+                        className={cn(
+                          "pb-2 text-sm whitespace-nowrap transition-colors focus:outline-none border-b-2",
+                          activeTab === tab
+                            ? "text-foreground font-medium border-primary"
+                            : "text-muted-foreground hover:text-foreground border-transparent",
+                        )}
+                      >
+                        {t(`orders.tabs.${tab}`)}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div className="flex flex-col gap-6">
-                <ProductsAndServicesCard
-                  orderId={orderId}
-                  selectedOrder={selectedOrder}
+              {activeTab === "order" && (
+                <div className="flex flex-col gap-6 mt-6">
+                  <ProductsAndServicesCard
+                    orderId={orderId}
+                    selectedOrder={selectedOrder}
+                  />
+                  <PaymentsCard
+                    orderId={orderId}
+                    selectedOrder={selectedOrder}
+                  />
+                  <div className="flex gap-6 items-start">
+                    <div className="flex-1 min-w-0">
+                      <OrderInfoCard order={selectedOrder} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <CustomerInfoCard
+                        customer={selectedOrder.customer}
+                        showStatusToggle={false}
+                        onSuccess={handleStatusSuccess}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+              {activeTab === "finance" && (
+                <FinanceTab
+                  transactions={selectedOrder.transactions}
+                  totalIncome={selectedOrder.totalIncome}
                 />
-                <PaymentsCard orderId={orderId} selectedOrder={selectedOrder} />
-                <div className="flex gap-6 items-start">
-                  <div className="flex-1 min-w-0">
-                    <OrderInfoCard order={selectedOrder} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <CustomerInfoCard
-                      customer={selectedOrder.customer}
-                      showStatusToggle={false}
-                      onSuccess={handleStatusSuccess}
-                    />
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
             <HistorySidebar orderId={selectedOrder.id} history={history} />
           </div>

@@ -56,6 +56,14 @@ export const PAYMENT_METHODS = {
   CARD: "card",
 } as const;
 
+export const TRANSACTION_STATUSES = {
+  COMPLETED: "completed",
+  PENDING: "pending",
+};
+
+export type TransactionStatus =
+  (typeof TRANSACTION_STATUSES)[keyof typeof TRANSACTION_STATUSES];
+
 export type PaymentType = (typeof PAYMENTS)[keyof typeof PAYMENTS];
 export type PaymentMethodType =
   (typeof PAYMENT_METHODS)[keyof typeof PAYMENT_METHODS];
