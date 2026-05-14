@@ -20,4 +20,5 @@ export const ORDERS_API = {
     `${BASE}/${orderId}/documents/${documentId}/download`,
   addSearchPreset: () => "/backoffice/users/search-presets",
   deleteSearchPreset: (id: number) => `/backoffice/users/search-presets/${id}`,
+  reorderSearchPresets: () => "/backoffice/users/search-presets/reorder",
 };

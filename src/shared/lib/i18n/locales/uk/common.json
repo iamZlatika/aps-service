@@ -348,6 +348,28 @@
       "order": "Про замовлення",
       "finance": "Фінанси"
     },
+    "filterSettings": {
+      "presets": "Мої фільтри",
+      "noPresets": "Немає збережених фільтрів",
+      "addPreset": "Додати новий фільтр",
+      "nameLabel": "Назва",
+      "nameHint": "Введіть свою назву фільтра — обов'язкове поле",
+      "namePlaceholder": "Наприклад: Термінові в роботі",
+      "nameRequired": "Назва обов'язкова",
+      "statusesLabel": "Статуси",
+      "statusesHint": "Фільтр по статусах — одному або кільком одразу",
+      "managerLabel": "Майстер",
+      "managerHint": "Фільтр по майстру",
+      "urgentLabel": "Терміново",
+      "urgentHint": "Фільтр по терміновості",
+      "urgentCheckbox": "Тільки термінові",
+      "locationLabel": "Локація",
+      "locationHint": "Фільтр по локації",
+      "anyMatchLabel": "Бренд або модель",
+      "anyMatchHint": "Фільтр по назві бренду або моделі",
+      "anyMatchPlaceholder": "Наприклад: Apple, iPhone 15",
+      "atLeastOneFilter": "Оберіть хоча б один фільтр"
+    },
     "finance": {
       "totalIncome": "Загальний прибуток від замовлення",
       "pending": "Нараховані",

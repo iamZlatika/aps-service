@@ -38,8 +38,10 @@ import {
   type OrderInfo,
   type OrderPayment,
   type OrderProduct,
+  type OrderSearchPreset,
   type OrderService,
 } from "@/features/backoffice/modules/orders/types.ts";
+import type { SearchPresetDto } from "@/features/backoffice/modules/users/api/dto.ts";
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
 import { buildPaginatedParams, del, get, post, put } from "@/shared/api/api.ts";
@@ -236,5 +238,26 @@ export const ordersApi = {
       { responseType: "blob" },
     );
     return new Blob([response.data], { type: "application/pdf" });
+  },
+  createSearchPreset: async (
+    preset: Pick<OrderSearchPreset, "name" | "filters">,
+  ): Promise<void> => {
+    await post<
+      { entity: string; name: string; filters: OrderSearchPreset["filters"] },
+      { data: SearchPresetDto }
+    >(ORDERS_API.addSearchPreset(), {
+      entity: "orders",
+      name: preset.name,
+      filters: preset.filters,
+    });
+  },
+  deleteSearchPreset: async (id: number): Promise<void> => {
+    await del(ORDERS_API.deleteSearchPreset(id));
+  },
+  reorderSearchPresets: async (ids: number[]): Promise<void> => {
+    await put<{ entity: string; ids: number[] }, void>(
+      ORDERS_API.reorderSearchPresets(),
+      { entity: "orders", ids },
+    );
   },
 };

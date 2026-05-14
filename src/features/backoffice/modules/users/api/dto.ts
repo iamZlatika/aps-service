@@ -26,8 +26,34 @@ export const UserDtoSchema = z.object({
 });
 export type UserDto = z.infer<typeof UserDtoSchema>;
 
+export const SearchPresetFiltersDtoSchema = z.object({
+  page: z.number(),
+  per_page: z.number(),
+  sort_type: z.string(),
+  sort_column: z.string().optional(),
+  status_ids: z.array(z.number()).optional(),
+  manager_id: z.number().optional(),
+  location_id: z.number().optional(),
+  is_urgent: z.number().optional(),
+  any_match: z.string().optional(),
+});
+export type SearchPresetFiltersDto = z.infer<
+  typeof SearchPresetFiltersDtoSchema
+>;
+
+export const SearchPresetDtoSchema = z.object({
+  id: z.number(),
+  entity: z.string(),
+  name: z.string(),
+  filters: SearchPresetFiltersDtoSchema,
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+export type SearchPresetDto = z.infer<typeof SearchPresetDtoSchema>;
+
 export const MeDtoSchema = UserDtoSchema.extend({
   balance: z.string(),
+  search_presets: z.array(SearchPresetDtoSchema),
 });
 export type MeDto = z.infer<typeof MeDtoSchema>;
 

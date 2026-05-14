@@ -1,6 +1,7 @@
 import type { z } from "zod";
 
 import { type Location } from "@/features/backoffice/modules/dictionaries/types.ts";
+import type { SearchPresetFiltersDto } from "@/features/backoffice/modules/users/api/dto.ts";
 import type { registerUserSchema } from "@/features/backoffice/modules/users/lib/registerUserSchema.ts";
 import {
   type Role,
@@ -26,4 +27,16 @@ export type User = {
 
 export type NewUser = z.infer<typeof registerUserSchema>;
 
-export type Me = User & { balance: string };
+export type SearchPreset<TFilters = SearchPresetFiltersDto> = {
+  id: number;
+  entity: string;
+  name: string;
+  filters: TFilters;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type Me = User & {
+  balance: string;
+  searchPresets: SearchPreset[];
+};

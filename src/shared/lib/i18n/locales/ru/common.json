@@ -351,6 +351,28 @@
       "order": "О заказе",
       "finance": "Финансы"
     },
+    "filterSettings": {
+      "presets": "Мои фильтры",
+      "noPresets": "Нет сохранённых фильтров",
+      "addPreset": "Добавить новый фильтр",
+      "nameLabel": "Название",
+      "nameHint": "Введите своё название фильтра — обязательное поле",
+      "namePlaceholder": "Например: Срочные в работе",
+      "nameRequired": "Название обязательно",
+      "statusesLabel": "Статусы",
+      "statusesHint": "Фильтр по статусам — одному или нескольким сразу",
+      "managerLabel": "Мастер",
+      "managerHint": "Фильтр по мастеру",
+      "urgentLabel": "Срочно",
+      "urgentHint": "Фильтр по срочности",
+      "urgentCheckbox": "Только срочные",
+      "locationLabel": "Локация",
+      "locationHint": "Фильтр по локации",
+      "anyMatchLabel": "Бренд или модель",
+      "anyMatchHint": "Фильтр по названию бренда или модели",
+      "anyMatchPlaceholder": "Например: Apple, iPhone 15",
+      "atLeastOneFilter": "Выберите хотя бы один фильтр"
+    },
     "finance": {
       "totalIncome": "Общая прибыль от заказа",
       "pending": "Начисленные",

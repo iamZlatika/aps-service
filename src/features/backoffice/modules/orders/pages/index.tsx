@@ -261,6 +261,8 @@ const OrdersPage = () => {
         "status_id",
         "status_ids[]",
         "is_urgent",
+        "manager_id",
+        "any_match",
       ]}
       filterBar={<OrdersFilterBar />}
     />

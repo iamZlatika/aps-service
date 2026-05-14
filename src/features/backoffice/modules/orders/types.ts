@@ -4,7 +4,10 @@ import {
 } from "@/features/backoffice/modules/customers/types.ts";
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
-import type { User } from "@/features/backoffice/modules/users/types.ts";
+import type {
+  SearchPreset,
+  User,
+} from "@/features/backoffice/modules/users/types.ts";
 import {
   type DocumentType,
   type PaymentMethodType,
@@ -180,3 +183,17 @@ export type OrderInfo = Omit<Order, "customer"> & {
   callHistory: CallHistoryItem[];
   transactions: OrderTransaction[];
 };
+
+export type OrderPresetFilters = {
+  page: number;
+  per_page: number;
+  sort_type: string;
+  sort_column?: string;
+  status_ids?: number[];
+  manager_id?: number;
+  location_id?: number;
+  is_urgent?: number;
+  any_match?: string;
+};
+
+export type OrderSearchPreset = SearchPreset<OrderPresetFilters>;

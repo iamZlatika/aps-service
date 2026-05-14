@@ -25,6 +25,14 @@ export const mapUserDtoToUser = (dto: UserDto): User => {
 export const mapMeDtoToMe = (dto: MeDto): Me => ({
   ...mapUserDtoToUser(dto),
   balance: dto.balance,
+  searchPresets: dto.search_presets.map((p) => ({
+    id: p.id,
+    entity: p.entity,
+    name: p.name,
+    filters: p.filters,
+    createdAt: p.created_at,
+    updatedAt: p.updated_at,
+  })),
 });
 
 export const mapSalarySettingsToDto = (data: SalarySettings) => ({

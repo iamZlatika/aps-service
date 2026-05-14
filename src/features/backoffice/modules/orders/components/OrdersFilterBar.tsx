@@ -2,31 +2,54 @@ import { FunnelPlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+import { useOrderSearchPresets } from "@/features/backoffice/modules/orders/hooks/useOrderSearchPresets.ts";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation.ts";
+import type { OrderPresetFilters } from "@/features/backoffice/modules/orders/types.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
-const SCHASTLIVAYA_LOCATION_ID = "1";
-
-const ACTIVE_STATUS_IDS = [1, 2, 3, 4, 5, 6, 7];
-const ACTIVE_STATUS_VALUE = ACTIVE_STATUS_IDS.join(",");
-
-const STATUS_TABS = [
-  { id: 7, labelKey: "orders.filters.statuses.ready" },
-  { id: 4, labelKey: "orders.filters.statuses.negotiation" },
-  { id: 5, labelKey: "orders.filters.statuses.waiting_part" },
-  { id: 2, labelKey: "orders.filters.statuses.in_progress" },
-  { id: 6, labelKey: "orders.filters.statuses.with_partners" },
+const FILTER_KEYS = [
+  "status_id",
+  "status_ids[]",
+  "location_id",
+  "is_urgent",
+  "manager_id",
+  "any_match",
 ] as const;
 
-const FilterTab = ({
-  label,
-  active,
-  onClick,
-}: {
+function presetToParams(filters: OrderPresetFilters): Record<string, string> {
+  const params: Record<string, string> = {};
+  if (filters.status_ids?.length)
+    params.status_id = filters.status_ids.join(",");
+  if (filters.location_id != null)
+    params.location_id = String(filters.location_id);
+  if (filters.manager_id != null)
+    params.manager_id = String(filters.manager_id);
+  if (filters.is_urgent != null) params.is_urgent = String(filters.is_urgent);
+  if (filters.any_match) params.any_match = filters.any_match;
+  return params;
+}
+
+function isPresetActive(
+  filters: OrderPresetFilters,
+  searchParams: URLSearchParams,
+): boolean {
+  const preset = presetToParams(filters);
+  for (const [key, value] of Object.entries(preset)) {
+    if (searchParams.get(key) !== value) return false;
+  }
+  for (const key of FILTER_KEYS) {
+    if (!(key in preset) && searchParams.has(key)) return false;
+  }
+  return true;
+}
+
+interface FilterTabProps {
   label: string;
   active: boolean;
   onClick: () => void;
-}) => (
+}
+
+const FilterTab = ({ label, active, onClick }: FilterTabProps) => (
   <button
     type="button"
     onClick={onClick}
@@ -45,25 +68,14 @@ export const OrdersFilterBar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { presets } = useOrderSearchPresets();
 
-  const currentStatusIds = searchParams.get("status_ids[]");
-  const currentStatusId = searchParams.get("status_id");
-  const currentLocationId = searchParams.get("location_id");
-  const currentIsUrgent = searchParams.get("is_urgent");
-
-  const isAll =
-    !currentStatusIds &&
-    !currentStatusId &&
-    !currentLocationId &&
-    !currentIsUrgent;
+  const isAll = FILTER_KEYS.every((key) => !searchParams.has(key));
 
   const applyFilter = (extra: Record<string, string>) => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
-      next.delete("status_ids[]");
-      next.delete("status_id");
-      next.delete("location_id");
-      next.delete("is_urgent");
+      FILTER_KEYS.forEach((key) => next.delete(key));
       next.delete("page");
       Object.entries(extra).forEach(([k, v]) => next.set(k, v));
       return next;
@@ -80,36 +92,24 @@ export const OrdersFilterBar = () => {
         >
           <FunnelPlus className="size-5" />
         </button>
+
         <FilterTab
           label={t("orders.filters.all")}
           active={isAll}
           onClick={() => applyFilter({})}
         />
 
-        <FilterTab
-          label={t("orders.filters.schastlivaya")}
-          active={currentLocationId === SCHASTLIVAYA_LOCATION_ID}
-          onClick={() => applyFilter({ location_id: SCHASTLIVAYA_LOCATION_ID })}
-        />
-
-        <FilterTab
-          label={t("orders.filters.active")}
-          active={currentStatusId === ACTIVE_STATUS_VALUE}
-          onClick={() => applyFilter({ status_id: ACTIVE_STATUS_VALUE })}
-        />
-
-        <FilterTab
-          label={t("orders.filters.urgent")}
-          active={currentIsUrgent === "1"}
-          onClick={() => applyFilter({ is_urgent: "1" })}
-        />
-
-        {STATUS_TABS.map((tab) => (
+        {presets.map((preset) => (
           <FilterTab
-            key={tab.id}
-            label={t(tab.labelKey)}
-            active={currentStatusIds === String(tab.id)}
-            onClick={() => applyFilter({ "status_ids[]": String(tab.id) })}
+            key={preset.id}
+            label={preset.name}
+            active={isPresetActive(
+              preset.filters as OrderPresetFilters,
+              searchParams,
+            )}
+            onClick={() =>
+              applyFilter(presetToParams(preset.filters as OrderPresetFilters))
+            }
           />
         ))}
       </div>
