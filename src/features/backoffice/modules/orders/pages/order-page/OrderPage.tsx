@@ -88,33 +88,15 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
         <>
           <div className="flex h-full">
             <div className="flex-1 overflow-y-auto p-2 pb-14 sm:p-6 [scrollbar-gutter:stable]">
-              <div>
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <h1 className="text-2xl font-bold">
-                      {t("orders.order")} {selectedOrder.orderNumber}
-                    </h1>
-                    <StatusSelect
-                      orderId={orderId}
-                      status={selectedOrder.status}
-                      remainingToPay={selectedOrder.remainingToPay}
-                      onSuccess={handleStatusSuccess}
-                    />
-                    <span className="text-muted-foreground text-2xl">
-                      {parseFloat(selectedOrder.remainingToPay) < 0
-                        ? t("orders.overpayment")
-                        : t("orders.remainingToPay")}
-                      :{" "}
-                      <span
-                        className={`font-medium text-2xl ${parseFloat(selectedOrder.remainingToPay) < 0 ? "text-destructive" : "text-green-500"}`}
-                      >
-                        {selectedOrder.remainingToPay} ₴
-                      </span>
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between gap-2">
+                  <h1 className="text-lg sm:text-2xl font-bold">
+                    {t("orders.order")} {selectedOrder.orderNumber}
+                  </h1>
+                  <div className="flex items-center gap-2 shrink-0">
                     <button
-                      className="h-12 w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"
+                      type="button"
+                      className="h-9 w-9 sm:h-12 sm:w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"
                       onClick={() =>
                         navigate(
                           `${AuthRoutes.backofficeRoot()}/${ORDERS_ROUTES.createNewOrder}`,
@@ -122,38 +104,65 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                         )
                       }
                     >
-                      <Users className="h-5 w-5" />
+                      <Users className="h-4 w-4 sm:h-5 sm:w-5" />
                     </button>
                     <button
-                      className="h-12 w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"
+                      type="button"
+                      className="h-9 w-9 sm:h-12 sm:w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"
                       onClick={() => setIsPrintOpen(true)}
                     >
-                      <Printer className="h-5 w-5" />
+                      <Printer className="h-4 w-4 sm:h-5 sm:w-5" />
                     </button>
                   </div>
                 </div>
-                <div className="mt-1 flex items-end justify-between">
+
+                <div className="flex items-center gap-3 flex-wrap">
+                  <StatusSelect
+                    orderId={orderId}
+                    status={selectedOrder.status}
+                    remainingToPay={selectedOrder.remainingToPay}
+                    onSuccess={handleStatusSuccess}
+                  />
+                  <span className="text-muted-foreground text-base sm:text-2xl">
+                    {parseFloat(selectedOrder.remainingToPay) < 0
+                      ? t("orders.overpayment")
+                      : t("orders.remainingToPay")}
+                    :{" "}
+                    <span
+                      className={cn(
+                        "font-medium text-base sm:text-2xl",
+                        parseFloat(selectedOrder.remainingToPay) < 0
+                          ? "text-destructive"
+                          : "text-green-500",
+                      )}
+                    >
+                      {selectedOrder.remainingToPay} ₴
+                    </span>
+                  </span>
+                </div>
+
+                <div className="flex items-end justify-between gap-2">
                   <div>
-                    <p className="text-muted-foreground text-base font-medium">
+                    <p className="text-muted-foreground text-sm sm:text-base font-medium">
                       {t("orders.acceptedBy")}: {selectedOrder.manager.name}
                     </p>
-                    <p className="text-muted-foreground text-base font-medium">
+                    <p className="text-muted-foreground text-sm sm:text-base font-medium">
                       {t("orders.form.location")}: {selectedOrder.location.name}
                     </p>
-                    <p className="text-muted-foreground text-sm">
+                    <p className="text-muted-foreground text-xs sm:text-sm">
                       {selectedOrder.closedAt
                         ? `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")} — ${t("orders.closedAt")}: ${format(new Date(selectedOrder.closedAt), "dd.MM.yyyy")}`
                         : `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")}`}
                     </p>
                   </div>
-                  <div className="flex gap-5">
+                  <div className="flex gap-4 sm:gap-5 shrink-0">
                     {(["order", "finance"] as OrderTab[]).map((tab) => (
                       <button
                         key={tab}
                         type="button"
                         onClick={() => setActiveTab(tab)}
                         className={cn(
-                          "pb-2 text-base whitespace-nowrap transition-colors focus:outline-none border-b-2",
+                          "pb-2 text-sm sm:text-base whitespace-nowrap transition-colors focus:outline-none border-b-2",
                           activeTab === tab
                             ? "text-foreground font-medium border-primary"
                             : "text-muted-foreground hover:text-foreground border-transparent",

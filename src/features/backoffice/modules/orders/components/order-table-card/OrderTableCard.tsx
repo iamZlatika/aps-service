@@ -41,10 +41,10 @@ export const OrderTableCard = <T extends { id: string | number }>({
   deleteDialogDescription,
 }: OrderTableCardProps<T>) => {
   return (
-    <Card className="p-2 sm:p-6">
-      <CardContent>
+    <Card>
+      <CardContent className="p-2 sm:p-6">
         {buttons && buttons.length > 0 && (
-          <div className="mb-2 flex gap-2">
+          <div className="mb-2 flex flex-wrap gap-2">
             {buttons.map((btn) => (
               <Button
                 key={btn.label}

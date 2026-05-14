@@ -37,7 +37,7 @@ export const MobileHistoryDrawer = ({
 
   return (
     <div
-      className="fixed inset-x-0 z-50 flex flex-col bg-background border-t h-[67dvh] transition-transform duration-300 ease-out"
+      className="fixed inset-x-0 z-50 flex flex-col bg-card border-t shadow-[0_-4px_12px_rgba(0,0,0,0.1)] h-[67dvh] transition-transform duration-300 ease-out"
       style={{
         bottom: bottomOffset,
         transform: isOpen

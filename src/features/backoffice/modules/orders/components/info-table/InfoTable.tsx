@@ -80,79 +80,82 @@ export const InfoTable = <T extends { id: string | number }>({
   };
 
   return (
-    <div className="rounded-md border">
-      <Table wrapperClassName="overflow-visible">
-        <TableHeader>
-          <TableRow>
-            {columns.map((col, index) => {
-              if (col.collapsible && collapsedKeys.has(col.key)) return null;
-
-              const expandKey = expandKeyForColumn(index);
-
-              return (
-                <TableHead key={col.key}>
-                  <span className="flex items-center gap-1">
-                    {col.collapsible && index > 0 && (
-                      <button
-                        onClick={() => collapse(col.key)}
-                        className="text-muted-foreground hover:text-foreground shrink-0"
-                      >
-                        <ArrowLeftToLine size={14} />
-                      </button>
-                    )}
-                    {col.label}
-                    {expandKey && (
-                      <button
-                        onClick={() => expand(expandKey)}
-                        className="text-muted-foreground hover:text-foreground shrink-0 ml-1"
-                      >
-                        <ArrowRightFromLine size={14} />
-                      </button>
-                    )}
-                  </span>
-                </TableHead>
-              );
-            })}
-            {onDelete !== undefined && <TableHead className="w-10" />}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.map((row) => (
-            <TableRow
-              key={getRowKey ? getRowKey(row) : row.id}
-              onClick={() => onRowClick?.(row)}
-              className={onRowClick ? "cursor-pointer" : ""}
-            >
-              {columns.map((col) => {
+    <div className="rounded-md border overflow-hidden">
+      <div className="overflow-x-auto">
+        <Table wrapperClassName="overflow-visible">
+          <TableHeader>
+            <TableRow>
+              {columns.map((col, index) => {
                 if (col.collapsible && collapsedKeys.has(col.key)) return null;
+
+                const expandKey = expandKeyForColumn(index);
+
                 return (
-                  <TableCell key={col.key}>
-                    {col.render
-                      ? col.render(row)
-                      : String(row[col.key as keyof T] ?? "")}
-                  </TableCell>
+                  <TableHead key={col.key}>
+                    <span className="flex items-center gap-1">
+                      {col.collapsible && index > 0 && (
+                        <button
+                          onClick={() => collapse(col.key)}
+                          className="text-muted-foreground hover:text-foreground shrink-0"
+                        >
+                          <ArrowLeftToLine size={14} />
+                        </button>
+                      )}
+                      {col.label}
+                      {expandKey && (
+                        <button
+                          onClick={() => expand(expandKey)}
+                          className="text-muted-foreground hover:text-foreground shrink-0 ml-1"
+                        >
+                          <ArrowRightFromLine size={14} />
+                        </button>
+                      )}
+                    </span>
+                  </TableHead>
                 );
               })}
-              {onDelete !== undefined && (
-                <TableCell className="w-10 text-right">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-muted-foreground hover:text-destructive"
-                    disabled={isDeleting || isUnchangeable?.(row)}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setPendingDelete(row);
-                    }}
-                  >
-                    <Trash2 />
-                  </Button>
-                </TableCell>
-              )}
+              {onDelete !== undefined && <TableHead className="w-10" />}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {data.map((row) => (
+              <TableRow
+                key={getRowKey ? getRowKey(row) : row.id}
+                onClick={() => onRowClick?.(row)}
+                className={onRowClick ? "cursor-pointer" : ""}
+              >
+                {columns.map((col) => {
+                  if (col.collapsible && collapsedKeys.has(col.key))
+                    return null;
+                  return (
+                    <TableCell key={col.key}>
+                      {col.render
+                        ? col.render(row)
+                        : String(row[col.key as keyof T] ?? "")}
+                    </TableCell>
+                  );
+                })}
+                {onDelete !== undefined && (
+                  <TableCell className="w-10 text-right">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-muted-foreground hover:text-destructive"
+                      disabled={isDeleting || isUnchangeable?.(row)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPendingDelete(row);
+                      }}
+                    >
+                      <Trash2 />
+                    </Button>
+                  </TableCell>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
 
       {(children || footer) && (
         <div className="flex items-center justify-between gap-2 border-t px-2 py-1.5">
