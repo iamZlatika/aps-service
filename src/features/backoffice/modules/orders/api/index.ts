@@ -127,7 +127,7 @@ export const ordersApi = {
     const response = await post<FormData, { data: OrderCommentDto }>(
       ORDERS_API.addComment(id),
       formData,
-      { headers: { "Content-Type": undefined } },
+      { headers: { "Content-Type": "multipart/form-data" } },
     );
 
     const validatedData = OrderCommentDtoSchema.parse(response.data);
