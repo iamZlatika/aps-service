@@ -16,6 +16,7 @@ import { CustomerInfoCard } from "@/features/backoffice/modules/customers/compon
 import { StatusSelect } from "@/features/backoffice/modules/orders/components/StatusSelect.tsx";
 import { useOrder } from "@/features/backoffice/modules/orders/hooks/useOrder.ts";
 import { HistorySidebar } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/HistorySidebar.tsx";
+import { MobileHistoryDrawer } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/MobileHistoryDrawer.tsx";
 import { PaymentsCard } from "@/features/backoffice/modules/orders/pages/order-page/components/PaymentsCard.tsx";
 import { ProductsAndServicesCard } from "@/features/backoffice/modules/orders/pages/order-page/components/ProductsAndServicesCard.tsx";
 import { buildOrderHistory } from "@/features/backoffice/modules/orders/pages/order-page/services.ts";
@@ -25,6 +26,7 @@ import { queryKeys } from "@/shared/api/queryKeys.ts";
 import Loader from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
+import { useIsMobile } from "@/shared/hooks/useMobile.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
 import { FinanceTab } from "./components/FinanceTab.tsx";
@@ -45,6 +47,7 @@ interface OrderPageContentProps {
 const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const { selectedOrder, isLoading, isError, error, refetch } =
     useOrder(orderId);
 
@@ -84,7 +87,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
       {selectedOrder && (
         <>
           <div className="flex h-full">
-            <div className="flex-1 overflow-y-auto p-2 sm:p-6 [scrollbar-gutter:stable]">
+            <div className="flex-1 overflow-y-auto p-2 pb-14 sm:p-6 [scrollbar-gutter:stable]">
               <div>
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
@@ -172,11 +175,11 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                     orderId={orderId}
                     selectedOrder={selectedOrder}
                   />
-                  <div className="flex gap-6 items-start">
-                    <div className="flex-1 min-w-0">
+                  <div className="flex flex-col sm:flex-row gap-6 items-start">
+                    <div className="flex-1 min-w-0 w-full">
                       <OrderInfoCard order={selectedOrder} />
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 w-full">
                       <CustomerInfoCard
                         customer={selectedOrder.customer}
                         showStatusToggle={false}
@@ -193,8 +196,13 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                 />
               )}
             </div>
-            <HistorySidebar orderId={selectedOrder.id} history={history} />
+            {!isMobile && (
+              <HistorySidebar orderId={selectedOrder.id} history={history} />
+            )}
           </div>
+          {isMobile && (
+            <MobileHistoryDrawer orderId={selectedOrder.id} history={history} />
+          )}
           <Suspense>
             <PrintDialog
               isOpen={isPrintOpen}
