@@ -95,9 +95,11 @@ export const SmartTable = <T extends BaseItem>({
         className,
       )}
     >
-      <div className="mb-2 sm:mb-3 flex items-center justify-between">
-        <h1 className="text-xl sm:text-2xl font-bold">{t(titleKey)}</h1>
-        {headerActions}
+      <div className="mb-2 sm:mb-3 flex items-center justify-between gap-2">
+        <h1 className="text-xl sm:text-2xl font-bold truncate min-w-0">
+          {t(titleKey)}
+        </h1>
+        {headerActions && <div className="flex-shrink-0">{headerActions}</div>}
       </div>
 
       {(searchField || filterBar) && (
@@ -134,24 +136,26 @@ export const SmartTable = <T extends BaseItem>({
               isRefetching && "opacity-60 pointer-events-none",
             )}
           >
-            <Table>
-              <SortableTableHeader
-                columns={columns}
-                sort={sort}
-                onToggleSort={toggleSort}
-                hasActions={!!renderRowActions}
-              />
-              <TableBody>
-                <TableContent
+            <div className="overflow-x-auto">
+              <Table>
+                <SortableTableHeader
                   columns={columns}
-                  items={items}
-                  isLoading={isLoading}
-                  perPage={perPage}
-                  renderRowActions={renderRowActions}
-                  onRowClick={onRowClick}
+                  sort={sort}
+                  onToggleSort={toggleSort}
+                  hasActions={!!renderRowActions}
                 />
-              </TableBody>
-            </Table>
+                <TableBody>
+                  <TableContent
+                    columns={columns}
+                    items={items}
+                    isLoading={isLoading}
+                    perPage={perPage}
+                    renderRowActions={renderRowActions}
+                    onRowClick={onRowClick}
+                  />
+                </TableBody>
+              </Table>
+            </div>
           </div>
 
           <TablePagination

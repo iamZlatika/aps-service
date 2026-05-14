@@ -18,7 +18,7 @@ const Layout = () => {
       <div className="flex h-dvh w-full">
         <Sidebar />
 
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col min-w-0">
           <Header />
           <Breadcrumbs />
           <main className="flex-1 overflow-y-auto overflow-x-hidden bg-muted">
