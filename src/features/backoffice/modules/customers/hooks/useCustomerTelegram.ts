@@ -15,6 +15,7 @@ type UseCustomerTelegramReturn = {
 
 export const useCustomerTelegram = (
   customerId: number,
+  onSuccess?: () => void,
 ): UseCustomerTelegramReturn => {
   const queryClient = useQueryClient();
 
@@ -24,6 +25,7 @@ export const useCustomerTelegram = (
       queryClient.invalidateQueries({
         queryKey: queryKeys.customers.detail(customerId),
       });
+      onSuccess?.();
     },
     onError: (error) => notifyError(error),
   });

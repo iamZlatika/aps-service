@@ -40,7 +40,7 @@ export const mapCustomerDtoToCustomer = (dto: CustomerDto): Customer => ({
   emailVerifiedAt: dto.email_verified_at,
   hasGoogle: dto.has_google,
   avatarUrl: dto.avatar_url,
-  phones: dto.phones.map(mapPhoneDtoToPhone),
+  phones: dto.phones.map(mapPhoneDtoToPhone).sort((a, b) => a.id - b.id),
   comment: dto.comment,
   rating: dto.rating,
   lastOrderAt: dto.last_order_at,

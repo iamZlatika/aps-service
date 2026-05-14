@@ -244,6 +244,7 @@ export const CustomerInfoCard = ({
           <CustomerTelegramSection
             customerId={customer.id}
             telegram={customer.telegram}
+            onSuccess={onSuccess}
           />
         </PersonCard>
       </form>

@@ -17,15 +17,17 @@ import {
 interface CustomerTelegramSectionProps {
   customerId: number;
   telegram: Telegram | null;
+  onSuccess?: () => void;
 }
 
 export const CustomerTelegramSection = ({
   customerId,
   telegram,
+  onSuccess,
 }: CustomerTelegramSectionProps) => {
   const { t } = useTranslation();
   const { isPending, generateLink, revokeLink, isRevokePending } =
-    useCustomerTelegram(customerId);
+    useCustomerTelegram(customerId, onSuccess);
   const [copied, setCopied] = useState(false);
   const [isRevokeOpen, setIsRevokeOpen] = useState(false);
 
