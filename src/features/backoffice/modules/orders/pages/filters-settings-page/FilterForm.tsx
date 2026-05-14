@@ -67,6 +67,7 @@ export const FilterForm = ({ id, onSubmit }: FilterFormProps) => {
     <form
       id={id}
       onSubmit={handleSubmit(onSubmit)}
+      autoComplete="off"
       className="flex flex-col gap-6"
     >
       <div className="flex flex-col gap-2">

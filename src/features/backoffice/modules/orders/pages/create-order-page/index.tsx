@@ -70,6 +70,7 @@ const CreateOrderPage = () => {
             <FormProvider {...methods}>
               <form
                 onSubmit={methods.handleSubmit(onSubmit)}
+                autoComplete="off"
                 className="grid grid-cols-1 lg:grid-cols-2 gap-6"
               >
                 <CustomerSection

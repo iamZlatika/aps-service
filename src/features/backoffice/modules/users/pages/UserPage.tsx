@@ -45,6 +45,7 @@ const UserPage = () => {
 
   const leftAction = (
     <button
+      type="button"
       onClick={() => setIsConfirmOpen(true)}
       className={
         isActive
