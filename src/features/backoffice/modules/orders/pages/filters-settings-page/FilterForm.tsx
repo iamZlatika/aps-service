@@ -78,6 +78,7 @@ export const FilterForm = ({ id, onSubmit }: FilterFormProps) => {
         </p>
         <Input
           {...register("name")}
+          autoComplete="off"
           className="h-11 text-base md:text-base"
           placeholder={t("orders.filterSettings.namePlaceholder")}
         />
@@ -212,6 +213,7 @@ export const FilterForm = ({ id, onSubmit }: FilterFormProps) => {
         </p>
         <Input
           {...register("any_match", { setValueAs: (v) => v || null })}
+          autoComplete="off"
           className="h-11 text-base md:text-base"
           placeholder={t("orders.filterSettings.anyMatchPlaceholder")}
         />

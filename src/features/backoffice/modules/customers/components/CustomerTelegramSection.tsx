@@ -75,6 +75,7 @@ export const CustomerTelegramSection = ({
         {telegram !== null && !isLinked && (
           <div className="flex flex-col items-center gap-3">
             <button
+              type="button"
               className="flex items-center gap-2 text-lg font-medium text-blue-600 hover:text-blue-700 transition-colors"
               onClick={handleCopy}
             >

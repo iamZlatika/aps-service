@@ -119,6 +119,7 @@ export const DeviceSection = () => {
         <Input
           placeholder={t("orders.placeholders.devicePassword")}
           className="h-11 text-base md:text-base"
+          autoComplete="off"
           autoCapitalize="none"
           autoCorrect="off"
           {...register("devicePassword")}

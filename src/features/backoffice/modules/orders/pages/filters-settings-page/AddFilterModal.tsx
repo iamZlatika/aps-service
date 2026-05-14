@@ -53,7 +53,7 @@ export const AddFilterModal = ({ open, onClose }: AddFilterModalProps) => {
 
         <FilterForm id={FORM_ID} onSubmit={handleSubmit} />
 
-        <DialogFooter className="pt-2">
+        <DialogFooter className="gap-2 pt-2">
           <DialogClose asChild>
             <Button type="button" variant="outline">
               {t("common.cancel")}

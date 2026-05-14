@@ -116,6 +116,7 @@ export const AdditionalInfoSection = ({
       <div className="flex flex-col gap-1">
         <Label className="text-base">{t("orders.form.estimatedCost")}</Label>
         <Input
+          autoComplete="off"
           placeholder={t("orders.placeholders.estimatedCost")}
           className="h-11 text-base md:text-base"
           {...register("estimatedCost")}
@@ -150,6 +151,7 @@ export const AdditionalInfoSection = ({
           )}
         />
         <Input
+          autoComplete="off"
           placeholder={t("orders.placeholders.prepayment")}
           className="h-11 text-base md:text-base"
           inputMode="numeric"

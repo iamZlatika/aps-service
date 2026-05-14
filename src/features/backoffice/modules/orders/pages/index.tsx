@@ -249,7 +249,14 @@ const OrdersPage = () => {
       titleKey="breadcrumbs.orders"
       api={ordersApi}
       queryKeyFn={queryKeys.orders.list}
-      searchPlaceholder="search_placeholders.orders_any_match"
+      searchPlaceholder={
+        isMobile
+          ? "search_placeholders.orders_any_match_mobile"
+          : "search_placeholders.orders_any_match"
+      }
+      searchInputClassName={
+        isMobile ? "mb-0 flex-none w-44" : "mb-0 flex-none w-56 sm:w-[30rem]"
+      }
       searchField="search"
       columns={isMobile ? mobileColumns : columns}
       headerActions={

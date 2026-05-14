@@ -49,6 +49,7 @@ export const CustomerSection = ({
         <Label className="text-base">{t("orders.form.customerName")}</Label>
         {isPrefilled ? (
           <Input
+            autoComplete="off"
             className="h-11 text-base md:text-base"
             {...register("customerName")}
           />
@@ -171,6 +172,7 @@ export const CustomerSection = ({
         </Label>
         <Input
           type="email"
+          autoComplete="off"
           placeholder={t("orders.placeholders.customerEmail")}
           className="h-11 text-base md:text-base"
           {...register("customerEmail")}
@@ -180,6 +182,7 @@ export const CustomerSection = ({
       <div className="flex flex-col gap-1">
         <Label className="text-base">{t("orders.form.comment")}</Label>
         <Input
+          autoComplete="off"
           placeholder={t("orders.placeholders.customerComment")}
           className="h-11 text-base md:text-base"
           {...register("customerComment")}
