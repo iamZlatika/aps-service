@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import MailCheckIcon from "@/shared/components/icons/mail-icon.tsx";
+import { MailCheckIcon } from "@/features/backoffice/components/icons/MailCheckIcon";
 
 const EmailSentPage = () => {
   const { t } = useTranslation();

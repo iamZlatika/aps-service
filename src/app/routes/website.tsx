@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { type RouteObject } from "react-router-dom";
 
+import { WEBSITE_ROUTES } from "@/features/website/routes";
 import Loader from "@/shared/components/common/Loader.tsx";
 
 const WebsiteLayout = lazy(
@@ -16,7 +17,7 @@ export const websiteRoutes: RouteObject = {
     </Suspense>
   ),
   children: [
-    { path: "/", element: <HomePage /> },
-    { path: "/contacts", element: <ContactsPage /> },
+    { path: WEBSITE_ROUTES.home, element: <HomePage /> },
+    { path: WEBSITE_ROUTES.contacts, element: <ContactsPage /> },
   ],
 };

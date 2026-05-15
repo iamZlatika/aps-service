@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>APS service — Ремонт техніки в Києві</title>
+<link rel="icon" type="image/png" href="assets/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#1d1b18;
+    --bg-2:#26231e;
+    --bg-3:#2f2b25;
+    --line:#34302a;
+    --line-soft:#2a2722;
+    --ink:#efe8db;
+    --ink-soft:#a8a194;
+    --ink-mute:#6f6a5e;
+    --ember:#ee7a3a;
+    --ember-bright:#ffa55e;
+    --ember-deep:#b94a14;
+    --cream:#f4ead7;
+    /* brand multi-color (from источника заказчика, переработано) */
+    --c-green:#5db86f;
+    --c-red:#d8553e;
+    --c-blue:#3a8fd9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:"Manrope",system-ui,sans-serif}
+  html,body{background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{
+    min-height:100vh;overflow-x:hidden;
+    background:
+      radial-gradient(1000px 600px at 78% -10%, rgba(238,122,58,0.12), transparent 60%),
+      radial-gradient(700px 500px at 8% 110%, rgba(255,165,94,0.05), transparent 60%),
+      var(--bg);
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity:.6;mix-blend-mode:overlay;
+  }
+  .wrap{max-width:1440px;margin:0 auto;padding:0 56px;position:relative;z-index:2}
+  @media (max-width:780px){.wrap{padding:0 22px}}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+    padding:22px 0;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+  .logo img{display:block;flex-shrink:0;height:28px;width:auto}
+  .logo-text{font-weight:700;font-size:17px;letter-spacing:-.01em;line-height:1}
+  .logo-text small{display:block;color:var(--ink-mute);font-weight:500;font-size:11px;margin-top:4px;letter-spacing:.02em}
+
+  .tabs{display:flex;align-items:center;gap:2px;
+    padding:5px;border:1px solid var(--line);border-radius:999px;
+    background:rgba(255,255,255,.015);
+  }
+  .tab{
+    font-weight:500;font-size:14px;color:var(--ink-soft);
+    padding:9px 18px;border-radius:999px;cursor:pointer;text-decoration:none;
+    transition:color .2s ease, background .2s ease;white-space:nowrap;
+  }
+  .tab:hover{color:var(--ink)}
+  .tab.active{color:var(--bg);background:var(--cream);font-weight:600}
+
+  .nav-left{display:flex;align-items:center;gap:28px}
+  .nav-right{display:flex;align-items:center;gap:18px}
+
+  /* contacts 2x2 grid (locations | phones) */
+  .contacts{
+    display:grid;grid-template-columns:auto auto;
+    gap:5px 22px;align-items:center;
+  }
+  .contacts a, .contacts .loc{
+    display:flex;align-items:center;gap:8px;
+    font-size:13px;color:var(--ink);text-decoration:none;font-weight:600;
+    line-height:1.2;letter-spacing:.005em;white-space:nowrap;
+    transition:color .2s ease;
+  }
+  .contacts a:hover{color:var(--ember-bright)}
+  .contacts svg{width:14px;height:14px;color:var(--ember-bright);flex-shrink:0;opacity:.9}
+  .contacts .loc{color:var(--ink-soft);font-weight:500;cursor:default}
+  .contacts .loc:hover{color:var(--ink)}
+
+  /* messenger icons */
+  .msgs{display:flex;gap:6px}
+  .msg{
+    width:34px;height:34px;border-radius:9px;
+    display:inline-flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);background:rgba(255,255,255,.015);
+    color:var(--ink-soft);transition:all .2s ease;text-decoration:none;
+  }
+  .msg:hover{color:var(--bg);border-color:transparent;transform:translateY(-1px)}
+  .msg.tg:hover{background:#2aa3e3;color:#fff}
+  .msg.vb:hover{background:#7b5cd4;color:#fff}
+  .msg.wa:hover{background:#25d366;color:#fff}
+  .msg svg{width:16px;height:16px}
+
+  /* language switch */
+  .lang{
+    display:inline-flex;align-items:center;
+    border:1px solid var(--line);border-radius:9px;padding:3px;
+    background:rgba(255,255,255,.015);
+  }
+  .lang-btn{
+    appearance:none;border:0;background:transparent;cursor:pointer;
+    padding:5px 9px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:.08em;
+    color:var(--ink-mute);transition:all .2s ease;
+  }
+  .lang-btn:hover{color:var(--ink)}
+  .lang-btn.active{color:var(--bg);background:var(--cream)}
+
+  @media (max-width:1320px){
+    .contacts{grid-template-columns:auto;gap:5px}
+    .contacts .loc{display:none}
+  }
+  @media (max-width:1100px){
+    .contacts{display:none}
+    .nav{gap:14px}
+    .nav-left{gap:18px}
+  }
+  @media (max-width:780px){
+    .nav{flex-wrap:wrap}
+    .tabs{order:3;width:100%;justify-content:space-around}
+    .nav-right{gap:10px}
+    .msgs{gap:4px}
+    .msg{width:32px;height:32px}
+  }
+
+  .hero{
+    position:relative;
+    margin-top:0;
+    border:1px solid var(--line);
+    border-radius:28px;
+    overflow:hidden;
+    min-height:620px;
+    padding:0;
+    background:
+      radial-gradient(140% 100% at 80% 100%, #4a2a14 0%, #2a1f15 38%, #1d1b18 72%),
+      var(--bg);
+    box-shadow:0 40px 80px -40px rgba(0,0,0,.6);
+  }
+  @media (max-width:1020px){.hero{margin-top:0;border-radius:22px;min-height:auto}}
+
+  .hero-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .hero-bg img.smoke{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;object-position:center;
+    mix-blend-mode:screen;opacity:.45;
+    filter:brightness(0.6) contrast(1.1);
+  }
+  .hero-bg .glow{
+    position:absolute;right:-5%;bottom:-25%;width:80%;height:90%;
+    background:radial-gradient(ellipse at 50% 100%, rgba(255,180,90,.55) 0%, rgba(238,122,58,.4) 25%, rgba(185,74,20,.2) 45%, transparent 65%);
+    filter:blur(22px);
+  }
+  .hero-bg .core{
+    position:absolute;right:8%;bottom:18%;width:48%;height:32%;
+    background:radial-gradient(ellipse at center, rgba(255,210,140,.45) 0%, rgba(255,150,70,.22) 30%, transparent 60%);
+    filter:blur(14px);
+  }
+  .hero-bg .fade{
+    position:absolute;inset:0;
+    background:linear-gradient(90deg, rgba(29,27,24,.92) 0%, rgba(29,27,24,.78) 22%, rgba(29,27,24,.35) 48%, transparent 65%);
+  }
+  .hero-bg .grain{
+    position:absolute;inset:0;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.12 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode:overlay;opacity:.55;
+  }
+
+  .hero-content{
+    position:relative;z-index:2;
+    padding:88px 72px 92px;
+    max-width:760px;
+  }
+  @media (max-width:1020px){.hero-content{padding:56px 40px;max-width:none}}
+  @media (max-width:560px){.hero-content{padding:44px 24px 52px}}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember-bright);
+    margin-bottom:26px;font-weight:600;
+  }
+  .eyebrow::before{content:"";width:24px;height:1px;background:var(--ember-bright)}
+
+  h1.title{
+    font-weight:300;font-size:clamp(40px,5.6vw,76px);line-height:1.02;letter-spacing:-.025em;
+    text-wrap:balance;color:var(--ink);
+  }
+  h1.title b{font-weight:600;color:var(--cream)}
+  h1.title .accent{
+    background:linear-gradient(180deg,var(--ember-bright) 0%, var(--ember) 60%, var(--ember-deep) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600;
+  }
+
+  .lede{margin-top:22px;max-width:520px;color:var(--ink-soft);font-size:16px;line-height:1.6;text-wrap:pretty}
+
+  .cta-row{display:flex;gap:12px;margin-top:36px;flex-wrap:wrap;align-items:center}
+  .btn{
+    appearance:none;border:0;cursor:pointer;font-weight:600;font-size:15px;
+    padding:16px 24px;border-radius:12px;
+    display:inline-flex;align-items:center;gap:10px;
+    transition:transform .2s ease, box-shadow .2s ease;font-family:inherit;
+  }
+  .btn-primary{
+    background:linear-gradient(180deg,var(--ember-bright) 0%, var(--ember) 100%);
+    color:#2a1a0d;
+    box-shadow:0 16px 40px -14px rgba(238,122,58,.6), inset 0 1px 0 rgba(255,255,255,.35);
+  }
+  .btn-primary:hover{transform:translateY(-2px)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn-ghost:hover{background:rgba(255,255,255,.03);border-color:var(--ink-mute)}
+
+  /* city chip under CTAs */
+  .hero-city{
+    display:inline-flex;align-items:center;gap:10px;
+    margin-top:26px;
+    padding:11px 16px 11px 14px;border:1px solid var(--line);border-radius:999px;
+    background:rgba(29,27,24,.55);backdrop-filter:blur(8px);
+    font-size:13.5px;color:var(--ink-soft);
+  }
+  .hero-city svg{width:14px;height:14px;color:var(--ember-bright);flex-shrink:0}
+  .hero-city b{color:var(--ink);font-weight:600;letter-spacing:.005em}
+  .hero-city em{font-style:normal;color:var(--ink-mute);margin-left:4px}
+
+  .hero-perks{
+    display:flex;gap:24px;margin-top:32px;flex-wrap:wrap;
+    color:var(--ink-soft);font-size:13.5px;
+  }
+  .perk{display:flex;align-items:center;gap:8px}
+  .perk::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--ember-bright);flex-shrink:0}
+
+  /* corner accents */
+  .hero-corner-group{
+    position:absolute;top:28px;right:28px;z-index:3;
+    display:flex;flex-direction:column;align-items:flex-end;gap:10px;
+  }
+  .hero-corner-tr{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:9px 14px;border-radius:14px;
+    background:rgba(29,27,24,.55);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(8px);
+    font-size:11.5px;color:var(--cream);font-weight:500;letter-spacing:.02em;line-height:1.35;
+    text-align:right;
+  }
+  .hero-corner-tr::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ember-bright);box-shadow:0 0 10px var(--ember-bright);flex-shrink:0}
+  .hero-corner-tr .lines{display:flex;flex-direction:column;gap:1px}
+  .hero-corner-tr .lines > div:last-child{color:var(--ink-soft);font-size:11px;letter-spacing:.015em}
+
+  .hero-corner-cabinet{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:11px 16px;border-radius:11px;
+    background:linear-gradient(180deg,var(--ember-bright) 0%, var(--ember) 100%);
+    color:#2a1a0d;font-weight:600;font-size:13.5px;letter-spacing:.005em;
+    text-decoration:none;
+    box-shadow:0 12px 30px -12px rgba(238,122,58,.55), inset 0 1px 0 rgba(255,255,255,.4);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .hero-corner-cabinet:hover{transform:translateY(-1px);box-shadow:0 16px 34px -12px rgba(238,122,58,.7), inset 0 1px 0 rgba(255,255,255,.45)}
+  .hero-corner-cabinet svg{width:14px;height:14px;flex-shrink:0}
+
+  /* cabinet strip above banner */
+  .cabinet-strip{
+    display:flex;justify-content:flex-end;align-items:center;gap:18px;
+    padding:18px 0 22px;
+  }
+  .cabinet-strip .hint{
+    color:var(--ink-mute);font-size:13px;letter-spacing:.005em;
+    display:flex;align-items:center;gap:10px;
+  }
+  .cabinet-strip .hint::after{content:"";width:24px;height:1px;background:var(--line)}
+  .btn-cabinet-alt{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:11px 18px;border-radius:11px;
+    background:var(--cream);color:#1d1b18;
+    text-decoration:none;font-weight:600;font-size:13.5px;letter-spacing:.005em;
+    box-shadow:0 8px 22px -10px rgba(244,234,215,.25), inset 0 1px 0 rgba(255,255,255,.5);
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .btn-cabinet-alt:hover{transform:translateY(-1px);background:#fff5e3}
+  .btn-cabinet-alt svg{width:14px;height:14px;flex-shrink:0}
+  @media (max-width:640px){
+    .cabinet-strip{justify-content:space-between;padding:14px 0 18px}
+    .cabinet-strip .hint{display:none}
+    .btn-cabinet-alt{flex:1;justify-content:center}
+  }
+
+  .hero-corner-br-block{
+    position:absolute;right:56px;bottom:36px;z-index:3;
+    text-align:right;max-width:360px;
+  }
+  .hero-corner-br{
+    font-weight:300;font-size:34px;line-height:1.05;letter-spacing:-.022em;
+    color:var(--ink);text-wrap:balance;
+  }
+  .hero-corner-br b{font-weight:600;color:var(--ember-bright)}
+  .hero-corner-counter{
+    margin-top:14px;font-size:12px;color:var(--ink-mute);letter-spacing:.04em;
+  }
+  .hero-corner-counter b{color:var(--ember-bright);font-weight:600;font-size:13.5px;letter-spacing:0}
+
+  @media (max-width:1020px){
+    .hero-corner-br-block{position:static;text-align:left;margin:32px 40px 44px;max-width:none}
+    .hero-corner-br{font-size:24px}
+    .hero-corner-group{top:18px;right:18px;gap:8px}
+    .hero-corner-tr{font-size:11px;padding:8px 12px;border-radius:12px}
+    .hero-corner-tr .lines > div:last-child{font-size:10.5px}
+    .hero-corner-cabinet{padding:9px 14px;font-size:12.5px}
+  }
+  @media (max-width:560px){
+    .hero-corner-br-block{margin:28px 24px 40px}
+    .hero-corner-br{font-size:22px}
+  }
+
+  /* ---------- SECTION CHROME ---------- */
+  section{padding:90px 0;border-bottom:1px solid var(--line-soft)}
+  @media (max-width:780px){section{padding:60px 0}}
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px;flex-wrap:wrap}
+  .section-eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember-bright);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .section-eyebrow::before{content:"";width:24px;height:1px;background:var(--ember-bright)}
+  .section-head h2{font-weight:300;font-size:clamp(32px,3.6vw,52px);line-height:1.05;letter-spacing:-.022em;max-width:680px;text-wrap:balance}
+  .section-head h2 b{font-weight:600;color:var(--cream)}
+  .section-head .side{color:var(--ink-soft);max-width:340px;font-size:14.5px;line-height:1.55}
+
+  /* ---------- DEVICES GRID ---------- */
+  .devices{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+  @media (max-width:1100px){.devices{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:560px){.devices{grid-template-columns:repeat(2,1fr)}}
+  .device{
+    background:var(--bg-2);border:1px solid var(--line);border-radius:18px;
+    padding:24px 20px;display:flex;flex-direction:column;gap:16px;cursor:pointer;
+    transition:transform .25s ease, border-color .25s ease, background .25s ease;
+    position:relative;overflow:hidden;
+  }
+  .device:hover{transform:translateY(-4px);border-color:var(--ember);background:var(--bg-3)}
+  .device:hover .arrow{opacity:1;transform:translate(0,0)}
+  .device-img{
+    aspect-ratio:1/1;border-radius:12px;
+    background:
+      repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 8px, transparent 8px 16px),
+      linear-gradient(135deg,#322d26 0%, #211e19 100%);
+    border:1px dashed var(--line);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-mute);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;
+  }
+  .device-img span{padding:5px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+  .device h4{font-size:17px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+  .device p{font-size:12.5px;color:var(--ink-soft);line-height:1.45}
+  .device .from{margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;padding-top:14px;border-top:1px solid var(--line-soft)}
+  .device .from span{font-size:11px;color:var(--ink-mute);text-transform:uppercase;letter-spacing:.1em}
+  .device .from b{font-size:15px;color:var(--cream);font-weight:600}
+  .device .arrow{
+    position:absolute;top:20px;right:20px;
+    width:30px;height:30px;border-radius:50%;background:var(--ember);color:#2a1a0d;
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
+    opacity:0;transform:translate(-6px,6px);transition:all .25s ease;
+  }
+
+  /* ---------- BRANDS ---------- */
+  .brands-section{background:linear-gradient(180deg, transparent 0%, rgba(255,255,255,.012) 100%)}
+  .brands{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+  @media (max-width:1100px){.brands{grid-template-columns:repeat(5,1fr)}}
+  @media (max-width:680px){.brands{grid-template-columns:repeat(3,1fr)}}
+  .brand{
+    aspect-ratio:5/3;border:1px solid var(--line);border-radius:12px;background:var(--bg-2);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    transition:all .2s ease;cursor:pointer;position:relative;overflow:hidden;
+  }
+  .brand:hover{border-color:var(--ember);background:var(--bg-3)}
+  .brand .name{font-weight:700;letter-spacing:.04em;font-size:16px;color:var(--ink);font-variant-caps:all-small-caps}
+  .brand .ph{font-size:9px;color:var(--ink-mute);text-transform:uppercase;letter-spacing:.15em;font-weight:500}
+  .brand.china .name{font-size:13px}
+
+  /* ---------- PC ASSEMBLY ---------- */
+  .pc-build{
+    display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;
+    background:var(--bg-2);border:1px solid var(--line);border-radius:24px;
+    padding:48px;overflow:hidden;position:relative;
+  }
+  @media (max-width:980px){.pc-build{grid-template-columns:1fr;padding:32px}}
+  .pc-build::before{
+    content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;
+    background:radial-gradient(circle, rgba(238,122,58,.18) 0%, transparent 60%);pointer-events:none;
+  }
+  .pc-build h2{font-weight:300;font-size:clamp(28px,3.2vw,44px);line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
+  .pc-build h2 b{font-weight:600;color:var(--ember-bright)}
+  .pc-build p{color:var(--ink-soft);margin-top:16px;font-size:15px;line-height:1.55;max-width:440px}
+  .pc-features{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;max-width:480px}
+  .pc-feat{font-size:13.5px;color:var(--ink);display:flex;align-items:center;gap:10px}
+  .pc-feat::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ember-bright);flex-shrink:0}
+  .pc-build .cta{margin-top:32px}
+  .pc-img{
+    aspect-ratio:4/3;border-radius:16px;
+    background:repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 10px, transparent 10px 20px),
+      linear-gradient(135deg,#322d26 0%, #1f1c17 100%);
+    border:1px dashed var(--line);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-mute);font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;
+    position:relative;z-index:2;
+  }
+  .pc-img span{padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+
+  /* ---------- OFFICES ---------- */
+  .offices{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media (max-width:780px){.offices{grid-template-columns:1fr}}
+  .office{
+    border:1px solid var(--line);border-radius:18px;padding:32px;
+    background:var(--bg-2);position:relative;overflow:hidden;
+  }
+  .office .num{
+    position:absolute;top:-10px;right:24px;font-size:140px;font-weight:200;color:rgba(255,255,255,.03);
+    letter-spacing:-.04em;line-height:1;pointer-events:none;
+  }
+  .office h4{font-size:13px;text-transform:uppercase;letter-spacing:.18em;color:var(--ember-bright);font-weight:600;margin-bottom:14px}
+  .office .addr{font-size:22px;font-weight:500;letter-spacing:-.01em;line-height:1.25;color:var(--ink);text-wrap:balance}
+  .office .meta{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;padding-top:24px;border-top:1px solid var(--line-soft)}
+  .office .meta div span{display:block;font-size:11px;color:var(--ink-mute);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+  .office .meta div b{font-weight:600;font-size:14px;color:var(--ink)}
+  .office .meta a{color:inherit;text-decoration:none}
+  .office .meta a:hover{color:var(--ember-bright)}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:60px 0 30px}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:50px}
+  @media (max-width:880px){.foot-grid{grid-template-columns:1fr 1fr;gap:36px}}
+  @media (max-width:520px){.foot-grid{grid-template-columns:1fr}}
+  .foot-col h5{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);font-weight:600;margin-bottom:18px}
+  .foot-col a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14px;margin-bottom:10px;transition:color .2s ease}
+  .foot-col a:hover{color:var(--ember-bright)}
+  .foot-col p{color:var(--ink-soft);font-size:14px;line-height:1.55;max-width:300px;margin-top:14px}
+
+  .foot-bottom{
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+    margin-top:60px;padding-top:24px;border-top:1px solid var(--line-soft);
+    font-size:12px;color:var(--ink-mute);
+  }
+  .foot-bottom .socials{display:flex;gap:8px}
+  .foot-bottom .socials a{
+    width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
+    display:inline-flex;align-items:center;justify-content:center;color:var(--ink-soft);
+    transition:all .2s ease;
+  }
+  .foot-bottom .socials a:hover{color:var(--ember-bright);border-color:var(--ember)}
+
+  @keyframes _unused { 0%,100%{opacity:1} }
+</style>
+</head>
+<body>
+
+<!-- ============ REUSABLE SVG SYMBOLS ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Messenger icons -->
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .5 1 1V20c0 .6-.5 1-1 1A17 17 0 0 1 3 4c0-.6.5-1 1-1h3.5c.6 0 1 .5 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.3 1l-2.2 2.2Z" fill="currentColor"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7Zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" fill="currentColor"/></symbol>
+    <symbol id="i-tg" viewBox="0 0 24 24"><path d="M21.7 4.3 2.4 11.6c-.9.3-.9 1.5 0 1.8l4.4 1.4 1.7 5.4c.3.9 1.4 1 1.9.3l2.4-2.9 4.6 3.4c.8.6 2 .2 2.2-.8l3.1-14c.2-1-.8-1.8-1.8-1.4Zm-3.4 4-7 6.4-.3 3.1-1.5-4.5 8.8-5Z" fill="currentColor"/></symbol>
+    <symbol id="i-vb" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 5.8 2 10.5c0 2.4 1.2 4.6 3.2 6.1V21l3.4-2.1c1 .2 2.2.3 3.4.3 5.5 0 10-3.8 10-8.5S17.5 2 12 2Zm0 14.5c-1.1 0-2.1-.1-3-.3l-2.4 1.5v-2.5C5 14.1 4 12.4 4 10.5 4 7 7.6 4 12 4s8 3 8 6.5-3.6 6-8 6Zm-1-9.5c-.4-.1-.6.1-.7.4-.1.4 0 .8.2 1.2.8 1.5 2.1 2.8 3.6 3.5.3.1.7.2 1.1.1.3-.1.5-.4.4-.7l-.2-.7c-.1-.2-.3-.3-.5-.3l-.7.1c-.4 0-.7-.2-.9-.5-.3-.4-.5-.8-.6-1.3 0-.2-.1-.4-.3-.5l-.7-.2c-.2 0-.4 0-.6 0Z" fill="currentColor"/></symbol>
+    <symbol id="i-wa" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1l-.9 1c-.2.2-.3.2-.5.1-1.2-.6-2-1.1-2.9-2.5-.2-.3 0-.4.1-.6l.4-.6c.1-.1.1-.3 0-.4l-.9-2.1c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.6.6-1 1.4-1 2.4 0 .8.3 1.7.7 2.5 1.2 2.2 3 4 5.5 4.7.7.2 1.4.3 2 .1.7-.2 1.7-.7 2-1.4.2-.4.2-.8.1-1-.1-.1-.3-.2-.5-.3Z" fill="currentColor"/><path d="M3 21l1.7-5A8.5 8.5 0 1 1 8.5 19.5L3 21Zm5.7-2.4.4.2a6.5 6.5 0 1 0-2.4-2.4l.2.4-1 2.9 2.8-1Z" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-left">
+      <a href="#" class="logo" aria-label="APS service">
+        <img src="assets/img1.png" alt="APS service"/>
+        <span class="logo-text">
+          APS<span style="color:var(--ink-mute);font-weight:500">.service</span>
+          <small data-ua="сервісний центр" data-ru="сервисный центр">сервісний центр</small>
+        </span>
+      </a>
+
+      <div class="tabs">
+        <a href="#" class="tab active" data-ua="Головна" data-ru="Главная">Головна</a>
+        <a href="#" class="tab" data-ua="Контакти" data-ru="Контакты">Контакти</a>
+        <a href="#" class="tab" data-ua="Наші роботи" data-ru="Наши работы">Наші роботи</a>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <div class="contacts">
+        <span class="loc"><svg><use href="#i-pin"/></svg><span data-ua="вул. Щаслива, 11" data-ru="ул. Щастливая, 11">вул. Щаслива, 11</span></span>
+        <a href="tel:+380612223344"><svg><use href="#i-phone"/></svg>+380&nbsp;(61)&nbsp;222-33-44</a>
+        <span class="loc"><svg><use href="#i-pin"/></svg><span data-ua="вул. Товариська, 58" data-ru="ул. Товарищеская, 58">вул. Товариська, 58</span></span>
+        <a href="tel:+380505556677"><svg><use href="#i-phone"/></svg>+380&nbsp;(50)&nbsp;555-66-77</a>
+      </div>
+
+      <div class="msgs">
+        <a class="msg tg" href="https://t.me/apsservice" target="_blank" rel="noopener" aria-label="Telegram"><svg><use href="#i-tg"/></svg></a>
+        <a class="msg vb" href="viber://chat?number=%2B380505556677" aria-label="Viber"><svg><use href="#i-vb"/></svg></a>
+        <a class="msg wa" href="https://wa.me/380505556677" target="_blank" rel="noopener" aria-label="WhatsApp"><svg><use href="#i-wa"/></svg></a>
+      </div>
+
+      <div class="lang" role="group" aria-label="Language">
+        <button class="lang-btn active" data-lang="ua">UA</button>
+        <button class="lang-btn" data-lang="ru">RU</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CABINET STRIP -->
+  <div class="cabinet-strip">
+    <span class="hint" data-ua="вже наш клієнт? відстежуйте статус ремонту" data-ru="уже наш клиент? отслеживайте статус ремонта">вже наш клієнт? відстежуйте статус ремонту</span>
+    <a class="btn-cabinet-alt" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg><span data-ua="Особистий кабінет" data-ru="Личный кабинет">Особистий кабінет</span> →</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <img class="smoke" src="assets/img.png" alt=""/>
+      <div class="glow"></div>
+      <div class="core"></div>
+      <div class="grain"></div>
+      <div class="fade"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="eyebrow" data-ua="Сервісний центр · з 2014 року" data-ru="Сервисный центр · с 2014 года">Сервісний центр · з 2014 року</div>
+      <h1 class="title"
+          data-ua='Повертаємо техніку <span class="accent">до&nbsp;життя</span> — <b>як нову.</b>'
+          data-ru='Возвращаем технику <span class="accent">к&nbsp;жизни</span> — <b>как новую.</b>'>
+        Повертаємо техніку <span class="accent">до&nbsp;життя</span> — <b>як нову.</b>
+      </h1>
+      <p class="lede"
+         data-ua="Ремонтуємо комп'ютери, ноутбуки, монітори, телевізори, планшети та смартфони будь-яких брендів. Діагностика безкоштовна, гарантія до 180 днів, оригінальні комплектуючі."
+         data-ru="Ремонтируем компьютеры, ноутбуки, мониторы, телевизоры, планшеты и смартфоны любых брендов. Диагностика бесплатно, гарантия до 180 дней, оригинальные комплектующие.">
+         Ремонтуємо комп'ютери, ноутбуки, монітори, телевізори, планшети та смартфони будь-яких брендів. Діагностика безкоштовна, гарантія до 180 днів, оригінальні комплектуючі.
+      </p>
+
+      <div class="cta-row">
+        <button class="btn btn-primary" data-ua="Особистий кабінет →" data-ru="Личный кабинет →">Особистий кабінет →</button>
+        <button class="btn btn-ghost" data-ua="Прайс-лист" data-ru="Прайс-лист">Прайс-лист</button>
+      </div>
+
+      <div class="hero-city">
+        <svg><use href="#i-pin"/></svg>
+        <span><b>м. Запоріжжя</b><em data-ua="· 2 офіси у місті" data-ru="· 2 офиса в городе">· 2 офіси у місті</em></span>
+      </div>
+
+      <div class="hero-perks">
+        <span class="perk" data-ua="Діагностика безкоштовна" data-ru="Диагностика бесплатно">Діагностика безкоштовна</span>
+        <span class="perk" data-ua="Гарантія до 180 днів" data-ru="Гарантия до 180 дней">Гарантія до 180 днів</span>
+        <span class="perk" data-ua="Експрес-ремонт від 30 хв" data-ru="Экспресс-ремонт от 30 мин">Експрес-ремонт від 30 хв</span>
+      </div>
+    </div>
+
+    <div class="hero-corner-group">
+      <div class="hero-corner-tr">
+        <div class="lines">
+          <div data-ua="пн–пт 10:00–18:00" data-ru="пн–пт 10:00–18:00">пн–пт 10:00–18:00</div>
+          <div data-ua="сб 10:00–15:00 · нд вихідний" data-ru="сб 10:00–15:00 · вс выходной">сб 10:00–15:00 · нд вихідний</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-corner-br-block">
+      <div class="hero-corner-br" data-ua="Складний ремонт — <b>наша стихія.</b>" data-ru="Сложный ремонт — <b>наша стихия.</b>">Складний ремонт — <b>наша стихія.</b></div>
+      <div class="hero-corner-counter"><b>47</b> <span data-ua="пристроїв у роботі зараз" data-ru="устройств в работе сейчас">пристроїв у роботі зараз</span></div>
+    </div>
+  </section>
+
+  <!-- DEVICES -->
+  <section>
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow" data-ua="Що ми ремонтуємо" data-ru="Что мы ремонтируем">Що ми ремонтуємо</div>
+        <h2 data-ua="Шість категорій<br/><b>будь-якої складності.</b>" data-ru="Шесть категорий<br/><b>любой сложности.</b>">Шість категорій<br/><b>будь-якої складності.</b></h2>
+      </div>
+      <div class="side" data-ua="Працюємо з усіма поколіннями пристроїв. Діагностика безкоштовна — заплатите тільки за ремонт." data-ru="Работаем со всеми поколениями устройств. Диагностика бесплатно — заплатите только за ремонт.">Працюємо з усіма поколіннями пристроїв. Діагностика безкоштовна — заплатите тільки за ремонт.</div>
+    </div>
+
+    <div class="devices">
+      <div class="device">
+        <div class="device-img"><span data-ua="фото · ПК" data-ru="фото · ПК">фото · ПК</span></div>
+        <h4 data-ua="Комп'ютер" data-ru="Компьютер">Комп'ютер</h4>
+        <p data-ua="Системні блоки, заміна комплектуючих, чистка, збірка з нуля." data-ru="Системные блоки, замена комплектующих, чистка, сборка с нуля.">Системні блоки, заміна комплектуючих, чистка, збірка з нуля.</p>
+        <div class="from"><span data-ua="від" data-ru="от">від</span><b>500 ₴</b></div>
+        <div class="arrow">→</div>
+      </div>
+      <div class="device">
+        <div class="device-img"><span data-ua="фото · Ноутбук" data-ru="фото · Ноутбук">фото · Ноутбук</span></div>
+        <h4 data-ua="Ноутбук" data-ru="Ноутбук">Ноутбук</h4>
+        <p data-ua="Залив, не вмикається, не тримає батарею, заміна матриці та клавіатури." data-ru="Залив, не включается, не держит батарею, замена матрицы и клавиатуры.">Залив, не вмикається, не тримає батарею, заміна матриці та клавіатури.</p>
+        <div class="from"><span data-ua="від" data-ru="от">від</span><b>400 ₴</b></div>
+        <div class="arrow">→</div>
+      </div>
+      <div class="device">
+        <div class="device-img"><span data-ua="фото · Монітор" data-ru="фото · Монитор">фото · Монітор</span></div>
+        <h4 data-ua="Монітор" data-ru="Монитор">Монітор</h4>
+        <p data-ua="Заміна матриці, підсвічування, ремонт плати живлення та портів." data-ru="Замена матрицы, подсветки, ремонт платы питания и портов.">Заміна матриці, підсвічування, ремонт плати живлення та портів.</p>
+        <div class="from"><span data-ua="від" data-ru="от">від</span><b>700 ₴</b></div>
+        <div class="arrow">→</div>
+      </div>
+      <div class="device">
+        <div class="device-img"><span data-ua="фото · ТВ" data-ru="фото · ТВ">фото · ТВ</span></div>
+        <h4 data-ua="Телевізор LCD" data-ru="Телевизор LCD">Телевізор LCD</h4>
+        <p data-ua="Підсвічування, інвертор, материнська плата, заміна матриці." data-ru="Подсветка, инвертор, материнская плата, замена матрицы.">Підсвічування, інвертор, материнська плата, заміна матриці.</p>
+        <div class="from"><span data-ua="від" data-ru="от">від</span><b>900 ₴</b></div>
+        <div class="arrow">→</div>
+      </div>
+      <div class="device">
+        <div class="device-img"><span data-ua="фото · Планшет" data-ru="фото · Планшет">фото · Планшет</span></div>
+        <h4 data-ua="Планшет" data-ru="Планшет">Планшет</h4>
+        <p data-ua="Заміна скла та дисплея, роз'ємів, акумулятора, відновлення ПЗ." data-ru="Замена стекла и дисплея, разъёмов, аккумулятора, восстановление ПО.">Заміна скла та дисплея, роз'ємів, акумулятора, відновлення ПЗ.</p>
+        <div class="from"><span data-ua="від" data-ru="от">від</span><b>500 ₴</b></div>
+        <div class="arrow">→</div>
+      </div>
+      <div class="device">
+        <div class="device-img"><span data-ua="фото · Смартфон" data-ru="фото · Смартфон">фото · Смартфон</span></div>
+        <h4 data-ua="Смартфон" data-ru="Смартфон">Смартфон</h4>
+        <p data-ua="Дисплей, тачскрін, батарея, корпус, відновлення після води." data-ru="Дисплей, тачскрин, батарея, корпус, восстановление после воды.">Дисплей, тачскрін, батарея, корпус, відновлення після води.</p>
+        <div class="from"><span data-ua="від" data-ru="от">від</span><b>350 ₴</b></div>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRANDS -->
+  <section class="brands-section">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow" data-ua="Бренди" data-ru="Бренды">Бренди</div>
+        <h2 data-ua="Працюємо з будь-яким<br/><b>виробником.</b>" data-ru="Работаем с любым<br/><b>производителем.</b>">Працюємо з будь-яким<br/><b>виробником.</b></h2>
+      </div>
+      <div class="side" data-ua="Оригінальні комплектуючі та сумісні аналоги. Для пристроїв із Китаю — окрема лінія." data-ru="Оригинальные комплектующие и совместимые аналоги. Для устройств из Китая — отдельная линия.">Оригінальні комплектуючі та сумісні аналоги. Для пристроїв із Китаю — окрема лінія.</div>
+    </div>
+
+    <div class="brands">
+      <div class="brand"><span class="name">Asus</span><span class="ph" data-ua="лого" data-ru="лого">лого</span></div>
+      <div class="brand"><span class="name">Acer</span><span class="ph" data-ua="лого" data-ru="лого">лого</span></div>
+      <div class="brand"><span class="name">MSI</span><span class="ph" data-ua="лого" data-ru="лого">лого</span></div>
+      <div class="brand"><span class="name">Dell</span><span class="ph" data-ua="лого" data-ru="лого">лого</span></div>
+      <div class="brand"><span class="name">HP</span><span class="ph" data-ua="лого" data-ru="лого">лого</span></div>
+      <div class="brand"><span class="name">Lenovo</span><span class="ph" data-ua="лого" data-ru="лого">лого</span></div>
+      <div class="brand"><span class="name">Samsung</span><span class="ph" data-ua="лого" data-ru="лого">лого</span></div>
+      <div class="brand"><span class="name">Xiaomi</span><span class="ph" data-ua="лого" data-ru="лого">лого</span></div>
+      <div class="brand"><span class="name">Huawei</span><span class="ph" data-ua="лого" data-ru="лого">лого</span></div>
+      <div class="brand"><span class="name">Oppo</span><span class="ph" data-ua="лого" data-ru="лого">лого</span></div>
+      <div class="brand"><span class="name">ZTE</span><span class="ph" data-ua="лого" data-ru="лого">лого</span></div>
+      <div class="brand"><span class="name">Apple</span><span class="ph" data-ua="лого" data-ru="лого">лого</span></div>
+      <div class="brand china"><span class="name" data-ua="China та ін." data-ru="China и др.">China та ін.</span><span class="ph" data-ua="no-name" data-ru="no-name">no-name</span></div>
+      <div class="brand" style="background:rgba(238,122,58,.06);border-color:var(--ember);border-style:dashed">
+        <span class="name" style="color:var(--ember-bright);font-size:13px" data-ua="Вашого немає?" data-ru="Вашего нет?">Вашого немає?</span>
+        <span class="ph" style="color:var(--ember-bright)" data-ua="запитайте" data-ru="спросите">запитайте</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PC BUILD -->
+  <section>
+    <div class="pc-build">
+      <div>
+        <div class="section-eyebrow" data-ua="Додатково" data-ru="Дополнительно">Додатково</div>
+        <h2 data-ua="Зберемо ПК<br/><b>під ваші задачі.</b>" data-ru="Соберём ПК<br/><b>под ваши задачи.</b>">Зберемо ПК<br/><b>під ваші задачі.</b></h2>
+        <p data-ua="Ігровий, робочий, для монтажу або серверний — підбираємо комплектуючі під бюджет та навантаження, збираємо, тестуємо і доставляємо." data-ru="Игровой, рабочий, для монтажа или сервер — подбираем комплектующие под бюджет и нагрузку, собираем, тестируем и доставляем.">Ігровий, робочий, для монтажу або серверний — підбираємо комплектуючі під бюджет та навантаження, збираємо, тестуємо і доставляємо.</p>
+        <div class="pc-features">
+          <div class="pc-feat" data-ua="Підбір комплектуючих" data-ru="Подбор комплектующих">Підбір комплектуючих</div>
+          <div class="pc-feat" data-ua="Збірка та стрес-тест" data-ru="Сборка и стресс-тест">Збірка та стрес-тест</div>
+          <div class="pc-feat" data-ua="Встановлення ОС і драйверів" data-ru="Установка ОС и драйверов">Встановлення ОС і драйверів</div>
+          <div class="pc-feat" data-ua="Гарантія 1 рік" data-ru="Гарантия 1 год">Гарантія 1 рік</div>
+        </div>
+        <button class="btn btn-primary cta" data-ua="Розрахувати збірку →" data-ru="Рассчитать сборку →">Розрахувати збірку →</button>
+      </div>
+      <div class="pc-img"><span data-ua="фото · ПК збірка" data-ru="фото · ПК сборка">фото · ПК збірка</span></div>
+    </div>
+  </section>
+
+  <!-- OFFICES -->
+  <section>
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow" data-ua="Контакти" data-ru="Контакты">Контакти</div>
+        <h2 data-ua="Два офіси<br/><b>у пішій доступності.</b>" data-ru="Два офиса<br/><b>в шаговой доступности.</b>">Два офіси<br/><b>у пішій доступності.</b></h2>
+      </div>
+      <div class="side" data-ua="Прийом техніки без запису. Терміновий ремонт від 30 хвилин. Можлива видача в день звернення." data-ru="Приём техники без записи. Срочный ремонт от 30 минут. Возможна выдача в день обращения.">Прийом техніки без запису. Терміновий ремонт від 30 хвилин. Можлива видача в день звернення.</div>
+    </div>
+
+    <div class="offices">
+      <div class="office">
+        <span class="num">01</span>
+        <h4 data-ua="Центральний офіс" data-ru="Центральный офис">Центральний офіс</h4>
+        <div class="addr" data-ua="м. Запоріжжя,<br/>вул. Щаслива, 11" data-ru="г. Запорожье,<br/>ул. Щастливая, 11">м. Запоріжжя,<br/>вул. Щаслива, 11</div>
+        <div class="meta">
+          <div>
+            <span data-ua="години" data-ru="часы">години</span>
+            <b data-ua="пн–пт 10:00–18:00<br/>сб 10:00–15:00<br/>нд вихідний" data-ru="пн–пт 10:00–18:00<br/>сб 10:00–15:00<br/>вс выходной">пн–пт 10:00–18:00<br/>сб 10:00–15:00<br/>нд вихідний</b>
+          </div>
+          <div>
+            <span data-ua="телефон" data-ru="телефон">телефон</span>
+            <b><a href="tel:+380612223344">+380 (61) 222-33-44</a></b>
+          </div>
+          <div>
+            <span data-ua="район" data-ru="район">район</span>
+            <b data-ua="Олександрівський" data-ru="Александровский">Олександрівський</b>
+          </div>
+          <div>
+            <span data-ua="e-mail" data-ru="e-mail">e-mail</span>
+            <b><a href="mailto:central@aps.ua">central@aps.ua</a></b>
+          </div>
+        </div>
+      </div>
+
+      <div class="office">
+        <span class="num">02</span>
+        <h4 data-ua="Офіс на Лівому березі" data-ru="Офис на Левом берегу">Офіс на Лівому березі</h4>
+        <div class="addr" data-ua="м. Запоріжжя,<br/>вул. Товариська, 58" data-ru="г. Запорожье,<br/>ул. Товарищеская, 58">м. Запоріжжя,<br/>вул. Товариська, 58</div>
+        <div class="meta">
+          <div>
+            <span data-ua="години" data-ru="часы">години</span>
+            <b data-ua="пн–пт 10:00–18:00<br/>сб 10:00–15:00<br/>нд вихідний" data-ru="пн–пт 10:00–18:00<br/>сб 10:00–15:00<br/>вс выходной">пн–пт 10:00–18:00<br/>сб 10:00–15:00<br/>нд вихідний</b>
+          </div>
+          <div>
+            <span data-ua="телефон" data-ru="телефон">телефон</span>
+            <b><a href="tel:+380505556677">+380 (50) 555-66-77</a></b>
+          </div>
+          <div>
+            <span data-ua="район" data-ru="район">район</span>
+            <b data-ua="Шевченківський" data-ru="Шевченковский">Шевченківський</b>
+          </div>
+          <div>
+            <span data-ua="e-mail" data-ru="e-mail">e-mail</span>
+            <b><a href="mailto:left@aps.ua">left@aps.ua</a></b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-grid">
+      <div class="foot-col">
+        <a href="#" class="logo" style="margin-bottom:14px;display:inline-flex">
+          <img src="assets/img1.png" alt="APS service"/>
+          <span class="logo-text">APS<span style="color:var(--ink-mute);font-weight:500">.service</span></span>
+        </a>
+        <p data-ua="Сервісний центр з ремонту цифрової та побутової техніки. Працюємо з 2014 року в Запоріжжі." data-ru="Сервисный центр по ремонту цифровой и бытовой техники. Работаем с 2014 года в Запорожье.">Сервісний центр з ремонту цифрової та побутової техніки. Працюємо з 2014 року в Запоріжжі.</p>
+      </div>
+      <div class="foot-col">
+        <h5 data-ua="Послуги" data-ru="Услуги">Послуги</h5>
+        <a href="#" data-ua="Ремонт комп'ютерів" data-ru="Ремонт компьютеров">Ремонт комп'ютерів</a>
+        <a href="#" data-ua="Ремонт ноутбуків" data-ru="Ремонт ноутбуков">Ремонт ноутбуків</a>
+        <a href="#" data-ua="Ремонт ТВ та моніторів" data-ru="Ремонт ТВ и мониторов">Ремонт ТВ та моніторів</a>
+        <a href="#" data-ua="Ремонт смартфонів" data-ru="Ремонт смартфонов">Ремонт смартфонів</a>
+        <a href="#" data-ua="Збірка ПК" data-ru="Сборка ПК">Збірка ПК</a>
+      </div>
+      <div class="foot-col">
+        <h5 data-ua="Компанія" data-ru="Компания">Компанія</h5>
+        <a href="#" data-ua="Про сервіс" data-ru="О сервисе">Про сервіс</a>
+        <a href="#" data-ua="Гарантія" data-ru="Гарантия">Гарантія</a>
+        <a href="#" data-ua="Прайс-лист" data-ru="Прайс-лист">Прайс-лист</a>
+        <a href="#" data-ua="Відгуки" data-ru="Отзывы">Відгуки</a>
+        <a href="#" data-ua="Вакансії" data-ru="Вакансии">Вакансії</a>
+      </div>
+      <div class="foot-col">
+        <h5 data-ua="Контакти" data-ru="Контакты">Контакти</h5>
+        <a href="tel:+380612223344">+380 (61) 222-33-44</a>
+        <a href="tel:+380505556677">+380 (50) 555-66-77</a>
+        <a href="mailto:hello@aps.ua">hello@aps.ua</a>
+        <a href="#" data-ua="вул. Щаслива, 11" data-ru="ул. Щастливая, 11">вул. Щаслива, 11</a>
+        <a href="#" data-ua="вул. Товариська, 58" data-ru="ул. Товарищеская, 58">вул. Товариська, 58</a>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© 2014 — 2026 APS service · <span data-ua="ЄДРПОУ 00000000" data-ru="ЕДРПОУ 00000000">ЄДРПОУ 00000000</span></span>
+      <div class="socials">
+        <a href="https://t.me/apsservice" target="_blank" rel="noopener" aria-label="Telegram"><svg width="14" height="14"><use href="#i-tg"/></svg></a>
+        <a href="viber://chat?number=%2B380505556677" aria-label="Viber"><svg width="14" height="14"><use href="#i-vb"/></svg></a>
+        <a href="https://wa.me/380505556677" target="_blank" rel="noopener" aria-label="WhatsApp"><svg width="14" height="14"><use href="#i-wa"/></svg></a>
+      </div>
+      <span data-ua="політика конфіденційності · оферта" data-ru="политика конфиденциальности · оферта">політика конфіденційності · оферта</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Tabs (visual only — single page for now)
+  document.querySelectorAll('.tabs .tab').forEach(t => {
+    t.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.tabs .tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+    });
+  });
+
+  // i18n: UA / RU switch — flips every [data-ua][data-ru] element
+  function setLang(lang){
+    document.documentElement.lang = lang === 'ua' ? 'uk' : 'ru';
+    document.querySelectorAll('[data-ua][data-ru]').forEach(el => {
+      const val = el.dataset[lang];
+      if (val == null) return;
+      // preserve interactive children — replace text only
+      el.innerHTML = val;
+    });
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    try { localStorage.setItem('aps-lang', lang); } catch(_) {}
+  }
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.addEventListener('click', () => setLang(b.dataset.lang));
+  });
+  // Restore choice (default UA)
+  try {
+    const saved = localStorage.getItem('aps-lang');
+    if (saved === 'ru') setLang('ru');
+  } catch(_) {}
+</script>
+
+</body>
+</html>

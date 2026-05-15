@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { PhoneDropdown } from "@/features/backoffice/components/PhoneDropdown";
 import { CustomerTelegramSection } from "@/features/backoffice/modules/customers/components/CustomerTelegramSection.tsx";
 import { IsPrimaryButton } from "@/features/backoffice/modules/customers/components/IsPrimaryButton.tsx";
 import { Rating } from "@/features/backoffice/modules/customers/components/RatingStars.tsx";
@@ -26,7 +27,6 @@ import type { FieldConfig } from "@/features/backoffice/widgets/table/models/typ
 import { AcceptButton } from "@/shared/components/common/buttons/AcceptButton.tsx";
 import { CancelButton } from "@/shared/components/common/buttons/CancelButton.tsx";
 import { FormField } from "@/shared/components/common/FormField.tsx";
-import { PhoneDropdown } from "@/shared/components/common/PhoneDropdown.tsx";
 import { Avatar, AvatarImage } from "@/shared/components/ui/avatar.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { CardTitle } from "@/shared/components/ui/card.tsx";

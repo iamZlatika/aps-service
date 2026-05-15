@@ -2,6 +2,7 @@ import { CircleCheck } from "lucide-react";
 import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { PhoneDropdown } from "@/features/backoffice/components/PhoneDropdown";
 import type { Customer } from "@/features/backoffice/modules/customers/types.ts";
 import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
@@ -18,7 +19,6 @@ import { type User } from "@/features/backoffice/modules/users/types.ts";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { PhoneDropdown } from "@/shared/components/common/PhoneDropdown.tsx";
 import { useIsMobile } from "@/shared/hooks/useMobile.ts";
 
 const isCustomer = (value: unknown): value is Customer =>

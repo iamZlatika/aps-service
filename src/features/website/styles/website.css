@@ -1,0 +1,217 @@
+@import "@fontsource/manrope/300.css";
+@import "@fontsource/manrope/400.css";
+@import "@fontsource/manrope/500.css";
+@import "@fontsource/manrope/600.css";
+@import "@fontsource/manrope/700.css";
+@import "@fontsource/manrope/800.css";
+
+/* ============================================================
+   Website dark theme tokens — scoped to .website wrapper
+   Light theme override: .website.light { ... }
+   ============================================================ */
+.website {
+  /* Backgrounds */
+  --ws-bg:        #1d1b18;
+  --ws-bg-2:      #26231e;
+  --ws-bg-3:      #2f2b25;
+
+  /* Borders */
+  --ws-line:      #34302a;
+  --ws-line-soft: #2a2722;
+
+  /* Text */
+  --ws-ink:       #efe8db;
+  --ws-ink-soft:  #a8a194;
+  --ws-ink-mute:  #6f6a5e;
+
+  /* Brand accent — ember/amber */
+  --ws-ember:       #ee7a3a;
+  --ws-ember-bright:#ffa55e;
+  --ws-ember-deep:  #b94a14;
+
+  /* Warm cream */
+  --ws-cream: #f4ead7;
+
+  /* Status colors */
+  --ws-green: #5db86f;
+  --ws-red:   #d8553e;
+  --ws-blue:  #3a8fd9;
+
+  /* Typography */
+  font-family: "Manrope", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+
+  /* Base — acts as scroll container (body has overflow:hidden from backoffice) */
+  color: var(--ws-ink);
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background:
+    radial-gradient(1000px 600px at 78% -10%, rgba(238, 122, 58, 0.12), transparent 60%),
+    radial-gradient(700px 500px at 8% 110%, rgba(255, 165, 94, 0.05), transparent 60%),
+    var(--ws-bg);
+}
+
+/* Light theme override — fill when design is ready */
+.website.light {
+  --ws-bg:        #f8f5f0;
+  --ws-bg-2:      #f0ebe3;
+  --ws-bg-3:      #e8e1d8;
+  --ws-line:      #ddd6cc;
+  --ws-line-soft: #e4ddd4;
+  --ws-ink:       #1d1b18;
+  --ws-ink-soft:  #5a554d;
+  --ws-ink-mute:  #9a948a;
+}
+
+/* ============================================================
+   Layout
+   ============================================================ */
+.ws-wrap {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 56px;
+  position: relative;
+}
+
+@media (max-width: 780px) {
+  .ws-wrap {
+    padding: 0 22px;
+  }
+}
+
+/* ============================================================
+   Section chrome
+   ============================================================ */
+.ws-section {
+  padding: 90px 0;
+  border-bottom: 1px solid var(--ws-line-soft);
+}
+
+@media (max-width: 780px) {
+  .ws-section {
+    padding: 60px 0;
+  }
+}
+
+.ws-section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.ws-section-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ws-ember-bright);
+  font-weight: 600;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ws-section-eyebrow::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: var(--ws-ember-bright);
+}
+
+.ws-section-title {
+  font-weight: 300;
+  font-size: clamp(32px, 3.6vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.022em;
+  max-width: 680px;
+  text-wrap: balance;
+}
+
+.ws-section-title b {
+  font-weight: 600;
+  color: var(--ws-cream);
+}
+
+.ws-section-side {
+  color: var(--ws-ink-soft);
+  max-width: 340px;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.ws-btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  font-family: inherit;
+  padding: 16px 24px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.ws-btn-primary {
+  background: linear-gradient(180deg, var(--ws-ember-bright) 0%, var(--ws-ember) 100%);
+  color: #2a1a0d;
+  box-shadow:
+    0 16px 40px -14px rgba(238, 122, 58, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.ws-btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.ws-btn-ghost {
+  background: transparent;
+  color: var(--ws-ink);
+  border: 1px solid var(--ws-line);
+}
+
+.ws-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--ws-ink-mute);
+}
+
+.ws-btn-cream {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px;
+  border-radius: 11px;
+  background: var(--ws-cream);
+  color: #1d1b18;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13.5px;
+  letter-spacing: 0.005em;
+  box-shadow:
+    0 8px 22px -10px rgba(244, 234, 215, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.ws-btn-cream:hover {
+  transform: translateY(-1px);
+  background: #fff5e3;
+}
+
+/* ============================================================
+   Messenger icon buttons — hover colors per brand
+   ============================================================ */
+.ws-msg-tg:hover { background: #2aa3e3; border-color: transparent; color: #fff; }
+.ws-msg-vb:hover { background: #7b5cd4; border-color: transparent; color: #fff; }
+.ws-msg-wa:hover { background: #25d366; border-color: transparent; color: #fff; }

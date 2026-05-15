@@ -1,9 +1,9 @@
+import { PhoneDropdown } from "@/features/backoffice/components/PhoneDropdown";
 import { locationApi } from "@/features/backoffice/modules/dictionaries/api";
 import { DictionaryTablePage } from "@/features/backoffice/modules/dictionaries/components/DictionaryTablePage.tsx";
 import { type Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { PhoneDropdown } from "@/shared/components/common/PhoneDropdown.tsx";
 
 const LocationsPage = () => {
   const columns: ColumnConfig<Location>[] = [
