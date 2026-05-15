@@ -210,6 +210,35 @@
 }
 
 /* ============================================================
+   Hero banner background layers
+   ============================================================ */
+.ws-hero-glow {
+  position: absolute;
+  right: -5%;
+  bottom: -25%;
+  width: 80%;
+  height: 90%;
+  background: radial-gradient(ellipse at 50% 100%, rgba(255,180,90,.55) 0%, rgba(238,122,58,.4) 25%, rgba(185,74,20,.2) 45%, transparent 65%);
+  filter: blur(22px);
+}
+
+.ws-hero-core {
+  position: absolute;
+  right: 8%;
+  bottom: 18%;
+  width: 48%;
+  height: 32%;
+  background: radial-gradient(ellipse at center, rgba(255,210,140,.45) 0%, rgba(255,150,70,.22) 30%, transparent 60%);
+  filter: blur(14px);
+}
+
+.ws-hero-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(29,27,24,.92) 0%, rgba(29,27,24,.78) 22%, rgba(29,27,24,.35) 48%, transparent 65%);
+}
+
+/* ============================================================
    Messenger icon buttons — hover colors per brand
    ============================================================ */
 .ws-msg-tg:hover { background: #2aa3e3; border-color: transparent; color: #fff; }
