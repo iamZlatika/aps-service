@@ -4,7 +4,7 @@ export const PriceButton = () => {
   const { t } = useTranslation("website");
 
   return (
-    <button type="button" className="ws-btn ws-btn-ghost">
+    <button type="button" className="ws-btn ws-btn-ghost justify-center">
       {t("hero.ctaPricelist")}
     </button>
   );

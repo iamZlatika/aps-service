@@ -71,9 +71,9 @@
   --ws-ink-mute:  #a39a87;
 
   /* Accent swaps to sky-blue */
-  --ws-ember:        #4aa3ee;
-  --ws-ember-bright: #7cc4ff;
-  --ws-ember-deep:   #2477c4;
+  --ws-ember:        #1a6db5;
+  --ws-ember-bright: #2e8cd6;
+  --ws-ember-deep:   #0f4f8a;
 
   /* Cream flips dark so active pills stay legible */
   --ws-cream: #1d1b18;
@@ -295,6 +295,38 @@
 @media (max-width: 1020px) {
   .website.light .ws-hero-fade {
     background: linear-gradient(180deg, rgba(251,245,232,.92) 0%, rgba(251,245,232,.7) 30%, rgba(251,245,232,.2) 60%, transparent 100%);
+  }
+}
+
+@media (max-width: 780px) {
+  .ws-hero-photo {
+    right: -25%;
+    top: -6%;
+    bottom: auto;
+    height: auto;
+    width: 130%;
+    max-width: none;
+    opacity: .55;
+  }
+  .ws-hero-fade {
+    background: linear-gradient(180deg,
+      rgba(29,27,24,.65) 0%,
+      rgba(29,27,24,.5) 25%,
+      rgba(29,27,24,.8) 50%,
+      rgba(29,27,24,.97) 75%,
+      rgba(29,27,24,1) 100%);
+  }
+  .website.light .ws-hero-photo {
+    filter: invert(.92) hue-rotate(-10deg) brightness(1.05);
+    opacity: .5;
+  }
+  .website.light .ws-hero-fade {
+    background: linear-gradient(180deg,
+      rgba(251,245,232,.65) 0%,
+      rgba(251,245,232,.5) 25%,
+      rgba(251,245,232,.8) 50%,
+      rgba(251,245,232,.97) 75%,
+      rgba(251,245,232,1) 100%);
   }
 }
 
