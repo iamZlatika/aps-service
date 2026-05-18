@@ -10,7 +10,11 @@ const LANGS: Array<{ value: UserLanguage; label: string }> = [
   { value: USER_LANGUAGES.RU, label: "RU" },
 ];
 
-export const LangSwitch = () => {
+interface LangSwitchProps {
+  stretch?: boolean;
+}
+
+export const LangSwitch = ({ stretch = false }: LangSwitchProps) => {
   const { i18n } = useTranslation("website");
   const current: UserLanguage =
     i18n.language === USER_LANGUAGES.RU ? USER_LANGUAGES.RU : USER_LANGUAGES.UK;
@@ -24,7 +28,10 @@ export const LangSwitch = () => {
     <div
       role="group"
       aria-label="Language"
-      className="inline-flex items-center rounded-[9px] border border-[var(--ws-line)] bg-white/[0.015] p-[3px]"
+      className={cn(
+        "items-center rounded-[9px] border border-[var(--ws-line)] bg-white/[0.015] p-[3px]",
+        stretch ? "flex w-full" : "inline-flex",
+      )}
     >
       {LANGS.map(({ value, label }) => (
         <button
@@ -32,7 +39,8 @@ export const LangSwitch = () => {
           type="button"
           onClick={() => handleChange(value)}
           className={cn(
-            "rounded-[6px] px-[9px] py-[5px] text-[11px] font-bold uppercase tracking-[0.08em] transition-all duration-200",
+            "rounded-[6px] py-[5px] text-[11px] font-bold uppercase tracking-[0.08em] transition-all duration-200",
+            stretch ? "flex-1 justify-center" : "px-[9px]",
             value === current
               ? "bg-[var(--ws-cream)] text-[var(--ws-bg)]"
               : "text-[var(--ws-ink-mute)] hover:text-[var(--ws-ink)]",

@@ -10,6 +10,7 @@ lerna-debug.log*
 
 node_modules
 guidelines
+proto
 .claude
 dist
 dist-ssr

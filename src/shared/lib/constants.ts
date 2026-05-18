@@ -1,6 +1,7 @@
 export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const LANG_STORAGE_KEY = "aps-lang";
+export const THEME_STORAGE_KEY = "aps-theme";
 
 export const SEARCH_PAGE_SIZE = 30;
 

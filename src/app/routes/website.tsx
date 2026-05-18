@@ -9,6 +9,7 @@ const WebsiteLayout = lazy(
 );
 const HomePage = lazy(() => import("@/features/website/pages/home"));
 const ContactsPage = lazy(() => import("@/features/website/pages/contacts"));
+const ReviewsPage = lazy(() => import("@/features/website/pages/reviews"));
 
 export const websiteRoutes: RouteObject = {
   element: (
@@ -19,5 +20,6 @@ export const websiteRoutes: RouteObject = {
   children: [
     { path: WEBSITE_ROUTES.home, element: <HomePage /> },
     { path: WEBSITE_ROUTES.contacts, element: <ContactsPage /> },
+    { path: WEBSITE_ROUTES.reviews, element: <ReviewsPage /> },
   ],
 };
