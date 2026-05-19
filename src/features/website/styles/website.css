@@ -98,7 +98,7 @@
   position: relative;
 }
 
-@media (max-width: 780px) {
+@media (max-width: 768px) {
   .ws-wrap {
     padding: 0 22px;
   }
@@ -112,7 +112,7 @@
   border-bottom: 1px solid var(--ws-line-soft);
 }
 
-@media (max-width: 780px) {
+@media (max-width: 768px) {
   .ws-section {
     padding: 60px 0;
   }
@@ -263,7 +263,7 @@
   background: linear-gradient(90deg, rgba(29,27,24,.96) 0%, rgba(29,27,24,.84) 18%, rgba(29,27,24,.45) 38%, rgba(29,27,24,.1) 55%, transparent 70%);
 }
 
-@media (max-width: 1020px) {
+@media (max-width: 1024px) {
   .ws-hero-photo {
     right: -10%;
     height: auto;
@@ -292,13 +292,13 @@
   background: linear-gradient(90deg, rgba(251,245,232,.96) 0%, rgba(251,245,232,.85) 18%, rgba(251,245,232,.5) 38%, rgba(251,245,232,.15) 55%, transparent 70%);
 }
 
-@media (max-width: 1020px) {
+@media (max-width: 1024px) {
   .website.light .ws-hero-fade {
     background: linear-gradient(180deg, rgba(251,245,232,.92) 0%, rgba(251,245,232,.7) 30%, rgba(251,245,232,.2) 60%, transparent 100%);
   }
 }
 
-@media (max-width: 780px) {
+@media (max-width: 768px) {
   .ws-hero-photo {
     right: -25%;
     top: -6%;
@@ -346,3 +346,8 @@
 .ws-msg-tg:hover { background: #2aa3e3; border-color: transparent; color: #fff; }
 .ws-msg-vb:hover { background: #7b5cd4; border-color: transparent; color: #fff; }
 .ws-msg-wa:hover { background: #25d366; border-color: transparent; color: #fff; }
+
+/* Permanent brand text color — used in mobile nav messenger links */
+.ws-msg-tg-color { color: #2aa3e3; }
+.ws-msg-vb-color { color: #7b5cd4; }
+.ws-msg-wa-color { color: #25d366; }

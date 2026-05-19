@@ -7,11 +7,21 @@
     "menu": "меню",
     "logoSubtitle": "сервисный центр",
     "trackingHint": "уже наш клиент? отслеживайте статус ремонта",
-    "cabinet": "Личный кабинет"
+    "cabinet": "Личный кабинет",
+    "openMenu": "Открыть меню",
+    "closeMenu": "Закрыть меню",
+    "navigation": "Навигация"
+  },
+  "theme": {
+    "label": "Тема",
+    "system": "Системная тема",
+    "dark": "Тёмная тема",
+    "light": "Светлая тема"
   },
   "lang": {
     "ua": "UA",
-    "ru": "RU"
+    "ru": "RU",
+    "label": "Язык"
   },
   "messenger": {
     "telegram": "Telegram",

@@ -1,32 +1,15 @@
 import { MapPin, Phone } from "lucide-react";
-import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 
-import { NAV_TABS } from "@/features/website/components/Header/HeaderData";
+import {
+  MESSENGER_ICONS,
+  NAV_TABS,
+} from "@/features/website/components/Header/HeaderData";
 import { LangSwitch } from "@/features/website/components/Header/LangSwitch";
 import { ThemeSwitch } from "@/features/website/components/Header/ThemeSwitch";
-import { TelegramIcon } from "@/features/website/components/icons/TelegramIcon";
-import { ViberIcon } from "@/features/website/components/icons/ViberIcon";
-import { WhatsappIcon } from "@/features/website/components/icons/WhatsappIcon";
-import {
-  CONTACTS,
-  type MessengerKey,
-  MESSENGERS,
-} from "@/features/website/config";
+import { CONTACTS, MESSENGERS } from "@/features/website/config";
 import { cn } from "@/shared/lib/utils";
-
-const MESSENGER_ICONS: Record<MessengerKey, ReactNode> = {
-  telegram: <TelegramIcon />,
-  viber: <ViberIcon />,
-  whatsapp: <WhatsappIcon />,
-};
-
-const MESSENGER_COLORS: Record<MessengerKey, string> = {
-  telegram: "#2aa3e3",
-  viber: "#7b5cd4",
-  whatsapp: "#25d366",
-};
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -50,21 +33,21 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Навігація"
+        aria-label={t("nav.navigation")}
         className={cn(
-          "fixed inset-y-0 right-0 z-50 flex w-[310px] flex-col overflow-y-auto border-l border-[var(--ws-line)] bg-[var(--ws-bg-2)] transition-transform duration-300",
+          "fixed inset-y-0 right-0 z-50 flex w-[310px] flex-col overflow-y-auto border-l border-ws-line bg-ws-bg-2 transition-transform duration-300",
           isOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
-        <div className="flex items-center justify-between border-b border-[var(--ws-line-soft)] px-5 py-[18px]">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--ws-ink-mute)]">
+        <div className="flex items-center justify-between border-b border-ws-line-soft px-5 py-[18px]">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ws-ink-mute">
             {t("nav.menu")}
           </span>
           <button
             type="button"
-            aria-label="Закрити меню"
+            aria-label={t("nav.closeMenu")}
             onClick={close}
-            className="inline-flex h-[34px] w-[34px] items-center justify-center rounded-[9px] border border-[var(--ws-line)] text-[var(--ws-ink-hi)] transition-colors duration-200 hover:opacity-70"
+            className="inline-flex size-ws-ctrl items-center justify-center rounded-ws-ctrl border border-ws-line text-ws-ink-hi transition-colors duration-200 hover:opacity-70"
           >
             <svg
               viewBox="0 0 24 24"
@@ -72,7 +55,7 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
               stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
-              className="size-[16px]"
+              className="size-4"
             >
               <path d="M18 6 6 18M6 6l12 12" />
             </svg>
@@ -88,10 +71,10 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
               onClick={close}
               className={({ isActive }) =>
                 cn(
-                  "flex items-center justify-between border-b border-[var(--ws-line-soft)] py-[14px] text-[17px] font-medium no-underline transition-colors duration-200",
+                  "flex items-center justify-between border-b border-ws-line-soft py-3.5 text-[17px] font-medium no-underline transition-colors duration-200",
                   isActive
-                    ? "text-[var(--ws-ember-bright)]"
-                    : "text-[var(--ws-ink-hi)] hover:text-[var(--ws-ember-bright)]",
+                    ? "text-ws-ember-bright"
+                    : "text-ws-ink-hi hover:text-ws-ember-bright",
                 )
               }
             >
@@ -101,16 +84,16 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
         </nav>
 
         <div className="mt-[22px] px-5">
-          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--ws-ink-mute)]">
+          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-ws-ink-mute">
             {t("nav.contacts")}
           </p>
           {CONTACTS.map((c) => (
             <a
               key={c.phone}
               href={`tel:${c.phone}`}
-              className="flex items-center gap-[10px] py-[10px] text-[14.5px] font-medium text-[var(--ws-ink-hi)] no-underline"
+              className="flex items-center gap-2.5 py-[10px] text-[14.5px] font-medium text-ws-ink-hi no-underline"
             >
-              <Phone className="size-[14px] shrink-0 text-[var(--ws-ember-bright)]" />
+              <Phone className="size-3.5 shrink-0 text-ws-ember-bright" />
               {c.phoneFormatted}
             </a>
           ))}
@@ -120,9 +103,9 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
               href={c.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-[10px] py-[10px] text-[13px] text-[var(--ws-ink-soft)] no-underline"
+              className="flex items-center gap-2.5 py-[10px] text-[13px] text-ws-ink-soft no-underline"
             >
-              <MapPin className="size-[14px] shrink-0 text-[var(--ws-ember-bright)]" />
+              <MapPin className="size-3.5 shrink-0 text-ws-ember-bright" />
               {c.address}
             </a>
           ))}
@@ -136,8 +119,7 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t(`messenger.${m.key}`)}
-              style={{ color: MESSENGER_COLORS[m.key] }}
-              className="flex flex-1 items-center justify-center gap-[5px] rounded-[11px] border border-[var(--ws-line)] bg-white/[0.015] px-2 py-3 text-[12px] font-semibold no-underline [&>svg]:size-4"
+              className={cn("flex flex-1 items-center justify-center gap-[5px] rounded-[11px] border border-ws-line bg-white/[0.015] px-2 py-3 text-[12px] font-semibold no-underline [&>svg]:size-4", m.colorClass)}
             >
               {MESSENGER_ICONS[m.key]}
               {t(`messenger.${m.key}`)}

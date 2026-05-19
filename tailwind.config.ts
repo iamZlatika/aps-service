@@ -7,6 +7,21 @@ const config: Config = {
   theme: {
   	extend: {
   		colors: {
+  			'ws-ink':            'var(--ws-ink)',
+  			'ws-ink-hi':         'var(--ws-ink-hi)',
+  			'ws-ink-soft':       'var(--ws-ink-soft)',
+  			'ws-ink-mute':       'var(--ws-ink-mute)',
+  			'ws-bg':             'var(--ws-bg)',
+  			'ws-bg-2':           'var(--ws-bg-2)',
+  			'ws-bg-3':           'var(--ws-bg-3)',
+  			'ws-line':           'var(--ws-line)',
+  			'ws-line-soft':      'var(--ws-line-soft)',
+  			'ws-ember':          'var(--ws-ember)',
+  			'ws-ember-bright':   'var(--ws-ember-bright)',
+  			'ws-ember-deep':     'var(--ws-ember-deep)',
+  			'ws-cream':          'var(--ws-cream)',
+  			'ws-overlay-chip':   'var(--ws-overlay-chip)',
+  			'ws-overlay-border': 'var(--ws-overlay-border)',
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
@@ -54,7 +69,12 @@ const config: Config = {
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			sm: 'calc(var(--radius) - 4px)',
+  			'ws-ctrl':       '9px',
+  			'ws-ctrl-inner': '6px',
+  		},
+  		spacing: {
+  			'ws-ctrl': '34px',
   		}
   	}
   },

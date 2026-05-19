@@ -21,7 +21,7 @@ export const MessengerButton = ({
     rel="noopener noreferrer"
     aria-label={label}
     className={cn(
-      "inline-flex size-[34px] items-center justify-center rounded-[9px] border border-[var(--ws-line)] bg-white/[0.015] text-[var(--ws-ink-soft)] transition-all duration-200 hover:-translate-y-px [&>svg]:size-4",
+      "inline-flex size-ws-ctrl items-center justify-center rounded-ws-ctrl border border-ws-line bg-white/[0.015] text-ws-ink-soft transition-all duration-200 hover:-translate-y-px [&>svg]:size-4",
       hoverClass,
     )}
   >

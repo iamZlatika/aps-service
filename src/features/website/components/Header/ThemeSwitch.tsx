@@ -1,10 +1,11 @@
 import { type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   useWebsiteTheme,
   WEBSITE_THEMES,
   type WebsiteTheme,
-} from "@/features/website/hooks/useWebsiteTheme";
+} from "@/features/website/websiteTheme";
 import { cn } from "@/shared/lib/utils";
 
 const MoonIcon = (
@@ -41,12 +42,12 @@ const SystemIcon = (
   </svg>
 );
 
-type ThemeOption = { value: WebsiteTheme; label: string; icon: ReactNode };
+type ThemeOption = { value: WebsiteTheme; labelKey: string; icon: ReactNode };
 
 const THEMES: ThemeOption[] = [
-  { value: WEBSITE_THEMES.SYSTEM, label: "System theme", icon: SystemIcon },
-  { value: WEBSITE_THEMES.DARK, label: "Dark theme", icon: MoonIcon },
-  { value: WEBSITE_THEMES.LIGHT, label: "Light theme", icon: SunIcon },
+  { value: WEBSITE_THEMES.SYSTEM, labelKey: "theme.system", icon: SystemIcon },
+  { value: WEBSITE_THEMES.DARK, labelKey: "theme.dark", icon: MoonIcon },
+  { value: WEBSITE_THEMES.LIGHT, labelKey: "theme.light", icon: SunIcon },
 ];
 
 interface ThemeSwitchProps {
@@ -55,28 +56,29 @@ interface ThemeSwitchProps {
 
 export const ThemeSwitch = ({ stretch = false }: ThemeSwitchProps) => {
   const { theme, setTheme } = useWebsiteTheme();
+  const { t } = useTranslation("website");
 
   return (
     <div
       role="group"
-      aria-label="Theme"
+      aria-label={t("theme.label")}
       className={cn(
-        "items-center rounded-[9px] border border-[var(--ws-line)] bg-white/[0.015] p-[3px]",
+        "items-center rounded-ws-ctrl border border-ws-line bg-white/[0.015] p-[3px]",
         stretch ? "flex w-full" : "inline-flex",
       )}
     >
-      {THEMES.map(({ value, label, icon }) => (
+      {THEMES.map(({ value, labelKey, icon }) => (
         <button
           key={value}
           type="button"
-          aria-label={label}
+          aria-label={t(labelKey)}
           onClick={() => setTheme(value)}
           className={cn(
-            "inline-flex items-center justify-center rounded-[6px] transition-all duration-200",
+            "inline-flex items-center justify-center rounded-ws-ctrl-inner transition-all duration-200",
             stretch ? "flex-1 py-[7px]" : "h-[24px] w-[28px]",
             value === theme
-              ? "bg-[var(--ws-cream)] text-[var(--ws-bg)]"
-              : "text-[var(--ws-ink-mute)] hover:text-[var(--ws-ink)]",
+              ? "bg-ws-cream text-ws-bg"
+              : "text-ws-ink-mute hover:text-ws-ink",
           )}
         >
           {icon}

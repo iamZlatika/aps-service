@@ -15,7 +15,7 @@ interface LangSwitchProps {
 }
 
 export const LangSwitch = ({ stretch = false }: LangSwitchProps) => {
-  const { i18n } = useTranslation("website");
+  const { i18n, t } = useTranslation("website");
   const current: UserLanguage =
     i18n.language === USER_LANGUAGES.RU ? USER_LANGUAGES.RU : USER_LANGUAGES.UK;
 
@@ -27,9 +27,9 @@ export const LangSwitch = ({ stretch = false }: LangSwitchProps) => {
   return (
     <div
       role="group"
-      aria-label="Language"
+      aria-label={t("lang.label")}
       className={cn(
-        "items-center rounded-[9px] border border-[var(--ws-line)] bg-white/[0.015] p-[3px]",
+        "items-center rounded-ws-ctrl border border-ws-line bg-white/[0.015] p-[3px]",
         stretch ? "flex w-full" : "inline-flex",
       )}
     >
@@ -39,11 +39,11 @@ export const LangSwitch = ({ stretch = false }: LangSwitchProps) => {
           type="button"
           onClick={() => handleChange(value)}
           className={cn(
-            "rounded-[6px] py-[5px] text-[11px] font-bold uppercase tracking-[0.08em] transition-all duration-200",
+            "rounded-ws-ctrl-inner py-[5px] text-[11px] font-bold uppercase tracking-[0.08em] transition-all duration-200",
             stretch ? "flex-1 justify-center" : "px-[9px]",
             value === current
-              ? "bg-[var(--ws-cream)] text-[var(--ws-bg)]"
-              : "text-[var(--ws-ink-mute)] hover:text-[var(--ws-ink)]",
+              ? "bg-ws-cream text-ws-bg"
+              : "text-ws-ink-mute hover:text-ws-ink",
           )}
         >
           {label}

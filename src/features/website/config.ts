@@ -27,6 +27,7 @@ export type MessengerConfig = {
   key: MessengerKey;
   href: string;
   hoverClass: string;
+  colorClass: string;
 };
 
 export const MESSENGERS: MessengerConfig[] = [
@@ -34,15 +35,18 @@ export const MESSENGERS: MessengerConfig[] = [
     key: "telegram",
     href: "https://t.me/apsservice",
     hoverClass: "ws-msg-tg",
+    colorClass: "ws-msg-tg-color",
   },
   {
     key: "viber",
     href: "viber://chat?number=%2B380612223344",
     hoverClass: "ws-msg-vb",
+    colorClass: "ws-msg-vb-color",
   },
   {
     key: "whatsapp",
     href: "https://wa.me/380612223344",
     hoverClass: "ws-msg-wa",
+    colorClass: "ws-msg-wa-color",
   },
 ];

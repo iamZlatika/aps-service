@@ -1,8 +1,6 @@
 import { type SVGProps } from "react";
 
-type IconProps = SVGProps<SVGSVGElement>;
-
-export const ViberIcon = (props: IconProps) => (
+export const ViberIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
     <path d="M12 2C6.5 2 2 5.8 2 10.5c0 2.4 1.2 4.6 3.2 6.1V21l3.4-2.1c1 .2 2.2.3 3.4.3 5.5 0 10-3.8 10-8.5S17.5 2 12 2Zm0 14.5c-1.1 0-2.1-.1-3-.3l-2.4 1.5v-2.5C5 14.1 4 12.4 4 10.5 4 7 7.6 4 12 4s8 3 8 6.5-3.6 6-8 6Zm-1-9.5c-.4-.1-.6.1-.7.4-.1.4 0 .8.2 1.2.8 1.5 2.1 2.8 3.6 3.5.3.1.7.2 1.1.1.3-.1.5-.4.4-.7l-.2-.7c-.1-.2-.3-.3-.5-.3l-.7.1c-.4 0-.7-.2-.9-.5-.3-.4-.5-.8-.6-1.3 0-.2-.1-.4-.3-.5l-.7-.2c-.2 0-.4 0-.6 0Z" />
   </svg>
