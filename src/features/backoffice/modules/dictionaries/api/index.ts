@@ -1,4 +1,4 @@
-import { put } from "@/shared/api/api.ts";
+import { post, put } from "@/shared/api/api.ts";
 
 import { mapLocationDtoToLocation } from "../lib/adapter";
 import {
@@ -8,6 +8,7 @@ import {
 import {
   BankCardDtoSchema,
   LocationDtoSchema,
+  type LocationPayload,
   OrderStatusDtoSchema,
   SupplierDtoSchema,
 } from "./dto";
@@ -63,14 +64,30 @@ export const productsApi = createDictionaryApi({
   list: () => DICTIONARIES_API.products(),
   item: (id) => DICTIONARIES_API.product(id),
 });
-export const locationApi = createTypedDictionaryApi(
-  {
-    list: () => DICTIONARIES_API.locations(),
-    item: (id) => DICTIONARIES_API.location(id),
+export const locationApi = {
+  ...createTypedDictionaryApi(
+    {
+      list: () => DICTIONARIES_API.locations(),
+      item: (id) => DICTIONARIES_API.location(id),
+    },
+    LocationDtoSchema,
+    mapLocationDtoToLocation,
+  ),
+  create: async (data: LocationPayload) => {
+    const response = await post<LocationPayload, { data: unknown }>(
+      DICTIONARIES_API.locations(),
+      data,
+    );
+    return mapLocationDtoToLocation(LocationDtoSchema.parse(response.data));
   },
-  LocationDtoSchema,
-  mapLocationDtoToLocation,
-);
+  update: async (id: number, data: LocationPayload) => {
+    const response = await put<LocationPayload, { data: unknown }>(
+      DICTIONARIES_API.location(id),
+      data,
+    );
+    return mapLocationDtoToLocation(LocationDtoSchema.parse(response.data));
+  },
+};
 export const bankCardsApi = {
   ...createTypedDictionaryApi(
     {

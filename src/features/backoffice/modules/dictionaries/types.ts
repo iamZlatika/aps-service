@@ -36,6 +36,13 @@ export type WeekDay = (typeof WEEK_DAYS)[number];
 export type ScheduleDay = { from: string; to: string } | null;
 export type LocationSchedule = Record<WeekDay, ScheduleDay>;
 
+export type ScheduleGroup = {
+  fromDay: WeekDay;
+  toDay: WeekDay;
+  from: string;
+  to: string;
+};
+
 export type Location = {
   id: number;
   name: string;

@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import type { LocationSchedule } from "@/features/backoffice/modules/dictionaries/types.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
 import { STATUS_COLORS } from "@/shared/types.ts";
 
@@ -98,6 +99,13 @@ export const LocationDtoSchema = z.object({
 });
 
 export type LocationDto = z.infer<typeof LocationDtoSchema>;
+
+export type LocationPayload = {
+  name: string;
+  address: string;
+  phone: string;
+  schedule: LocationSchedule | null;
+};
 
 export const BankCardDtoSchema = z.object({
   id: z.number(),

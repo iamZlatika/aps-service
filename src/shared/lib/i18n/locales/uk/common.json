@@ -148,7 +148,8 @@
     "onlyLat": "Тільки латиниця, цифри та _",
     "minCharsIs": "Мінімальна кількість символів {{chars}}",
     "minQuantity": "Мінімальне значення — 1",
-    "colorRequired": "Виберіть колір"
+    "colorRequired": "Виберіть колір",
+    "time_end_before_start": "Час закінчення має бути пізніше часу початку"
   },
   "search_placeholders": {
     "dictionaries_name": "Пошук по назві",
@@ -325,6 +326,26 @@
       "key": "Тільки латиниця, цифри та _",
       "name": "Введіть назву",
       "color": "Оберіть колір"
+    },
+    "locations": {
+      "form": {
+        "title_create": "Додавання локації",
+        "title_edit": "Редагування локації",
+        "name": "Назва",
+        "address": "Адреса",
+        "phone": "Телефон",
+        "schedule": "Графік роботи",
+        "add_schedule_group": "Додати рядок",
+        "days": {
+          "mon": "Пн",
+          "tue": "Вт",
+          "wed": "Ср",
+          "thu": "Чт",
+          "fri": "Пт",
+          "sat": "Сб",
+          "sun": "Нд"
+        }
+      }
     }
   },
   "orders": {
