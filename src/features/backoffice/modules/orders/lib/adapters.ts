@@ -90,7 +90,7 @@ export function mapOrderDtoToOrder(dto: OrderDto): Order {
     estimatedCost: dto.estimated_cost,
     isUrgent: dto.is_urgent,
     isCalled: dto.is_called,
-    location: dto.location,
+    location: mapLocationDtoToLocation(dto.location),
     totalCost: dto.total_cost,
     totalIncome: dto.total_income,
     createdAt: dto.created_at,

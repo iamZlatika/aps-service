@@ -1,5 +1,6 @@
 import { put } from "@/shared/api/api.ts";
 
+import { mapLocationDtoToLocation } from "../lib/adapter";
 import {
   createDictionaryApi,
   createTypedDictionaryApi,
@@ -68,6 +69,7 @@ export const locationApi = createTypedDictionaryApi(
     item: (id) => DICTIONARIES_API.location(id),
   },
   LocationDtoSchema,
+  mapLocationDtoToLocation,
 );
 export const bankCardsApi = {
   ...createTypedDictionaryApi(

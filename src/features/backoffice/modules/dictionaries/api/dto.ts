@@ -74,12 +74,27 @@ export const ProductDtoSchema = z.object({
 
 export type Product = z.infer<typeof ProductDtoSchema>;
 
+const ScheduleDayDtoSchema = z
+  .object({ from: z.string(), to: z.string() })
+  .nullable();
+
+const LocationScheduleDtoSchema = z.object({
+  mon: ScheduleDayDtoSchema,
+  tue: ScheduleDayDtoSchema,
+  wed: ScheduleDayDtoSchema,
+  thu: ScheduleDayDtoSchema,
+  fri: ScheduleDayDtoSchema,
+  sat: ScheduleDayDtoSchema,
+  sun: ScheduleDayDtoSchema,
+});
+
 export const LocationDtoSchema = z.object({
   id: z.number(),
   name: z.string(),
   address: z.string(),
   phone: z.string(),
-  schedule: z.string().nullable(),
+  schedule: LocationScheduleDtoSchema.nullable(),
+  schedule_display: z.string().nullable(),
 });
 
 export type LocationDto = z.infer<typeof LocationDtoSchema>;

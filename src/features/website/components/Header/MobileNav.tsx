@@ -112,19 +112,25 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
         </div>
 
         <div className="flex gap-[5px] px-4 py-4">
-          {MESSENGERS.map((m) => (
-            <a
-              key={m.key}
-              href={m.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t(`messenger.${m.key}`)}
-              className={cn("flex flex-1 items-center justify-center gap-[5px] rounded-[11px] border border-ws-line bg-white/[0.015] px-2 py-3 text-[12px] font-semibold no-underline [&>svg]:size-4", m.colorClass)}
-            >
-              {MESSENGER_ICONS[m.key]}
-              {t(`messenger.${m.key}`)}
-            </a>
-          ))}
+          {MESSENGERS.map((m) => {
+            const Icon = MESSENGER_ICONS[m.key];
+            return (
+              <a
+                key={m.key}
+                href={m.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t(`messenger.${m.key}`)}
+                className={cn(
+                  "flex flex-1 items-center justify-center gap-[5px] rounded-[11px] border border-ws-line bg-white/[0.015] px-2 py-3 text-[12px] font-semibold no-underline [&>svg]:size-4",
+                  m.colorClass,
+                )}
+              >
+                <Icon />
+                {t(`messenger.${m.key}`)}
+              </a>
+            );
+          })}
         </div>
 
         <div className="flex gap-2 px-3 pb-6">

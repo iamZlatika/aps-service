@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
-import { useWebsiteTheme } from "@/features/website/websiteTheme";
 import { CabinetButton } from "@/features/website/pages/home/components/hero/CabinetButton";
 import { PriceButton } from "@/features/website/pages/home/components/hero/PriceButton";
+import { useWebsiteTheme } from "@/features/website/websiteTheme";
 import { cn } from "@/shared/lib/utils";
 
 const PERKS = ["hero.perk1", "hero.perk2", "hero.perk3"] as const;
@@ -46,8 +46,6 @@ export const Hero = () => {
             <span className="bg-gradient-to-b from-ws-ember-bright via-ws-ember to-ws-ember-deep bg-clip-text font-semibold text-transparent">
               {t("hero.titleAccent")}
             </span>
-            <br />
-            <span className="font-semibold">{t("hero.titleEnd")}</span>
           </h1>
 
           <p className="max-w-[460px] text-[clamp(13px,1.1vw,15.5px)] leading-[1.65] text-ws-ink-soft">
@@ -79,17 +77,17 @@ export const Hero = () => {
             ))}
           </div>
 
-          <div className="mt-auto pt-6 md:hidden">
+          <div className="mt-auto pt-6 lg:hidden">
             <p className="text-[18px] font-light leading-[1.15] tracking-[-0.015em] text-ws-ink">
               {t("hero.bottomSlogan")}{" "}
               <b className="font-semibold text-ws-ember-bright">
                 {t("hero.bottomSloganAccent")}
               </b>
             </p>
-            <div className="mt-[6px] text-[11px] tracking-[0.04em] text-ws-ink-mute">
+            <div className="mt-[14px] flex items-center gap-1.5 text-[11px] tracking-[0.04em] text-ws-ink-soft">
               <b className="text-[12px] font-semibold text-ws-ember-bright">
                 47
-              </b>{" "}
+              </b>
               {t("hero.devicesInWork")}
             </div>
           </div>
@@ -104,29 +102,32 @@ export const Hero = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-10 right-12 hidden text-right md:block">
-          <p className="text-balance text-[34px] font-light leading-[1.05] tracking-[-0.022em] text-ws-ink">
+        <div className="absolute bottom-6 right-6 z-[3] hidden max-w-[300px] rounded-[18px] border border-ws-overlay-border bg-ws-overlay-chip px-[22px] pb-4 pt-[18px] text-right backdrop-blur lg:block">
+          <p className="text-balance text-[28px] font-light leading-[1.05] tracking-[-0.018em] text-ws-ink">
             {t("hero.bottomSlogan")}
             <br />
-            <span
-              className={
-                resolvedTheme === "light"
-                  ? "font-bold text-ws-ink"
-                  : "text-ws-ember-bright"
-              }
-            >
-              {t("hero.bottomSloganAccent")}
-            </span>
-          </p>
-          <div className="mt-2 text-[12px] text-ws-ink-mute">
             <b
               className={cn(
-                "text-[20px] font-bold",
-                resolvedTheme === "light" ? "text-ws-ink" : "text-ws-ember-bright",
+                "font-semibold",
+                resolvedTheme === "light"
+                  ? "text-ws-ember-deep"
+                  : "text-ws-ember-bright",
+              )}
+            >
+              {t("hero.bottomSloganAccent")}
+            </b>
+          </p>
+          <div className="mt-[10px] flex items-center justify-end gap-1.5 border-t border-ws-overlay-border pt-[10px] text-[11.5px] tracking-[0.04em] text-ws-ink-soft">
+            <b
+              className={cn(
+                "text-[14px] font-bold",
+                resolvedTheme === "light"
+                  ? "text-ws-ember-deep"
+                  : "text-ws-ember-bright",
               )}
             >
               47
-            </b>{" "}
+            </b>
             {t("hero.devicesInWork")}
           </div>
         </div>

@@ -19,6 +19,7 @@ export default defineConfig([
       "*.config.js",
       "*.config.ts",
       "src/shared/components/ui/**",
+      "src/features/website/components/Header/HeaderData.tsx",
     ],
   },
 

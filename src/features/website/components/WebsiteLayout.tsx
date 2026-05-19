@@ -35,7 +35,12 @@ const WebsiteLayout = () => {
 
   return (
     <WebsiteThemeContext.Provider value={themeValue}>
-      <div className={cn("website", themeValue.resolvedTheme === "light" && "light")}>
+      <div
+        className={cn(
+          "website",
+          themeValue.resolvedTheme === "light" && "light",
+        )}
+      >
         <Header />
         <TrackingStrip />
         <main>

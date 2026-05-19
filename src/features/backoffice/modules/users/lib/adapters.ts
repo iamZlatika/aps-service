@@ -1,3 +1,4 @@
+import { mapLocationDtoToLocation } from "@/features/backoffice/modules/dictionaries/lib/adapter.ts";
 import { type SalarySettings } from "@/features/backoffice/modules/users/lib/salarySettingsSchema.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types";
 
@@ -15,7 +16,7 @@ export const mapUserDtoToUser = (dto: UserDto): User => {
     locale: dto.locale,
     theme: dto.theme,
     avatarUrl: dto.avatar_url,
-    location: dto.location,
+    location: dto.location ? mapLocationDtoToLocation(dto.location) : null,
     servicesPercent: dto.services_percent,
     productsPercent: dto.products_percent,
     intakePercent: dto.intake_percent,

@@ -15,7 +15,10 @@ export const TrackingStrip = () => {
           <span className="h-px w-6 shrink-0 bg-ws-line" />
         </div>
 
-        <Link to={WEBSITE_LINKS.account} className="ws-btn ws-btn-cream justify-center">
+        <Link
+          to={WEBSITE_LINKS.account}
+          className="ws-btn ws-btn-cream justify-center"
+        >
           <User className="size-3.5 shrink-0" />
           {t("nav.cabinet")}
           <MoveRight className="size-3.5 shrink-0" />

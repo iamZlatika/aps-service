@@ -46,15 +46,18 @@ export const DesktopNav = () => {
         <NavContacts contacts={CONTACTS} />
 
         <div className="flex gap-[6px]">
-          {MESSENGERS.map((m) => (
-            <MessengerButton
-              key={m.key}
-              href={m.href}
-              label={t(`messenger.${m.key}`)}
-              icon={MESSENGER_ICONS[m.key]}
-              hoverClass={m.hoverClass}
-            />
-          ))}
+          {MESSENGERS.map((m) => {
+            const Icon = MESSENGER_ICONS[m.key];
+            return (
+              <MessengerButton
+                key={m.key}
+                href={m.href}
+                label={t(`messenger.${m.key}`)}
+                icon={<Icon />}
+                hoverClass={m.hoverClass}
+              />
+            );
+          })}
         </div>
 
         <LangSwitch />

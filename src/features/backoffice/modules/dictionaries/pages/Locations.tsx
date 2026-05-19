@@ -36,8 +36,8 @@ const LocationsPage = () => {
       },
     },
     {
-      key: "schedule",
-      field: "schedule",
+      key: "scheduleDisplay",
+      field: "scheduleDisplay",
       labelKey: "dictionaries.table_fields.schedule",
       sortable: false,
       required: false,
