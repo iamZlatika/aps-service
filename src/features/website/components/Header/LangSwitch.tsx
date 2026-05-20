@@ -39,7 +39,7 @@ export const LangSwitch = ({ stretch = false }: LangSwitchProps) => {
           type="button"
           onClick={() => handleChange(value)}
           className={cn(
-            "rounded-ws-ctrl-inner py-[5px] text-[11px] font-bold uppercase tracking-[0.08em] transition-all duration-200",
+            "rounded-ws-ctrl-inner py-[5px] text-ws-2xs font-bold uppercase tracking-[0.08em] transition-all duration-200",
             stretch ? "flex-1 justify-center" : "px-[9px]",
             value === current
               ? "bg-ws-cream text-ws-bg"

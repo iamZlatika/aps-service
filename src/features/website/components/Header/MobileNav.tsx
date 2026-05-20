@@ -40,7 +40,7 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
         )}
       >
         <div className="flex items-center justify-between border-b border-ws-line-soft px-5 py-[18px]">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ws-ink-mute">
+          <span className="text-ws-2xs font-semibold uppercase tracking-[0.18em] text-ws-ink-mute">
             {t("nav.menu")}
           </span>
           <button
@@ -71,7 +71,7 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
               onClick={close}
               className={({ isActive }) =>
                 cn(
-                  "flex items-center justify-between border-b border-ws-line-soft py-3.5 text-[17px] font-medium no-underline transition-colors duration-200",
+                  "flex items-center justify-between border-b border-ws-line-soft py-3.5 text-ws-lg font-medium no-underline transition-colors duration-200",
                   isActive
                     ? "text-ws-ember-bright"
                     : "text-ws-ink-hi hover:text-ws-ember-bright",
@@ -84,14 +84,14 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
         </nav>
 
         <div className="mt-[22px] px-5">
-          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-ws-ink-mute">
+          <p className="mb-3 text-ws-2xs font-semibold uppercase tracking-[0.18em] text-ws-ink-mute">
             {t("nav.contacts")}
           </p>
           {CONTACTS.map((c) => (
             <a
               key={c.phone}
               href={`tel:${c.phone}`}
-              className="flex items-center gap-2.5 py-[10px] text-[14.5px] font-medium text-ws-ink-hi no-underline"
+              className="flex items-center gap-2.5 py-[10px] text-ws-base font-medium text-ws-ink-hi no-underline"
             >
               <Phone className="size-3.5 shrink-0 text-ws-ember-bright" />
               {c.phoneFormatted}
@@ -103,7 +103,7 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
               href={c.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2.5 py-[10px] text-[13px] text-ws-ink-soft no-underline"
+              className="flex items-center gap-2.5 py-[10px] text-ws-sm text-ws-ink-soft no-underline"
             >
               <MapPin className="size-3.5 shrink-0 text-ws-ember-bright" />
               {c.address}
@@ -122,7 +122,7 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
                 rel="noopener noreferrer"
                 aria-label={t(`messenger.${m.key}`)}
                 className={cn(
-                  "flex flex-1 items-center justify-center gap-[5px] rounded-[11px] border border-ws-line bg-white/[0.015] px-2 py-3 text-[12px] font-semibold no-underline [&>svg]:size-4",
+                  "flex flex-1 items-center justify-center gap-[5px] rounded-ws-sm border border-ws-line bg-white/[0.015] px-2 py-3 text-ws-xs font-semibold no-underline [&>svg]:size-4",
                   m.colorClass,
                 )}
               >

@@ -14,7 +14,7 @@ export const Hero = () => {
 
   return (
     <section className="ws-wrap py-6">
-      <div className="ws-hero-section relative flex min-h-[620px] w-full flex-col overflow-hidden rounded-[22px] border border-ws-line md:aspect-[1326/771] md:block md:min-h-0 md:rounded-[28px]">
+      <div className="ws-hero-section relative flex min-h-[620px] w-full flex-col overflow-hidden rounded-ws-xl border border-ws-line md:aspect-[1326/771] md:block md:min-h-0 md:rounded-ws-2xl">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 select-none"
@@ -39,7 +39,7 @@ export const Hero = () => {
             <p className="ws-section-eyebrow">{t("hero.eyebrow")}</p>
           </div>
 
-          <h1 className="text-[36px] font-light leading-[1.02] tracking-[-0.025em] text-ws-ink md:text-[clamp(40px,5.6vw,76px)]">
+          <h1 className="text-ws-3xl font-light leading-[1.02] tracking-[-0.025em] text-ws-ink md:text-ws-hero-title">
             {t("hero.titleLine1")}
             <br />
             {t("hero.titleLine2")}{" "}
@@ -48,7 +48,7 @@ export const Hero = () => {
             </span>
           </h1>
 
-          <p className="max-w-[460px] text-[clamp(13px,1.1vw,15.5px)] leading-[1.65] text-ws-ink-soft">
+          <p className="max-w-[460px] text-ws-hero-body leading-[1.65] text-ws-ink-soft">
             {t("hero.description")}
           </p>
 
@@ -57,7 +57,7 @@ export const Hero = () => {
             <PriceButton />
           </div>
 
-          <div className="inline-flex w-fit items-center gap-2.5 rounded-full border border-ws-line bg-ws-overlay-chip py-[11px] pl-3.5 pr-4 text-[13.5px] text-ws-ink-soft backdrop-blur">
+          <div className="inline-flex w-fit items-center gap-2.5 rounded-full border border-ws-line bg-ws-overlay-chip py-[11px] pl-3.5 pr-4 text-ws-sm text-ws-ink-soft backdrop-blur">
             <PinIcon className="size-3.5 shrink-0 text-ws-ember-bright" />
             <span>
               <b className="font-semibold text-ws-ink">{t("hero.city")}</b>{" "}
@@ -69,7 +69,7 @@ export const Hero = () => {
             {PERKS.map((key) => (
               <span
                 key={key}
-                className="flex items-center gap-2 text-[13.5px] text-ws-ink-soft"
+                className="flex items-center gap-2 text-ws-sm text-ws-ink-soft"
               >
                 <span className="size-[5px] shrink-0 rounded-full bg-ws-ember-bright" />
                 {t(key)}
@@ -78,14 +78,14 @@ export const Hero = () => {
           </div>
 
           <div className="mt-auto pt-6 lg:hidden">
-            <p className="text-[18px] font-light leading-[1.15] tracking-[-0.015em] text-ws-ink">
+            <p className="text-ws-xl font-light leading-[1.15] tracking-[-0.015em] text-ws-ink">
               {t("hero.bottomSlogan")}{" "}
               <b className="font-semibold text-ws-ember-bright">
                 {t("hero.bottomSloganAccent")}
               </b>
             </p>
-            <div className="mt-[14px] flex items-center gap-1.5 text-[11px] tracking-[0.04em] text-ws-ink-soft">
-              <b className="text-[12px] font-semibold text-ws-ember-bright">
+            <div className="mt-[14px] flex items-center gap-1.5 text-ws-2xs tracking-[0.04em] text-ws-ink-soft">
+              <b className="text-ws-xs font-semibold text-ws-ember-bright">
                 47
               </b>
               {t("hero.devicesInWork")}
@@ -93,7 +93,7 @@ export const Hero = () => {
           </div>
         </div>
 
-        <div className="absolute right-4 top-4 inline-flex items-center rounded-[12px] border border-ws-overlay-border bg-ws-overlay-chip px-3 py-2 text-[10.5px] font-medium leading-[1.3] tracking-[0.02em] text-ws-ink backdrop-blur md:right-12 md:top-12 md:rounded-[14px] md:px-[14px] md:py-[9px] md:text-[11.5px] md:font-bold md:leading-[1.35]">
+        <div className="absolute right-4 top-4 inline-flex items-center rounded-ws-md border border-ws-overlay-border bg-ws-overlay-chip px-3 py-2 text-ws-2xs font-medium leading-[1.3] tracking-[0.02em] text-ws-ink backdrop-blur md:right-12 md:top-12 md:rounded-ws-chip md:px-[14px] md:py-[9px] md:text-ws-2xs md:font-bold md:leading-[1.35]">
           <div className="text-right">
             <div>{t("hero.workdaysHours")}</div>
             <div className="text-ws-ink-soft md:text-inherit">
@@ -102,8 +102,8 @@ export const Hero = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-6 right-6 z-[3] hidden max-w-[300px] rounded-[18px] border border-ws-overlay-border bg-ws-overlay-chip px-[22px] pb-4 pt-[18px] text-right backdrop-blur lg:block">
-          <p className="text-balance text-[28px] font-light leading-[1.05] tracking-[-0.018em] text-ws-ink">
+        <div className="absolute bottom-6 right-6 z-[3] hidden max-w-[300px] rounded-ws-card border border-ws-overlay-border bg-ws-overlay-chip px-[22px] pb-4 pt-[18px] text-right backdrop-blur lg:block">
+          <p className="text-balance text-ws-2xl font-light leading-[1.05] tracking-[-0.018em] text-ws-ink">
             {t("hero.bottomSlogan")}
             <br />
             <b
@@ -117,10 +117,10 @@ export const Hero = () => {
               {t("hero.bottomSloganAccent")}
             </b>
           </p>
-          <div className="mt-[10px] flex items-center justify-end gap-1.5 border-t border-ws-overlay-border pt-[10px] text-[11.5px] tracking-[0.04em] text-ws-ink-soft">
+          <div className="mt-[10px] flex items-center justify-end gap-1.5 border-t border-ws-overlay-border pt-[10px] text-ws-2xs tracking-[0.04em] text-ws-ink-soft">
             <b
               className={cn(
-                "text-[14px] font-bold",
+                "text-ws-base font-bold",
                 resolvedTheme === "light"
                   ? "text-ws-ember-deep"
                   : "text-ws-ember-bright",

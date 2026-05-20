@@ -100,7 +100,7 @@
 
 @media (max-width: 768px) {
   .ws-wrap {
-    padding: 0 22px;
+    padding: 0 16px;
   }
 }
 
@@ -155,7 +155,7 @@
   text-wrap: balance;
 }
 
-.ws-section-title b {
+.ws-section-title strong {
   font-weight: 600;
   color: var(--ws-cream);
 }
@@ -285,6 +285,10 @@
 }
 
 .website.light .ws-hero-photo {
+  filter: invert(.92) hue-rotate(-10deg) brightness(1.02);
+}
+
+.website.light .ws-device-img {
   filter: invert(.92) hue-rotate(-10deg) brightness(1.02);
 }
 

@@ -10,7 +10,7 @@ export const TrackingStrip = () => {
   return (
     <div className="ws-wrap">
       <div className="flex flex-col gap-3 pb-[18px] pt-[14px] sm:flex-row sm:items-center sm:justify-end sm:gap-[18px] sm:pb-[22px] sm:pt-[18px]">
-        <div className="hidden items-center gap-2.5 text-[13px] text-ws-ink-mute sm:flex">
+        <div className="hidden items-center gap-2.5 text-ws-sm text-ws-ink-mute sm:flex">
           {t("nav.trackingHint")}
           <span className="h-px w-6 shrink-0 bg-ws-line" />
         </div>

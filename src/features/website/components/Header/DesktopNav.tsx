@@ -29,7 +29,7 @@ export const DesktopNav = () => {
               end={end}
               className={({ isActive }) =>
                 cn(
-                  "whitespace-nowrap rounded-full px-[18px] py-[9px] text-[14px] font-medium no-underline transition-colors duration-200",
+                  "whitespace-nowrap rounded-full px-[18px] py-[9px] text-ws-base font-medium no-underline transition-colors duration-200",
                   isActive
                     ? "bg-ws-cream font-semibold text-ws-bg"
                     : "text-ws-ink-soft hover:text-ws-ink",
