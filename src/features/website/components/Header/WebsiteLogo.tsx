@@ -22,9 +22,9 @@ export const WebsiteLogo = ({ className }: WebsiteLogoProps) => {
         alt="APS service logo"
         width="28"
         height="28"
-        className="block h-7 w-auto shrink-0"
+        className="block h-8 w-auto shrink-0"
       />
-      <span className="text-ws-lg font-bold leading-none tracking-[-0.01em]">
+      <span className="text-ws-xl font-bold leading-none tracking-[-0.01em]">
         APS
         <span className="font-medium text-ws-ink-mute">.service</span>
         <small className="mt-1 block text-ws-2xs font-medium tracking-[0.02em] text-ws-ink-mute">

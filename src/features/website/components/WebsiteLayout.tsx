@@ -8,7 +8,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { WebsiteErrorFallback } from "@/features/website/components/ErrorFallback";
 import { Footer } from "@/features/website/components/Footer";
 import { Header } from "@/features/website/components/Header";
-import { TrackingStrip } from "@/features/website/components/TrackingStrip";
+import { MobileBottomBar } from "@/features/website/components/MobileBottomBar";
 import { useWebsiteThemeManager } from "@/features/website/hooks/useWebsiteThemeManager";
 import { WebsiteThemeContext } from "@/features/website/websiteTheme";
 import { LANG_STORAGE_KEY } from "@/shared/lib/constants";
@@ -43,8 +43,7 @@ const WebsiteLayout = () => {
         )}
       >
         <Header />
-        <TrackingStrip />
-        <main>
+        <main className="pb-[84px] md:pb-0">
           <ErrorBoundary
             FallbackComponent={WebsiteErrorFallback}
             resetKeys={[location.pathname]}
@@ -56,6 +55,7 @@ const WebsiteLayout = () => {
           </ErrorBoundary>
         </main>
         <Footer />
+        <MobileBottomBar />
       </div>
     </WebsiteThemeContext.Provider>
   );

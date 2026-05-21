@@ -1,5 +1,7 @@
 export type ContactLocation = {
   address: string;
+  areaKey: string;
+  shortAddressKey: string;
   phone: string;
   phoneFormatted: string;
   mapsUrl: string;
@@ -9,12 +11,16 @@ export type ContactLocation = {
 export const CONTACTS: ContactLocation[] = [
   {
     address: "вул. Щаслива, 11",
+    areaKey: "offices.office1.area",
+    shortAddressKey: "offices.office1.street",
     phone: "+380612223344",
     phoneFormatted: "+380 (61) 222-33-44",
     mapsUrl: "https://maps.google.com/?q=вул.+Щаслива,+11,+Запоріжжя",
   },
   {
     address: "вул. Товариська, 58",
+    areaKey: "offices.office2.area",
+    shortAddressKey: "offices.office2.street",
     phone: "+380505556677",
     phoneFormatted: "+380 (50) 555-66-77",
     mapsUrl: "https://maps.google.com/?q=вул.+Товариська,+58,+Запоріжжя",

@@ -1,16 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 
-import {
-  MESSENGER_ICONS,
-  NAV_TABS,
-} from "@/features/website/components/Header/HeaderData";
+import { HeaderCabinetButton } from "@/features/website/components/Header/HeaderCabinetButton";
+import { NAV_TABS } from "@/features/website/components/Header/HeaderData";
 import { LangSwitch } from "@/features/website/components/Header/LangSwitch";
-import { MessengerButton } from "@/features/website/components/Header/MessengerButton";
-import { NavContacts } from "@/features/website/components/Header/NavContacts";
 import { ThemeSwitch } from "@/features/website/components/Header/ThemeSwitch";
 import { WebsiteLogo } from "@/features/website/components/Header/WebsiteLogo";
-import { CONTACTS, MESSENGERS } from "@/features/website/config";
 import { cn } from "@/shared/lib/utils";
 
 export const DesktopNav = () => {
@@ -43,25 +38,9 @@ export const DesktopNav = () => {
       </div>
 
       <div className="flex items-center gap-[18px]">
-        <NavContacts contacts={CONTACTS} />
-
-        <div className="flex gap-[6px]">
-          {MESSENGERS.map((m) => {
-            const Icon = MESSENGER_ICONS[m.key];
-            return (
-              <MessengerButton
-                key={m.key}
-                href={m.href}
-                label={t(`messenger.${m.key}`)}
-                icon={<Icon />}
-                hoverClass={m.hoverClass}
-              />
-            );
-          })}
-        </div>
-
         <LangSwitch />
         <ThemeSwitch />
+        <HeaderCabinetButton className="ml-1.5" />
       </div>
     </nav>
   );

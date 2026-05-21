@@ -32,17 +32,15 @@ export const Hero = () => {
         </div>
 
         <div className="relative z-[2] flex w-full flex-1 flex-col gap-5 px-6 pb-7 pt-[64px] md:max-w-[760px] md:flex-none md:px-[72px] md:pb-[92px] md:pt-[88px]">
-          <div className="md:hidden">
-            <p className="ws-section-eyebrow">{t("hero.eyebrowYear")}</p>
-          </div>
           <div className="hidden md:block">
             <p className="ws-section-eyebrow">{t("hero.eyebrow")}</p>
           </div>
 
-          <h1 className="text-ws-3xl font-light leading-[1.02] tracking-[-0.025em] text-ws-ink md:text-ws-hero-title">
+          <h1 className="mt-6 text-ws-3xl font-light leading-[1.02] tracking-[-0.025em] text-ws-ink md:mt-0 md:text-ws-hero-title">
             {t("hero.titleLine1")}
             <br />
-            {t("hero.titleLine2")}{" "}
+            {t("hero.titleLine2")}
+            <br />
             <span className="bg-gradient-to-b from-ws-ember-bright via-ws-ember to-ws-ember-deep bg-clip-text font-semibold text-transparent">
               {t("hero.titleAccent")}
             </span>
@@ -93,11 +91,14 @@ export const Hero = () => {
           </div>
         </div>
 
-        <div className="absolute right-4 top-4 inline-flex items-center rounded-ws-md border border-ws-overlay-border bg-ws-overlay-chip px-3 py-2 text-ws-2xs font-medium leading-[1.3] tracking-[0.02em] text-ws-ink backdrop-blur md:right-12 md:top-12 md:rounded-ws-chip md:px-[14px] md:py-[9px] md:text-ws-2xs md:font-bold md:leading-[1.35]">
-          <div className="text-right">
-            <div>{t("hero.workdaysHours")}</div>
-            <div className="text-ws-ink-soft md:text-inherit">
-              {t("hero.saturdayHours")}
+        <div className="absolute left-4 right-4 top-4 flex items-end justify-between md:left-auto md:right-12 md:top-12">
+          <p className="ws-section-eyebrow !mb-0 md:hidden">
+            {t("hero.eyebrowYear")}
+          </p>
+          <div className="inline-flex items-center rounded-ws-md border border-ws-overlay-border bg-ws-overlay-chip px-3 py-2 text-ws-2xs font-medium leading-[1.3] tracking-[0.02em] text-ws-ink backdrop-blur md:rounded-ws-chip md:px-[14px] md:py-[9px] md:font-bold md:leading-[1.35]">
+            <div className="text-right">
+              <div>{t("hero.workdaysHours")}</div>
+              <div>{t("hero.saturdayHours")}</div>
             </div>
           </div>
         </div>

@@ -370,3 +370,24 @@
 .ws-msg-tg-color { color: #2aa3e3; }
 .ws-msg-vb-color { color: #7b5cd4; }
 .ws-msg-wa-color { color: #25d366; }
+
+/* ============================================================
+   Mobile bottom bar (fixed, md:hidden)
+   ============================================================ */
+.ws-bottombar {
+  background: color-mix(in oklab, var(--ws-bg-2) 92%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 20px 40px -20px rgba(0,0,0,.5);
+}
+.website.light .ws-bottombar {
+  box-shadow: 0 20px 40px -20px rgba(31,108,184,.25);
+}
+.ws-bb-btn-primary {
+  background: linear-gradient(180deg, var(--ws-ember-bright) 0%, var(--ws-ember) 100%);
+  color: #2a1a0d;
+  box-shadow: 0 8px 20px -10px rgba(238,122,58,.6), inset 0 1px 0 rgba(255,255,255,.4);
+}
+.website.light .ws-bb-btn-primary {
+  color: #fff;
+}
