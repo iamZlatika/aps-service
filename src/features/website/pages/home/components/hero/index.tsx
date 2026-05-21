@@ -22,7 +22,7 @@ export const Hero = () => {
           <picture>
             <source media="(max-width: 768px)" srcSet="/hero-mobile.webp" />
             <img
-              src="/img.webp"
+              src="/hero.webp"
               alt=""
               fetchPriority="high"
               className="ws-hero-photo"

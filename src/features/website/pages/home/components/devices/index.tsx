@@ -21,7 +21,7 @@ export const DevicesSection = () => {
           <p className="ws-section-side">{t("devices.description")}</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7">
           {DEVICES.map(({ id }) => (
             <DeviceCard key={id} id={id} />
           ))}

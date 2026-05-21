@@ -334,6 +334,21 @@
   }
 }
 
+/* ============================================================
+   Device cards — icon area background
+   ============================================================ */
+.ws-device-icon-bg {
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 8px, transparent 8px 16px),
+    linear-gradient(135deg, #322d26 0%, #211e19 100%);
+}
+
+.website.light .ws-device-icon-bg {
+  background:
+    repeating-linear-gradient(135deg, rgba(0,0,0,.025) 0 10px, transparent 10px 20px),
+    linear-gradient(135deg, #f5ecd6 0%, #ebe1c6 100%);
+}
+
 /* Ghost button hover fix for light theme */
 .website.light .ws-btn-ghost:hover {
   background: rgba(0,0,0,.03);

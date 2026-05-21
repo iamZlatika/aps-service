@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router-dom";
 
 import { WebsiteErrorFallback } from "@/features/website/components/ErrorFallback";
+import { Footer } from "@/features/website/components/Footer";
 import { Header } from "@/features/website/components/Header";
 import { TrackingStrip } from "@/features/website/components/TrackingStrip";
 import { useWebsiteThemeManager } from "@/features/website/hooks/useWebsiteThemeManager";
@@ -54,6 +55,7 @@ const WebsiteLayout = () => {
             <Outlet />
           </ErrorBoundary>
         </main>
+        <Footer />
       </div>
     </WebsiteThemeContext.Provider>
   );
