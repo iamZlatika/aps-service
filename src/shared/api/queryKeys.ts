@@ -47,6 +47,11 @@ export const queryKeys = {
     detail: (id: number) => ["orders", "detail", id] as const,
   },
 
+  tracking: {
+    all: ["tracking"] as const,
+    detail: (token: string) => ["tracking", "detail", token] as const,
+  },
+
   dictionaries: {
     all: ["dictionaries"] as const,
     accessories: makeEntityKey(["dictionaries"], "accessories"),

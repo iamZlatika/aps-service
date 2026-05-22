@@ -11,7 +11,6 @@ import {
 import { useTranslation } from "react-i18next";
 
 import type { LocationFormValues } from "@/features/backoffice/modules/dictionaries/lib/location.schema.ts";
-import { WEEK_DAYS } from "@/features/backoffice/modules/dictionaries/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import {
@@ -22,6 +21,7 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select.tsx";
 import { cn } from "@/shared/lib/utils.ts";
+import { WEEK_DAYS } from "@/shared/types";
 
 interface ScheduleBuilderProps {
   control: Control<LocationFormValues>;

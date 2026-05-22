@@ -12,8 +12,8 @@ import {
   mapScheduleGroupsToSchedule,
   mapScheduleToGroups,
 } from "@/features/backoffice/modules/dictionaries/lib/schedule.service.ts";
-import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
+import type { Location } from "@/shared/types";
 
 export const useLocationForm = (
   location: Location | null,
@@ -33,7 +33,13 @@ export const useLocationForm = (
     resolver: zodResolver(LocationFormSchema),
     defaultValues: {
       name: "",
-      address: "",
+      city_ru: "",
+      city_ua: "",
+      district_ru: "",
+      district_ua: "",
+      street_ru: "",
+      street_ua: "",
+      building: "",
       phone: "",
       scheduleGroups: [],
     },
@@ -46,25 +52,44 @@ export const useLocationForm = (
       location
         ? {
             name: location.name,
-            address: location.address,
+            city_ru: location.cityRu,
+            city_ua: location.cityUa,
+            district_ru: location.districtRu,
+            district_ua: location.districtUa,
+            street_ru: location.streetRu,
+            street_ua: location.streetUa,
+            building: location.building,
             phone: location.phone,
             scheduleGroups: mapScheduleToGroups(location.schedule),
           }
-        : { name: "", address: "", phone: "", scheduleGroups: [] },
+        : {
+            name: "",
+            city_ru: "",
+            city_ua: "",
+            district_ru: "",
+            district_ua: "",
+            street_ru: "",
+            street_ua: "",
+            building: "",
+            phone: "",
+            scheduleGroups: [],
+          },
     );
   }, [isOpen, location, reset]);
 
   const mutation = useMutation({
     mutationFn: async (values: LocationFormValues) => {
-      const schedule =
-        values.scheduleGroups.length > 0
-          ? mapScheduleGroupsToSchedule(values.scheduleGroups)
-          : null;
       const payload = {
         name: values.name,
-        address: values.address,
+        city_ru: values.city_ru,
+        city_ua: values.city_ua,
+        district_ru: values.district_ru,
+        district_ua: values.district_ua,
+        street_ru: values.street_ru,
+        street_ua: values.street_ua,
+        building: values.building,
         phone: values.phone,
-        schedule,
+        schedule: mapScheduleGroupsToSchedule(values.scheduleGroups),
       };
       if (location) {
         return locationApi.update(location.id, payload);

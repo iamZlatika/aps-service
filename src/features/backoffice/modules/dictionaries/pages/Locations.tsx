@@ -7,12 +7,12 @@ import { locationApi } from "@/features/backoffice/modules/dictionaries/api";
 import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
 import { LocationFormDialog } from "@/features/backoffice/modules/dictionaries/components/LocationFormDialog.tsx";
 import { RowActions } from "@/features/backoffice/modules/dictionaries/components/RowActions.tsx";
-import { type Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import { DeleteConfirmDialog } from "@/features/backoffice/widgets/table/components/dialogs";
 import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { notifyError } from "@/shared/lib/errors/services.ts";
+import { type Location } from "@/shared/types";
 
 const LocationsPage = () => {
   const { t } = useTranslation();
@@ -45,7 +45,7 @@ const LocationsPage = () => {
     },
     {
       key: "address",
-      field: "address",
+      field: "addressRu",
       labelKey: "dictionaries.table_fields.address",
       sortable: true,
     },

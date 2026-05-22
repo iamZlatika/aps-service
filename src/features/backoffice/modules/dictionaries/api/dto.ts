@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import type { LocationSchedule } from "@/features/backoffice/modules/dictionaries/types.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
+import type { Schedule } from "@/shared/types";
 import { STATUS_COLORS } from "@/shared/types.ts";
 
 export const DictionaryItemDtoSchema = z.object({
@@ -92,19 +92,33 @@ const LocationScheduleDtoSchema = z.object({
 export const LocationDtoSchema = z.object({
   id: z.number(),
   name: z.string(),
-  address: z.string(),
+  city_ru: z.string(),
+  city_ua: z.string(),
+  district_ru: z.string(),
+  district_ua: z.string(),
+  street_ru: z.string(),
+  street_ua: z.string(),
+  building: z.string(),
+  address_ru: z.string(),
+  address_ua: z.string(),
   phone: z.string(),
-  schedule: LocationScheduleDtoSchema.nullable(),
-  schedule_display: z.string().nullable(),
+  schedule: LocationScheduleDtoSchema,
+  schedule_display: z.string(),
 });
 
 export type LocationDto = z.infer<typeof LocationDtoSchema>;
 
 export type LocationPayload = {
   name: string;
-  address: string;
+  city_ru: string;
+  city_ua: string;
+  district_ru: string;
+  district_ua: string;
+  street_ru: string;
+  street_ua: string;
+  building: string;
   phone: string;
-  schedule: LocationSchedule | null;
+  schedule: Schedule;
 };
 
 export const BankCardDtoSchema = z.object({

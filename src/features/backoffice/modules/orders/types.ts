@@ -10,19 +10,13 @@ import type {
 } from "@/features/backoffice/modules/users/types.ts";
 import {
   type DocumentType,
+  type OrderStatus,
   type PaymentMethodType,
   type PaymentType,
   type TransactionStatus,
 } from "@/shared/types.ts";
 
-export type OrderStatus = {
-  id: number;
-  key: string;
-  nameRu: string;
-  nameUa: string;
-  color: string;
-  isSystem: boolean;
-};
+export type { OrderStatus };
 
 export type StatusHistoryItem = {
   id: number;

@@ -1,5 +1,8 @@
 import { type BaseItem } from "@/features/backoffice/widgets/table/models/types.ts";
+import { type WeekDay } from "@/shared/types";
 import { type STATUS_COLORS } from "@/shared/types.ts";
+
+export type { Location } from "@/shared/types";
 
 export type DictionaryItem = {
   id: number;
@@ -22,32 +25,9 @@ export type PaginatedDictionaryItems<T extends BaseItem = DictionaryItem> = {
 
 export type StatusColor = (typeof STATUS_COLORS)[keyof typeof STATUS_COLORS];
 
-export const WEEK_DAYS = [
-  "mon",
-  "tue",
-  "wed",
-  "thu",
-  "fri",
-  "sat",
-  "sun",
-] as const;
-export type WeekDay = (typeof WEEK_DAYS)[number];
-
-export type ScheduleDay = { from: string; to: string } | null;
-export type LocationSchedule = Record<WeekDay, ScheduleDay>;
-
 export type ScheduleGroup = {
   fromDay: WeekDay;
   toDay: WeekDay;
   from: string;
   to: string;
-};
-
-export type Location = {
-  id: number;
-  name: string;
-  address: string;
-  phone: string;
-  schedule: LocationSchedule | null;
-  scheduleDisplay: string | null;
 };

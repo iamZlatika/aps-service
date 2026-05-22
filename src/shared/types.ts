@@ -71,3 +71,43 @@ export type PaymentMethodType =
 
 export const DOCUMENTS_TYPES = ["intake_receipt", "closing_receipt"] as const;
 export type DocumentType = (typeof DOCUMENTS_TYPES)[number];
+
+export type OrderStatus = {
+  id: number;
+  key: string;
+  nameRu: string;
+  nameUa: string;
+  color: string;
+  isSystem: boolean;
+};
+
+export const WEEK_DAYS = [
+  "mon",
+  "tue",
+  "wed",
+  "thu",
+  "fri",
+  "sat",
+  "sun",
+] as const;
+export type WeekDay = (typeof WEEK_DAYS)[number];
+
+export type DaySlot = { from: string; to: string };
+export type Schedule = Record<WeekDay, DaySlot | null>;
+
+export type Location = {
+  id: number;
+  name: string;
+  cityRu: string;
+  cityUa: string;
+  districtRu: string;
+  districtUa: string;
+  streetRu: string;
+  streetUa: string;
+  building: string;
+  addressRu: string;
+  addressUa: string;
+  phone: string;
+  schedule: Schedule;
+  scheduleDisplay: string;
+};

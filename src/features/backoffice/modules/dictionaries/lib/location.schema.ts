@@ -1,7 +1,7 @@
 import i18next from "i18next";
 import { z } from "zod";
 
-import { WEEK_DAYS } from "@/features/backoffice/modules/dictionaries/types.ts";
+import { WEEK_DAYS } from "@/shared/types";
 
 export const ScheduleGroupSchema = z
   .object({
@@ -19,10 +19,19 @@ export const ScheduleGroupSchema = z
     path: ["to"],
   });
 
+const requiredString = () =>
+  z.string().min(1, i18next.t("validation.field_required"));
+
 export const LocationFormSchema = z.object({
-  name: z.string().min(1, i18next.t("validation.field_required")),
-  address: z.string().min(1, i18next.t("validation.field_required")),
-  phone: z.string().min(1, i18next.t("validation.field_required")),
+  name: requiredString(),
+  city_ru: requiredString(),
+  city_ua: requiredString(),
+  district_ru: requiredString(),
+  district_ua: requiredString(),
+  street_ru: requiredString(),
+  street_ua: requiredString(),
+  building: requiredString(),
+  phone: requiredString(),
   scheduleGroups: z.array(ScheduleGroupSchema),
 });
 

@@ -3,20 +3,23 @@ import { HeaderInfo } from "@/features/website/components/Header/HeaderInfo";
 import { MobileBar } from "@/features/website/components/Header/MobileBar";
 import { MobileHeaderInfo } from "@/features/website/components/Header/MobileHeaderInfo";
 import { MobileNav } from "@/features/website/components/Header/MobileNav";
-import { useMobileNav } from "@/features/website/hooks/useMobileNav";
 
-export const Header = () => {
-  const { isOpen, open, close } = useMobileNav();
+interface HeaderProps {
+  isNavOpen: boolean;
+  openNav: () => void;
+  closeNav: () => void;
+}
 
+export const Header = ({ isNavOpen, openNav, closeNav }: HeaderProps) => {
   return (
     <>
       <header className="ws-wrap">
         <DesktopNav />
         <HeaderInfo />
-        <MobileBar isOpen={isOpen} onOpen={open} onClose={close} />
+        <MobileBar isOpen={isNavOpen} onOpen={openNav} onClose={closeNav} />
         <MobileHeaderInfo />
       </header>
-      <MobileNav isOpen={isOpen} close={close} />
+      <MobileNav isOpen={isNavOpen} close={closeNav} />
     </>
   );
 };

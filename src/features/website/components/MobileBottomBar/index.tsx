@@ -8,7 +8,11 @@ import { cn } from "@/shared/lib/utils";
 
 const BB_MESSENGERS = ["telegram", "whatsapp"] as const;
 
-export const MobileBottomBar = () => {
+interface MobileBottomBarProps {
+  navOpen: boolean;
+}
+
+export const MobileBottomBar = ({ navOpen }: MobileBottomBarProps) => {
   const { t } = useTranslation("website");
   const mainPhone = CONTACTS[0];
   const [footerVisible, setFooterVisible] = useState(false);
@@ -29,6 +33,7 @@ export const MobileBottomBar = () => {
       className={cn(
         "ws-bottombar fixed bottom-3 left-3 right-3 z-[55] flex items-center gap-2 rounded-[18px] border border-ws-line p-2 transition-transform duration-300 md:hidden",
         footerVisible && "translate-y-[calc(100%_+_12px)]",
+        navOpen && "hidden",
       )}
     >
       {BB_MESSENGERS.map((key) => {

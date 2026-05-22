@@ -92,7 +92,7 @@ export const Hero = () => {
         </div>
 
         <div className="absolute left-4 right-4 top-4 flex items-end justify-between md:left-auto md:right-12 md:top-12">
-          <p className="ws-section-eyebrow !mb-0 md:hidden">
+          <p className="ws-section-eyebrow !mb-0 md:!hidden">
             {t("hero.eyebrowYear")}
           </p>
           <div className="inline-flex items-center rounded-ws-md border border-ws-overlay-border bg-ws-overlay-chip px-3 py-2 text-ws-2xs font-medium leading-[1.3] tracking-[0.02em] text-ws-ink backdrop-blur md:rounded-ws-chip md:px-[14px] md:py-[9px] md:font-bold md:leading-[1.35]">

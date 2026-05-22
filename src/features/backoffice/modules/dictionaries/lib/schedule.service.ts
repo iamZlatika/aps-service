@@ -1,13 +1,8 @@
-import {
-  type LocationSchedule,
-  type ScheduleGroup,
-  WEEK_DAYS,
-} from "@/features/backoffice/modules/dictionaries/types.ts";
+import { type ScheduleGroup } from "@/features/backoffice/modules/dictionaries/types.ts";
+import { type Schedule, WEEK_DAYS } from "@/shared/types";
 
-export function mapScheduleGroupsToSchedule(
-  groups: ScheduleGroup[],
-): LocationSchedule {
-  const result: LocationSchedule = {
+export function mapScheduleGroupsToSchedule(groups: ScheduleGroup[]): Schedule {
+  const result: Schedule = {
     mon: null,
     tue: null,
     wed: null,
@@ -31,11 +26,7 @@ export function mapScheduleGroupsToSchedule(
   return result;
 }
 
-export function mapScheduleToGroups(
-  schedule: LocationSchedule | null,
-): ScheduleGroup[] {
-  if (!schedule) return [];
-
+export function mapScheduleToGroups(schedule: Schedule): ScheduleGroup[] {
   const groups: ScheduleGroup[] = [];
   let i = 0;
 

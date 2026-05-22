@@ -4,4 +4,5 @@ export const WEBSITE_ROUTES = {
   works: "/works",
   reviews: "/reviews",
   account: "/account",
+  track: "/track/:token",
 } as const;

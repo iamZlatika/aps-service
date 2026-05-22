@@ -9,6 +9,7 @@ import { WebsiteErrorFallback } from "@/features/website/components/ErrorFallbac
 import { Footer } from "@/features/website/components/Footer";
 import { Header } from "@/features/website/components/Header";
 import { MobileBottomBar } from "@/features/website/components/MobileBottomBar";
+import { useMobileNav } from "@/features/website/hooks/useMobileNav";
 import { useWebsiteThemeManager } from "@/features/website/hooks/useWebsiteThemeManager";
 import { WebsiteThemeContext } from "@/features/website/websiteTheme";
 import { LANG_STORAGE_KEY } from "@/shared/lib/constants";
@@ -24,6 +25,7 @@ const WebsiteLayout = () => {
   const { changeLanguage } = i18n;
   const location = useLocation();
   const themeValue = useWebsiteThemeManager();
+  const { isOpen: isNavOpen, open: openNav, close: closeNav } = useMobileNav();
 
   useEffect(() => {
     const saved = storageGet(LANG_STORAGE_KEY);
@@ -42,7 +44,7 @@ const WebsiteLayout = () => {
           themeValue.resolvedTheme === "light" && "light",
         )}
       >
-        <Header />
+        <Header isNavOpen={isNavOpen} openNav={openNav} closeNav={closeNav} />
         <main className="pb-[84px] md:pb-0">
           <ErrorBoundary
             FallbackComponent={WebsiteErrorFallback}
@@ -55,7 +57,7 @@ const WebsiteLayout = () => {
           </ErrorBoundary>
         </main>
         <Footer />
-        <MobileBottomBar />
+        <MobileBottomBar navOpen={isNavOpen} />
       </div>
     </WebsiteThemeContext.Provider>
   );
