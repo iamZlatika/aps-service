@@ -42,8 +42,8 @@ export const StatusHistoryAccordion = ({
         </span>
       </div>
 
-      <ol className="relative px-6 pb-2 pt-[18px]">
-        <div className="pointer-events-none absolute bottom-7 left-9 top-7 w-px bg-ws-line" />
+      <ol className="relative px-6 pb-2 pt-[18px] max-sm:px-4">
+        <div className="pointer-events-none absolute bottom-7 left-9 top-7 w-px bg-ws-line max-sm:left-[29px]" />
 
         {visible.map((item, i) => {
           const isCurrent = i === 0;

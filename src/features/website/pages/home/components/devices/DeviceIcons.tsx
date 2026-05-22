@@ -27,16 +27,20 @@ export const DEVICE_ICONS: Record<DeviceId, ReactNode> = {
     >
       <rect x="3" y="6" width="42" height="28" rx="3" />
       <path d="M20 38h8M24 34v4" />
-      <path
-        d="M26 13C26.5 12.2 27.8 11.5 28.5 11.5C28.4 12.6 27.6 13.3 26 13Z"
-        fill="currentColor"
-        stroke="none"
-      />
-      <path
-        d="M24 15.5C23 15 21.5 14.5 20.5 14.5C18.5 14.5 17.5 16 17.5 18.5C17.5 22.5 19.5 26 22 26.5C23 26.5 23.5 26 24 26C24.5 26 25 26.5 26 26.5C28.5 26 30.5 22.5 30.5 18.5C30.5 16.5 29.5 15.5 29 15.5A4.5 4.5 0 0 0 26 13C25.5 13 24.5 13.5 24 15.5Z"
-        fill="currentColor"
-        stroke="none"
-      />
+      <svg
+        x="16.27"
+        y="11.87"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        overflow="visible"
+      >
+        <path
+          fill="currentColor"
+          stroke="none"
+          d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"
+        />
+      </svg>
       <rect x="58" y="14" width="14" height="28" rx="3" />
       <circle cx="65" cy="38" r="1" fill="currentColor" stroke="none" />
     </svg>
@@ -78,13 +82,20 @@ export const DEVICE_ICONS: Record<DeviceId, ReactNode> = {
       strokeWidth="1.6"
       strokeLinejoin="round"
     >
-      <path d="M20 16c-7 0-12 5-12 12s4 14 10 14c3 0 5-2 7-4h14c2 2 4 4 7 4 6 0 10-6 10-14s-5-12-12-12c-3 0-5 1-7 1h-10c-2 0-4-1-7-1z" />
-      <path d="M16 26v6M13 29h6" />
-      <circle cx="54" cy="26" r="1.5" fill="currentColor" stroke="none" />
-      <circle cx="60" cy="32" r="1.5" fill="currentColor" stroke="none" />
-      <circle cx="54" cy="38" r="1.5" fill="currentColor" stroke="none" />
-      <circle cx="48" cy="32" r="1.5" fill="currentColor" stroke="none" />
-      <circle cx="28" cy="36" r="3" />
+      <g
+        transform="translate(40 27) scale(1.35) translate(-32 -29)"
+        strokeWidth="1.2"
+        stroke="currentColor"
+        opacity=".88"
+      >
+        <path d="M20 16c-7 0-12 5-12 12s4 14 10 14c3 0 5-2 7-4h14c2 2 4 4 7 4 6 0 10-6 10-14s-5-12-12-12c-3 0-5 1-7 1h-10c-2 0-4-1-7-1z" />
+        <path d="M13 29L19 29M16 26L16 32" />
+        <circle cx="48" cy="26" r="1.1" fill="currentColor" stroke="none" />
+        <circle cx="51" cy="29" r="1.1" fill="currentColor" stroke="none" />
+        <circle cx="48" cy="32" r="1.1" fill="currentColor" stroke="none" />
+        <circle cx="45" cy="29" r="1.1" fill="currentColor" stroke="none" />
+        <circle cx="32" cy="29" r="2.4" />
+      </g>
     </svg>
   ),
   chargers: (

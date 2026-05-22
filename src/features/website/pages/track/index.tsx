@@ -30,12 +30,12 @@ const TrackPage = () => {
       onRetry={refetch}
     >
       {track && (
-        <section className="mx-auto max-w-[980px] px-0 pb-20 pt-12 max-sm:pt-8">
+        <section className="mx-auto max-w-[980px] px-0 pb-20 pt-12 max-sm:px-4 max-sm:pt-8">
           <p className="mb-[18px] inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[.18em] text-ws-ember-bright before:h-px before:w-6 before:bg-ws-ember-bright before:content-['']">
             {t("track.eyebrow")}
           </p>
 
-          <h1 className="flex flex-wrap items-baseline gap-3.5 text-[clamp(40px,5.4vw,68px)] font-light leading-[1.02] tracking-[-0.02em] tabular-nums text-ws-ink">
+          <h1 className="flex flex-wrap items-baseline gap-3.5 text-[clamp(40px,5.4vw,68px)] font-light leading-[1.02] tracking-[-0.02em] tabular-nums text-ws-ink max-sm:text-[30px]">
             <span>{track.orderNumber}</span>
             <button
               type="button"
@@ -99,9 +99,11 @@ const TrackPage = () => {
             </div>
           </div>
 
-          <StatusHistoryAccordion items={track.statusHistory} />
+          <div className="mt-8">
+            <StatusHistoryAccordion items={track.statusHistory} />
+          </div>
 
-          <p className="mb-[18px] mt-12 flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[.18em] text-ws-ink-mute after:h-px after:flex-1 after:bg-ws-line-soft after:content-['']">
+          <p className="mb-[18px] mt-12 flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[.18em] text-ws-ink-mute after:h-px after:flex-1 after:bg-ws-line-soft after:content-[''] max-sm:mt-7">
             {t("track.specs.title")}
           </p>
 

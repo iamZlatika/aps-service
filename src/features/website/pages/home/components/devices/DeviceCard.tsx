@@ -21,7 +21,7 @@ export const DeviceCard = ({ id }: DeviceCardProps) => {
         <div className="w-[64%]">{DEVICE_ICONS[id]}</div>
       </div>
 
-      <h3 className="text-ws-lg font-semibold leading-tight tracking-[-0.01em] text-ws-ink">
+      <h3 className="flex min-h-[3.6em] items-start text-ws-lg font-semibold leading-tight tracking-[-0.01em] text-ws-ink">
         {t(`devices.items.${id}.name`)}
       </h3>
 

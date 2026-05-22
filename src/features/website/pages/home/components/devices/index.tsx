@@ -12,20 +12,34 @@ export const DevicesSection = () => {
         <div className="ws-section-head flex-col items-start md:flex-row md:items-end">
           <div>
             <p className="ws-section-eyebrow">{t("devices.eyebrow")}</p>
-            <h2 className="ws-section-title">
+            <h2 className="ws-section-title max-sm:!text-[clamp(20px,5.8vw,26px)]">
               {t("devices.title")}
               <br />
               <strong>{t("devices.titleBold")}</strong>
             </h2>
           </div>
-          <p className="ws-section-side">{t("devices.description")}</p>
+          <p className="ws-section-side hidden md:block">
+            {t("devices.description")}
+          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7">
           {DEVICES.map(({ id }) => (
             <DeviceCard key={id} id={id} />
           ))}
+          <div className="md:hidden flex flex-col gap-3 rounded-ws-card border border-dashed border-ws-line p-5 text-[12.5px] leading-[1.55] tracking-[.005em] text-ws-ink-mute">
+            <b className="text-[22px] font-bold leading-none text-ws-ember-bright">
+              *
+            </b>
+            <p>{t("devices.note1")}</p>
+            <p>{t("devices.note2")}</p>
+          </div>
         </div>
+
+        <p className="hidden md:block mt-[18px] rounded-xl border border-dashed border-ws-line bg-white/[.012] px-[22px] py-4 text-[13px] leading-[1.55] tracking-[.005em] text-ws-ink-mute">
+          <b className="mr-0.5 font-bold text-ws-ember-bright">*</b>
+          {t("devices.note1")} {t("devices.note2")}
+        </p>
       </div>
     </section>
   );

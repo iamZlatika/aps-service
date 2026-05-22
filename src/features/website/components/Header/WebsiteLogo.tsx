@@ -20,9 +20,9 @@ export const WebsiteLogo = ({ className }: WebsiteLogoProps) => {
       <img
         src="/default.png"
         alt="APS service logo"
-        width="28"
-        height="28"
-        className="block h-8 w-auto shrink-0"
+        width="56"
+        height="56"
+        className="block h-14 w-auto shrink-0"
       />
       <span className="text-ws-xl font-bold leading-none tracking-[-0.01em]">
         APS

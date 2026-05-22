@@ -40,12 +40,12 @@ const WebsiteLayout = () => {
     <WebsiteThemeContext.Provider value={themeValue}>
       <div
         className={cn(
-          "website",
+          "website flex min-h-screen flex-col",
           themeValue.resolvedTheme === "light" && "light",
         )}
       >
         <Header isNavOpen={isNavOpen} openNav={openNav} closeNav={closeNav} />
-        <main className="pb-[84px] md:pb-0">
+        <main className="flex-1 pb-[84px] md:pb-0">
           <ErrorBoundary
             FallbackComponent={WebsiteErrorFallback}
             resetKeys={[location.pathname]}
