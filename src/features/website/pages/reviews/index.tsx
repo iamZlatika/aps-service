@@ -1,4 +1,4 @@
-const ReviewsPage = () => {
+export const ReviewsPage = () => {
   return <div />;
 };
 

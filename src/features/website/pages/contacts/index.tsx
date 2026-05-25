@@ -1,4 +1,4 @@
-const ContactsPage = () => {
+export const ContactsPage = () => {
   return <div />;
 };
 

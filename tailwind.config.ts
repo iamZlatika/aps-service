@@ -19,6 +19,7 @@ const config: Config = {
   			'ws-ember':          'var(--ws-ember)',
   			'ws-ember-bright':   'var(--ws-ember-bright)',
   			'ws-ember-deep':     'var(--ws-ember-deep)',
+  			'ws-ember-text':     'var(--ws-ember-text)',
   			'ws-cream':          'var(--ws-cream)',
   			'ws-overlay-chip':   'var(--ws-overlay-chip)',
   			'ws-overlay-border': 'var(--ws-overlay-border)',
@@ -89,7 +90,7 @@ const config: Config = {
   			'ws-xl':         '18px',
   			'ws-2xl':        '28px',
   			'ws-3xl':        '36px',
-  			'ws-hero-title': 'clamp(40px, 5.6vw, 76px)',
+  			'ws-hero-title': 'clamp(32px, 4vw, 54px)',
   			'ws-hero-body':  'clamp(13px, 1.1vw, 15.5px)',
   		},
   		spacing: {

@@ -21,6 +21,7 @@ import {
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
 import { buildPaginatedParams, get, post, put } from "@/shared/api/api.ts";
+import { parseDto } from "@/shared/api/parseDto";
 import {
   type UserLanguage,
   type UserStatus,
@@ -43,18 +44,18 @@ export const usersApi = {
       filters,
     );
     const response = await get(`${USERS_API.listUsers()}?${params.toString()}`);
-    const validated = PaginatedUsersDtoSchema.parse(response);
+    const validated = parseDto(PaginatedUsersDtoSchema, response);
     return mapPaginatedUsersDtoToResponse(validated);
   },
 
   getMe: async (): Promise<Me> => {
     const response = await get<{ data: MeDto }>(USERS_API.me());
-    return mapMeDtoToMe(MeDtoSchema.parse(response.data));
+    return mapMeDtoToMe(parseDto(MeDtoSchema, response.data));
   },
 
   getUser: async (id: number): Promise<User> => {
     const response = await get<{ data: UserDto }>(USERS_API.user(id));
-    const validated = UserDtoSchema.parse(response.data);
+    const validated = parseDto(UserDtoSchema, response.data);
     return mapUserDtoToUser(validated);
   },
 
@@ -66,7 +67,7 @@ export const usersApi = {
       ReturnType<typeof mapSalarySettingsToDto>,
       { data: UserDto }
     >(USERS_API.changeUserSalarySettings(id), mapSalarySettingsToDto(data));
-    const validated = UserDtoSchema.parse(response.data);
+    const validated = parseDto(UserDtoSchema, response.data);
     return mapUserDtoToUser(validated);
   },
 
@@ -79,7 +80,7 @@ export const usersApi = {
       USERS_API.registerUser(),
       data,
     );
-    const validated = UserDtoSchema.parse(response.data);
+    const validated = parseDto(UserDtoSchema, response.data);
     return mapUserDtoToUser(validated);
   },
 

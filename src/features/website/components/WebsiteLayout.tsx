@@ -20,8 +20,8 @@ import { USER_LANGUAGES, type UserLanguage } from "@/shared/types";
 
 const DEFAULT_LANG: UserLanguage = USER_LANGUAGES.UK;
 
-const WebsiteLayout = () => {
-  const { i18n } = useTranslation("website");
+export const WebsiteLayout = () => {
+  const { i18n, t } = useTranslation("website");
   const { changeLanguage } = i18n;
   const location = useLocation();
   const themeValue = useWebsiteThemeManager();
@@ -44,8 +44,14 @@ const WebsiteLayout = () => {
           themeValue.resolvedTheme === "light" && "light",
         )}
       >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-ws-md focus:bg-ws-bg-2 focus:px-4 focus:py-2 focus:text-ws-ink focus:outline focus:outline-ws-ember-bright"
+        >
+          {t("nav.skipToContent")}
+        </a>
         <Header isNavOpen={isNavOpen} openNav={openNav} closeNav={closeNav} />
-        <main className="flex-1 pb-[84px] md:pb-0">
+        <main id="main-content" className="flex-1 pb-[84px] md:pb-0">
           <ErrorBoundary
             FallbackComponent={WebsiteErrorFallback}
             resetKeys={[location.pathname]}
@@ -57,7 +63,7 @@ const WebsiteLayout = () => {
           </ErrorBoundary>
         </main>
         <Footer />
-        <MobileBottomBar navOpen={isNavOpen} />
+        <MobileBottomBar isOpen={isNavOpen} />
       </div>
     </WebsiteThemeContext.Provider>
   );

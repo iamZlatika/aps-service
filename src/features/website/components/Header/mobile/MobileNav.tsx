@@ -1,4 +1,5 @@
 import { MapPin, Phone } from "lucide-react";
+import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 
@@ -6,8 +7,9 @@ import {
   MESSENGER_ICONS,
   NAV_TABS,
 } from "@/features/website/components/Header/HeaderData";
-import { LangSwitch } from "@/features/website/components/Header/LangSwitch";
-import { ThemeSwitch } from "@/features/website/components/Header/ThemeSwitch";
+import { LangSwitch } from "@/features/website/components/LangSwitch";
+import { MessengerLabelButton } from "@/features/website/components/MessengerLabelButton";
+import { ThemeSwitch } from "@/features/website/components/ThemeSwitch";
 import { CONTACTS, MESSENGERS } from "@/features/website/config";
 import { cn } from "@/shared/lib/utils";
 
@@ -62,73 +64,75 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
           </button>
         </div>
 
-        <nav className="flex flex-col px-5">
-          {NAV_TABS.map(({ labelKey, to, end }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              onClick={close}
-              className={({ isActive }) =>
-                cn(
-                  "flex items-center justify-between border-b border-ws-line-soft py-3.5 text-ws-lg font-medium no-underline transition-colors duration-200",
-                  isActive
-                    ? "text-ws-ember-bright"
-                    : "text-ws-ink-hi hover:text-ws-ember-bright",
-                )
-              }
-            >
-              {t(labelKey)}
-            </NavLink>
-          ))}
+        <nav className="px-5">
+          <ul>
+            {NAV_TABS.map(({ labelKey, to, end }) => (
+              <li key={to}>
+                <NavLink
+                  to={to}
+                  end={end}
+                  onClick={close}
+                  className={({ isActive }) =>
+                    cn(
+                      "flex items-center justify-between border-b border-ws-line-soft py-3.5 text-ws-lg font-medium no-underline transition-colors duration-200",
+                      isActive
+                        ? "text-ws-ember-bright"
+                        : "text-ws-ink-hi hover:text-ws-ember-bright",
+                    )
+                  }
+                >
+                  {t(labelKey)}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
         </nav>
 
         <div className="mt-[22px] px-5">
           <p className="mb-3 text-ws-2xs font-semibold uppercase tracking-[0.18em] text-ws-ink-mute">
             {t("nav.contacts")}
           </p>
-          {CONTACTS.map((c) => (
-            <a
-              key={c.phone}
-              href={`tel:${c.phone}`}
-              className="flex items-center gap-2.5 py-[10px] text-ws-base font-medium text-ws-ink-hi no-underline"
-            >
-              <Phone className="size-3.5 shrink-0 text-ws-ember-bright" />
-              {c.phoneFormatted}
-            </a>
-          ))}
-          {CONTACTS.map((c) => (
-            <a
-              key={c.address}
-              href={c.mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2.5 py-[10px] text-ws-sm text-ws-ink-soft no-underline"
-            >
-              <MapPin className="size-3.5 shrink-0 text-ws-ember-bright" />
-              {c.address}
-            </a>
-          ))}
+          <address className="not-italic">
+            <ul>
+              {CONTACTS.map((c) => (
+                <Fragment key={c.phone}>
+                  <li>
+                    <a
+                      href={`tel:${c.phone}`}
+                      className="flex items-center gap-2.5 py-[10px] text-ws-base font-medium text-ws-ink-hi no-underline"
+                    >
+                      <Phone className="size-3.5 shrink-0 text-ws-ember-bright" />
+                      {c.phoneFormatted}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href={c.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2.5 py-[10px] text-ws-sm text-ws-ink-soft no-underline"
+                    >
+                      <MapPin className="size-3.5 shrink-0 text-ws-ember-bright" />
+                      {c.address}
+                    </a>
+                  </li>
+                </Fragment>
+              ))}
+            </ul>
+          </address>
         </div>
 
         <div className="flex gap-[5px] px-4 py-4">
           {MESSENGERS.map((m) => {
             const Icon = MESSENGER_ICONS[m.key];
             return (
-              <a
+              <MessengerLabelButton
                 key={m.key}
                 href={m.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={t(`messenger.${m.key}`)}
-                className={cn(
-                  "flex flex-1 items-center justify-center gap-[5px] rounded-ws-sm border border-ws-line bg-white/[0.015] px-2 py-3 text-ws-xs font-semibold no-underline [&>svg]:size-4",
-                  m.colorClass,
-                )}
-              >
-                <Icon />
-                {t(`messenger.${m.key}`)}
-              </a>
+                icon={<Icon />}
+                label={t(`messenger.${m.key}`)}
+                colorClass={m.colorClass}
+              />
             );
           })}
         </div>

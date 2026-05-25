@@ -46,6 +46,7 @@ import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSort
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
 import { buildPaginatedParams, del, get, post, put } from "@/shared/api/api.ts";
 import { apiClient } from "@/shared/api/apiClient.ts";
+import { parseDto } from "@/shared/api/parseDto";
 
 export const ordersApi = {
   getAll: async (
@@ -79,7 +80,7 @@ export const ordersApi = {
     }
 
     const response = await get(`${ORDERS_API.orders()}?${params.toString()}`);
-    const validatedData = PaginatedOrdersDtoSchema.parse(response);
+    const validatedData = parseDto(PaginatedOrdersDtoSchema, response);
     return mapPaginatedOrdersDtoToResponse(validatedData);
   },
   addNewOrder: async (data: NewOrder): Promise<Order> => {
@@ -90,7 +91,7 @@ export const ordersApi = {
       payload,
     );
 
-    const validated = OrderDtoSchema.parse(response.data);
+    const validated = parseDto(OrderDtoSchema, response.data);
     return mapOrderDtoToOrder(validated);
   },
   changeStatus: async (orderId: number, statusId: number): Promise<void> => {
@@ -106,7 +107,7 @@ export const ordersApi = {
     const response = await get<{ data: OrderInfoDto }>(
       `${ORDERS_API.order(id)}`,
     );
-    const validatedData = OrderInfoDtoSchema.parse(response.data);
+    const validatedData = parseDto(OrderInfoDtoSchema, response.data);
     return mapOrderInfoDtoToOrderInfo(validatedData);
   },
   changeOrderInfo: async (
@@ -130,7 +131,7 @@ export const ordersApi = {
       { headers: { "Content-Type": "multipart/form-data" } },
     );
 
-    const validatedData = OrderCommentDtoSchema.parse(response.data);
+    const validatedData = parseDto(OrderCommentDtoSchema, response.data);
     return mapOrderCommentDtoToOrderComment(validatedData);
   },
   addProductToOrder: async (
@@ -143,7 +144,7 @@ export const ordersApi = {
       ORDERS_API.addProduct(orderId),
       payload,
     );
-    const validated = OrderProductSchema.parse(response.data);
+    const validated = parseDto(OrderProductSchema, response.data);
     return mapOrderProductDtoToOrderProduct(validated);
   },
   editProductInOrder: async (
@@ -156,7 +157,7 @@ export const ordersApi = {
       ORDERS_API.changeProduct(orderId, productId),
       payload,
     );
-    const validated = OrderProductSchema.parse(response.data);
+    const validated = parseDto(OrderProductSchema, response.data);
     return mapOrderProductDtoToOrderProduct(validated);
   },
   deleteProductInOrder: async (
@@ -174,7 +175,7 @@ export const ordersApi = {
       ORDERS_API.addService(orderId),
       payload,
     );
-    const validated = OrderServiceSchema.parse(response.data);
+    const validated = parseDto(OrderServiceSchema, response.data);
     return mapOrderServiceDtoToOrderService(validated);
   },
   editServiceInOrder: async (
@@ -187,7 +188,7 @@ export const ordersApi = {
       ORDERS_API.changeService(orderId, serviceId),
       payload,
     );
-    const validated = OrderServiceSchema.parse(response.data);
+    const validated = parseDto(OrderServiceSchema, response.data);
     return mapOrderServiceDtoToOrderService(validated);
   },
   deleteServiceInOrder: async (
@@ -205,7 +206,7 @@ export const ordersApi = {
       ORDERS_API.makePayment(orderId),
       payload,
     );
-    const validated = OrderPaymentSchema.parse(response.data);
+    const validated = parseDto(OrderPaymentSchema, response.data);
     return mapPaymentDtoToPayment(validated);
   },
   deletePayment: async (orderId: number, paymentId: number): Promise<void> => {

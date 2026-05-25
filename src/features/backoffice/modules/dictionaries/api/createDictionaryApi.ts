@@ -5,6 +5,7 @@ import type { PaginatedDictionaryItems } from "@/features/backoffice/modules/dic
 import { type SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { BaseItem } from "@/features/backoffice/widgets/table/models/types.ts";
 import { buildPaginatedParams, del, get, post, put } from "@/shared/api/api.ts";
+import { parseDto } from "@/shared/api/parseDto";
 
 import {
   DictionaryItemDtoSchema,
@@ -51,7 +52,7 @@ export const createTypedDictionaryApi = <
       const response = await get<unknown>(
         `${routes.list()}?${params.toString()}`,
       );
-      const validated = paginatedSchema.parse(response);
+      const validated = parseDto(paginatedSchema, response);
       return mapPaginatedItems(validated.data.map(resolve), validated.meta);
     },
 
@@ -60,7 +61,7 @@ export const createTypedDictionaryApi = <
         routes.list(),
         data,
       );
-      return resolve(itemSchema.parse(response.data));
+      return resolve(parseDto(itemSchema, response.data));
     },
 
     update: async (
@@ -71,7 +72,7 @@ export const createTypedDictionaryApi = <
         routes.item(id),
         data,
       );
-      return resolve(itemSchema.parse(response.data));
+      return resolve(parseDto(itemSchema, response.data));
     },
 
     remove: async (id: number): Promise<void> => {

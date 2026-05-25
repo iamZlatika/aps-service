@@ -1,4 +1,7 @@
 {
+  "address": {
+    "streetPrefix": "ул."
+  },
   "nav": {
     "home": "Главная",
     "contacts": "Контакты",
@@ -11,6 +14,7 @@
     "openMenu": "Открыть меню",
     "closeMenu": "Закрыть меню",
     "navigation": "Навигация",
+    "skipToContent": "Перейти к контенту",
     "streetLabel": "улица",
     "call": "Позвонить"
   },

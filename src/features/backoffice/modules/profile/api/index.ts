@@ -7,6 +7,7 @@ import {
 import { mapUserDtoToUser } from "@/features/backoffice/modules/users/lib/adapters.ts";
 import { type User } from "@/features/backoffice/modules/users/types.ts";
 import { del, post, put } from "@/shared/api/api.ts";
+import { parseDto } from "@/shared/api/parseDto";
 import { type SuccessResponse } from "@/shared/types.ts";
 
 import { PROFILE_API } from "./endpoints.ts";
@@ -24,14 +25,14 @@ export const profileApi = {
       },
     );
 
-    const validatedData = UserDtoSchema.parse(response.data);
+    const validatedData = parseDto(UserDtoSchema, response.data);
     return mapUserDtoToUser(validatedData);
   },
 
   deleteAvatar: async (): Promise<User> => {
     const response = await del<{ data: UserDto }>(PROFILE_API.avatar());
 
-    const validatedData = UserDtoSchema.parse(response.data);
+    const validatedData = parseDto(UserDtoSchema, response.data);
     return mapUserDtoToUser(validatedData);
   },
 
@@ -41,7 +42,7 @@ export const profileApi = {
       userInfo,
     );
 
-    const validatedData = UserDtoSchema.parse(response.data);
+    const validatedData = parseDto(UserDtoSchema, response.data);
     return mapUserDtoToUser(validatedData);
   },
   changePassword: (data: ChangePasswordRequest): Promise<SuccessResponse> => {

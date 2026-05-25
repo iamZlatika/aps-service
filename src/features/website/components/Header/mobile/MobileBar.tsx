@@ -1,8 +1,9 @@
 import { Phone } from "lucide-react";
 
-import { HamburgerButton } from "@/features/website/components/Header/HamburgerButton";
-import { WebsiteLogo } from "@/features/website/components/Header/WebsiteLogo";
+import { WebsiteLogo } from "@/features/website/components/WebsiteLogo";
 import { CONTACTS } from "@/features/website/config";
+
+import { HamburgerButton } from "./HamburgerButton";
 
 interface MobileBarProps {
   isOpen: boolean;

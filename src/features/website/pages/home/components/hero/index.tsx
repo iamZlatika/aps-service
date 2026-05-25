@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
+import { useLocations } from "@/features/website/hooks/useLocations";
 import { CabinetButton } from "@/features/website/pages/home/components/hero/CabinetButton";
 import { PriceButton } from "@/features/website/pages/home/components/hero/PriceButton";
 import { useWebsiteTheme } from "@/features/website/websiteTheme";
@@ -11,6 +12,11 @@ const PERKS = ["hero.perk1", "hero.perk2", "hero.perk3"] as const;
 export const Hero = () => {
   const { t } = useTranslation("website");
   const { resolvedTheme } = useWebsiteTheme();
+  const { locations } = useLocations();
+  const firstLocation = locations[0];
+  const scheduleLines = firstLocation
+    ? firstLocation.scheduleDisplay.split(", ").filter(Boolean)
+    : [];
 
   return (
     <section className="ws-wrap py-6">
@@ -97,8 +103,9 @@ export const Hero = () => {
           </p>
           <div className="inline-flex items-center rounded-ws-md border border-ws-overlay-border bg-ws-overlay-chip px-3 py-2 text-ws-2xs font-medium leading-[1.3] tracking-[0.02em] text-ws-ink backdrop-blur md:rounded-ws-chip md:px-[14px] md:py-[9px] md:font-bold md:leading-[1.35]">
             <div className="text-right">
-              <div>{t("hero.workdaysHours")}</div>
-              <div>{t("hero.saturdayHours")}</div>
+              {scheduleLines.map((line) => (
+                <div key={line}>{line}</div>
+              ))}
             </div>
           </div>
         </div>

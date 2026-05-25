@@ -1,4 +1,4 @@
-const UserAccountPage = () => {
+export const UserAccountPage = () => {
   return (
     <div>
       <div>UserAccountPage</div>

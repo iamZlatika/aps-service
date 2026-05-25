@@ -1,14 +1,18 @@
 import * as Sentry from "@sentry/react";
 import i18next from "i18next";
 import { AlertTriangle } from "lucide-react";
-import type { FallbackProps } from "react-error-boundary";
 
 import { getErrorDescription } from "@/shared/lib/errors/getErrorDescription";
+
+interface WebsiteErrorFallbackProps {
+  error: unknown;
+  resetErrorBoundary: () => void;
+}
 
 export const WebsiteErrorFallback = ({
   error,
   resetErrorBoundary,
-}: FallbackProps) => {
+}: WebsiteErrorFallbackProps) => {
   const description = getErrorDescription(error, Sentry.lastEventId());
 
   return (

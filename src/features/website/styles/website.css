@@ -29,6 +29,7 @@
   --ws-ember:        #ee7a3a;
   --ws-ember-bright: #ffa55e;
   --ws-ember-deep:   #b94a14;
+  --ws-ember-text:   #2a1a0d;
 
   /* Warm cream */
   --ws-cream: #f4ead7;
@@ -128,30 +129,30 @@
 }
 
 .ws-section-eyebrow {
-  font-size: 12px;
-  letter-spacing: 0.16em;
+  font-size: 18px;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ws-ember-bright);
-  font-weight: 600;
-  margin-bottom: 14px;
+  font-weight: 700;
+  margin-bottom: 18px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .ws-section-eyebrow::before {
   content: "";
-  width: 24px;
-  height: 1px;
+  width: 32px;
+  height: 1.5px;
   background: var(--ws-ember-bright);
 }
 
 .ws-section-title {
   font-weight: 300;
-  font-size: clamp(32px, 3.6vw, 52px);
-  line-height: 1.05;
-  letter-spacing: -0.022em;
-  max-width: 680px;
+  font-size: clamp(22px, 2.2vw, 32px);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  max-width: 720px;
   text-wrap: balance;
 }
 
@@ -163,7 +164,7 @@
 .ws-section-side {
   color: var(--ws-ink-soft);
   max-width: 340px;
-  font-size: 14.5px;
+  font-size: 13px;
   line-height: 1.55;
 }
 
@@ -188,7 +189,7 @@
 
 .ws-btn-primary {
   background: linear-gradient(180deg, var(--ws-ember-bright) 0%, var(--ws-ember) 100%);
-  color: #2a1a0d;
+  color: var(--ws-ember-text);
   box-shadow:
     0 16px 40px -14px rgba(238, 122, 58, 0.6),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
@@ -246,6 +247,10 @@
   box-shadow: 0 40px 80px -40px rgba(0,0,0,.6);
 }
 
+.ws-hero-section .ws-section-eyebrow::before {
+  display: none;
+}
+
 .ws-hero-photo {
   position: absolute;
   right: -40px;
@@ -285,10 +290,6 @@
 }
 
 .website.light .ws-hero-photo {
-  filter: invert(.92) hue-rotate(-10deg) brightness(1.02);
-}
-
-.website.light .ws-device-img {
   filter: invert(.92) hue-rotate(-10deg) brightness(1.02);
 }
 
@@ -385,7 +386,7 @@
 }
 .ws-bb-btn-primary {
   background: linear-gradient(180deg, var(--ws-ember-bright) 0%, var(--ws-ember) 100%);
-  color: #2a1a0d;
+  color: var(--ws-ember-text);
   box-shadow: 0 8px 20px -10px rgba(238,122,58,.6), inset 0 1px 0 rgba(255,255,255,.4);
 }
 .website.light .ws-bb-btn-primary {

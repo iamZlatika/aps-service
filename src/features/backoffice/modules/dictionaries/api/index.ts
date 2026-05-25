@@ -1,4 +1,5 @@
 import { post, put } from "@/shared/api/api.ts";
+import { parseDto } from "@/shared/api/parseDto";
 
 import { mapLocationDtoToLocation } from "../lib/adapter";
 import {
@@ -78,14 +79,14 @@ export const locationApi = {
       DICTIONARIES_API.locations(),
       data,
     );
-    return mapLocationDtoToLocation(LocationDtoSchema.parse(response.data));
+    return mapLocationDtoToLocation(parseDto(LocationDtoSchema, response.data));
   },
   update: async (id: number, data: LocationPayload) => {
     const response = await put<LocationPayload, { data: unknown }>(
       DICTIONARIES_API.location(id),
       data,
     );
-    return mapLocationDtoToLocation(LocationDtoSchema.parse(response.data));
+    return mapLocationDtoToLocation(parseDto(LocationDtoSchema, response.data));
   },
 };
 export const bankCardsApi = {
@@ -101,6 +102,6 @@ export const bankCardsApi = {
       DICTIONARIES_API.bankCardToggleActive(id),
       { is_active: isActive },
     );
-    return BankCardDtoSchema.parse(response.data);
+    return parseDto(BankCardDtoSchema, response.data);
   },
 };

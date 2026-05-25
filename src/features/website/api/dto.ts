@@ -34,6 +34,11 @@ export const LocationDtoSchema = z.object({
 });
 export type LocationDto = z.infer<typeof LocationDtoSchema>;
 
+export const LocationsResponseDtoSchema = z.object({
+  data: z.array(LocationDtoSchema),
+});
+export type LocationsResponseDto = z.infer<typeof LocationsResponseDtoSchema>;
+
 export const StatusDtoSchema = z.object({
   id: z.number(),
   key: z.string(),

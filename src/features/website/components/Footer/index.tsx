@@ -1,9 +1,16 @@
+import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 
 import { FooterSocialIcon } from "@/features/website/components/Footer/FooterSocialIcon";
 import { MESSENGER_ICONS } from "@/features/website/components/Header/HeaderData";
-import { WebsiteLogo } from "@/features/website/components/Header/WebsiteLogo";
-import { CONTACTS, MESSENGERS } from "@/features/website/config";
+import { WebsiteLogo } from "@/features/website/components/WebsiteLogo";
+import { MESSENGERS } from "@/features/website/config";
+import { useLocations } from "@/features/website/hooks/useLocations";
+import {
+  formatPhone,
+  getLocalized,
+  getMapsUrl,
+} from "@/features/website/lib/service";
 import { WEBSITE_LINKS } from "@/features/website/navigation";
 
 const SERVICE_LINKS = [
@@ -25,10 +32,12 @@ const linkClass =
   "mb-[10px] block text-ws-base text-ws-ink-soft no-underline transition-colors duration-200 hover:text-ws-ember-bright";
 
 const colHeadClass =
-  "mb-[18px] text-[12px] font-semibold uppercase tracking-[0.16em] text-ws-ink-mute";
+  "mb-[18px] text-ws-xs font-semibold uppercase tracking-[0.16em] text-ws-ink-mute";
 
 export const Footer = () => {
-  const { t } = useTranslation("website");
+  const { t, i18n } = useTranslation("website");
+  const { locations } = useLocations();
+  const isRu = i18n.language === "ru";
 
   return (
     <footer className="border-t border-ws-line-soft">
@@ -51,49 +60,67 @@ export const Footer = () => {
               </div>
 
               <div>
-                <h5 className={colHeadClass}>{t("footer.services.title")}</h5>
-                {SERVICE_LINKS.map(({ labelKey, href }) => (
-                  <a key={labelKey} href={href} className={linkClass}>
-                    {t(labelKey)}
-                  </a>
-                ))}
+                <h3 className={colHeadClass}>{t("footer.services.title")}</h3>
+                <ul>
+                  {SERVICE_LINKS.map(({ labelKey, href }) => (
+                    <li key={labelKey}>
+                      <a href={href} className={linkClass}>
+                        {t(labelKey)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               <div>
-                <h5 className={colHeadClass}>{t("footer.company.title")}</h5>
-                {COMPANY_LINKS.map(({ labelKey, href }) => (
-                  <a key={labelKey} href={href} className={linkClass}>
-                    {t(labelKey)}
-                  </a>
-                ))}
+                <h3 className={colHeadClass}>{t("footer.company.title")}</h3>
+                <ul>
+                  {COMPANY_LINKS.map(({ labelKey, href }) => (
+                    <li key={labelKey}>
+                      <a href={href} className={linkClass}>
+                        {t(labelKey)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               <div>
-                <h5 className={colHeadClass}>{t("footer.contacts.title")}</h5>
-                {CONTACTS.map((c) => (
-                  <a
-                    key={c.phone}
-                    href={`tel:${c.phone}`}
-                    className={linkClass}
-                  >
-                    {c.phoneFormatted}
-                  </a>
-                ))}
-                {CONTACTS.map((c) => (
-                  <a
-                    key={c.address}
-                    href={c.mapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={linkClass}
-                  >
-                    {c.address}
-                  </a>
-                ))}
+                <h3 className={colHeadClass}>{t("footer.contacts.title")}</h3>
+                <address className="not-italic">
+                  {locations.map((location) => {
+                    const street = getLocalized(
+                      isRu,
+                      location.streetRu,
+                      location.streetUa,
+                    );
+                    const address = getLocalized(
+                      isRu,
+                      location.addressRu,
+                      location.addressUa,
+                    );
+                    return (
+                      <Fragment key={location.id}>
+                        <a href={`tel:${location.phone}`} className={linkClass}>
+                          {formatPhone(location.phone)}
+                        </a>
+                        <a
+                          href={getMapsUrl(address)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={linkClass}
+                        >
+                          {t("address.streetPrefix")} {street},{" "}
+                          {location.building}
+                        </a>
+                      </Fragment>
+                    );
+                  })}
+                </address>
               </div>
             </div>
 
-            <div className="mt-[60px] flex flex-wrap items-center justify-between gap-4 border-t border-ws-line-soft pt-6 text-[12px] text-ws-ink-mute">
+            <div className="mt-[60px] flex flex-wrap items-center justify-between gap-4 border-t border-ws-line-soft pt-6 text-ws-xs text-ws-ink-mute">
               <span>{t("footer.copyright")}</span>
               <div className="flex gap-2">
                 {MESSENGERS.map((m) => {

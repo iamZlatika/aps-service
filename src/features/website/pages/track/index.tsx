@@ -1,5 +1,4 @@
 import { Info } from "lucide-react";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
@@ -9,18 +8,10 @@ import { StatusBadge } from "@/features/website/pages/track/components/StatusBad
 import { TrackSpecsTable } from "@/features/website/pages/track/components/TrackSpecsTable";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard";
 
-const TrackPage = () => {
+export const TrackPage = () => {
   const { token = "" } = useParams<{ token: string }>();
   const { track, isLoading, isError, error, refetch } = useOrderTracking(token);
   const { t } = useTranslation("website");
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    if (!track) return;
-    await navigator.clipboard.writeText(track.orderNumber).catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1400);
-  };
 
   return (
     <QueryPageGuard
@@ -35,35 +26,8 @@ const TrackPage = () => {
             {t("track.eyebrow")}
           </p>
 
-          <h1 className="flex flex-wrap items-baseline gap-3.5 text-[clamp(40px,5.4vw,68px)] font-light leading-[1.02] tracking-[-0.02em] tabular-nums text-ws-ink max-sm:text-[30px]">
-            <span>{track.orderNumber}</span>
-            <button
-              type="button"
-              onClick={handleCopy}
-              className="inline-flex items-center gap-1.5 rounded-[8px] border border-ws-line px-3 py-1.5 text-[12px] font-medium tracking-[.005em] text-ws-ink-soft transition-all hover:border-ws-ink-mute hover:text-ws-ink"
-              style={
-                copied
-                  ? {
-                      color: "var(--ws-ember-bright)",
-                      borderColor: "var(--ws-ember)",
-                    }
-                  : undefined
-              }
-            >
-              <svg
-                className="h-3 w-3"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="9" y="9" width="11" height="11" rx="2" />
-                <path d="M5 15V5a2 2 0 0 1 2-2h10" />
-              </svg>
-              {copied ? t("track.copiedBtn") : t("track.copyBtn")}
-            </button>
+          <h1 className="text-[clamp(40px,5.4vw,68px)] font-light leading-[1.02] tracking-[-0.02em] tabular-nums text-ws-ink max-sm:text-[30px]">
+            {track.orderNumber}
           </h1>
 
           <div className="mt-6 flex flex-wrap items-center gap-3.5 border-b border-ws-line-soft pb-8">

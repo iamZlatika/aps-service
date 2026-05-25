@@ -1,10 +1,8 @@
-import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
   useWebsiteTheme,
   WEBSITE_THEMES,
-  type WebsiteTheme,
 } from "@/features/website/websiteTheme";
 import { cn } from "@/shared/lib/utils";
 
@@ -42,13 +40,11 @@ const SystemIcon = (
   </svg>
 );
 
-type ThemeOption = { value: WebsiteTheme; labelKey: string; icon: ReactNode };
-
-const THEMES: ThemeOption[] = [
+const THEMES = [
   { value: WEBSITE_THEMES.SYSTEM, labelKey: "theme.system", icon: SystemIcon },
   { value: WEBSITE_THEMES.DARK, labelKey: "theme.dark", icon: MoonIcon },
   { value: WEBSITE_THEMES.LIGHT, labelKey: "theme.light", icon: SunIcon },
-];
+] as const;
 
 interface ThemeSwitchProps {
   stretch?: boolean;
@@ -72,6 +68,7 @@ export const ThemeSwitch = ({ stretch = false }: ThemeSwitchProps) => {
           key={value}
           type="button"
           aria-label={t(labelKey)}
+          aria-pressed={value === theme}
           onClick={() => setTheme(value)}
           className={cn(
             "inline-flex items-center justify-center rounded-ws-ctrl-inner transition-all duration-200",

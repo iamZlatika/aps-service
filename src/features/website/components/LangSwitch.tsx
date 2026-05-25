@@ -5,10 +5,10 @@ import { storageSet } from "@/shared/lib/storage";
 import { cn } from "@/shared/lib/utils";
 import { USER_LANGUAGES, type UserLanguage } from "@/shared/types";
 
-const LANGS: Array<{ value: UserLanguage; label: string }> = [
+const LANGS = [
   { value: USER_LANGUAGES.UK, label: "UA" },
   { value: USER_LANGUAGES.RU, label: "RU" },
-];
+] as const;
 
 interface LangSwitchProps {
   stretch?: boolean;
@@ -37,6 +37,7 @@ export const LangSwitch = ({ stretch = false }: LangSwitchProps) => {
         <button
           key={value}
           type="button"
+          aria-pressed={value === current}
           onClick={() => handleChange(value)}
           className={cn(
             "inline-flex items-center justify-center rounded-ws-ctrl-inner text-[10px] font-bold uppercase tracking-[0.08em] transition-all duration-200",

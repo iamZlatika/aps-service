@@ -1,8 +1,8 @@
-import { DesktopNav } from "@/features/website/components/Header/DesktopNav";
-import { HeaderInfo } from "@/features/website/components/Header/HeaderInfo";
-import { MobileBar } from "@/features/website/components/Header/MobileBar";
-import { MobileHeaderInfo } from "@/features/website/components/Header/MobileHeaderInfo";
-import { MobileNav } from "@/features/website/components/Header/MobileNav";
+import { DesktopNav } from "./desktop/DesktopNav";
+import { HeaderInfo } from "./desktop/HeaderInfo";
+import { MobileBar } from "./mobile/MobileBar";
+import { MobileHeaderInfo } from "./mobile/MobileHeaderInfo";
+import { MobileNav } from "./mobile/MobileNav";
 
 interface HeaderProps {
   isNavOpen: boolean;

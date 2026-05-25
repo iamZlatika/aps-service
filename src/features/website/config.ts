@@ -27,7 +27,13 @@ export const CONTACTS: ContactLocation[] = [
   },
 ];
 
-export type MessengerKey = "telegram" | "viber" | "whatsapp";
+export const MESSENGER_KEYS = {
+  TELEGRAM: "telegram",
+  VIBER: "viber",
+  WHATSAPP: "whatsapp",
+} as const;
+
+export type MessengerKey = (typeof MESSENGER_KEYS)[keyof typeof MESSENGER_KEYS];
 
 export type MessengerConfig = {
   key: MessengerKey;

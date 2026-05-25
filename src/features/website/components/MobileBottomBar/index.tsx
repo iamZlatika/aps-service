@@ -9,10 +9,10 @@ import { cn } from "@/shared/lib/utils";
 const BB_MESSENGERS = ["telegram", "whatsapp"] as const;
 
 interface MobileBottomBarProps {
-  navOpen: boolean;
+  isOpen: boolean;
 }
 
-export const MobileBottomBar = ({ navOpen }: MobileBottomBarProps) => {
+export const MobileBottomBar = ({ isOpen }: MobileBottomBarProps) => {
   const { t } = useTranslation("website");
   const mainPhone = CONTACTS[0];
   const [footerVisible, setFooterVisible] = useState(false);
@@ -31,13 +31,14 @@ export const MobileBottomBar = ({ navOpen }: MobileBottomBarProps) => {
   return (
     <div
       className={cn(
-        "ws-bottombar fixed bottom-3 left-3 right-3 z-[55] flex items-center gap-2 rounded-[18px] border border-ws-line p-2 transition-transform duration-300 md:hidden",
+        "ws-bottombar fixed bottom-3 left-3 right-3 z-[55] flex items-center gap-2 rounded-ws-card border border-ws-line p-2 transition-transform duration-300 md:hidden",
         footerVisible && "translate-y-[calc(100%_+_12px)]",
-        navOpen && "hidden",
+        isOpen && "hidden",
       )}
     >
       {BB_MESSENGERS.map((key) => {
-        const messenger = MESSENGERS.find((m) => m.key === key)!;
+        const messenger = MESSENGERS.find((m) => m.key === key);
+        if (!messenger) return null;
         const Icon = MESSENGER_ICONS[key];
         return (
           <a
@@ -47,7 +48,7 @@ export const MobileBottomBar = ({ navOpen }: MobileBottomBarProps) => {
             rel="noopener noreferrer"
             aria-label={t(`messenger.${key}`)}
             className={cn(
-              "flex flex-1 items-center justify-center gap-[7px] rounded-[12px] border border-ws-line-soft bg-white/[0.02] px-1 py-[13px] text-[12.5px] font-semibold tracking-[0.005em] no-underline transition-colors duration-200 [&>svg]:size-3.5 [&>svg]:shrink-0",
+              "flex flex-1 items-center justify-center gap-[7px] rounded-ws-md border border-ws-line-soft bg-white/[0.02] px-1 py-[13px] text-[12.5px] font-semibold tracking-[0.005em] no-underline transition-colors duration-200 [&>svg]:size-3.5 [&>svg]:shrink-0",
               messenger.colorClass,
             )}
           >
@@ -58,7 +59,7 @@ export const MobileBottomBar = ({ navOpen }: MobileBottomBarProps) => {
       })}
       <a
         href={`tel:${mainPhone.phone}`}
-        className="ws-bb-btn-primary flex flex-1 items-center justify-center gap-[7px] rounded-[12px] px-1 py-[13px] text-[12.5px] font-semibold tracking-[0.005em] no-underline [&>svg]:size-3.5 [&>svg]:shrink-0"
+        className="ws-bb-btn-primary flex flex-1 items-center justify-center gap-[7px] rounded-ws-md px-1 py-[13px] text-[12.5px] font-semibold tracking-[0.005em] no-underline [&>svg]:size-3.5 [&>svg]:shrink-0"
       >
         <Phone />
         <span>{t("nav.call")}</span>

@@ -33,6 +33,7 @@ import {
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
 import { buildPaginatedParams, del, get, post, put } from "@/shared/api/api.ts";
+import { parseDto } from "@/shared/api/parseDto";
 import { type UserStatus } from "@/shared/types.ts";
 
 export const customersApi = {
@@ -53,7 +54,7 @@ export const customersApi = {
     const response = await get(
       `${CUSTOMERS_API.customers()}?${params.toString()}`,
     );
-    const validatedData = PaginatedCustomersDtoSchema.parse(response);
+    const validatedData = parseDto(PaginatedCustomersDtoSchema, response);
     return mapPaginatedCustomersDtoToResponse(validatedData);
   },
   addNewCustomer: async (data: NewCustomer): Promise<Customer> => {
@@ -64,14 +65,14 @@ export const customersApi = {
       payload,
     );
 
-    const validated = CustomerDtoSchema.parse(response.data);
+    const validated = parseDto(CustomerDtoSchema, response.data);
     return mapCustomerDtoToCustomer(validated);
   },
   getCustomer: async (id: number): Promise<CustomerInfo> => {
     const response = await get<{ data: CustomerInfoDto }>(
       `${CUSTOMERS_API.customer(id)}`,
     );
-    const validatedData = CustomerInfoDtoSchema.parse(response.data);
+    const validatedData = parseDto(CustomerInfoDtoSchema, response.data);
     return mapCustomerInfoDtoToCustomerInfo(validatedData);
   },
   changeCustomerStatus: async (
@@ -82,7 +83,7 @@ export const customersApi = {
       `${CUSTOMERS_API.changeStatus(id)}`,
       { status },
     );
-    const validatedData = CustomerDtoSchema.parse(response.data);
+    const validatedData = parseDto(CustomerDtoSchema, response.data);
     return mapCustomerDtoToCustomer(validatedData);
   },
   addSecondaryPhone: async (
@@ -96,7 +97,7 @@ export const customersApi = {
       payload,
     );
 
-    const validatedData = PhoneDtoSchema.parse(response.data);
+    const validatedData = parseDto(PhoneDtoSchema, response.data);
 
     return mapPhoneDtoToPhone(validatedData);
   },
@@ -109,7 +110,7 @@ export const customersApi = {
       CUSTOMERS_API.changePrimaryPhone(customerId, phoneId),
     );
 
-    const validatedData = PhoneDtoArraySchema.parse(response.data);
+    const validatedData = parseDto(PhoneDtoArraySchema, response.data);
 
     return validatedData.map(mapPhoneDtoToPhone);
   },
@@ -127,7 +128,7 @@ export const customersApi = {
       CUSTOMERS_API.customer(id),
       data,
     );
-    const validatedData = CustomerDtoSchema.parse(response.data);
+    const validatedData = parseDto(CustomerDtoSchema, response.data);
     return mapCustomerDtoToCustomer(validatedData);
   },
   changeCustomerRating: async (
@@ -138,14 +139,14 @@ export const customersApi = {
       CUSTOMERS_API.changeRating(id),
       { rating },
     );
-    const validatedData = CustomerDtoSchema.parse(response.data);
+    const validatedData = parseDto(CustomerDtoSchema, response.data);
     return mapCustomerDtoToCustomer(validatedData);
   },
   getTelegramLink: async (id: number): Promise<TelegramLink> => {
     const response = await post<void, { data: TelegramDtoLink }>(
       CUSTOMERS_API.getTelegramLink(id),
     );
-    const validatedData = TelegramDtoLinkSchema.parse(response.data);
+    const validatedData = parseDto(TelegramDtoLinkSchema, response.data);
     return mapTelegramDtoLinkToTelegramLink(validatedData);
   },
   revokeTelegramLink: async (id: number): Promise<void> => {

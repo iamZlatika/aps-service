@@ -29,7 +29,7 @@ export const StatusHistoryAccordion = ({
   const hasMore = items.length > VISIBLE_COUNT;
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-ws-line bg-white/[.015] dark:bg-white/[.015]">
+    <div className="overflow-hidden rounded-2xl border border-ws-line bg-white/[.015]">
       <div className="flex items-center justify-between gap-3.5 border-b border-ws-line-soft px-6 py-3.5">
         <h3 className="text-[11px] font-semibold uppercase tracking-[.16em] text-ws-ink-mute">
           {t("track.history.title")}
@@ -92,6 +92,7 @@ export const StatusHistoryAccordion = ({
       {hasMore && (
         <button
           type="button"
+          aria-expanded={isExpanded}
           onClick={() => setIsExpanded((prev) => !prev)}
           className="flex w-full items-center justify-center gap-2.5 border-t border-ws-line-soft px-6 py-3.5 text-ws-sm font-semibold text-ws-ember-bright transition-colors hover:bg-white/[.025]"
         >

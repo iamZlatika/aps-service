@@ -9,7 +9,7 @@ export const DevicesSection = () => {
   return (
     <section className="ws-section">
       <div className="ws-wrap">
-        <div className="ws-section-head flex-col items-start md:flex-row md:items-end">
+        <div className="ws-section-head flex-col max-sm:!items-start md:flex-row md:items-end">
           <div>
             <p className="ws-section-eyebrow">{t("devices.eyebrow")}</p>
             <h2 className="ws-section-title max-sm:!text-[clamp(20px,5.8vw,26px)]">
@@ -37,7 +37,9 @@ export const DevicesSection = () => {
         </div>
 
         <p className="hidden md:block mt-[18px] rounded-xl border border-dashed border-ws-line bg-white/[.012] px-[22px] py-4 text-[13px] leading-[1.55] tracking-[.005em] text-ws-ink-mute">
-          <b className="mr-0.5 font-bold text-ws-ember-bright">*</b>
+          <b className="mr-1.5 align-middle text-[20px] font-bold leading-none text-ws-ember-bright">
+            *
+          </b>
           {t("devices.note1")} {t("devices.note2")}
         </p>
       </div>
