@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { Check, Copy, Lock, Unlock } from "lucide-react";
-import { useState } from "react";
 
 import { bankCardsApi } from "@/features/backoffice/modules/dictionaries/api";
 import type { BankCardDto } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
@@ -9,22 +8,17 @@ import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/ty
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
+import { useCopyToClipboard } from "@/shared/hooks/useCopyToClipboard";
 import { notifyError } from "@/shared/lib/errors/services.ts";
 
 const CopyCardNumber = ({ prettyNumber }: { prettyNumber: string }) => {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(prettyNumber);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const { copied, copy } = useCopyToClipboard();
 
   return (
     <button
       onClick={(e) => {
         e.stopPropagation();
-        handleCopy();
+        copy(prettyNumber);
       }}
       className="flex items-center gap-2 text-left"
     >

@@ -89,7 +89,11 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
             {t("nav.contacts")}
           </p>
           {locations.map((location) => (
-            <MobileNavOffice key={location.id} location={location} onClose={close} />
+            <MobileNavOffice
+              key={location.id}
+              location={location}
+              onClose={close}
+            />
           ))}
         </div>
 

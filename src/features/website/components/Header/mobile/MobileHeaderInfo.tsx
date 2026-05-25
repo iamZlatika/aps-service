@@ -5,10 +5,7 @@ import { MESSENGER_ICONS } from "@/features/website/components/Header/HeaderData
 import { PhoneIcon } from "@/features/website/components/icons/PhoneIcon";
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
 import { useLocations } from "@/features/website/hooks/useLocations";
-import {
-  getMapsUrl,
-  getMessengerHref,
-} from "@/features/website/lib/service";
+import { getMapsUrl, getMessengerHref } from "@/features/website/lib/service";
 import { useLocalize } from "@/shared/hooks/useLocalize";
 const MOBILE_MESSENGER_ORDER = ["telegram", "whatsapp", "viber"] as const;
 

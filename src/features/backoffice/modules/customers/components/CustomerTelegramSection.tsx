@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/shared/components/ui/dialog.tsx";
+import { useCopyToClipboard } from "@/shared/hooks/useCopyToClipboard";
 
 interface CustomerTelegramSectionProps {
   customerId: number;
@@ -28,17 +29,10 @@ export const CustomerTelegramSection = ({
   const { t } = useTranslation();
   const { isPending, generateLink, revokeLink, isRevokePending } =
     useCustomerTelegram(customerId, onSuccess);
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useCopyToClipboard();
   const [isRevokeOpen, setIsRevokeOpen] = useState(false);
 
   const isLinked = telegram?.linkedAt != null;
-
-  const handleCopy = async () => {
-    if (!telegram) return;
-    await navigator.clipboard.writeText(telegram.link);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const handleConfirmRevoke = () => {
     revokeLink();
@@ -79,7 +73,7 @@ export const CustomerTelegramSection = ({
             <button
               type="button"
               className="flex items-center gap-2 text-lg font-medium text-blue-600 hover:text-blue-700 transition-colors"
-              onClick={handleCopy}
+              onClick={() => telegram && copy(telegram.link)}
             >
               {t("customers.profile.telegram_link")}
               {copied ? (

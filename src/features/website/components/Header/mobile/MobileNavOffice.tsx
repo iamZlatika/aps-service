@@ -1,16 +1,16 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { MESSENGER_ICONS } from "@/features/website/components/Header/HeaderData";
-import { MessengerLabelButton } from "@/features/website/components/MessengerLabelButton";
 import { PhoneIcon } from "@/features/website/components/icons/PhoneIcon";
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
+import { MessengerLabelButton } from "@/features/website/components/MessengerLabelButton";
 import { MESSENGERS } from "@/features/website/config";
 import {
   formatPhone,
   getMapsUrl,
   getMessengerHref,
 } from "@/features/website/lib/service";
+import { useCopyToClipboard } from "@/shared/hooks/useCopyToClipboard";
 import { useLocalize } from "@/shared/hooks/useLocalize";
 import { cn } from "@/shared/lib/utils";
 import { type Location } from "@/shared/types";
@@ -20,22 +20,17 @@ interface MobileNavOfficeProps {
   onClose: () => void;
 }
 
-export const MobileNavOffice = ({ location, onClose }: MobileNavOfficeProps) => {
+export const MobileNavOffice = ({
+  location,
+  onClose,
+}: MobileNavOfficeProps) => {
   const { t } = useTranslation("website");
   const localize = useLocalize();
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useCopyToClipboard();
 
   const street = localize(location.streetRu, location.streetUa);
   const district = localize(location.districtRu, location.districtUa);
   const address = localize(location.addressRu, location.addressUa);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(location.phone);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch {}
-  };
 
   return (
     <div className="flex flex-col gap-2 border-b border-ws-line-soft py-[14px] first:pt-[6px] last:border-b-0 last:pb-0">
@@ -67,10 +62,12 @@ export const MobileNavOffice = ({ location, onClose }: MobileNavOfficeProps) => 
         <button
           type="button"
           aria-label={t("nav.copyPhone")}
-          onClick={() => void handleCopy()}
+          onClick={() => copy(location.phone)}
           className={cn(
             "flex w-[42px] shrink-0 items-center justify-center rounded-ws-sm border border-ws-line bg-white/[0.025] transition-all duration-150 active:scale-[.94]",
-            copied ? "border-ws-ember text-ws-ember-bright" : "text-ws-ink-soft",
+            copied
+              ? "border-ws-ember text-ws-ember-bright"
+              : "text-ws-ink-soft",
           )}
         >
           <svg

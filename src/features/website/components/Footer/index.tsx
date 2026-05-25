@@ -11,8 +11,8 @@ import {
   getMapsUrl,
   getMessengerHref,
 } from "@/features/website/lib/service";
-import { useLocalize } from "@/shared/hooks/useLocalize";
 import { WEBSITE_LINKS } from "@/features/website/navigation";
+import { useLocalize } from "@/shared/hooks/useLocalize";
 
 const SERVICE_LINKS = [
   { labelKey: "footer.services.pc", href: "#" },
@@ -90,8 +90,14 @@ export const Footer = () => {
                 <h3 className={colHeadClass}>{t("footer.contacts.title")}</h3>
                 <address className="not-italic">
                   {locations.map((location) => {
-                    const street = localize(location.streetRu, location.streetUa);
-                    const address = localize(location.addressRu, location.addressUa);
+                    const street = localize(
+                      location.streetRu,
+                      location.streetUa,
+                    );
+                    const address = localize(
+                      location.addressRu,
+                      location.addressUa,
+                    );
                     return (
                       <Fragment key={location.id}>
                         <a href={`tel:${location.phone}`} className={linkClass}>
