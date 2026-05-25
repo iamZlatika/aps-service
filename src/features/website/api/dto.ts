@@ -87,3 +87,8 @@ export const OrderPreviewDtoSchema = TrackDtoSchema.pick({
   status_history: true,
 });
 export type OrderPreviewDto = z.infer<typeof OrderPreviewDtoSchema>;
+
+export const ActiveCountDtoSchema = z.object({
+  count: z.number(),
+});
+export type ActiveCountDto = z.infer<typeof ActiveCountDtoSchema>;

@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
+import { useActiveCount } from "@/features/website/hooks/useActiveCount";
 import { useLocations } from "@/features/website/hooks/useLocations";
 import { CabinetButton } from "@/features/website/pages/home/components/hero/CabinetButton";
 import { PriceButton } from "@/features/website/pages/home/components/hero/PriceButton";
@@ -13,6 +14,7 @@ export const Hero = () => {
   const { t } = useTranslation("website");
   const { resolvedTheme } = useWebsiteTheme();
   const { locations } = useLocations();
+  const { activeCount } = useActiveCount();
   const firstLocation = locations[0];
   const scheduleLines = firstLocation
     ? firstLocation.scheduleDisplay.split(", ").filter(Boolean)
@@ -88,12 +90,14 @@ export const Hero = () => {
                 {t("hero.bottomSloganAccent")}
               </b>
             </p>
-            <div className="mt-[14px] flex items-center gap-1.5 text-ws-2xs tracking-[0.04em] text-ws-ink-soft">
-              <b className="text-ws-xs font-semibold text-ws-ember-bright">
-                47
-              </b>
-              {t("hero.devicesInWork")}
-            </div>
+            {activeCount !== undefined && (
+              <div className="mt-[14px] flex items-center gap-1.5 text-ws-2xs tracking-[0.04em] text-ws-ink-soft">
+                <b className="text-ws-xs font-semibold text-ws-ember-bright">
+                  {activeCount}
+                </b>
+                {t("hero.devicesInWork")}
+              </div>
+            )}
           </div>
         </div>
 
@@ -125,19 +129,21 @@ export const Hero = () => {
               {t("hero.bottomSloganAccent")}
             </b>
           </p>
-          <div className="mt-[10px] flex items-center justify-end gap-1.5 border-t border-ws-overlay-border pt-[10px] text-ws-2xs tracking-[0.04em] text-ws-ink-soft">
-            <b
-              className={cn(
-                "text-ws-base font-bold",
-                resolvedTheme === "light"
-                  ? "text-ws-ember-deep"
-                  : "text-ws-ember-bright",
-              )}
-            >
-              47
-            </b>
-            {t("hero.devicesInWork")}
-          </div>
+          {activeCount !== undefined && (
+            <div className="mt-[10px] flex items-center justify-end gap-1.5 border-t border-ws-overlay-border pt-[10px] text-ws-2xs tracking-[0.04em] text-ws-ink-soft">
+              <b
+                className={cn(
+                  "text-ws-base font-bold",
+                  resolvedTheme === "light"
+                    ? "text-ws-ember-deep"
+                    : "text-ws-ember-bright",
+                )}
+              >
+                {activeCount}
+              </b>
+              {t("hero.devicesInWork")}
+            </div>
+          )}
         </div>
       </div>
     </section>

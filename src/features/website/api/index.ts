@@ -1,4 +1,6 @@
 import {
+  type ActiveCountDto,
+  ActiveCountDtoSchema,
   type LocationsResponseDto,
   LocationsResponseDtoSchema,
   type OrderPreviewDto,
@@ -8,6 +10,7 @@ import {
 } from "@/features/website/api/dto";
 import { WEBSITE_API } from "@/features/website/api/endpoints";
 import {
+  mapActiveCountDtoToActiveCount,
   mapLocationDtoToLocation,
   mapOrderPreviewDtoToOrderPreview,
   mapTrackDtoToTrack,
@@ -34,5 +37,12 @@ export const websiteApi = {
     const response = await get<LocationsResponseDto>(WEBSITE_API.locations());
     const validated = parseDto(LocationsResponseDtoSchema, response);
     return validated.data.map(mapLocationDtoToLocation);
+  },
+  getActiveCount: async (): Promise<number> => {
+    const response = await get<{ data: ActiveCountDto }>(
+      WEBSITE_API.activeCount(),
+    );
+    const validated = parseDto(ActiveCountDtoSchema, response.data);
+    return mapActiveCountDtoToActiveCount(validated);
   },
 };

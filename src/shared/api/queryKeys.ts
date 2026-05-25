@@ -55,6 +55,7 @@ export const queryKeys = {
   website: {
     all: ["website"] as const,
     locations: () => ["website", "locations"] as const,
+    activeCount: () => ["website", "active-count"] as const,
   },
 
   dictionaries: {

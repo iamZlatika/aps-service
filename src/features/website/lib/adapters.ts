@@ -1,4 +1,5 @@
 import {
+  type ActiveCountDto,
   type LocationDto,
   type OrderPreviewDto,
   type StatusDto,
@@ -68,6 +69,10 @@ export function mapTrackDtoToTrack(dto: TrackDto): Track {
       createdAt: item.created_at,
     })),
   };
+}
+
+export function mapActiveCountDtoToActiveCount(dto: ActiveCountDto): number {
+  return dto.count;
 }
 
 export function mapOrderPreviewDtoToOrderPreview(
