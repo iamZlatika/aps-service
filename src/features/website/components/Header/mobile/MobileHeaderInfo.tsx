@@ -4,19 +4,18 @@ import { HeaderCabinetButton } from "@/features/website/components/Header/Header
 import { MESSENGER_ICONS } from "@/features/website/components/Header/HeaderData";
 import { PhoneIcon } from "@/features/website/components/icons/PhoneIcon";
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
-import { MESSENGERS } from "@/features/website/config";
 import { useLocations } from "@/features/website/hooks/useLocations";
 import {
-  getLocalized,
   getMapsUrl,
   getMessengerHref,
 } from "@/features/website/lib/service";
+import { useLocalize } from "@/shared/hooks/useLocalize";
 const MOBILE_MESSENGER_ORDER = ["telegram", "whatsapp", "viber"] as const;
 
 export const MobileHeaderInfo = () => {
-  const { t, i18n } = useTranslation("website");
+  const { t } = useTranslation("website");
   const { locations } = useLocations();
-  const isRu = i18n.language === "ru";
+  const localize = useLocalize();
 
   return (
     <div className="md:hidden">
@@ -26,21 +25,9 @@ export const MobileHeaderInfo = () => {
 
       <div className="grid grid-cols-2 gap-2 pb-4">
         {locations.map((location) => {
-          const street = getLocalized(
-            isRu,
-            location.streetRu,
-            location.streetUa,
-          );
-          const district = getLocalized(
-            isRu,
-            location.districtRu,
-            location.districtUa,
-          );
-          const address = getLocalized(
-            isRu,
-            location.addressRu,
-            location.addressUa,
-          );
+          const street = localize(location.streetRu, location.streetUa);
+          const district = localize(location.districtRu, location.districtUa);
+          const address = localize(location.addressRu, location.addressUa);
 
           return (
             <div
@@ -78,10 +65,8 @@ export const MobileHeaderInfo = () => {
                   <PhoneIcon className="size-[15px]" />
                 </a>
                 {MOBILE_MESSENGER_ORDER.map((key) => {
-                  const m = MESSENGERS.find((m) => m.key === key);
-                  if (!m) return null;
                   const Icon = MESSENGER_ICONS[key];
-                  const href = getMessengerHref(key, location.phone, m.href);
+                  const href = getMessengerHref(key, location.phone);
                   return (
                     <a
                       key={key}

@@ -8,9 +8,10 @@ import { MESSENGERS } from "@/features/website/config";
 import { useLocations } from "@/features/website/hooks/useLocations";
 import {
   formatPhone,
-  getLocalized,
   getMapsUrl,
+  getMessengerHref,
 } from "@/features/website/lib/service";
+import { useLocalize } from "@/shared/hooks/useLocalize";
 import { WEBSITE_LINKS } from "@/features/website/navigation";
 
 const SERVICE_LINKS = [
@@ -35,9 +36,9 @@ const colHeadClass =
   "mb-[18px] text-ws-xs font-semibold uppercase tracking-[0.16em] text-ws-ink-mute";
 
 export const Footer = () => {
-  const { t, i18n } = useTranslation("website");
+  const { t } = useTranslation("website");
   const { locations } = useLocations();
-  const isRu = i18n.language === "ru";
+  const localize = useLocalize();
 
   return (
     <footer className="border-t border-ws-line-soft">
@@ -89,16 +90,8 @@ export const Footer = () => {
                 <h3 className={colHeadClass}>{t("footer.contacts.title")}</h3>
                 <address className="not-italic">
                   {locations.map((location) => {
-                    const street = getLocalized(
-                      isRu,
-                      location.streetRu,
-                      location.streetUa,
-                    );
-                    const address = getLocalized(
-                      isRu,
-                      location.addressRu,
-                      location.addressUa,
-                    );
+                    const street = localize(location.streetRu, location.streetUa);
+                    const address = localize(location.addressRu, location.addressUa);
                     return (
                       <Fragment key={location.id}>
                         <a href={`tel:${location.phone}`} className={linkClass}>
@@ -125,10 +118,11 @@ export const Footer = () => {
               <div className="flex gap-2">
                 {MESSENGERS.map((m) => {
                   const Icon = MESSENGER_ICONS[m.key];
+                  const phone = locations[0]?.phone ?? "";
                   return (
                     <FooterSocialIcon
                       key={m.key}
-                      href={m.href}
+                      href={getMessengerHref(m.key, phone)}
                       label={t(`messenger.${m.key}`)}
                       icon={<Icon />}
                     />

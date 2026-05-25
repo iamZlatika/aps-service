@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { MESSENGER_ICONS } from "@/features/website/components/Header/HeaderData";
-import { CONTACTS, MESSENGERS } from "@/features/website/config";
+import { MESSENGERS } from "@/features/website/config";
+import { useLocations } from "@/features/website/hooks/useLocations";
+import { getMessengerHref } from "@/features/website/lib/service";
 import { cn } from "@/shared/lib/utils";
 
 const BB_MESSENGERS = ["telegram", "whatsapp"] as const;
@@ -14,7 +16,8 @@ interface MobileBottomBarProps {
 
 export const MobileBottomBar = ({ isOpen }: MobileBottomBarProps) => {
   const { t } = useTranslation("website");
-  const mainPhone = CONTACTS[0];
+  const { locations } = useLocations();
+  const mainPhone = locations[0]?.phone ?? "";
   const [footerVisible, setFooterVisible] = useState(false);
 
   useEffect(() => {
@@ -43,7 +46,7 @@ export const MobileBottomBar = ({ isOpen }: MobileBottomBarProps) => {
         return (
           <a
             key={key}
-            href={messenger.href}
+            href={getMessengerHref(key, mainPhone)}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={t(`messenger.${key}`)}
@@ -58,7 +61,7 @@ export const MobileBottomBar = ({ isOpen }: MobileBottomBarProps) => {
         );
       })}
       <a
-        href={`tel:${mainPhone.phone}`}
+        href={`tel:${mainPhone}`}
         className="ws-bb-btn-primary flex flex-1 items-center justify-center gap-[7px] rounded-ws-md px-1 py-[13px] text-[12.5px] font-semibold tracking-[0.005em] no-underline [&>svg]:size-3.5 [&>svg]:shrink-0"
       >
         <Phone />

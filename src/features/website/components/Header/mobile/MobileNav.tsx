@@ -1,16 +1,11 @@
-import { MapPin, Phone } from "lucide-react";
-import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 
-import {
-  MESSENGER_ICONS,
-  NAV_TABS,
-} from "@/features/website/components/Header/HeaderData";
+import { NAV_TABS } from "@/features/website/components/Header/HeaderData";
+import { MobileNavOffice } from "@/features/website/components/Header/mobile/MobileNavOffice";
 import { LangSwitch } from "@/features/website/components/LangSwitch";
-import { MessengerLabelButton } from "@/features/website/components/MessengerLabelButton";
 import { ThemeSwitch } from "@/features/website/components/ThemeSwitch";
-import { CONTACTS, MESSENGERS } from "@/features/website/config";
+import { useLocations } from "@/features/website/hooks/useLocations";
 import { cn } from "@/shared/lib/utils";
 
 interface MobileNavProps {
@@ -20,6 +15,7 @@ interface MobileNavProps {
 
 export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
   const { t } = useTranslation("website");
+  const { locations } = useLocations();
 
   return (
     <>
@@ -92,52 +88,12 @@ export const MobileNav = ({ isOpen, close }: MobileNavProps) => {
           <p className="mb-3 text-ws-2xs font-semibold uppercase tracking-[0.18em] text-ws-ink-mute">
             {t("nav.contacts")}
           </p>
-          <address className="not-italic">
-            <ul>
-              {CONTACTS.map((c) => (
-                <Fragment key={c.phone}>
-                  <li>
-                    <a
-                      href={`tel:${c.phone}`}
-                      className="flex items-center gap-2.5 py-[10px] text-ws-base font-medium text-ws-ink-hi no-underline"
-                    >
-                      <Phone className="size-3.5 shrink-0 text-ws-ember-bright" />
-                      {c.phoneFormatted}
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href={c.mapsUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2.5 py-[10px] text-ws-sm text-ws-ink-soft no-underline"
-                    >
-                      <MapPin className="size-3.5 shrink-0 text-ws-ember-bright" />
-                      {c.address}
-                    </a>
-                  </li>
-                </Fragment>
-              ))}
-            </ul>
-          </address>
+          {locations.map((location) => (
+            <MobileNavOffice key={location.id} location={location} onClose={close} />
+          ))}
         </div>
 
-        <div className="flex gap-[5px] px-4 py-4">
-          {MESSENGERS.map((m) => {
-            const Icon = MESSENGER_ICONS[m.key];
-            return (
-              <MessengerLabelButton
-                key={m.key}
-                href={m.href}
-                icon={<Icon />}
-                label={t(`messenger.${m.key}`)}
-                colorClass={m.colorClass}
-              />
-            );
-          })}
-        </div>
-
-        <div className="flex gap-2 px-3 pb-6">
+        <div className="mt-auto flex gap-2 px-3 pb-6 pt-4">
           <LangSwitch stretch />
           <ThemeSwitch stretch />
         </div>

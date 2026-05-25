@@ -1,8 +1,5 @@
 import { type MessengerKey } from "@/features/website/config";
-
-export function getLocalized(isRu: boolean, ru: string, ua: string): string {
-  return isRu ? ru : ua;
-}
+import { assertNever } from "@/shared/lib/assertNever";
 
 export function formatPhone(raw: string): string {
   const digits = raw.replace(/\D/g, "");
@@ -16,13 +13,10 @@ export function getMapsUrl(address: string): string {
   return `https://maps.google.com/?q=${encodeURIComponent(address)}`;
 }
 
-export function getMessengerHref(
-  key: MessengerKey,
-  phone: string,
-  defaultHref: string,
-): string {
+export function getMessengerHref(key: MessengerKey, phone: string): string {
   const digits = phone.replace(/\D/g, "");
+  if (key === "telegram") return `https://t.me/+${digits}`;
   if (key === "viber") return `viber://chat?number=%2B${digits}`;
   if (key === "whatsapp") return `https://wa.me/${digits}`;
-  return defaultHref;
+  return assertNever(key);
 }

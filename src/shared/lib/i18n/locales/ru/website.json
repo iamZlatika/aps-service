@@ -16,7 +16,8 @@
     "navigation": "Навигация",
     "skipToContent": "Перейти к контенту",
     "streetLabel": "улица",
-    "call": "Позвонить"
+    "call": "Позвонить",
+    "copyPhone": "Скопировать номер"
   },
   "theme": {
     "label": "Тема",

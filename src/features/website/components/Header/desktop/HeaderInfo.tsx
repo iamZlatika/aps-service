@@ -8,31 +8,23 @@ import { MESSENGERS } from "@/features/website/config";
 import { useLocations } from "@/features/website/hooks/useLocations";
 import {
   formatPhone,
-  getLocalized,
   getMapsUrl,
   getMessengerHref,
 } from "@/features/website/lib/service";
+import { useLocalize } from "@/shared/hooks/useLocalize";
 import { cn } from "@/shared/lib/utils";
 
 export const HeaderInfo = () => {
-  const { t, i18n } = useTranslation("website");
+  const { t } = useTranslation("website");
   const { locations } = useLocations();
-  const isRu = i18n.language === "ru";
+  const localize = useLocalize();
 
   return (
     <div className="hidden border-b border-ws-line-soft py-[22px] pb-6 md:flex md:flex-col md:gap-[18px] xl:flex-row xl:flex-wrap xl:items-stretch xl:gap-8">
       {locations.map((location, index) => {
-        const street = getLocalized(isRu, location.streetRu, location.streetUa);
-        const district = getLocalized(
-          isRu,
-          location.districtRu,
-          location.districtUa,
-        );
-        const address = getLocalized(
-          isRu,
-          location.addressRu,
-          location.addressUa,
-        );
+        const street = localize(location.streetRu, location.streetUa);
+        const district = localize(location.districtRu, location.districtUa);
+        const address = localize(location.addressRu, location.addressUa);
         return (
           <Fragment key={location.id}>
             {index > 0 && (
@@ -70,7 +62,7 @@ export const HeaderInfo = () => {
               <div className="flex gap-2">
                 {MESSENGERS.map((m) => {
                   const Icon = MESSENGER_ICONS[m.key];
-                  const href = getMessengerHref(m.key, location.phone, m.href);
+                  const href = getMessengerHref(m.key, location.phone);
                   return (
                     <a
                       key={m.key}

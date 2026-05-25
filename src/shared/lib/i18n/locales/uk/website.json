@@ -16,7 +16,8 @@
     "navigation": "Навігація",
     "skipToContent": "Перейти до контенту",
     "streetLabel": "вулиця",
-    "call": "Подзвонити"
+    "call": "Подзвонити",
+    "copyPhone": "Скопіювати номер"
   },
   "theme": {
     "label": "Тема",
