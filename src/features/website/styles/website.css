@@ -372,6 +372,12 @@
 .ws-msg-vb-color { color: #7b5cd4; }
 .ws-msg-wa-color { color: #25d366; }
 
+/* Mobile location card and action button backgrounds */
+.ws-loc-card { background: rgba(255, 255, 255, 0.015); }
+.light .ws-loc-card { background: rgba(0, 0, 0, 0.025); }
+.ws-loc-act-btn { background: rgba(255, 255, 255, 0.04); }
+.light .ws-loc-act-btn { background: rgba(0, 0, 0, 0.04); }
+
 /* ============================================================
    Mobile bottom bar (fixed, md:hidden)
    ============================================================ */

@@ -8,7 +8,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import { WebsiteErrorFallback } from "@/features/website/components/ErrorFallback";
 import { Footer } from "@/features/website/components/Footer";
 import { Header } from "@/features/website/components/Header";
-import { MobileBottomBar } from "@/features/website/components/MobileBottomBar";
 import { useMobileNav } from "@/features/website/hooks/useMobileNav";
 import { useWebsiteThemeManager } from "@/features/website/hooks/useWebsiteThemeManager";
 import { WebsiteThemeContext } from "@/features/website/websiteTheme";
@@ -51,7 +50,7 @@ export const WebsiteLayout = () => {
           {t("nav.skipToContent")}
         </a>
         <Header isNavOpen={isNavOpen} openNav={openNav} closeNav={closeNav} />
-        <main id="main-content" className="flex-1 pb-[84px] md:pb-0">
+        <main id="main-content" className="flex-1">
           <ErrorBoundary
             FallbackComponent={WebsiteErrorFallback}
             resetKeys={[location.pathname]}
@@ -63,7 +62,6 @@ export const WebsiteLayout = () => {
           </ErrorBoundary>
         </main>
         <Footer />
-        <MobileBottomBar isOpen={isNavOpen} />
       </div>
     </WebsiteThemeContext.Provider>
   );
