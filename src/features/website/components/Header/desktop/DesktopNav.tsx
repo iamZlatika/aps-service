@@ -12,7 +12,7 @@ export const DesktopNav = () => {
   const { t } = useTranslation("website");
 
   return (
-    <nav className="hidden items-center justify-between gap-6 border-b border-ws-line-soft py-[22px] md:flex">
+    <nav className="hidden items-center justify-between gap-6 border-b border-ws-line-soft py-[14px] md:flex">
       <div className="flex items-center gap-7">
         <WebsiteLogo className="text-ws-ink" />
 

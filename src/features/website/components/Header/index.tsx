@@ -13,14 +13,16 @@ interface HeaderProps {
 export const Header = ({ isNavOpen, openNav, closeNav }: HeaderProps) => {
   return (
     <>
-      <header>
+      <header className="sticky top-0 z-50 bg-ws-bg">
         <div className="ws-wrap">
           <DesktopNav />
           <HeaderInfo />
           <MobileBar isOpen={isNavOpen} onOpen={openNav} onClose={closeNav} />
-          <MobileHeaderInfo />
         </div>
       </header>
+      <div className="ws-wrap">
+        <MobileHeaderInfo />
+      </div>
       <MobileNav isOpen={isNavOpen} close={closeNav} />
     </>
   );

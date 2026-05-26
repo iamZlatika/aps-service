@@ -21,12 +21,12 @@ export const MobileHeaderInfo = () => {
 
   return (
     <div className="md:hidden">
-      <div className="pb-4 pt-[14px]">
+      <div className="pb-3 pt-[10px]">
         <HeaderCabinetButton className="w-full" />
       </div>
 
       {!isContacts && (
-        <div className="grid grid-cols-2 gap-2 pb-4">
+        <div className="grid grid-cols-2 gap-2 pb-3">
           {locations.map((location) => {
             const street = localize(location.streetRu, location.streetUa);
             const district = localize(location.districtRu, location.districtUa);

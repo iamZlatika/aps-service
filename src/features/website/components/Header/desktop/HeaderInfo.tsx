@@ -20,7 +20,7 @@ export const HeaderInfo = () => {
   const localize = useLocalize();
 
   return (
-    <div className="hidden border-b border-ws-line-soft py-[22px] pb-6 md:flex md:flex-col md:gap-[18px] xl:flex-row xl:flex-wrap xl:items-stretch xl:gap-8">
+    <div className="hidden border-b border-ws-line-soft py-[14px] pb-4 md:flex md:flex-col md:gap-[14px] xl:flex-row xl:flex-wrap xl:items-stretch xl:gap-8">
       {locations.map((location, index) => {
         const street = localize(location.streetRu, location.streetUa);
         const district = localize(location.districtRu, location.districtUa);
@@ -42,7 +42,7 @@ export const HeaderInfo = () => {
               >
                 <PinIcon className="mt-[3px] size-4 shrink-0 text-ws-ember-bright" />
                 <div className="min-w-0">
-                  <div className="text-ws-lg font-semibold leading-[1.25] tracking-[-0.005em] text-ws-ink transition-colors duration-200 group-hover:text-ws-ember-bright">
+                  <div className="text-ws-base font-semibold leading-[1.25] tracking-[-0.005em] text-ws-ink transition-colors duration-200 group-hover:text-ws-ember-bright">
                     {t("address.streetPrefix")} {street}, {location.building}
                   </div>
                   <div className="mt-1 text-ws-sm font-semibold uppercase tracking-[0.16em] text-ws-ink-mute">
@@ -53,7 +53,7 @@ export const HeaderInfo = () => {
 
               <a
                 href={`tel:${location.phone}`}
-                className="flex items-center gap-[10px] text-ws-lg font-semibold leading-[1.1] tracking-[-0.005em] text-ws-ink no-underline tabular-nums transition-colors duration-200 hover:text-ws-ember-bright"
+                className="flex items-center gap-[10px] text-ws-base font-semibold leading-[1.1] tracking-[-0.005em] text-ws-ink no-underline tabular-nums transition-colors duration-200 hover:text-ws-ember-bright"
               >
                 <PhoneIcon className="size-[15px] shrink-0 text-ws-ember-bright" />
                 <span>{formatPhone(location.phone)}</span>
