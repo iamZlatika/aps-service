@@ -123,6 +123,17 @@
     "feature4": "Гарантія 1 рік",
     "cta": "Розрахувати збірку →"
   },
+  "contacts": {
+    "eyebrow": "Контакти",
+    "titlePrefix": "Офіси у",
+    "cityAbbr": "м.",
+    "serviceCenter": "Сервісний центр",
+    "scheduleLabel": "Графік",
+    "phoneLabel": "Телефон",
+    "openMaps": "у Google Maps",
+    "copy": "копіювати",
+    "copied": "скопійовано"
+  },
   "offices": {
     "eyebrow": "Контакти",
     "title": "Два офіси",

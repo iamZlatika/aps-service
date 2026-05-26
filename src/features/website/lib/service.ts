@@ -9,8 +9,16 @@ export function formatPhone(raw: string): string {
   return raw;
 }
 
+export function parseScheduleLines(scheduleDisplay: string): string[] {
+  return scheduleDisplay.split(", ").filter(Boolean);
+}
+
 export function getMapsUrl(address: string): string {
   return `https://maps.google.com/?q=${encodeURIComponent(address)}`;
+}
+
+export function getMapEmbedSrc(address: string): string {
+  return `https://maps.google.com/maps?q=${encodeURIComponent(address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 }
 
 export function getMessengerHref(key: MessengerKey, phone: string): string {

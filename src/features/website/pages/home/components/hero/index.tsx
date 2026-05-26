@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
 import { useActiveCount } from "@/features/website/hooks/useActiveCount";
 import { useLocations } from "@/features/website/hooks/useLocations";
+import { parseScheduleLines } from "@/features/website/lib/service";
 import { CabinetButton } from "@/features/website/pages/home/components/hero/CabinetButton";
 import { PriceButton } from "@/features/website/pages/home/components/hero/PriceButton";
 import { useWebsiteTheme } from "@/features/website/websiteTheme";
@@ -17,7 +18,7 @@ export const Hero = () => {
   const { activeCount } = useActiveCount();
   const firstLocation = locations[0];
   const scheduleLines = firstLocation
-    ? firstLocation.scheduleDisplay.split(", ").filter(Boolean)
+    ? parseScheduleLines(firstLocation.scheduleDisplay)
     : [];
 
   return (

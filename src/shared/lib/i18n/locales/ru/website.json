@@ -123,6 +123,17 @@
     "feature4": "Гарантия 1 год",
     "cta": "Рассчитать сборку →"
   },
+  "contacts": {
+    "eyebrow": "Контакты",
+    "titlePrefix": "Офисы в",
+    "cityAbbr": "г.",
+    "serviceCenter": "Сервисный центр",
+    "scheduleLabel": "График",
+    "phoneLabel": "Телефон",
+    "openMaps": "в Google Maps",
+    "copy": "копировать",
+    "copied": "скопировано"
+  },
   "offices": {
     "eyebrow": "Контакты",
     "title": "Два офиса",
