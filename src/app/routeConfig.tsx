@@ -6,6 +6,7 @@ import { backofficeRoutes } from "@/app/routes/backoffice.tsx";
 import { websiteRoutes } from "@/app/routes/website.tsx";
 import { AuthRoutes } from "@/features/auth/api/routes.ts";
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
+import { WebsiteLayout } from "@/features/website/components/WebsiteLayout";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import Loader from "@/shared/components/common/Loader.tsx";
 import { ROLES } from "@/shared/types.ts";
@@ -20,10 +21,6 @@ const UserAccountPage = lazy(
 // Layouts
 const BackofficeLayout = lazy(
   () => import("@/features/backoffice/components/Layout"),
-);
-
-const WebsiteLayout = lazy(
-  () => import("@/features/website/components/WebsiteLayout"),
 );
 
 // Shared
@@ -43,11 +40,7 @@ export const routeConfig: RouteObject[] = [
     element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
     children: [
       {
-        element: (
-          <Suspense fallback={<Loader />}>
-            <WebsiteLayout />
-          </Suspense>
-        ),
+        element: <WebsiteLayout />,
         children: [
           {
             path: "/account",

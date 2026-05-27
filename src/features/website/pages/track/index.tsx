@@ -2,6 +2,7 @@ import { Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
+import { WebsiteLoader } from "@/features/website/components/Loader";
 import { StatusHistoryAccordion } from "@/features/website/components/StatusHistoryAccordion";
 import { useOrderTracking } from "@/features/website/hooks/useOrderTracking";
 import { StatusBadge } from "@/features/website/pages/track/components/StatusBadge";
@@ -19,6 +20,11 @@ export const TrackPage = () => {
       isError={isError}
       error={error}
       onRetry={refetch}
+      loadingFallback={
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-ws-bg">
+          <WebsiteLoader />
+        </div>
+      }
     >
       {track && (
         <section className="mx-auto max-w-[980px] px-0 pb-20 pt-12 max-sm:px-4 max-sm:pt-8">

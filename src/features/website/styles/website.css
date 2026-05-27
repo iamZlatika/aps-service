@@ -534,3 +534,52 @@
     height: 240px;
   }
 }
+
+/* ============================================================
+   Loader — ember ring
+   ============================================================ */
+.ws-loader {
+  width: 108px;
+  height: 108px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ws-loader-aps {
+  position: relative;
+  z-index: 2;
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ws-ink);
+}
+
+.ws-loader-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: wsLoaderSpin 1.4s linear infinite;
+}
+
+.ws-loader-track {
+  fill: none;
+  stroke: var(--ws-line);
+  stroke-width: 2.5;
+}
+
+.ws-loader-arc {
+  fill: none;
+  stroke: url(#ws-loader-grad);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 70 230;
+}
+
+@keyframes wsLoaderSpin {
+  to { transform: rotate(360deg); }
+}

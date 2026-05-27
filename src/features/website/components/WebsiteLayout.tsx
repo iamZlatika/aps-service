@@ -9,10 +9,10 @@ import { Toaster } from "sonner";
 import { WebsiteErrorFallback } from "@/features/website/components/ErrorFallback";
 import { Footer } from "@/features/website/components/Footer";
 import { Header } from "@/features/website/components/Header";
+import { WebsiteLoader } from "@/features/website/components/Loader";
 import { useMobileNav } from "@/features/website/hooks/useMobileNav";
 import { useWebsiteThemeManager } from "@/features/website/hooks/useWebsiteThemeManager";
 import { WebsiteThemeContext } from "@/features/website/websiteTheme";
-import Loader from "@/shared/components/common/Loader";
 import { LANG_STORAGE_KEY } from "@/shared/lib/constants";
 import { captureErrorWithId } from "@/shared/lib/sentry";
 import { storageGet } from "@/shared/lib/storage";
@@ -51,23 +51,33 @@ export const WebsiteLayout = () => {
         >
           {t("nav.skipToContent")}
         </a>
-        <Header isNavOpen={isNavOpen} openNav={openNav} closeNav={closeNav} />
-        <main id="main-content" className="flex-1">
-          <Suspense fallback={<Loader />}>
-            <ErrorBoundary
-              FallbackComponent={WebsiteErrorFallback}
-              resetKeys={[location.pathname]}
-              onError={(error, info) =>
-                captureErrorWithId(error, {
-                  componentStack: info.componentStack,
-                })
-              }
-            >
+        <Suspense
+          fallback={
+            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-ws-bg">
+              <WebsiteLoader />
+            </div>
+          }
+        >
+          <ErrorBoundary
+            FallbackComponent={WebsiteErrorFallback}
+            resetKeys={[location.pathname]}
+            onError={(error, info) =>
+              captureErrorWithId(error, {
+                componentStack: info.componentStack,
+              })
+            }
+          >
+            <Header
+              isNavOpen={isNavOpen}
+              openNav={openNav}
+              closeNav={closeNav}
+            />
+            <main id="main-content" className="flex-1">
               <Outlet />
-            </ErrorBoundary>
-          </Suspense>
-        </main>
-        <Footer />
+            </main>
+            <Footer />
+          </ErrorBoundary>
+        </Suspense>
         <Toaster richColors position="top-right" />
       </div>
     </WebsiteThemeContext.Provider>
