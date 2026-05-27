@@ -2,8 +2,7 @@ import { Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { MESSENGER_ICONS } from "@/features/website/components/Header/HeaderData";
-import { MESSENGERS } from "@/features/website/config";
+import { MESSENGER_ICONS, MESSENGERS } from "@/features/website/config";
 import { useLocations } from "@/features/website/hooks/useLocations";
 import { getMessengerHref } from "@/features/website/lib/service";
 import { cn } from "@/shared/lib/utils";
@@ -62,7 +61,7 @@ export const MobileBottomBar = ({ isOpen }: MobileBottomBarProps) => {
       })}
       <a
         href={`tel:${mainPhone}`}
-        className="ws-bb-btn-primary flex flex-1 items-center justify-center gap-[7px] rounded-ws-md px-1 py-[13px] text-[12.5px] font-semibold tracking-[0.005em] no-underline [&>svg]:size-3.5 [&>svg]:shrink-0"
+        className="ws-btn-primary flex flex-1 items-center justify-center gap-[7px] rounded-ws-md px-1 py-[13px] text-[12.5px] font-semibold tracking-[0.005em] no-underline [&>svg]:size-3.5 [&>svg]:shrink-0"
       >
         <Phone />
         <span>{t("nav.call")}</span>

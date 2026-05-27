@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 
-import { MESSENGER_ICONS } from "@/features/website/components/Header/HeaderData";
 import { PhoneIcon } from "@/features/website/components/icons/PhoneIcon";
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
+import { MESSENGER_ICONS } from "@/features/website/config";
 import { MESSENGERS } from "@/features/website/config";
 import { useLocations } from "@/features/website/hooks/useLocations";
 import {

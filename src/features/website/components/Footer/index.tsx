@@ -2,8 +2,8 @@ import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 
 import { FooterSocialIcon } from "@/features/website/components/Footer/FooterSocialIcon";
-import { MESSENGER_ICONS } from "@/features/website/components/Header/HeaderData";
 import { WebsiteLogo } from "@/features/website/components/WebsiteLogo";
+import { MESSENGER_ICONS } from "@/features/website/config";
 import { MESSENGERS } from "@/features/website/config";
 import { useLocations } from "@/features/website/hooks/useLocations";
 import {

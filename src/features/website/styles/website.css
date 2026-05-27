@@ -11,13 +11,13 @@
    ============================================================ */
 .website {
   /* Backgrounds */
-  --ws-bg:        #1d1b18;
-  --ws-bg-2:      #26231e;
-  --ws-bg-3:      #2f2b25;
+  --ws-bg:        #28241c;
+  --ws-bg-2:      #3b352a;
+  --ws-bg-3:      #4a4234;
 
   /* Borders */
-  --ws-line:      #34302a;
-  --ws-line-soft: #2a2722;
+  --ws-line:      #4a4434;
+  --ws-line-soft: #3a352a;
 
   /* Text */
   --ws-ink:       #efe8db;
@@ -390,12 +390,12 @@
 .website.light .ws-bottombar {
   box-shadow: 0 20px 40px -20px rgba(31,108,184,.25);
 }
-.ws-bb-btn-primary {
+.ws-btn-primary {
   background: linear-gradient(180deg, var(--ws-ember-bright) 0%, var(--ws-ember) 100%);
   color: var(--ws-ember-text);
   box-shadow: 0 8px 20px -10px rgba(238,122,58,.6), inset 0 1px 0 rgba(255,255,255,.4);
 }
-.website.light .ws-bb-btn-primary {
+.website.light .ws-btn-primary {
   color: #fff;
 }
 
@@ -403,26 +403,35 @@
    Contacts page
    ============================================================ */
 .ws-contacts-section {
-  padding: 56px 0;
+  padding: 32px 0 56px;
+}
+
+.ws-contacts-section .ws-section-eyebrow {
+  margin-bottom: 8px;
+}
+
+.ws-contacts-section .ws-section-title {
+  font-size: clamp(18px, 1.7vw, 24px);
 }
 
 .ws-contacts-info {
   padding: 32px 34px 30px;
-  border: 1px solid var(--ws-line);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.015);
   overflow: hidden;
-}
-.light .ws-contacts-info {
-  background: rgba(255, 255, 255, 0.55);
 }
 
 .ws-contacts-office {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 0;
   margin-bottom: 24px;
   align-items: stretch;
+  border: 1px solid var(--ws-line);
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.015);
+}
+.light .ws-contacts-office {
+  background: rgba(255, 255, 255, 0.55);
 }
 .ws-contacts-office:last-of-type {
   margin-bottom: 0;
@@ -432,12 +441,13 @@
 }
 .ws-contacts-office-reverse .ws-contacts-map {
   order: 1;
+  border-left: none;
+  border-right: 1px solid var(--ws-line-soft);
 }
 
 .ws-contacts-map {
   position: relative;
-  border: 1px solid var(--ws-line);
-  border-radius: 18px;
+  border-left: 1px solid var(--ws-line-soft);
   overflow: hidden;
   background: var(--ws-bg-2);
   min-height: 420px;
@@ -464,7 +474,7 @@
 
 @media (max-width: 880px) {
   .ws-contacts-section {
-    padding: 36px 0;
+    padding: 20px 0 36px;
   }
 
   /* Wrap: narrow margins to match mobile card look */

@@ -1,9 +1,10 @@
 import "@/features/website/styles/website.css";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router-dom";
+import { Toaster } from "sonner";
 
 import { WebsiteErrorFallback } from "@/features/website/components/ErrorFallback";
 import { Footer } from "@/features/website/components/Footer";
@@ -11,6 +12,7 @@ import { Header } from "@/features/website/components/Header";
 import { useMobileNav } from "@/features/website/hooks/useMobileNav";
 import { useWebsiteThemeManager } from "@/features/website/hooks/useWebsiteThemeManager";
 import { WebsiteThemeContext } from "@/features/website/websiteTheme";
+import Loader from "@/shared/components/common/Loader";
 import { LANG_STORAGE_KEY } from "@/shared/lib/constants";
 import { captureErrorWithId } from "@/shared/lib/sentry";
 import { storageGet } from "@/shared/lib/storage";
@@ -51,17 +53,22 @@ export const WebsiteLayout = () => {
         </a>
         <Header isNavOpen={isNavOpen} openNav={openNav} closeNav={closeNav} />
         <main id="main-content" className="flex-1">
-          <ErrorBoundary
-            FallbackComponent={WebsiteErrorFallback}
-            resetKeys={[location.pathname]}
-            onError={(error, info) =>
-              captureErrorWithId(error, { componentStack: info.componentStack })
-            }
-          >
-            <Outlet />
-          </ErrorBoundary>
+          <Suspense fallback={<Loader />}>
+            <ErrorBoundary
+              FallbackComponent={WebsiteErrorFallback}
+              resetKeys={[location.pathname]}
+              onError={(error, info) =>
+                captureErrorWithId(error, {
+                  componentStack: info.componentStack,
+                })
+              }
+            >
+              <Outlet />
+            </ErrorBoundary>
+          </Suspense>
         </main>
         <Footer />
+        <Toaster richColors position="top-right" />
       </div>
     </WebsiteThemeContext.Provider>
   );

@@ -1,4 +1,6 @@
+import i18next from "i18next";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const COPIED_RESET_MS = 2000;
 
@@ -16,7 +18,7 @@ export function useCopyToClipboard(): {
         setTimeout(() => setCopied(false), COPIED_RESET_MS);
       })
       .catch(() => {
-        // clipboard API unavailable or denied
+        toast.error(i18next.t("errors.clipboard_error"));
       });
   };
 

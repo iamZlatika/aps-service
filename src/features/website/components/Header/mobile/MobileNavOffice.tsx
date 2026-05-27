@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 
-import { MESSENGER_ICONS } from "@/features/website/components/Header/HeaderData";
 import { PhoneIcon } from "@/features/website/components/icons/PhoneIcon";
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
 import { MessengerLabelButton } from "@/features/website/components/MessengerLabelButton";
+import { MESSENGER_ICONS } from "@/features/website/config";
 import { MESSENGERS } from "@/features/website/config";
 import {
   formatPhone,

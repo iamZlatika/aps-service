@@ -132,7 +132,8 @@
     "phoneLabel": "Телефон",
     "openMaps": "у Google Maps",
     "copy": "копіювати",
-    "copied": "скопійовано"
+    "copied": "скопійовано",
+    "openMapsLabel": "Відкрити в Google Maps (відкриється в новій вкладці)"
   },
   "offices": {
     "eyebrow": "Контакти",

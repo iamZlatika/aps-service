@@ -20,7 +20,7 @@ export const Header = ({ isNavOpen, openNav, closeNav }: HeaderProps) => {
           <MobileBar isOpen={isNavOpen} onOpen={openNav} onClose={closeNav} />
         </div>
       </header>
-      <div className="ws-wrap">
+      <div className="ws-wrap w-full">
         <MobileHeaderInfo />
       </div>
       <MobileNav isOpen={isNavOpen} close={closeNav} />

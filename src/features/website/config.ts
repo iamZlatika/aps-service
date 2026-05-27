@@ -1,3 +1,9 @@
+import { type ComponentType, type SVGProps } from "react";
+
+import { TelegramIcon } from "@/features/website/components/icons/TelegramIcon";
+import { ViberIcon } from "@/features/website/components/icons/ViberIcon";
+import { WhatsappIcon } from "@/features/website/components/icons/WhatsappIcon";
+
 export const MESSENGER_KEYS = {
   TELEGRAM: "telegram",
   VIBER: "viber",
@@ -10,6 +16,15 @@ export type MessengerConfig = {
   key: MessengerKey;
   hoverClass: string;
   colorClass: string;
+};
+
+export const MESSENGER_ICONS: Record<
+  MessengerKey,
+  ComponentType<SVGProps<SVGSVGElement>>
+> = {
+  telegram: TelegramIcon,
+  viber: ViberIcon,
+  whatsapp: WhatsappIcon,
 };
 
 export const MESSENGERS: MessengerConfig[] = [

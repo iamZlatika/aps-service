@@ -2,11 +2,13 @@ import { useTranslation } from "react-i18next";
 
 import { useLocations } from "@/features/website/hooks/useLocations";
 import { OfficeCard } from "@/features/website/pages/contacts/OfficeCard";
+import Loader from "@/shared/components/common/Loader";
+import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard";
 import { useLocalize } from "@/shared/hooks/useLocalize";
 
 export const ContactsPage = () => {
   const { t } = useTranslation("website");
-  const { locations } = useLocations();
+  const { locations, isPending, isError, error } = useLocations();
   const localize = useLocalize();
 
   const city = locations[0]
@@ -14,25 +16,36 @@ export const ContactsPage = () => {
     : "";
 
   return (
-    <section
-      className="ws-section ws-contacts-section"
-      aria-labelledby="contacts-heading"
+    <QueryPageGuard
+      isLoading={isPending}
+      isError={isError}
+      error={error}
+      loadingFallback={<Loader />}
     >
-      <div className="ws-wrap">
-        <header className="mb-8">
-          <p className="ws-section-eyebrow">{t("contacts.eyebrow")}</p>
-          <h1 id="contacts-heading" className="ws-section-title">
-            {t("contacts.titlePrefix")}{" "}
-            <strong>
-              {t("contacts.cityAbbr")} {city}.
-            </strong>
-          </h1>
-        </header>
-        {locations.map((location, index) => (
-          <OfficeCard key={location.id} location={location} index={index} />
-        ))}
-      </div>
-    </section>
+      <section
+        className="ws-section ws-contacts-section"
+        aria-labelledby="contacts-heading"
+      >
+        <div className="ws-wrap">
+          <header className="mb-5">
+            <p className="ws-section-eyebrow">{t("contacts.eyebrow")}</p>
+            <h1 id="contacts-heading" className="ws-section-title">
+              {t("contacts.titlePrefix")}{" "}
+              <strong>
+                {t("contacts.cityAbbr")} {city}.
+              </strong>
+            </h1>
+          </header>
+          {locations.map((location, index) => (
+            <OfficeCard
+              key={location.id}
+              location={location}
+              isReverse={index % 2 !== 0}
+            />
+          ))}
+        </div>
+      </section>
+    </QueryPageGuard>
   );
 };
 

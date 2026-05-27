@@ -2,9 +2,9 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
 import { HeaderCabinetButton } from "@/features/website/components/Header/HeaderCabinetButton";
-import { MESSENGER_ICONS } from "@/features/website/components/Header/HeaderData";
 import { PhoneIcon } from "@/features/website/components/icons/PhoneIcon";
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
+import { MESSENGER_ICONS } from "@/features/website/config";
 import { useLocations } from "@/features/website/hooks/useLocations";
 import { getMapsUrl, getMessengerHref } from "@/features/website/lib/service";
 import { WEBSITE_ROUTES } from "@/features/website/routes";
