@@ -64,10 +64,12 @@ export function mapTrackDtoToTrack(dto: TrackDto): Track {
     isCalled: dto.is_called,
     isUrgent: dto.is_urgent,
     createdAt: dto.created_at,
-    statusHistory: dto.status_history.map((item) => ({
-      status: mapStatusDtoToOrderStatus(item.status),
-      createdAt: item.created_at,
-    })),
+    statusHistory: [...dto.status_history]
+      .sort((a, b) => b.created_at.localeCompare(a.created_at))
+      .map((item) => ({
+        status: mapStatusDtoToOrderStatus(item.status),
+        createdAt: item.created_at,
+      })),
   };
 }
 
@@ -85,9 +87,11 @@ export function mapOrderPreviewDtoToOrderPreview(
     deviceType: dto.device_type,
     deviceModel: dto.device_model,
     issueType: dto.issue_type,
-    statusHistory: dto.status_history.map((item) => ({
-      status: mapStatusDtoToOrderStatus(item.status),
-      createdAt: item.created_at,
-    })),
+    statusHistory: [...dto.status_history]
+      .sort((a, b) => b.created_at.localeCompare(a.created_at))
+      .map((item) => ({
+        status: mapStatusDtoToOrderStatus(item.status),
+        createdAt: item.created_at,
+      })),
   };
 }

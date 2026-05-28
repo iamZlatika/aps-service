@@ -6,10 +6,9 @@ import { useTranslation } from "react-i18next";
 import type { TrackStatusHistoryItem } from "@/features/website/types";
 import { cn } from "@/shared/lib/utils";
 
-const VISIBLE_COUNT = 3;
-
 interface StatusHistoryAccordionProps {
   items: TrackStatusHistoryItem[];
+  visibleCount?: number;
 }
 
 function formatEventDate(iso: string): string {
@@ -20,13 +19,14 @@ function formatEventDate(iso: string): string {
 
 export const StatusHistoryAccordion = ({
   items,
+  visibleCount = 3,
 }: StatusHistoryAccordionProps) => {
   const { t, i18n } = useTranslation("website");
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const visible = isExpanded ? items : items.slice(0, VISIBLE_COUNT);
-  const hiddenCount = items.length - VISIBLE_COUNT;
-  const hasMore = items.length > VISIBLE_COUNT;
+  const visible = isExpanded ? items : items.slice(0, visibleCount);
+  const hiddenCount = items.length - visibleCount;
+  const hasMore = items.length > visibleCount;
 
   return (
     <div className="overflow-hidden rounded-2xl border border-ws-line bg-white/[.015]">

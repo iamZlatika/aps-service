@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
@@ -6,6 +7,7 @@ import { useLocations } from "@/features/website/hooks/useLocations";
 import { parseScheduleLines } from "@/features/website/lib/service";
 import { CabinetButton } from "@/features/website/pages/home/components/hero/CabinetButton";
 import { PriceButton } from "@/features/website/pages/home/components/hero/PriceButton";
+import { TrackStatusModal } from "@/features/website/pages/home/components/hero/TrackStatusModal";
 import { useWebsiteTheme } from "@/features/website/websiteTheme";
 import { cn } from "@/shared/lib/utils";
 
@@ -14,6 +16,7 @@ const PERKS = ["hero.perk1", "hero.perk2", "hero.perk3"] as const;
 export const Hero = () => {
   const { t } = useTranslation("website");
   const { resolvedTheme } = useWebsiteTheme();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { locations } = useLocations();
   const { activeCount } = useActiveCount();
   const firstLocation = locations[0];
@@ -60,9 +63,14 @@ export const Hero = () => {
           </p>
 
           <div className="flex flex-col gap-3 md:flex-row md:flex-wrap">
-            <CabinetButton />
+            <CabinetButton onClick={() => setIsModalOpen(true)} />
             <PriceButton />
           </div>
+
+          <TrackStatusModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
 
           <div className="inline-flex w-fit items-center gap-2.5 rounded-full border border-ws-line bg-ws-overlay-chip py-[11px] pl-3.5 pr-4 text-ws-sm text-ws-ink-soft backdrop-blur">
             <PinIcon className="size-3.5 shrink-0 text-ws-ember-bright" />

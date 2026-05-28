@@ -27,10 +27,10 @@ export const websiteApi = {
     return mapTrackDtoToTrack(validated);
   },
   getOrderStatus: async (orderNumber: string): Promise<OrderPreview> => {
-    const response = await get<OrderPreviewDto>(
+    const response = await get<{ data: OrderPreviewDto }>(
       WEBSITE_API.status(orderNumber),
     );
-    const validated = parseDto(OrderPreviewDtoSchema, response);
+    const validated = parseDto(OrderPreviewDtoSchema, response.data);
     return mapOrderPreviewDtoToOrderPreview(validated);
   },
   getLocationsInfo: async (): Promise<Location[]> => {
