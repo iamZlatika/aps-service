@@ -17,12 +17,13 @@ export const PcBuildSection = () => {
   return (
     <section className="ws-section">
       <div className="ws-wrap">
-        <div className="relative overflow-hidden rounded-[24px] border border-ws-line bg-ws-bg-2 p-8 grid grid-cols-1 gap-8 sm:p-12 md:grid-cols-[1.1fr_1fr] md:gap-12 md:items-center">
+        <div className="relative flex flex-col gap-8 overflow-hidden rounded-[24px] border border-ws-line bg-ws-bg-2 p-8 sm:p-12 md:grid md:grid-cols-[1.1fr_1fr] md:grid-rows-[auto_auto] md:gap-x-12 md:gap-y-8">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -right-24 -top-24 size-[400px] rounded-full bg-[radial-gradient(circle,rgba(238,122,58,.18)_0%,transparent_60%)]"
           />
 
+          {/* mobile: 1st · desktop: col 1, row 1 */}
           <div className="relative z-10">
             <p className="ws-section-eyebrow">{t("pcBuild.eyebrow")}</p>
             <h2 className="ws-section-title">
@@ -34,7 +35,7 @@ export const PcBuildSection = () => {
               {t("pcBuild.description")}
             </p>
 
-            <ul className="mt-6 grid max-w-[480px] grid-cols-2 gap-[14px]">
+            <ul className="mt-6 flex max-w-[480px] flex-col gap-2 sm:grid sm:grid-cols-2 sm:gap-[14px]">
               {FEATURE_KEYS.map((key) => (
                 <li
                   key={key}
@@ -48,22 +49,16 @@ export const PcBuildSection = () => {
                 </li>
               ))}
             </ul>
-
-            <button
-              type="button"
-              className="ws-btn ws-btn-primary mt-8 w-full md:w-auto"
-            >
-              {t("pcBuild.cta")}
-            </button>
           </div>
 
+          {/* mobile: 2nd · desktop: col 2, rows 1–2 */}
           <div
             role="img"
             aria-label={`${t("pcBuild.title")} ${t("pcBuild.titleBold")}`}
-            className="relative z-10 aspect-[4/3] w-full overflow-hidden rounded-[16px]"
+            className="relative z-10 aspect-[4/3] w-full overflow-hidden rounded-[16px] md:row-span-2 md:self-center"
           >
             <img
-              src="/compcomp.webp"
+              src="/dark.webp"
               alt=""
               className={cn(
                 "absolute inset-0 h-full w-full object-cover transition-opacity duration-300",
@@ -71,7 +66,7 @@ export const PcBuildSection = () => {
               )}
             />
             <img
-              src="/comp-light.webp"
+              src="/light.webp"
               alt=""
               className={cn(
                 "absolute inset-0 h-full w-full object-cover transition-opacity duration-300",
@@ -79,6 +74,14 @@ export const PcBuildSection = () => {
               )}
             />
           </div>
+
+          {/* mobile: 3rd · desktop: col 1, row 2 (auto-placed) */}
+          <button
+            type="button"
+            className="ws-btn ws-btn-primary relative z-10 w-full justify-center md:w-auto md:justify-start md:justify-self-start md:self-start"
+          >
+            {t("pcBuild.cta")}
+          </button>
         </div>
       </div>
     </section>
