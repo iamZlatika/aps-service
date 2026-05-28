@@ -2,9 +2,9 @@ import { lazy } from "react";
 import { type RouteObject } from "react-router-dom";
 
 import { WebsiteLayout } from "@/features/website/components/WebsiteLayout";
+import HomePage from "@/features/website/pages/home";
 import { WEBSITE_ROUTES } from "@/features/website/routes";
 
-const HomePage = lazy(() => import("@/features/website/pages/home"));
 const ContactsPage = lazy(() => import("@/features/website/pages/contacts"));
 const ReviewsPage = lazy(() => import("@/features/website/pages/reviews"));
 const UserAccountPage = lazy(
