@@ -71,6 +71,7 @@ export const TrackStatusModalForm = ({
 
       <IMaskInput
         id="track-order-input"
+        autoFocus
         mask="APS-0000-000000"
         lazy={false}
         value={orderNumber}

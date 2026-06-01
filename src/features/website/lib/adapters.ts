@@ -4,11 +4,17 @@ import {
   type OrderPreviewDto,
   type StatusDto,
   type TrackDto,
+  type TrackPaymentDto,
+  type TrackProductDto,
+  type TrackServiceDto,
 } from "@/features/website/api/dto";
 import {
   type OrderPreview,
   type OrderStatus,
   type Track,
+  type TrackPayment,
+  type TrackProduct,
+  type TrackService,
 } from "@/features/website/types";
 import { type Location, WEEK_DAYS } from "@/shared/types";
 
@@ -47,6 +53,39 @@ export function mapLocationDtoToLocation(dto: LocationDto): Location {
   };
 }
 
+function mapTrackProductDtoToTrackProduct(dto: TrackProductDto): TrackProduct {
+  return {
+    name: dto.name,
+    price: dto.price,
+    sum: dto.sum,
+    quantity: dto.quantity,
+    createdAt: dto.created_at,
+    completedAt: dto.completed_at,
+    deletedAt: dto.deleted_at,
+  };
+}
+
+function mapTrackServiceDtoToTrackService(dto: TrackServiceDto): TrackService {
+  return {
+    name: dto.name,
+    price: dto.price,
+    sum: dto.sum,
+    quantity: dto.quantity,
+    createdAt: dto.created_at,
+    completedAt: dto.completed_at,
+    deletedAt: dto.deleted_at,
+  };
+}
+
+function mapTrackPaymentDtoToTrackPayment(dto: TrackPaymentDto): TrackPayment {
+  return {
+    type: dto.type,
+    method: dto.method,
+    amount: dto.amount,
+    createdAt: dto.created_at,
+  };
+}
+
 export function mapTrackDtoToTrack(dto: TrackDto): Track {
   return {
     orderNumber: dto.order_number,
@@ -70,6 +109,9 @@ export function mapTrackDtoToTrack(dto: TrackDto): Track {
         status: mapStatusDtoToOrderStatus(item.status),
         createdAt: item.created_at,
       })),
+    products: dto.products.map(mapTrackProductDtoToTrackProduct),
+    services: dto.services.map(mapTrackServiceDtoToTrackService),
+    payments: dto.payments.map(mapTrackPaymentDtoToTrackPayment),
   };
 }
 
@@ -87,11 +129,5 @@ export function mapOrderPreviewDtoToOrderPreview(
     deviceType: dto.device_type,
     deviceModel: dto.device_model,
     issueType: dto.issue_type,
-    statusHistory: [...dto.status_history]
-      .sort((a, b) => b.created_at.localeCompare(a.created_at))
-      .map((item) => ({
-        status: mapStatusDtoToOrderStatus(item.status),
-        createdAt: item.created_at,
-      })),
   };
 }

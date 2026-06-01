@@ -1,6 +1,12 @@
 import { z } from "zod";
 
-import { WEEK_DAYS, type WeekDay } from "@/shared/types";
+import { zodEnumFromConst } from "@/shared/lib/zod-helpers";
+import {
+  PAYMENT_METHODS,
+  PAYMENTS,
+  WEEK_DAYS,
+  type WeekDay,
+} from "@/shared/types";
 
 export const DaySlotDtoSchema = z.object({
   from: z.string(),
@@ -57,6 +63,36 @@ export type TrackStatusHistoryItemDto = z.infer<
   typeof TrackStatusHistoryItemDtoSchema
 >;
 
+export const TrackProductDtoSchema = z.object({
+  name: z.string(),
+  price: z.string(),
+  sum: z.string(),
+  quantity: z.number(),
+  created_at: z.iso.datetime(),
+  completed_at: z.iso.datetime().nullable(),
+  deleted_at: z.iso.datetime().nullable(),
+});
+export type TrackProductDto = z.infer<typeof TrackProductDtoSchema>;
+
+export const TrackServiceDtoSchema = z.object({
+  name: z.string(),
+  price: z.string(),
+  sum: z.string(),
+  quantity: z.number(),
+  created_at: z.iso.datetime(),
+  completed_at: z.iso.datetime().nullable(),
+  deleted_at: z.iso.datetime().nullable(),
+});
+export type TrackServiceDto = z.infer<typeof TrackServiceDtoSchema>;
+
+export const TrackPaymentDtoSchema = z.object({
+  type: zodEnumFromConst(PAYMENTS),
+  method: zodEnumFromConst(PAYMENT_METHODS),
+  amount: z.string(),
+  created_at: z.iso.datetime(),
+});
+export type TrackPaymentDto = z.infer<typeof TrackPaymentDtoSchema>;
+
 export const TrackDtoSchema = z.object({
   order_number: z.string(),
   status: StatusDtoSchema,
@@ -74,6 +110,9 @@ export const TrackDtoSchema = z.object({
   is_urgent: z.boolean(),
   created_at: z.string(),
   status_history: z.array(TrackStatusHistoryItemDtoSchema),
+  products: z.array(TrackProductDtoSchema),
+  services: z.array(TrackServiceDtoSchema),
+  payments: z.array(TrackPaymentDtoSchema),
 });
 export type TrackDto = z.infer<typeof TrackDtoSchema>;
 
@@ -84,7 +123,6 @@ export const OrderPreviewDtoSchema = TrackDtoSchema.pick({
   device_type: true,
   device_model: true,
   issue_type: true,
-  status_history: true,
 });
 export type OrderPreviewDto = z.infer<typeof OrderPreviewDtoSchema>;
 

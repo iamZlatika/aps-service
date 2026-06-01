@@ -44,7 +44,7 @@ Three sections:
 - **Devices** — cards for each device category the service handles
 - **PC Build** — PC assembly service promo section
 
-**`TrackStatusModal`** — a dialog on the home page where the customer enters an order number to get a quick status preview (`OrderPreview`). This is separate from the full tracking page: it uses `useOrderStatus` (a mutation, not a query) and shows only basic info. Clicking through opens the full `/track/:token` page.
+**`TrackStatusModal`** — a dialog on the home page where the customer enters an order number to get a quick status preview (`OrderPreview`). Shows order number, current status badge, and device specs. This is separate from the full tracking page: it uses `useOrderStatus` (a mutation, not a query). Clicking through opens the full `/track/:token` page.
 
 ---
 
@@ -53,11 +53,13 @@ Three sections:
 Full order tracking by a unique token (different from the order number — the token is a shareable link).
 
 Displays:
-- Order number and current status badge
+- Order number, current status badge (`StatusBadge`)
 - Issue type and estimated cost
-- Device specs table (type, manufacturer, model, accessories)
-- Status change history (collapsible accordion)
+- Full order history accordion (`OrderHistoryAccordion`) — statuses, payments, products, services sorted by date
+- Device specs table (`TrackSpecsTable`)
 - Intake note
+
+The history is built in `pages/track/services.ts` via `buildOrderHistory(track)` — merges all four event sources and sorts them newest-first. Called through `useMemo` in the page component.
 
 Uses `useOrderTracking(token)` which fetches the full `Track` type.
 
@@ -108,11 +110,74 @@ WEBSITE_API = {
 
 ## Key types
 
-**`Track`** — full order data for the tracking page. Includes device specs, financial info, status history, flags (`isUrgent`, `isCalled`).
+All website-specific types live in `src/features/website/types.ts`.
 
-**`OrderPreview`** — a subset of `Track` for the quick status modal: order number, status, device info, issue type, status history. Derived with `Pick<Track, ...>`.
+### Track domain types (mapped from server)
 
-**`TrackStatusHistoryItem`** — a single entry in the status history: `{ status, createdAt }`.
+**`Track`** — full order data for the tracking page. Includes device specs, financial info, products, services, payments, status history, and flags.
+
+**`OrderPreview`** — lightweight version for the quick-check modal. `Pick<Track, "orderNumber" | "status" | "manufacturer" | "deviceType" | "deviceModel" | "issueType">`.
+
+**`TrackStatusHistoryItem`** — single status history entry: `{ status, createdAt }`.
+
+**`TrackProduct`** / **`TrackService`** — spare part / repair operation from the server. Include `createdAt`, `completedAt`, `deletedAt`, `sum`.
+
+**`TrackPayment`** — payment transaction: type (`prepayment` | `payment` | `refund`), method, amount, date.
+
+### OrderHistory types (UI layer)
+
+Used by `OrderHistoryAccordion`. Built from `Track` data by `buildOrderHistory()` in `pages/track/services.ts`.
+
+**`OrderHistoryItem`** — discriminated union of all event types:
+- `OrderHistoryStatus` — status change event with status badge
+- `OrderHistoryPayment` — payment event with amount and method
+- `OrderHistoryProduct` — product added/deleted event with price table
+- `OrderHistoryService` — service added/deleted event with price table
+
+---
+
+## Website Components
+
+Reusable components specific to the website feature. Live in `src/features/website/components/`.
+
+### `StatusBadge` — `components/StatusBadge.tsx`
+
+Displays an order status name as a pill badge. Always uses the ember accent color (orange in dark theme, blue in light theme) — ignores `status.color` from the server. Used on the track page and in the quick-check modal.
+
+```tsx
+import { StatusBadge } from "@/features/website/components/StatusBadge";
+
+<StatusBadge status={track.status} />
+```
+
+---
+
+### `OrderHistoryAccordion` — `components/OrderHistoryAccordion/`
+
+A collapsible timeline showing all order events sorted newest-first. Used on the track page and will be used in the user account.
+
+Accepts `OrderHistoryItem[]` — build this array with `buildOrderHistory()` from `pages/track/services.ts`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `OrderHistoryItem[]` | required | Events to display |
+| `titleKey` | `string` | `"track.history.title"` | i18n key for the section heading |
+| `visibleCount` | `number` | `4` | Items shown before "show more" |
+
+Renders four event types differently:
+- **Status** — small badge (ember if current, muted if past) + "статус змінено" label (not shown for `key === "new"`)
+- **Payment** — amount with payment type and method
+- **Product** — "Закуплено деталь" label + card with icon, name, qty/price/sum table
+- **Service** — "Послугу виконано" label + same card layout
+
+```tsx
+import { OrderHistoryAccordion } from "@/features/website/components/OrderHistoryAccordion";
+import { buildOrderHistory } from "@/features/website/pages/track/services";
+
+const history = useMemo(() => buildOrderHistory(track), [track]);
+
+<OrderHistoryAccordion items={history} />
+```
 
 ---
 

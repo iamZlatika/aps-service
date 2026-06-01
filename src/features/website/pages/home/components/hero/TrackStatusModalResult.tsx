@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 
-import { StatusHistoryAccordion } from "@/features/website/components/StatusHistoryAccordion";
+import { StatusBadge } from "@/features/website/components/StatusBadge";
 import { type OrderPreview } from "@/features/website/types";
 
-interface TrackStatusModalResultProps {
+interface OrderPreviewResultProps {
   data: OrderPreview;
   onClose: () => void;
 }
@@ -14,7 +14,7 @@ const specRowClass =
 export const TrackStatusModalResult = ({
   data,
   onClose,
-}: TrackStatusModalResultProps) => {
+}: OrderPreviewResultProps) => {
   const { t } = useTranslation("website");
 
   return (
@@ -30,58 +30,53 @@ export const TrackStatusModalResult = ({
         <p className="text-[clamp(22px,2.6vw,32px)] font-light leading-[1.15] tracking-[-0.015em] text-ws-ink-soft tabular-nums">
           {data.orderNumber}
         </p>
+        <div className="flex flex-wrap items-center gap-2.5">
+          <span className="text-ws-sm tracking-[.01em] text-ws-ink-mute">
+            {t("track.statusLabel")}
+          </span>
+          <StatusBadge status={data.status} />
+        </div>
       </header>
 
-      <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto">
-        <div>
-          <div className="mb-[10px] flex items-center gap-[10px] text-[11px] font-semibold uppercase tracking-[.16em] text-ws-ink-mute">
-            {t("track.specs.title")}
-            <span className="h-px flex-1 bg-ws-line-soft" aria-hidden="true" />
-          </div>
-          <dl className="overflow-hidden rounded-[14px] border border-ws-line bg-white/[.018]">
-            <div className={specRowClass}>
-              <dt className="text-[12px] tracking-[.005em] text-ws-ink-soft">
-                {t("track.specs.deviceType")}
-              </dt>
-              <dd className="text-[14px] font-medium leading-[1.4] text-ws-ink">
-                {data.deviceType}
-              </dd>
-            </div>
-            <div className={specRowClass}>
-              <dt className="text-[12px] tracking-[.005em] text-ws-ink-soft">
-                {t("track.specs.brand")}
-              </dt>
-              <dd className="text-[14px] font-medium leading-[1.4] text-ws-ink">
-                {data.manufacturer}
-              </dd>
-            </div>
-            <div className={specRowClass}>
-              <dt className="text-[12px] tracking-[.005em] text-ws-ink-soft">
-                {t("track.specs.model")}
-              </dt>
-              <dd className="text-[14px] font-medium leading-[1.4] text-ws-ink">
-                {data.deviceModel}
-              </dd>
-            </div>
-            <div className={specRowClass}>
-              <dt className="text-[12px] tracking-[.005em] text-ws-ink-soft">
-                {t("track.issue.label")}
-              </dt>
-              <dd className="text-[14px] font-medium leading-[1.4] text-ws-ink">
-                {data.issueType}
-              </dd>
-            </div>
-          </dl>
-        </div>
-
-        <div>
-          <div className="mb-[10px] flex items-center gap-[10px] text-[11px] font-semibold uppercase tracking-[.16em] text-ws-ink-mute">
-            {t("track.history.title")}
-            <span className="h-px flex-1 bg-ws-line-soft" aria-hidden="true" />
-          </div>
-          <StatusHistoryAccordion items={data.statusHistory} visibleCount={2} />
-        </div>
+      <div className="mb-[10px] flex items-center gap-[10px] text-[11px] font-semibold uppercase tracking-[.16em] text-ws-ink-mute">
+        {t("track.specs.title")}
+        <span className="h-px flex-1 bg-ws-line-soft" aria-hidden="true" />
       </div>
+
+      <dl className="overflow-hidden rounded-[14px] border border-ws-line bg-white/[.018]">
+        <div className={specRowClass}>
+          <dt className="text-[12px] tracking-[.005em] text-ws-ink-soft">
+            {t("track.specs.deviceType")}
+          </dt>
+          <dd className="text-[14px] font-medium leading-[1.4] text-ws-ink">
+            {data.deviceType}
+          </dd>
+        </div>
+        <div className={specRowClass}>
+          <dt className="text-[12px] tracking-[.005em] text-ws-ink-soft">
+            {t("track.specs.brand")}
+          </dt>
+          <dd className="text-[14px] font-medium leading-[1.4] text-ws-ink">
+            {data.manufacturer}
+          </dd>
+        </div>
+        <div className={specRowClass}>
+          <dt className="text-[12px] tracking-[.005em] text-ws-ink-soft">
+            {t("track.specs.model")}
+          </dt>
+          <dd className="text-[14px] font-medium leading-[1.4] text-ws-ink">
+            {data.deviceModel}
+          </dd>
+        </div>
+        <div className={specRowClass}>
+          <dt className="text-[12px] tracking-[.005em] text-ws-ink-soft">
+            {t("track.issue.label")}
+          </dt>
+          <dd className="text-[14px] font-medium leading-[1.4] text-ws-ink">
+            {data.issueType}
+          </dd>
+        </div>
+      </dl>
 
       <div className="mt-[18px]">
         <button

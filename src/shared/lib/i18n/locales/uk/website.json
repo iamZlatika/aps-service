@@ -192,10 +192,25 @@
       "pending": "узгоджується після діагностики"
     },
     "history": {
-      "title": "Історія статусів",
+      "title": "Історія замовлення",
       "events": "подій",
       "collapse": "Згорнути",
-      "showMore": "Показати ще {{count}}"
+      "showMore": "Показати ще {{count}}",
+      "statusChanged": "статус змінено",
+      "productAdded": "Закуплено деталь",
+      "serviceAdded": "Послугу виконано",
+      "qty": "к-сть",
+      "priceLabel": "ціна",
+      "sumLabel": "сума",
+      "payment": {
+        "prepayment": "Передоплата",
+        "payment": "Оплата",
+        "refund": "Повернення",
+        "method": {
+          "cash": "Готівка",
+          "card": "Картка"
+        }
+      }
     },
     "specs": {
       "title": "Інформація про пристрій",

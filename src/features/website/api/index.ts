@@ -22,8 +22,8 @@ import { type Location } from "@/shared/types";
 
 export const websiteApi = {
   getOrderTracking: async (token: string): Promise<Track> => {
-    const response = await get<TrackDto>(WEBSITE_API.track(token));
-    const validated = parseDto(TrackDtoSchema, response);
+    const response = await get<{ data: TrackDto }>(WEBSITE_API.track(token));
+    const validated = parseDto(TrackDtoSchema, response.data);
     return mapTrackDtoToTrack(validated);
   },
   getOrderStatus: async (orderNumber: string): Promise<OrderPreview> => {

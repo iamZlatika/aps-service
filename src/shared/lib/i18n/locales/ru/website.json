@@ -192,10 +192,26 @@
       "pending": "согласовывается после диагностики"
     },
     "history": {
-      "title": "История статусов",
+      "title": "История заказа",
       "events": "событий",
       "collapse": "Свернуть",
-      "showMore": "Показать ещё {{count}}"
+      "showMore": "Показать ещё {{count}}",
+      "statusChanged": "статус изменён",
+      "productAdded": "Закуплена деталь",
+      "serviceAdded": "Услуга выполнена",
+      "qty": "кол-во",
+      "priceLabel": "цена",
+      "sumLabel": "сумма",
+
+      "payment": {
+        "prepayment": "Предоплата",
+        "payment": "Оплата",
+        "refund": "Возврат",
+        "method": {
+          "cash": "Наличные",
+          "card": "Карта"
+        }
+      }
     },
     "specs": {
       "title": "Информация об устройстве",
