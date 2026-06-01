@@ -1,73 +1,83 @@
-# React + TypeScript + Vite
+# APS Service
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A CRM system for managing electronics repair orders — built for a service center handling phones, computers, laptops, tablets, monitors, TVs, and charging stations.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The application has two parts:
 
-## React Compiler
+- **Backoffice** — internal panel for employees: order management, customer database, products, services, and staff
+- **Website** — public interface for customers: company information, repair status tracking, and a personal account for viewing orders and managing Telegram subscriptions
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+| Category | Technology |
+|----------|------------|
+| Framework | React 19, TypeScript 5.9 |
+| Build tool | Vite 7 |
+| Routing | React Router 7 |
+| Server state | TanStack Query 5 |
+| Forms | React Hook Form 7 + Zod 4 |
+| Styling | Tailwind CSS 3, Radix UI |
+| i18n | i18next (ru / uk) |
+| HTTP client | Axios |
+| Error tracking | Sentry |
+| Testing | Vitest, Testing Library |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Prerequisites:** Node.js 18+, npm
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone <repo-url>
+cd aps-service
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Copy `.env.example` to `.env` and fill in the values:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
 ```
+
+| Variable | Description |
+|----------|-------------|
+| `VITE_API_URL` | Backend API base URL |
+| `VITE_SENTRY_DSN` | Sentry DSN for error tracking (optional) |
+| `VITE_BACKOFFICE_LANGUAGE` | Default language for backoffice (`ru` or `uk`) |
+| `VITE_CLIENT_LANGUAGE` | Default language for public website (`ru` or `uk`) |
+
+```bash
+npm run dev        # development server
+npm run build      # production build
+npm run test       # run tests in watch mode
+npm run test:run   # run tests once
+npm run lint       # lint
+npm run lint:fix   # lint and auto-fix
+```
+
+## Project Structure
+
+```
+src/
+├── app/              # Router config, route guards, app root
+├── features/
+│   ├── auth/         # Authentication
+│   ├── backoffice/   # Employee panel
+│   │   └── modules/  # orders, customers, users, dictionaries, profile
+│   └── website/      # Public website
+├── widgets/          # Reusable compound components (used across features)
+└── shared/
+    ├── api/          # HTTP client, query client, query keys
+    ├── components/   # Generic UI components
+    ├── hooks/        # Shared hooks
+    ├── lib/          # Utilities, constants, i18n
+    └── types.ts      # Global enums and shared types
+```
+
+## Documentation
+
+- [Architecture & patterns](docs/architecture.md)
+- [Backoffice modules](docs/backoffice.md)
+- [Website](docs/website.md)
+- [Shared utilities & components](docs/shared.md)
