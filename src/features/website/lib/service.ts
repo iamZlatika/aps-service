@@ -18,7 +18,7 @@ export function getMapsUrl(address: string): string {
 }
 
 export function getMapEmbedSrc(address: string): string {
-  return `https://maps.google.com/maps?q=${encodeURIComponent(address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  return `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_KEY}&q=${encodeURIComponent(address)}&zoom=15`;
 }
 
 export function getMessengerHref(key: MessengerKey, phone: string): string {

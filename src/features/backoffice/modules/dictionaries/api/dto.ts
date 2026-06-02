@@ -139,6 +139,16 @@ export const PriceListItemDtoSchema = z.object({
 });
 export type PriceListItemDto = z.infer<typeof PriceListItemDtoSchema>;
 
+export type PriceListItemPayload = {
+  name_ru: string;
+  name_uk: string;
+  category: string;
+  price: number;
+  price_note_ru: string | null;
+  price_note_uk: string | null;
+  sort_order: number;
+};
+
 export const BankCardDtoSchema = z.object({
   id: z.number(),
   owner_name: z.string(),

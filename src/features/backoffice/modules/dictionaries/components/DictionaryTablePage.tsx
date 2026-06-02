@@ -1,3 +1,4 @@
+import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
@@ -13,6 +14,7 @@ import { toFieldConfigs } from "@/features/backoffice/widgets/table/lib/toFieldC
 import type {
   BaseItem,
   ColumnConfig,
+  FieldConfig,
   SmartTableApi,
 } from "@/features/backoffice/widgets/table/models/types.ts";
 
@@ -37,6 +39,10 @@ interface DictionaryTablePageProps<T extends BaseItem> {
   searchField?: string;
   searchNumbersOnly?: boolean;
   getItemName?: (item: T) => string;
+  filterBar?: ReactNode;
+  extraFilterKeys?: string[];
+  formFields?: FieldConfig[];
+  tableClassName?: string;
 }
 
 export const DictionaryTablePage = <T extends BaseItem>({
@@ -49,6 +55,10 @@ export const DictionaryTablePage = <T extends BaseItem>({
   searchNumbersOnly,
   getItemName = (item) =>
     ((item as Record<string, unknown>)["name"] as string) ?? "",
+  filterBar,
+  extraFilterKeys,
+  formFields,
+  tableClassName,
 }: DictionaryTablePageProps<T>) => {
   const { t } = useTranslation();
 
@@ -59,7 +69,7 @@ export const DictionaryTablePage = <T extends BaseItem>({
     api.update,
   );
 
-  const fieldConfigs = toFieldConfigs(columns, t);
+  const fieldConfigs = formFields ?? toFieldConfigs(columns, t);
 
   return (
     <>
@@ -71,6 +81,9 @@ export const DictionaryTablePage = <T extends BaseItem>({
         columns={columns}
         searchField={searchField}
         searchNumbersOnly={searchNumbersOnly}
+        filterBar={filterBar}
+        extraFilterKeys={extraFilterKeys}
+        className={tableClassName}
         headerActions={<AddButton onClick={() => addModal.setOpen(true)} />}
         renderRowActions={(item) => (
           <RowActions

@@ -35,6 +35,7 @@ export interface FieldConfig {
   type?: "input" | "select" | "phone" | "card";
   inputType?: string;
   options?: SelectOption[];
+  getInitialValue?: (item: Record<string, unknown>) => unknown;
 }
 export type ColumnConfig<
   T extends BaseItem,

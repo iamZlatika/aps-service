@@ -3,8 +3,10 @@ import { parseDto } from "@/shared/api/parseDto";
 
 import {
   mapLocationDtoToLocation,
+  mapPriceListFormDataToPayload,
   mapPriceListItemDtoToPriceListItem,
 } from "../lib/adapter";
+import type { PriceListItem } from "../types";
 import {
   createDictionaryApi,
   createTypedDictionaryApi,
@@ -15,6 +17,7 @@ import {
   type LocationPayload,
   OrderStatusDtoSchema,
   PriceListItemDtoSchema,
+  type PriceListItemPayload,
   SupplierDtoSchema,
 } from "./dto";
 import { DICTIONARIES_API } from "./endpoints";
@@ -93,14 +96,39 @@ export const locationApi = {
     return mapLocationDtoToLocation(parseDto(LocationDtoSchema, response.data));
   },
 };
-export const priceListApi = createTypedDictionaryApi(
-  {
-    list: () => DICTIONARIES_API.priceList(),
-    item: (id) => DICTIONARIES_API.priceListItem(id),
+export const priceListApi = {
+  ...createTypedDictionaryApi(
+    {
+      list: () => DICTIONARIES_API.priceList(),
+      item: (id) => DICTIONARIES_API.priceListItem(id),
+    },
+    PriceListItemDtoSchema,
+    mapPriceListItemDtoToPriceListItem,
+  ),
+  create: async (data: Record<string, unknown>): Promise<PriceListItem> => {
+    const payload = mapPriceListFormDataToPayload(data);
+    const response = await post<PriceListItemPayload, { data: unknown }>(
+      DICTIONARIES_API.priceList(),
+      payload,
+    );
+    return mapPriceListItemDtoToPriceListItem(
+      parseDto(PriceListItemDtoSchema, response.data),
+    );
   },
-  PriceListItemDtoSchema,
-  mapPriceListItemDtoToPriceListItem,
-);
+  update: async (
+    id: number,
+    data: Record<string, unknown>,
+  ): Promise<PriceListItem> => {
+    const payload = mapPriceListFormDataToPayload(data);
+    const response = await put<PriceListItemPayload, { data: unknown }>(
+      DICTIONARIES_API.priceListItem(id),
+      payload,
+    );
+    return mapPriceListItemDtoToPriceListItem(
+      parseDto(PriceListItemDtoSchema, response.data),
+    );
+  },
+};
 
 export const bankCardsApi = {
   ...createTypedDictionaryApi(

@@ -322,7 +322,15 @@
       "schedule": "Графік роботи",
       "ownerName": "Власник картки",
       "cardNumber": "Номер картки",
-      "isActive": "Активна"
+      "isActive": "Активна",
+      "price": "Ціна",
+      "price_note": "Примітка до ціни",
+      "price_note_ru": "Примітка до ціни (рос.)",
+      "price_note_uk": "Примітка до ціни (укр.)",
+      "sort_order": "Порядок"
+    },
+    "price_list": {
+      "all_categories": "Всі категорії"
     },
     "placeholders": {
       "key": "Тільки латиниця, цифри та _",

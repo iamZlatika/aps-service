@@ -63,10 +63,12 @@ export const ItemFormDialog = ({
   const defaultValues = useMemo(
     () =>
       Object.fromEntries(
-        fields.map((f) => [
-          f.key,
-          values?.[f.key] != null ? String(values[f.key]) : "",
-        ]),
+        fields.map((f) => {
+          const raw = f.getInitialValue
+            ? f.getInitialValue(values ?? {})
+            : values?.[f.key];
+          return [f.key, raw != null ? String(raw) : ""];
+        }),
       ),
     [values, fields],
   );
