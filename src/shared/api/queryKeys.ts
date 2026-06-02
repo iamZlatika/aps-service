@@ -73,5 +73,6 @@ export const queryKeys = {
     products: makeEntityKey(["dictionaries"], "products"),
     locations: makeEntityKey(["dictionaries"], "locations"),
     bankCards: makeEntityKey(["dictionaries"], "bank-cards"),
+    priceList: makeEntityKey(["dictionaries"], "price-list"),
   },
 } as const;

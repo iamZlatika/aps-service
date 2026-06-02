@@ -92,7 +92,8 @@
       "products": "Товари",
       "suppliers": "Постачальники",
       "locations": "Локації",
-      "bank_cards": "Банківські картки"
+      "bank_cards": "Банківські картки",
+      "price_list": "Прайс-лист"
     }
   },
   "errors": {

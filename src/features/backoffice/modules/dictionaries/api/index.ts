@@ -1,7 +1,10 @@
 import { post, put } from "@/shared/api/api.ts";
 import { parseDto } from "@/shared/api/parseDto";
 
-import { mapLocationDtoToLocation } from "../lib/adapter";
+import {
+  mapLocationDtoToLocation,
+  mapPriceListItemDtoToPriceListItem,
+} from "../lib/adapter";
 import {
   createDictionaryApi,
   createTypedDictionaryApi,
@@ -11,6 +14,7 @@ import {
   LocationDtoSchema,
   type LocationPayload,
   OrderStatusDtoSchema,
+  PriceListItemDtoSchema,
   SupplierDtoSchema,
 } from "./dto";
 import { DICTIONARIES_API } from "./endpoints";
@@ -89,6 +93,15 @@ export const locationApi = {
     return mapLocationDtoToLocation(parseDto(LocationDtoSchema, response.data));
   },
 };
+export const priceListApi = createTypedDictionaryApi(
+  {
+    list: () => DICTIONARIES_API.priceList(),
+    item: (id) => DICTIONARIES_API.priceListItem(id),
+  },
+  PriceListItemDtoSchema,
+  mapPriceListItemDtoToPriceListItem,
+);
+
 export const bankCardsApi = {
   ...createTypedDictionaryApi(
     {

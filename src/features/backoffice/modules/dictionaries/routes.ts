@@ -13,4 +13,5 @@ export const DICTIONARIES_ROUTES = {
   products: "dictionaries/products",
   locations: "dictionaries/locations",
   bankCards: "dictionaries/bank-cards",
+  priceList: "dictionaries/price-list",
 } as const;

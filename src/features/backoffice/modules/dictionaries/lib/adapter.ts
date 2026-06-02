@@ -1,10 +1,12 @@
 import {
   type LocationDto,
   type PaginationMetaDto,
+  type PriceListItemDto,
 } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import {
   type PaginatedDictionaryItems,
   type PaginationMeta,
+  type PriceListItem,
 } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { BaseItem } from "@/features/backoffice/widgets/table/models/types.ts";
 import { type Location } from "@/shared/types";
@@ -24,6 +26,21 @@ export const mapPaginatedItems = <T extends BaseItem>(
 ): PaginatedDictionaryItems<T> => ({
   items,
   meta: mapPaginationMeta(meta),
+});
+
+export const mapPriceListItemDtoToPriceListItem = (dto: PriceListItemDto): PriceListItem => ({
+  id: dto.id,
+  category: {
+    key: dto.category.key,
+    nameRu: dto.category.name_ru,
+    nameUk: dto.category.name_uk,
+  },
+  nameRu: dto.name_ru,
+  nameUk: dto.name_uk,
+  price: dto.price,
+  priceNoteRu: dto.price_note_ru,
+  priceNoteUk: dto.price_note_uk,
+  sortOrder: dto.sort_order,
 });
 
 export const mapLocationDtoToLocation = (dto: LocationDto): Location => ({

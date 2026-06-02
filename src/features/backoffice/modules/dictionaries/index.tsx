@@ -7,6 +7,7 @@ import {
   FolderCog,
   MapPin,
   Package,
+  Receipt,
   ShoppingCart,
   Smartphone,
   Stethoscope,
@@ -88,6 +89,11 @@ const DictionariesPage = () => {
       title: t("sidebar.dictionaries_list.bank_cards"),
       icon: CreditCard,
       href: DICTIONARIES_LINKS.bankCards(),
+    },
+    {
+      title: t("sidebar.dictionaries_list.price_list"),
+      icon: Receipt,
+      href: DICTIONARIES_LINKS.priceList(),
     },
   ];
 

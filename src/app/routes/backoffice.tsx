@@ -82,6 +82,9 @@ const LocationsPage = lazy(
 const BankCardsPage = lazy(
   () => import("@/features/backoffice/modules/dictionaries/pages/BankCards"),
 );
+const PriceListPage = lazy(
+  () => import("@/features/backoffice/modules/dictionaries/pages/price-list"),
+);
 
 export const backofficeRoutes: RouteObject = {
   children: [
@@ -157,6 +160,10 @@ export const backofficeRoutes: RouteObject = {
         {
           path: DICTIONARIES_ROUTES.bankCards,
           element: <BankCardsPage />,
+        },
+        {
+          path: DICTIONARIES_ROUTES.priceList,
+          element: <PriceListPage />,
         },
       ],
     },

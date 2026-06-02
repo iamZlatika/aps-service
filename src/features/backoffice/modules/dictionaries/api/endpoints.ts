@@ -28,4 +28,6 @@ export const DICTIONARIES_API = {
   bankCards: () => `${BASE}/bank-cards`,
   bankCard: (id: number) => `${BASE}/bank-cards/${id}`,
   bankCardToggleActive: (id: number) => `${BASE}/bank-cards/${id}/is-active`,
+  priceList: () => `${BASE}/price-list`,
+  priceListItem: (id: number) => `${BASE}/price-list/${id}`,
 } as const;

@@ -25,6 +25,23 @@ export type PaginatedDictionaryItems<T extends BaseItem = DictionaryItem> = {
 
 export type StatusColor = (typeof STATUS_COLORS)[keyof typeof STATUS_COLORS];
 
+export type PriceListCategory = {
+  key: string;
+  nameRu: string;
+  nameUk: string;
+};
+
+export type PriceListItem = {
+  id: number;
+  category: PriceListCategory;
+  nameRu: string;
+  nameUk: string;
+  price: number;
+  priceNoteRu: string | null;
+  priceNoteUk: string | null;
+  sortOrder: number;
+};
+
 export type ScheduleGroup = {
   fromDay: WeekDay;
   toDay: WeekDay;
