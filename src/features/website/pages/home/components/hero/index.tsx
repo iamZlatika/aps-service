@@ -72,7 +72,7 @@ export const Hero = () => {
             onClose={() => setIsModalOpen(false)}
           />
 
-          <div className="inline-flex w-fit items-center gap-2.5 rounded-full border border-ws-line bg-ws-overlay-chip py-[11px] pl-3.5 pr-4 text-ws-sm text-ws-ink-soft backdrop-blur">
+          <div className="mt-3 inline-flex w-fit items-center gap-2.5 rounded-full border border-ws-line bg-ws-overlay-chip py-[11px] pl-3.5 pr-4 text-ws-sm text-ws-ink-soft backdrop-blur">
             <PinIcon className="size-3.5 shrink-0 text-ws-ember-bright" />
             <span>
               <b className="font-semibold text-ws-ink">{t("hero.city")}</b>{" "}
@@ -104,7 +104,7 @@ export const Hero = () => {
                 <b className="text-ws-xs font-semibold text-ws-ember-bright">
                   {activeCount}
                 </b>
-                {t("hero.devicesInWork")}
+                {t("hero.devicesInWork", { count: activeCount })}
               </div>
             )}
           </div>
@@ -150,7 +150,7 @@ export const Hero = () => {
               >
                 {activeCount}
               </b>
-              {t("hero.devicesInWork")}
+              {t("hero.devicesInWork", { count: activeCount })}
             </div>
           )}
         </div>

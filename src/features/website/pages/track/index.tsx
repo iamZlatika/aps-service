@@ -27,6 +27,7 @@ export const TrackPage = () => {
       isError={isError}
       error={error}
       onRetry={refetch}
+      buttonClassName="bg-[var(--ws-bg-2)] text-[var(--ws-ink)] border-[var(--ws-line)] hover:bg-[var(--ws-bg-3)]"
       loadingFallback={
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-ws-bg">
           <WebsiteLoader />

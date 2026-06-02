@@ -210,6 +210,11 @@
   border-color: var(--ws-ink-mute);
 }
 
+/* Ghost button hover fix for light theme */
+.website.light .ws-btn-ghost:hover {
+  background: rgba(0,0,0,.03);
+}
+
 .ws-btn-cream {
   display: inline-flex;
   align-items: center;
@@ -350,10 +355,6 @@
     linear-gradient(135deg, #f5ecd6 0%, #ebe1c6 100%);
 }
 
-/* Ghost button hover fix for light theme */
-.website.light .ws-btn-ghost:hover {
-  background: rgba(0,0,0,.03);
-}
 
 /* Primary button: white text on blue gradient */
 .website.light .ws-btn-primary {

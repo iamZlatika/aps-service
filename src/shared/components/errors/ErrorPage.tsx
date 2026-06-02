@@ -1,12 +1,14 @@
 import { AlertTriangle, RefreshCw } from "lucide-react";
 
 import { Button } from "@/shared/components/ui/button.tsx";
+import { cn } from "@/shared/lib/utils";
 
 interface PageErrorProps {
   title: string;
   description?: string;
   onRetry?: () => void;
   buttonLabel?: string;
+  buttonClassName?: string;
 }
 
 const PageError = ({
@@ -14,6 +16,7 @@ const PageError = ({
   description,
   onRetry,
   buttonLabel,
+  buttonClassName,
 }: PageErrorProps) => {
   return (
     <div className="flex flex-1 items-center justify-center">
@@ -29,7 +32,11 @@ const PageError = ({
         </div>
 
         {onRetry && (
-          <Button onClick={onRetry} variant="outline" className="gap-2">
+          <Button
+            onClick={onRetry}
+            variant="outline"
+            className={cn("gap-2", buttonClassName)}
+          >
             <RefreshCw className="h-4 w-4" />
             {buttonLabel}
           </Button>

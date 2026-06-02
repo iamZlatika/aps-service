@@ -14,6 +14,7 @@ interface QueryPageGuardProps {
 
   title?: string;
   unknownMessage?: string;
+  buttonClassName?: string;
 
   children: ReactNode;
 }
@@ -26,6 +27,7 @@ export function QueryPageGuard({
   loadingFallback = null,
   title,
   unknownMessage,
+  buttonClassName,
   children,
 }: QueryPageGuardProps) {
   const { t } = useTranslation();
@@ -43,6 +45,7 @@ export function QueryPageGuard({
         }
         onRetry={onRetry}
         buttonLabel={t("errors.retry")}
+        buttonClassName={buttonClassName}
       />
     );
   }
