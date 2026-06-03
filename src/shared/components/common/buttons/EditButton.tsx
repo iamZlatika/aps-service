@@ -15,4 +15,3 @@ export const EditButton = ({ onClick, disabled }: EditButtonProps) => {
     </Button>
   );
 };
-export default EditButton;

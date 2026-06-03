@@ -2,16 +2,16 @@ import { type ReactNode } from "react";
 
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 
-export interface PaginatedResponse<T extends BaseItem = BaseItem> {
+export type PaginatedResponse<T extends BaseItem = BaseItem> = {
   items: T[];
   meta: {
     currentPage: number;
     lastPage: number;
     total: number;
   };
-}
+};
 
-export interface SmartTableApi<T extends BaseItem = BaseItem> {
+export type SmartTableApi<T extends BaseItem = BaseItem> = {
   getAll: (
     page: number,
     perPage: number,
@@ -19,7 +19,7 @@ export interface SmartTableApi<T extends BaseItem = BaseItem> {
     sortType?: SortType,
     filters?: Record<string, string>,
   ) => Promise<PaginatedResponse<T>>;
-}
+};
 
 export type SelectOption = {
   value: string;
@@ -27,7 +27,7 @@ export type SelectOption = {
   colorDot?: string;
 };
 
-export interface FieldConfig {
+export type FieldConfig = {
   key: string;
   label: string;
   placeholder?: string;
@@ -36,7 +36,7 @@ export interface FieldConfig {
   inputType?: string;
   options?: SelectOption[];
   getInitialValue?: (item: Record<string, unknown>) => unknown;
-}
+};
 export type ColumnConfig<
   T extends BaseItem,
   K extends keyof T & string = keyof T & string,

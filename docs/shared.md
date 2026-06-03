@@ -170,18 +170,6 @@ import { storageGet, storageSet } from "@/shared/lib/storage";
 
 ---
 
-### `getAvatarSrc(url)`
-
-Fixes avatar URLs in local development — strips the API origin prefix so images load correctly through Vite's proxy.
-Always use this when rendering user avatars.
-
-```ts
-import { getAvatarSrc } from "@/shared/lib/getAvatarSrc";
-
-<img src={getAvatarSrc(user.avatarUrl)} />
-```
-
----
 
 ## Constants
 

@@ -18,6 +18,7 @@ export default defineConfig([
       "vite.config.ts",
       "*.config.js",
       "*.config.ts",
+      "proto/**",
       "src/shared/components/ui/**",
       "src/features/website/components/Header/HeaderData.tsx",
     ],

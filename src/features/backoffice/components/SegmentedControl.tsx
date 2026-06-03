@@ -2,10 +2,10 @@ import { type ReactNode } from "react";
 
 import { Button } from "@/shared/components/ui/button.tsx";
 
-interface SegmentedControlOption<T extends string> {
+type SegmentedControlOption<T extends string> = {
   label: ReactNode | string;
   value: T;
-}
+};
 
 interface SegmentedControlProps<T extends string> {
   value: T;

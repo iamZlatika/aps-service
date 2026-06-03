@@ -21,4 +21,3 @@ export const CancelButton = ({ onClick, disabled }: CancelButtonProps) => {
     </Button>
   );
 };
-export default CancelButton;

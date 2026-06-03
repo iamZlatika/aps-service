@@ -5,4 +5,5 @@ export const WEBSITE_API = {
   track: (token: string) => `${BASE}/orders/track/${token}`,
   status: (orderNumber: string) => `${BASE}/orders/status/${orderNumber}`,
   activeCount: () => `${BASE}/orders/active-count`,
+  priceList: () => `${BASE}/dictionaries/price-list`,
 } as const;

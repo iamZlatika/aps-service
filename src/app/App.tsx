@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import { RouterProvider } from "react-router-dom";
 
 import { queryClient } from "@/shared/api/queryClient.ts";
-import Loader from "@/shared/components/common/Loader.tsx";
+import { Loader } from "@/shared/components/common/Loader.tsx";
 
 import { router } from "./router";
 

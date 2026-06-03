@@ -2,7 +2,7 @@ import { type BaseItem } from "@/features/backoffice/widgets/table/models/types.
 import { type WeekDay } from "@/shared/types";
 import { type STATUS_COLORS } from "@/shared/types.ts";
 
-export type { Location } from "@/shared/types";
+export type { Location } from "@/entities/location/types";
 
 export type DictionaryItem = {
   id: number;
@@ -25,22 +25,10 @@ export type PaginatedDictionaryItems<T extends BaseItem = DictionaryItem> = {
 
 export type StatusColor = (typeof STATUS_COLORS)[keyof typeof STATUS_COLORS];
 
-export type PriceListCategory = {
-  key: string;
-  nameRu: string;
-  nameUk: string;
-};
-
-export type PriceListItem = {
-  id: number;
-  category: PriceListCategory;
-  nameRu: string;
-  nameUk: string;
-  price: number;
-  priceNoteRu: string | null;
-  priceNoteUk: string | null;
-  sortOrder: number;
-};
+export type {
+  PriceListCategory,
+  PriceListItem,
+} from "@/entities/price-list/types";
 
 export type ScheduleGroup = {
   fromDay: WeekDay;

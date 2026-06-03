@@ -1,5 +1,6 @@
+import { type Schedule } from "@/entities/location/types";
 import { type ScheduleGroup } from "@/features/backoffice/modules/dictionaries/types.ts";
-import { type Schedule, WEEK_DAYS } from "@/shared/types";
+import { WEEK_DAYS } from "@/shared/types";
 
 export function mapScheduleGroupsToSchedule(groups: ScheduleGroup[]): Schedule {
   const result: Schedule = {

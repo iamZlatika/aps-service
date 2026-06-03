@@ -1,17 +1,10 @@
-import {
-  type OrderStatus,
-  type PaymentMethodType,
-  type PaymentType,
-} from "@/shared/types";
+import { type OrderStatus } from "@/entities/order-status/types";
+import { type PaymentMethodType, type PaymentType } from "@/shared/types";
 
-export type { OrderStatus };
-export type {
-  DaySlot,
-  Location,
-  Schedule,
-  WEEK_DAYS,
-  WeekDay,
-} from "@/shared/types";
+export type { DaySlot, Location, Schedule } from "@/entities/location/types";
+export type { OrderStatus } from "@/entities/order-status/types";
+export type { WeekDay } from "@/shared/types";
+export { WEEK_DAYS } from "@/shared/types";
 
 // --- Track domain types (mapped from server response) ---
 
@@ -78,6 +71,13 @@ export type OrderPreview = Pick<
   | "deviceModel"
   | "issueType"
 >;
+
+// --- Price list ---
+
+export type {
+  PriceListCategory,
+  PriceListItem,
+} from "@/entities/price-list/types";
 
 // --- OrderHistory types (UI layer, used by OrderHistoryAccordion) ---
 

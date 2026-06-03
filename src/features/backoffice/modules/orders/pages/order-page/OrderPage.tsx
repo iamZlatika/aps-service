@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { AuthRoutes } from "@/features/auth/api/routes.ts";
-import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard.tsx";
+import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard";
 import { StatusSelect } from "@/features/backoffice/modules/orders/components/StatusSelect.tsx";
 import { useOrder } from "@/features/backoffice/modules/orders/hooks/useOrder.ts";
 import { HistorySidebar } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/HistorySidebar.tsx";
@@ -23,7 +23,7 @@ import { buildOrderHistory } from "@/features/backoffice/modules/orders/pages/or
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import Loader from "@/shared/components/common/Loader.tsx";
+import { Loader } from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
 import { useIsMobile } from "@/shared/hooks/useMobile.ts";

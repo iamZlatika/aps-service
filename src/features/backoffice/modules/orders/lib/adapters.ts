@@ -1,8 +1,9 @@
+import { mapStatusDtoToOrderStatus } from "@/entities/order-status/adapters";
 import {
   mapCustomerDtoToCustomer,
   mapCustomerInfoDtoToCustomerInfo,
 } from "@/features/backoffice/modules/customers/lib/adapters.ts";
-import { mapLocationDtoToLocation } from "@/features/backoffice/modules/dictionaries/lib/adapter.ts";
+import { mapLocationDtoToLocation } from "@/features/backoffice/modules/dictionaries/lib/adapters.ts";
 import type {
   CallHistoryDto,
   DocumentDto,
@@ -14,7 +15,6 @@ import type {
   OrderServiceDto,
   OrderTransactionDto,
   PaginatedOrdersDto,
-  StatusDto,
   StatusHistoryItemDto,
 } from "@/features/backoffice/modules/orders/api/dto.ts";
 import type { EditOrderInfoFormValues } from "@/features/backoffice/modules/orders/lib/schema.ts";
@@ -31,23 +31,11 @@ import {
   type OrderPayment,
   type OrderProduct,
   type OrderService,
-  type OrderStatus,
   type OrderTransaction,
   type StatusHistoryItem,
 } from "@/features/backoffice/modules/orders/types.ts";
 import { mapUserDtoToUser } from "@/features/backoffice/modules/users/lib/adapters.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
-
-export function mapStatusDtoToOrderStatus(dto: StatusDto): OrderStatus {
-  return {
-    id: dto.id,
-    key: dto.key,
-    nameRu: dto.name_ru,
-    nameUa: dto.name_ua,
-    color: dto.color,
-    isSystem: dto.is_system,
-  };
-}
 
 export function mapStatusHistoryItemDtoToStatusHistoryItem(
   dto: StatusHistoryItemDto,

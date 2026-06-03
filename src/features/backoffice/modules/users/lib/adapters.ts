@@ -1,4 +1,4 @@
-import { mapLocationDtoToLocation } from "@/features/backoffice/modules/dictionaries/lib/adapter.ts";
+import { mapLocationDtoToLocation } from "@/entities/location/adapters";
 import { type SalarySettings } from "@/features/backoffice/modules/users/lib/salarySettingsSchema.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types";
 

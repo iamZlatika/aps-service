@@ -10,7 +10,7 @@ import { useAvatarDelete } from "@/features/backoffice/modules/profile/component
 import { useAvatarUpload } from "@/features/backoffice/modules/profile/components/avatar/hooks/useAvatarUpload.ts";
 import EditButton from "@/features/backoffice/modules/profile/components/buttons/EditButton.tsx";
 import { isCustomAvatar } from "@/features/backoffice/modules/profile/lib/isCusttomAvatar.ts";
-import Loader from "@/shared/components/common/Loader.tsx";
+import { Loader } from "@/shared/components/common/Loader.tsx";
 import { Avatar, AvatarImage } from "@/shared/components/ui/avatar";
 import { useIsMobile } from "@/shared/hooks/useMobile.ts";
 

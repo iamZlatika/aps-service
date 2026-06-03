@@ -15,7 +15,7 @@ interface SearchFilterProps {
   className?: string;
 }
 
-const SearchFilter = ({
+export const SearchFilter = ({
   fieldName,
   placeholder,
   value,
@@ -97,5 +97,3 @@ const SearchFilter = ({
     </div>
   );
 };
-
-export default SearchFilter;

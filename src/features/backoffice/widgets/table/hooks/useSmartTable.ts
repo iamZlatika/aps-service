@@ -13,7 +13,7 @@ import type {
 } from "@/features/backoffice/widgets/table/models/types.ts";
 import { getPageNumbers } from "@/shared/lib/pagination.ts";
 
-interface UseSmartTableParams<T extends BaseItem = BaseItem> {
+type UseSmartTableParams<T extends BaseItem = BaseItem> = {
   api: SmartTableApi<T>;
   queryKeyFn: (
     page: number,
@@ -26,7 +26,7 @@ interface UseSmartTableParams<T extends BaseItem = BaseItem> {
   searchField: string;
   tableKey: string;
   extraFilterKeys?: string[];
-}
+};
 
 export const useSmartTable = <T extends BaseItem>({
   api,

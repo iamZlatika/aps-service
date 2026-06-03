@@ -11,7 +11,7 @@ import { RoleBadge } from "@/features/backoffice/modules/profile/components/Role
 import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard.tsx";
 import { AcceptButton } from "@/shared/components/common/buttons/AcceptButton.tsx";
 import { CancelButton } from "@/shared/components/common/buttons/CancelButton.tsx";
-import Loader from "@/shared/components/common/Loader.tsx";
+import { Loader } from "@/shared/components/common/Loader.tsx";
 import { CardTitle } from "@/shared/components/ui/card.tsx";
 
 const ProfilePage = () => {

@@ -6,13 +6,13 @@ import { useTranslation } from "react-i18next";
 
 import { profileApi } from "@/features/backoffice/modules/profile/api";
 import PasswordChangedDialog from "@/features/backoffice/modules/profile/components/PasswordChangedDialog.tsx";
-import { mapChangePasswordToApi } from "@/features/backoffice/modules/profile/lib/adapter.ts";
+import { mapChangePasswordToApi } from "@/features/backoffice/modules/profile/lib/adapters.ts";
 import {
   type ChangePasswordFormValues,
   createProfileSchema,
 } from "@/features/backoffice/modules/profile/profile.schema.ts";
 import { FormField } from "@/shared/components/common/FormField.tsx";
-import Loader from "@/shared/components/common/Loader.tsx";
+import { Loader } from "@/shared/components/common/Loader.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";

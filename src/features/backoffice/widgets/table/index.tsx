@@ -6,7 +6,7 @@ import {
   TableContent,
   TablePagination,
 } from "@/features/backoffice/widgets/table/components";
-import SearchFilter from "@/features/backoffice/widgets/table/components/filters/FilterInput.tsx";
+import { SearchFilter } from "@/features/backoffice/widgets/table/components/filters/FilterInput.tsx";
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type {
   BaseItem,

@@ -9,6 +9,7 @@ import { usersApi } from "@/features/backoffice/modules/users/api";
 import { UserLocationSelect } from "@/features/backoffice/modules/users/components/UserLocationSelect.tsx";
 import { getUserRoleOptions } from "@/features/backoffice/modules/users/data.ts";
 import { registerUserSchema } from "@/features/backoffice/modules/users/lib/registerUserSchema.ts";
+import { USERS_LINKS } from "@/features/backoffice/modules/users/navigation";
 import {
   type NewUser,
   type User,
@@ -161,7 +162,7 @@ const UsersPage = () => {
   ];
 
   const onRowClick = (user: User) => {
-    navigate(`/backoffice/users/${user.id}`);
+    navigate(USERS_LINKS.detail(user.id));
   };
 
   return (

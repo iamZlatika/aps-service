@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { mapPaginatedItems } from "@/features/backoffice/modules/dictionaries/lib/adapter.ts";
+import { mapPaginatedItems } from "@/features/backoffice/modules/dictionaries/lib/adapters.ts";
 import type { PaginatedDictionaryItems } from "@/features/backoffice/modules/dictionaries/types.ts";
 import { type SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { BaseItem } from "@/features/backoffice/widgets/table/models/types.ts";

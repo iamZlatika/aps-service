@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
-import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard.tsx";
+import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard";
 import { useCustomer } from "@/features/backoffice/modules/customers/hooks/useCustomer.ts";
-import Loader from "@/shared/components/common/Loader.tsx";
+import { Loader } from "@/shared/components/common/Loader.tsx";
 
 const CustomerPage = () => {
   const { id } = useParams<{ id: string }>();

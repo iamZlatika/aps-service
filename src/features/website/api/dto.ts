@@ -1,59 +1,23 @@
 import { z } from "zod";
 
+import { LocationDtoSchema } from "@/entities/location/dto";
+import { StatusDtoSchema } from "@/entities/order-status/dto";
+import { PriceListItemDtoSchema } from "@/entities/price-list/dto";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers";
-import {
-  PAYMENT_METHODS,
-  PAYMENTS,
-  WEEK_DAYS,
-  type WeekDay,
-} from "@/shared/types";
+import { PAYMENT_METHODS, PAYMENTS } from "@/shared/types";
 
-export const DaySlotDtoSchema = z.object({
-  from: z.string(),
-  to: z.string(),
-});
-export type DaySlotDto = z.infer<typeof DaySlotDtoSchema>;
-
-export const ScheduleDtoSchema = z.object(
-  WEEK_DAYS.reduce(
-    (acc, day) => ({ ...acc, [day]: DaySlotDtoSchema.nullable() }),
-    {} as Record<WeekDay, z.ZodNullable<typeof DaySlotDtoSchema>>,
-  ),
-);
-export type ScheduleDto = z.infer<typeof ScheduleDtoSchema>;
-
-export const LocationDtoSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  city_ru: z.string(),
-  city_ua: z.string(),
-  district_ru: z.string(),
-  district_ua: z.string(),
-  street_ru: z.string(),
-  street_ua: z.string(),
-  building: z.string(),
-  address_ru: z.string(),
-  address_ua: z.string(),
-  phone: z.string(),
-  schedule: ScheduleDtoSchema,
-  schedule_display: z.string(),
-});
-export type LocationDto = z.infer<typeof LocationDtoSchema>;
+export { type StatusDto, StatusDtoSchema } from "@/entities/order-status/dto";
 
 export const LocationsResponseDtoSchema = z.object({
   data: z.array(LocationDtoSchema),
 });
 export type LocationsResponseDto = z.infer<typeof LocationsResponseDtoSchema>;
 
-export const StatusDtoSchema = z.object({
-  id: z.number(),
-  key: z.string(),
-  name_ru: z.string(),
-  name_ua: z.string(),
-  color: z.string(),
-  is_system: z.boolean(),
+export const DaySlotDtoSchema = z.object({
+  from: z.string(),
+  to: z.string(),
 });
-export type StatusDto = z.infer<typeof StatusDtoSchema>;
+export type DaySlotDto = z.infer<typeof DaySlotDtoSchema>;
 
 export const TrackStatusHistoryItemDtoSchema = z.object({
   status: StatusDtoSchema,
@@ -130,3 +94,7 @@ export const ActiveCountDtoSchema = z.object({
   count: z.number(),
 });
 export type ActiveCountDto = z.infer<typeof ActiveCountDtoSchema>;
+
+export const PriceListResponseDtoSchema = z.object({
+  data: z.array(PriceListItemDtoSchema),
+});

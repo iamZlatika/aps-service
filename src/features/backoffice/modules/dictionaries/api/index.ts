@@ -5,7 +5,7 @@ import {
   mapLocationDtoToLocation,
   mapPriceListFormDataToPayload,
   mapPriceListItemDtoToPriceListItem,
-} from "../lib/adapter";
+} from "../lib/adapters";
 import type { PriceListItem } from "../types";
 import {
   createDictionaryApi,

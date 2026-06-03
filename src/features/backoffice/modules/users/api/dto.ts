@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { LocationDtoSchema } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
+import { LocationDtoSchema } from "@/entities/location/dto";
 import { emailRegex } from "@/shared/lib/constants.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
 import {

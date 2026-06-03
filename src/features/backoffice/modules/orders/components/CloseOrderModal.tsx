@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
 import { useDocumentActions } from "@/features/backoffice/modules/orders/hooks/useDocumentActions.ts";
-import Loader from "@/shared/components/common/Loader.tsx";
+import { Loader } from "@/shared/components/common/Loader.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
 import {

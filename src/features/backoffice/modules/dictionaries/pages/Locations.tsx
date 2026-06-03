@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { type Location } from "@/entities/location/types";
 import { PhoneDropdown } from "@/features/backoffice/components/PhoneDropdown";
 import { locationApi } from "@/features/backoffice/modules/dictionaries/api";
 import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
@@ -12,7 +13,6 @@ import { DeleteConfirmDialog } from "@/features/backoffice/widgets/table/compone
 import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { notifyError } from "@/shared/lib/errors/services.ts";
-import { type Location } from "@/shared/types";
 
 const LocationsPage = () => {
   const { t } = useTranslation();

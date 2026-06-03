@@ -1,7 +1,7 @@
 import { z } from "zod";
 
+import { type Schedule } from "@/entities/location/types";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
-import type { Schedule } from "@/shared/types";
 import { STATUS_COLORS } from "@/shared/types.ts";
 
 export const DictionaryItemDtoSchema = z.object({
@@ -75,38 +75,7 @@ export const ProductDtoSchema = z.object({
 
 export type Product = z.infer<typeof ProductDtoSchema>;
 
-const ScheduleDayDtoSchema = z
-  .object({ from: z.string(), to: z.string() })
-  .nullable();
-
-const LocationScheduleDtoSchema = z.object({
-  mon: ScheduleDayDtoSchema,
-  tue: ScheduleDayDtoSchema,
-  wed: ScheduleDayDtoSchema,
-  thu: ScheduleDayDtoSchema,
-  fri: ScheduleDayDtoSchema,
-  sat: ScheduleDayDtoSchema,
-  sun: ScheduleDayDtoSchema,
-});
-
-export const LocationDtoSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  city_ru: z.string(),
-  city_ua: z.string(),
-  district_ru: z.string(),
-  district_ua: z.string(),
-  street_ru: z.string(),
-  street_ua: z.string(),
-  building: z.string(),
-  address_ru: z.string(),
-  address_ua: z.string(),
-  phone: z.string(),
-  schedule: LocationScheduleDtoSchema,
-  schedule_display: z.string(),
-});
-
-export type LocationDto = z.infer<typeof LocationDtoSchema>;
+export { type LocationDto, LocationDtoSchema } from "@/entities/location/dto";
 
 export type LocationPayload = {
   name: string;
@@ -121,23 +90,10 @@ export type LocationPayload = {
   schedule: Schedule;
 };
 
-const PriceListCategoryDtoSchema = z.object({
-  key: z.string(),
-  name_ru: z.string(),
-  name_uk: z.string(),
-});
-
-export const PriceListItemDtoSchema = z.object({
-  id: z.number(),
-  category: PriceListCategoryDtoSchema,
-  name_ru: z.string(),
-  name_uk: z.string(),
-  price: z.number(),
-  price_note_ru: z.string().nullable(),
-  price_note_uk: z.string().nullable(),
-  sort_order: z.number(),
-});
-export type PriceListItemDto = z.infer<typeof PriceListItemDtoSchema>;
+export {
+  type PriceListItemDto,
+  PriceListItemDtoSchema,
+} from "@/entities/price-list/dto";
 
 export type PriceListItemPayload = {
   name_ru: string;

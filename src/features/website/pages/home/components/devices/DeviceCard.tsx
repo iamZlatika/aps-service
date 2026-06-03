@@ -5,14 +5,19 @@ import { type DeviceId } from "@/features/website/pages/home/components/devices/
 
 interface DeviceCardProps {
   id: DeviceId;
+  onClick?: () => void;
 }
 
-export const DeviceCard = ({ id }: DeviceCardProps) => {
+export const DeviceCard = ({ id, onClick }: DeviceCardProps) => {
   const { t } = useTranslation("website");
   const isOther = id === "other";
 
   return (
-    <div className="group relative flex flex-col gap-4 overflow-hidden rounded-ws-card border border-ws-line bg-ws-bg-2 p-5 transition-all duration-300 md:hover:-translate-y-1 md:hover:border-ws-ember md:hover:bg-ws-bg-3">
+    <button
+      type="button"
+      onClick={onClick}
+      className="group relative flex w-full flex-col gap-4 overflow-hidden rounded-ws-card border border-ws-line bg-ws-bg-2 p-5 text-left transition-all duration-300 md:hover:-translate-y-1 md:hover:border-ws-ember md:hover:bg-ws-bg-3"
+    >
       <div className="absolute right-5 top-5 flex size-[30px] -translate-x-1.5 translate-y-1.5 items-center justify-center rounded-full bg-ws-ember text-[13px] font-bold text-ws-btn-text opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100">
         →
       </div>
@@ -42,6 +47,6 @@ export const DeviceCard = ({ id }: DeviceCardProps) => {
           )}
         </b>
       </div>
-    </div>
+    </button>
   );
 };

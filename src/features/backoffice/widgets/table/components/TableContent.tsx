@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { TableRow } from "@/features/backoffice/widgets/table/components/TableRow.tsx";
-import TableSkeleton from "@/features/backoffice/widgets/table/components/TableSkeleton.tsx";
+import { TableSkeleton } from "@/features/backoffice/widgets/table/components/TableSkeleton.tsx";
 import type {
   BaseItem,
   ColumnConfig,

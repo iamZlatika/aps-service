@@ -1,7 +1,8 @@
 import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { ScheduleBuilder } from "@/features/backoffice/modules/dictionaries/components/ScheduleBuilder.tsx";
+import type { Location } from "@/entities/location/types";
+import { ScheduleBuilder } from "@/features/backoffice/modules/dictionaries/components/ScheduleBuilder";
 import { useLocationForm } from "@/features/backoffice/modules/dictionaries/hooks/useLocationForm.ts";
 import { PhoneMaskInput } from "@/features/backoffice/widgets/table/components/inputs/PhoneMaskInput.tsx";
 import { FormField } from "@/shared/components/common/FormField.tsx";
@@ -13,7 +14,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/shared/components/ui/dialog.tsx";
-import type { Location } from "@/shared/types";
 
 interface LocationFormDialogProps {
   isOpen: boolean;

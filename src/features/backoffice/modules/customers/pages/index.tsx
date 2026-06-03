@@ -22,6 +22,7 @@ import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 
 import { customersApi } from "../api";
+import { CUSTOMERS_LINKS } from "../navigation";
 
 const CustomersPage = () => {
   const { t } = useTranslation();
@@ -115,7 +116,7 @@ const CustomersPage = () => {
   ];
 
   const onRowClick = (customer: Customer) => {
-    navigate(`/backoffice/customers/${customer.id}`);
+    navigate(CUSTOMERS_LINKS.detail(customer.id));
   };
 
   return (

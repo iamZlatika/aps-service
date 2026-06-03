@@ -12,7 +12,7 @@ import { useUser } from "@/features/backoffice/modules/users/hooks/useUser.ts";
 import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard.tsx";
 import { DeleteConfirmDialog } from "@/features/backoffice/widgets/table/components/dialogs";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import Loader from "@/shared/components/common/Loader.tsx";
+import { Loader } from "@/shared/components/common/Loader.tsx";
 import { Avatar, AvatarImage } from "@/shared/components/ui/avatar";
 import { Separator } from "@/shared/components/ui/separator.tsx";
 import { type UserStatus } from "@/shared/types.ts";

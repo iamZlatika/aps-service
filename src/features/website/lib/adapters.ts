@@ -1,8 +1,9 @@
+import { mapLocationDtoToLocation } from "@/entities/location/adapters";
+import { mapStatusDtoToOrderStatus } from "@/entities/order-status/adapters";
+import { mapPriceListItemDtoToPriceListItem } from "@/entities/price-list/adapters";
 import {
   type ActiveCountDto,
-  type LocationDto,
   type OrderPreviewDto,
-  type StatusDto,
   type TrackDto,
   type TrackPaymentDto,
   type TrackProductDto,
@@ -10,48 +11,15 @@ import {
 } from "@/features/website/api/dto";
 import {
   type OrderPreview,
-  type OrderStatus,
   type Track,
   type TrackPayment,
   type TrackProduct,
   type TrackService,
 } from "@/features/website/types";
-import { type Location, WEEK_DAYS } from "@/shared/types";
 
-function mapStatusDtoToOrderStatus(dto: StatusDto): OrderStatus {
-  return {
-    id: dto.id,
-    key: dto.key,
-    nameRu: dto.name_ru,
-    nameUa: dto.name_ua,
-    color: dto.color,
-    isSystem: dto.is_system,
-  };
-}
-
-export function mapLocationDtoToLocation(dto: LocationDto): Location {
-  return {
-    id: dto.id,
-    name: dto.name,
-    cityRu: dto.city_ru,
-    cityUa: dto.city_ua,
-    districtRu: dto.district_ru,
-    districtUa: dto.district_ua,
-    streetRu: dto.street_ru,
-    streetUa: dto.street_ua,
-    building: dto.building,
-    addressRu: dto.address_ru,
-    addressUa: dto.address_ua,
-    phone: dto.phone,
-    schedule: Object.fromEntries(
-      WEEK_DAYS.map((day) => {
-        const slot = dto.schedule[day];
-        return [day, slot ? { from: slot.from, to: slot.to } : null];
-      }),
-    ) as Location["schedule"],
-    scheduleDisplay: dto.schedule_display,
-  };
-}
+export { mapLocationDtoToLocation };
+export { mapStatusDtoToOrderStatus };
+export { mapPriceListItemDtoToPriceListItem };
 
 function mapTrackProductDtoToTrackProduct(dto: TrackProductDto): TrackProduct {
   return {

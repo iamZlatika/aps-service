@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 
+import { type Location } from "@/entities/location/types";
 import { PhoneIcon } from "@/features/website/components/icons/PhoneIcon";
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
 import { MessengerLabelButton } from "@/features/website/components/MessengerLabelButton";
@@ -13,7 +14,6 @@ import {
 import { useCopyToClipboard } from "@/shared/hooks/useCopyToClipboard";
 import { useLocalize } from "@/shared/hooks/useLocalize";
 import { cn } from "@/shared/lib/utils";
-import { type Location } from "@/shared/types";
 
 interface MobileNavOfficeProps {
   location: Location;

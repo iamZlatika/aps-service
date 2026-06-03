@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { StatusDtoSchema } from "@/entities/order-status/dto";
 import {
   CustomerDtoSchema,
   CustomerInfoDtoSchema,
@@ -13,16 +14,7 @@ import {
   PAYMENTS,
   TRANSACTION_STATUSES,
 } from "@/shared/types.ts";
-
-export const StatusDtoSchema = z.object({
-  id: z.number(),
-  key: z.string(),
-  name_ru: z.string(),
-  name_ua: z.string(),
-  color: z.string(),
-  is_system: z.boolean(),
-});
-export type StatusDto = z.infer<typeof StatusDtoSchema>;
+export { type StatusDto, StatusDtoSchema } from "@/entities/order-status/dto";
 
 export const StatusHistoryItemDtoSchema = z.object({
   id: z.number(),

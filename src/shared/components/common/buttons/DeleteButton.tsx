@@ -21,4 +21,3 @@ export const DeleteButton = ({ onClick, disabled }: DeleteButtonProps) => {
     </Button>
   );
 };
-export default DeleteButton;

@@ -5,7 +5,13 @@ import { type Filters } from "@/features/backoffice/widgets/table/models/types.t
 
 const RESERVED_PARAMS = ["page", "sort_column", "sort_type", "id"];
 
-export const useFilterParams = () => {
+type UseFilterParamsResult = {
+  filters: Filters;
+  setFilter: (fieldName: string, value: string) => void;
+  resetFilters: () => void;
+};
+
+export const useFilterParams = (): UseFilterParamsResult => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const filters: Filters = useMemo(() => {

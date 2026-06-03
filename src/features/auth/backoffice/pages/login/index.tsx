@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthRoutes } from "@/features/auth/api/routes.ts";
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation";
-import Loader from "@/shared/components/common/Loader.tsx";
+import { Loader } from "@/shared/components/common/Loader.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
   Card,

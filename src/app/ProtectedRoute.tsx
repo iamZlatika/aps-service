@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { AuthRoutes } from "@/features/auth/api/routes.ts";
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import { SharedRoutes } from "@/shared/api/routes.ts";
-import Loader from "@/shared/components/common/Loader.tsx";
+import { Loader } from "@/shared/components/common/Loader.tsx";
 import type { Role } from "@/shared/types.ts";
 
 type ProtectedRouteProps = {

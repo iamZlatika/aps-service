@@ -1,4 +1,4 @@
-import { type ChangePasswordRequest } from "@/features/backoffice/modules/profile/lib/adapter.ts";
+import { type ChangePasswordRequest } from "@/features/backoffice/modules/profile/lib/adapters.ts";
 import { type ChangeUserInfoFormValues } from "@/features/backoffice/modules/profile/profile.schema.ts";
 import {
   type UserDto,

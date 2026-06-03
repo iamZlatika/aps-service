@@ -1,9 +1,9 @@
+import { type Location } from "@/entities/location/types";
 import { parseScheduleLines } from "@/features/website/lib/service";
 import { OfficeCardInfo } from "@/features/website/pages/contacts/OfficeCardInfo";
 import { OfficeCardMap } from "@/features/website/pages/contacts/OfficeCardMap";
 import { useLocalize } from "@/shared/hooks/useLocalize";
 import { cn } from "@/shared/lib/utils";
-import { type Location } from "@/shared/types";
 
 interface OfficeCardProps {
   location: Location;

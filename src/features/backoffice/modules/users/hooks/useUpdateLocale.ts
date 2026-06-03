@@ -1,11 +1,19 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  type UseMutationResult,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 import { usersApi } from "@/features/backoffice/modules/users/api";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { type UserLanguage } from "@/shared/types.ts";
 
-export const useUpdateLocale = () => {
+export const useUpdateLocale = (): UseMutationResult<
+  void,
+  Error,
+  UserLanguage
+> => {
   const queryClient = useQueryClient();
   const { i18n } = useTranslation();
 

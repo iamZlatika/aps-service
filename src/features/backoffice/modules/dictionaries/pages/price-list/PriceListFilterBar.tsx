@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 
-import SearchFilter from "@/features/backoffice/widgets/table/components/filters/FilterInput";
+import { SearchFilter } from "@/features/backoffice/widgets/table/components/filters/FilterInput";
 
 import { CategoryFilter } from "./CategoryFilter";
 

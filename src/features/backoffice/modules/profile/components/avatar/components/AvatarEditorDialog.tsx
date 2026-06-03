@@ -3,7 +3,7 @@ import type { AvatarEditorRef } from "react-avatar-editor";
 import AvatarEditor from "react-avatar-editor";
 import { useTranslation } from "react-i18next";
 
-import Loader from "@/shared/components/common/Loader.tsx";
+import { Loader } from "@/shared/components/common/Loader.tsx";
 import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,

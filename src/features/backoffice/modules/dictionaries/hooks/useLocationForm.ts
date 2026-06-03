@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+import type { Location } from "@/entities/location/types";
 import { locationApi } from "@/features/backoffice/modules/dictionaries/api";
 import {
   LocationFormSchema,
@@ -13,7 +14,6 @@ import {
   mapScheduleToGroups,
 } from "@/features/backoffice/modules/dictionaries/lib/schedule.service.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
-import type { Location } from "@/shared/types";
 
 export const useLocationForm = (
   location: Location | null,

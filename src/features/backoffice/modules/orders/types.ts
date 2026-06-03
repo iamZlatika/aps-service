@@ -1,3 +1,4 @@
+import { type OrderStatus } from "@/entities/order-status/types";
 import {
   type Customer,
   type CustomerInfo,
@@ -10,7 +11,6 @@ import type {
 } from "@/features/backoffice/modules/users/types.ts";
 import {
   type DocumentType,
-  type OrderStatus,
   type PaymentMethodType,
   type PaymentType,
   type TransactionStatus,
