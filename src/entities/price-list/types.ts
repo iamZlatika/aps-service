@@ -12,5 +12,5 @@ export type PriceListItem = {
   price: number;
   priceNoteRu: string | null;
   priceNoteUk: string | null;
-  sortOrder: number;
+  sortOrder?: number;
 };

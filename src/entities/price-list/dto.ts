@@ -14,7 +14,7 @@ export const PriceListItemDtoSchema = z.object({
   price: z.number(),
   price_note_ru: z.string().nullable(),
   price_note_uk: z.string().nullable(),
-  sort_order: z.number(),
+  sort_order: z.number().optional(),
 });
 
 export type PriceListItemDto = z.infer<typeof PriceListItemDtoSchema>;

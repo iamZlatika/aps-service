@@ -8,10 +8,12 @@ type UsePriceListResult = {
   priceList: PriceListItem[];
 };
 
-export const usePriceList = (categories: string[]): UsePriceListResult => {
+export const usePriceList = (
+  categories: readonly string[],
+): UsePriceListResult => {
   const { data } = useSuspenseQuery({
-    queryKey: queryKeys.website.priceList(categories),
-    queryFn: () => websiteApi.getPriceList(categories),
+    queryKey: queryKeys.website.priceList([...categories]),
+    queryFn: () => websiteApi.getPriceList([...categories]),
   });
 
   return { priceList: data };
