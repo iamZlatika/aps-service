@@ -55,7 +55,7 @@ export const queryKeys = {
   website: {
     all: ["website"] as const,
     locations: () => ["website", "locations"] as const,
-    activeCount: () => ["website", "active-count"] as const,
+    landing: () => ["website", "landing"] as const,
     priceList: (categories: string[]) =>
       ["website", "price-list", categories] as const,
   },

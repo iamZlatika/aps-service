@@ -79,6 +79,20 @@ export type {
   PriceListItem,
 } from "@/entities/price-list/types";
 
+// --- Landing ---
+
+export type CategoryMinPrice = {
+  categoryKey: string;
+  categoryNameRu: string;
+  categoryNameUk: string;
+  minPrice: number;
+};
+
+export type LandingData = {
+  activeCount: number;
+  prices: CategoryMinPrice[];
+};
+
 // --- OrderHistory types (UI layer, used by OrderHistoryAccordion) ---
 
 export type OrderHistoryStatus = {

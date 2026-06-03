@@ -90,10 +90,23 @@ export const OrderPreviewDtoSchema = TrackDtoSchema.pick({
 });
 export type OrderPreviewDto = z.infer<typeof OrderPreviewDtoSchema>;
 
-export const ActiveCountDtoSchema = z.object({
-  count: z.number(),
+const LandingCategoryDtoSchema = z.object({
+  key: z.string(),
+  name_ru: z.string(),
+  name_uk: z.string(),
 });
-export type ActiveCountDto = z.infer<typeof ActiveCountDtoSchema>;
+
+const LandingPriceDtoSchema = z.object({
+  category: LandingCategoryDtoSchema,
+  min_price: z.number(),
+});
+
+export const LandingDtoSchema = z.object({
+  orders: z.object({ count: z.number() }),
+  prices: z.array(LandingPriceDtoSchema),
+});
+
+export type LandingDto = z.infer<typeof LandingDtoSchema>;
 
 export const PriceListResponseDtoSchema = z.object({
   data: z.array(PriceListItemDtoSchema),

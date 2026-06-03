@@ -1,13 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useLanding } from "@/features/website/hooks/useLanding";
 
-import { websiteApi } from "@/features/website/api";
-import { queryKeys } from "@/shared/api/queryKeys";
+type UseActiveCountResult = {
+  activeCount: number | undefined;
+};
 
-export const useActiveCount = (): { activeCount: number | undefined } => {
-  const { data } = useQuery({
-    queryKey: queryKeys.website.activeCount(),
-    queryFn: () => websiteApi.getActiveCount(),
-  });
-
-  return { activeCount: data };
+export const useActiveCount = (): UseActiveCountResult => {
+  const { landing } = useLanding();
+  return { activeCount: landing?.activeCount };
 };

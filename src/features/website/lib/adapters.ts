@@ -2,7 +2,7 @@ import { mapLocationDtoToLocation } from "@/entities/location/adapters";
 import { mapStatusDtoToOrderStatus } from "@/entities/order-status/adapters";
 import { mapPriceListItemDtoToPriceListItem } from "@/entities/price-list/adapters";
 import {
-  type ActiveCountDto,
+  type LandingDto,
   type OrderPreviewDto,
   type TrackDto,
   type TrackPaymentDto,
@@ -10,6 +10,7 @@ import {
   type TrackServiceDto,
 } from "@/features/website/api/dto";
 import {
+  type LandingData,
   type OrderPreview,
   type Track,
   type TrackPayment,
@@ -83,8 +84,16 @@ export function mapTrackDtoToTrack(dto: TrackDto): Track {
   };
 }
 
-export function mapActiveCountDtoToActiveCount(dto: ActiveCountDto): number {
-  return dto.count;
+export function mapLandingDtoToLandingData(dto: LandingDto): LandingData {
+  return {
+    activeCount: dto.orders.count,
+    prices: dto.prices.map((p) => ({
+      categoryKey: p.category.key,
+      categoryNameRu: p.category.name_ru,
+      categoryNameUk: p.category.name_uk,
+      minPrice: p.min_price,
+    })),
+  };
 }
 
 export function mapOrderPreviewDtoToOrderPreview(

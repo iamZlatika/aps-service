@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useLanding } from "@/features/website/hooks/useLanding";
 import { DeviceCard } from "@/features/website/pages/home/components/devices/DeviceCard";
 import { DevicePriceModal } from "@/features/website/pages/home/components/devices/DevicePriceModal";
 import {
   type DeviceId,
   DEVICES,
 } from "@/features/website/pages/home/components/devices/DevicesData";
+import { findCheapestCategory } from "@/features/website/pages/home/components/devices/service";
 
 export const DevicesSection = () => {
   const { t } = useTranslation("website");
   const [selectedId, setSelectedId] = useState<DeviceId | null>(null);
+  const { landing } = useLanding();
 
   return (
     <>
@@ -31,9 +34,19 @@ export const DevicesSection = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7">
-            {DEVICES.map(({ id }) => (
-              <DeviceCard key={id} id={id} onClick={() => setSelectedId(id)} />
-            ))}
+            {DEVICES.map(({ id, categories }) => {
+              const cheapest = landing
+                ? findCheapestCategory(categories, landing.prices)
+                : null;
+              return (
+                <DeviceCard
+                  key={id}
+                  id={id}
+                  minPrice={cheapest?.minPrice ?? null}
+                  onClick={() => setSelectedId(id)}
+                />
+              );
+            })}
             <div className="md:hidden flex flex-col gap-3 rounded-ws-card border border-dashed border-ws-line p-5 text-[12.5px] leading-[1.55] tracking-[.005em] text-ws-ink-mute">
               <b className="text-[22px] font-bold leading-none text-ws-ember-bright">
                 *

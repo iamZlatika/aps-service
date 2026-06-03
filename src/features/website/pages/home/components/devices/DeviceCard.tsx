@@ -6,9 +6,10 @@ import { type DeviceId } from "@/features/website/pages/home/components/devices/
 interface DeviceCardProps {
   id: DeviceId;
   onClick?: () => void;
+  minPrice?: number | null;
 }
 
-export const DeviceCard = ({ id, onClick }: DeviceCardProps) => {
+export const DeviceCard = ({ id, onClick, minPrice }: DeviceCardProps) => {
   const { t } = useTranslation("website");
   const isOther = id === "other";
 
@@ -39,7 +40,11 @@ export const DeviceCard = ({ id, onClick }: DeviceCardProps) => {
           {isOther ? t("devices.priceOnDemand") : t("devices.from")}
         </span>
         <b className="text-ws-md font-semibold text-ws-cream">
-          {t(`devices.items.${id}.price`)}
+          {isOther
+            ? t(`devices.items.${id}.price`)
+            : minPrice != null
+              ? `${minPrice} ₴`
+              : t(`devices.items.${id}.price`)}
           {!isOther && (
             <span className="ml-1 align-middle text-[20px] font-bold leading-none text-ws-ember-bright">
               *

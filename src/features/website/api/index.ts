@@ -1,8 +1,8 @@
 import { type Location } from "@/entities/location/types";
 import { type PriceListItem } from "@/entities/price-list/types";
 import {
-  type ActiveCountDto,
-  ActiveCountDtoSchema,
+  type LandingDto,
+  LandingDtoSchema,
   type LocationsResponseDto,
   LocationsResponseDtoSchema,
   type OrderPreviewDto,
@@ -13,13 +13,17 @@ import {
 } from "@/features/website/api/dto";
 import { WEBSITE_API } from "@/features/website/api/endpoints";
 import {
-  mapActiveCountDtoToActiveCount,
+  mapLandingDtoToLandingData,
   mapLocationDtoToLocation,
   mapOrderPreviewDtoToOrderPreview,
   mapPriceListItemDtoToPriceListItem,
   mapTrackDtoToTrack,
 } from "@/features/website/lib/adapters";
-import { type OrderPreview, type Track } from "@/features/website/types";
+import {
+  type LandingData,
+  type OrderPreview,
+  type Track,
+} from "@/features/website/types";
 import { get } from "@/shared/api/api";
 import { parseDto } from "@/shared/api/parseDto";
 
@@ -41,12 +45,10 @@ export const websiteApi = {
     const validated = parseDto(LocationsResponseDtoSchema, response);
     return validated.data.map(mapLocationDtoToLocation);
   },
-  getActiveCount: async (): Promise<number> => {
-    const response = await get<{ data: ActiveCountDto }>(
-      WEBSITE_API.activeCount(),
-    );
-    const validated = parseDto(ActiveCountDtoSchema, response.data);
-    return mapActiveCountDtoToActiveCount(validated);
+  getLanding: async (): Promise<LandingData> => {
+    const response = await get<{ data: LandingDto }>(WEBSITE_API.landing());
+    const validated = parseDto(LandingDtoSchema, response.data);
+    return mapLandingDtoToLandingData(validated);
   },
   getPriceList: async (categories: string[]): Promise<PriceListItem[]> => {
     const params = new URLSearchParams();
