@@ -11,7 +11,9 @@ Lives at the root URL and is styled independently from the backoffice with its o
 |------|------|-------------|
 | Home | `/` | Landing page: hero with quick status check, device types, PC build section |
 | Contacts | `/contacts` | Service center locations with addresses, phones, and maps |
+| Works | `/works` | Portfolio / completed works showcase — in development |
 | Reviews | `/reviews` | Customer reviews |
+| Price List | `/price-list` | Full device repair price list with category navigation |
 | Track | `/track/:token` | Full order tracking page by unique token |
 | User Account | `/account` | Personal account — in development |
 
@@ -24,8 +26,10 @@ Lives at the root URL and is styled independently from the backoffice with its o
 export const WEBSITE_ROUTES = {
   home: "/",
   contacts: "/contacts",
+  works: "/works",
   reviews: "/reviews",
   account: "/account",
+  priceList: "/price-list",
   track: "/track/:token",   // token is the order tracking identifier
 } as const;
 ```
@@ -65,6 +69,20 @@ Uses `useOrderTracking(token)` which fetches the full `Track` type.
 
 ---
 
+### Price List (`/price-list`)
+
+Full repair price list grouped by device category.
+
+- **Sticky category nav** — horizontal pill bar that stays fixed below the site header while scrolling. Built from API data as it loads. On mobile, pills wrap to multiple lines.
+- **Category sections** — each section has a device icon, category title, and a list of `PriceRow` items (name + optional note + price).
+- **Scroll-spy** — `usePricePageNav` uses `IntersectionObserver` to highlight the active category in the nav as the user scrolls.
+- **Pagination** — the API returns max 100 items per page. `usePriceListAll` fetches page 1 on mount (Suspense), then the component auto-fetches remaining pages in a `useEffect` without re-suspending.
+- **CTA block** — disclaimer note + call button (phone from `useLocations`).
+
+Uses `usePriceListAll` (not `usePriceList`) — the latter is for the modal which filters by category.
+
+---
+
 ### Contacts (`/contacts`)
 
 Renders a card per service center location fetched via `useLocations()`.
@@ -95,7 +113,8 @@ WEBSITE_API = {
   locations: ()             => `${BASE}/dictionaries/locations`,
   track: (token: string)    => `${BASE}/orders/track/${token}`,
   status: (orderNumber)     => `${BASE}/orders/status/${orderNumber}`,
-  activeCount: ()           => `${BASE}/orders/active-count`,
+  landing: ()               => `${BASE}/landing`,
+  priceList: ()             => `${BASE}/dictionaries/price-list`,
 }
 ```
 
@@ -104,13 +123,16 @@ WEBSITE_API = {
 | `getOrderTracking(token)` | Full `Track` object for the tracking page |
 | `getOrderStatus(orderNumber)` | `OrderPreview` — lightweight, for the quick-check modal |
 | `getLocationsInfo()` | `Location[]` — all service center branches |
-| `getActiveCount()` | `number` — count of currently active orders |
+| `getLanding()` | `LandingData` — landing page data (active order count, category min prices) |
+| `getPriceList(categories)` | `PriceListItem[]` — price list items filtered by category keys. Used by the device price modal. |
+| `getPriceListPage(page)` | `{ items: PriceListItem[], lastPage: number }` — one page (100 items) of the full unfiltered price list. Used by `usePriceListAll`. |
 
 ---
 
 ## Key types
 
-All website-specific types live in `src/features/website/types.ts`.
+Website-specific types live in `src/features/website/types.ts`.
+Shared entity types (used across features) live in `src/entities/`.
 
 ### Track domain types (mapped from server)
 
@@ -123,6 +145,10 @@ All website-specific types live in `src/features/website/types.ts`.
 **`TrackProduct`** / **`TrackService`** — spare part / repair operation from the server. Include `createdAt`, `completedAt`, `deletedAt`, `sum`.
 
 **`TrackPayment`** — payment transaction: type (`prepayment` | `payment` | `refund`), method, amount, date.
+
+**`LandingData`** — data returned by the landing endpoint: `activeCount` (number of active orders) and `prices` (`CategoryMinPrice[]` — minimum price per device category shown in hero).
+
+**`PriceListItem`** — repair service entry from the price list. Lives in `src/entities/price-list/types.ts`. Includes `id`, `name`, `categoryKey`, `price`, and optional `sortOrder`.
 
 ### OrderHistory types (UI layer)
 
@@ -188,7 +214,10 @@ const history = useMemo(() => buildOrderHistory(track), [track]);
 | `useOrderTracking(token)` | Fetches `Track` by token. Returns `{ track, isLoading, isError, error, refetch }` |
 | `useOrderStatus({ onSuccess })` | Mutation — fetches `OrderPreview` by order number. Used in the quick-check modal |
 | `useLocations()` | Fetches all locations via `useSuspenseQuery`. Returns `{ locations }` |
-| `useActiveCount()` | Fetches active order count for the hero. Returns `{ activeCount }` |
+| `useLanding()` | Fetches landing data (`LandingData`) via `useQuery`. Returns `{ landing }` |
+| `useActiveCount()` | Reads active order count from `useLanding()`. Returns `{ activeCount }` — does not fetch independently |
+| `usePriceList(categories)` | Fetches price list items via `useSuspenseQuery`. Accepts `readonly string[]` of category keys. Returns `{ priceList }`. Used by the device price modal. |
+| `usePriceListAll()` | Fetches the complete price list across all pages via `useSuspenseInfiniteQuery` (max 100 items/page). Returns `{ priceList, hasNextPage, isLoadingMore, fetchNextPage }`. The caller is responsible for triggering subsequent pages — call `fetchNextPage()` in a `useEffect` when `hasNextPage && !isLoadingMore`. |
 | `useMobileNav()` | Mobile navigation drawer state: `{ isOpen, open, close }`. Locks scroll and handles Escape key |
 | `useWebsiteThemeManager()` | Manages theme selection and persistence — used once inside `WebsiteLayout` |
 
@@ -203,6 +232,8 @@ const history = useMemo(() => buildOrderHistory(track), [track]);
 **Header** is fully responsive:
 - Desktop: `DesktopNav` + `HeaderInfo` (phones, language switch)
 - Mobile: `MobileBar` (logo + hamburger) + `MobileNav` (slide-in drawer) + `MobileBottomBar` (sticky bottom nav)
+
+`WebsiteLayout` tracks the header's rendered height via `ResizeObserver` and writes it to the CSS custom property `--ws-header-height` on the root `.website` element. Pages with their own sticky elements (e.g. the price list category nav) use `top: var(--ws-header-height)` to sit flush below the header at any viewport width.
 
 ---
 

@@ -5,4 +5,5 @@ export const NAV_TABS = [
   { labelKey: "nav.contacts", to: WEBSITE_LINKS.contacts, end: false },
   { labelKey: "nav.works", to: WEBSITE_LINKS.works, end: false },
   { labelKey: "nav.reviews", to: WEBSITE_LINKS.reviews, end: false },
+  { labelKey: "nav.priceList", to: WEBSITE_LINKS.priceList, end: false },
 ] as const;

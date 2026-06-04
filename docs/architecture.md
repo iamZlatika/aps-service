@@ -23,6 +23,10 @@ The goal is to help new developers (and future-you) understand *why* the code is
 ```
 src/
 ├── app/              # Router config, route guards, app root
+├── entities/         # Shared domain entities reused across features
+│   ├── location/     # Location DTO, domain type, adapter
+│   ├── order-status/ # OrderStatus DTO, domain type, adapter
+│   └── price-list/   # PriceListItem DTO, domain type, adapter
 ├── features/
 │   ├── auth/         # Login, token storage, session management
 │   ├── backoffice/   # Employee panel
@@ -52,9 +56,35 @@ modules/<name>/
 ├── hooks/            # React Query hooks for this module
 ├── components/       # UI components for this module
 ├── pages/            # Route targets (lazy-loaded)
-├── routes.ts         # Route path patterns + link builder functions
+├── routes.ts         # Route path patterns (for React Router <Route path=…>)
+├── navigation.ts     # Link builder functions (used in components and hooks)
 └── types.ts          # Domain types for this module
 ```
+
+---
+
+## Shared Entities (`src/entities/`)
+
+Some domain types and their DTO/adapter layers are shared between features (e.g. `Location` is used by both the website and the backoffice dictionaries module). These live in `src/entities/` rather than in any single feature.
+
+Each entity follows the same three-file structure:
+
+```
+entities/<name>/
+├── dto.ts       # Zod schema for the server response shape
+├── types.ts     # Domain type (camelCase)
+└── adapters.ts  # DTO → domain mapper function
+```
+
+Current entities:
+
+| Entity | Consumers |
+|--------|-----------|
+| `location` | `website` (contacts page, modal phone buttons), `backoffice/dictionaries` |
+| `order-status` | `website` (track page, status badge), `backoffice/orders` |
+| `price-list` | `website` (price modal, price list page) |
+
+**Rule:** Move a type to `entities/` only when it is actually shared across two or more features. Feature-specific types stay in the feature's own `types.ts`.
 
 ---
 
@@ -406,6 +436,7 @@ Checklist for a new module (e.g. `invoices`):
 - [ ] `hooks/` — React Query hooks (`useQuery`, `useMutation`)
 - [ ] `components/` — UI components for this module
 - [ ] `pages/` — lazy-loaded route targets
-- [ ] `routes.ts` — route patterns + link builders
+- [ ] `routes.ts` — route path patterns
+- [ ] `navigation.ts` — link builder functions
 - [ ] Add query keys to `shared/api/queryKeys.ts`
 - [ ] Register routes in the router config (`app/`)

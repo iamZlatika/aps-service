@@ -1,6 +1,6 @@
 import "@/features/website/styles/website.css";
 
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router-dom";
@@ -27,6 +27,7 @@ export const WebsiteLayout = () => {
   const location = useLocation();
   const themeValue = useWebsiteThemeManager();
   const { isOpen: isNavOpen, open: openNav, close: closeNav } = useMobileNav();
+  const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const saved = storageGet(LANG_STORAGE_KEY);
@@ -37,9 +38,47 @@ export const WebsiteLayout = () => {
     void changeLanguage(lang);
   }, [changeLanguage]);
 
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    let resizeObserver: ResizeObserver | null = null;
+
+    const attachToHeader = (header: HTMLElement) => {
+      resizeObserver = new ResizeObserver(() => {
+        root.style.setProperty(
+          "--ws-header-height",
+          `${header.offsetHeight}px`,
+        );
+      });
+      resizeObserver.observe(header);
+    };
+
+    const header = root.querySelector<HTMLElement>(":scope > header");
+    if (header) {
+      attachToHeader(header);
+      return () => resizeObserver?.disconnect();
+    }
+
+    const mutationObserver = new MutationObserver(() => {
+      const h = root.querySelector<HTMLElement>(":scope > header");
+      if (h) {
+        mutationObserver.disconnect();
+        attachToHeader(h);
+      }
+    });
+    mutationObserver.observe(root, { childList: true });
+
+    return () => {
+      mutationObserver.disconnect();
+      resizeObserver?.disconnect();
+    };
+  }, []);
+
   return (
     <WebsiteThemeContext.Provider value={themeValue}>
       <div
+        ref={rootRef}
         className={cn(
           "website flex min-h-screen flex-col",
           themeValue.resolvedTheme === "light" && "light",

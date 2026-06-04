@@ -60,4 +60,19 @@ export const websiteApi = {
     const validated = parseDto(PriceListResponseDtoSchema, response);
     return validated.data.map(mapPriceListItemDtoToPriceListItem);
   },
+  getPriceListPage: async (
+    page: number,
+  ): Promise<{ items: PriceListItem[]; lastPage: number }> => {
+    const params = new URLSearchParams();
+    params.set("per_page", "100");
+    params.set("page", String(page));
+    const response = await get<unknown>(
+      `${WEBSITE_API.priceList()}?${params.toString()}`,
+    );
+    const validated = parseDto(PriceListResponseDtoSchema, response);
+    return {
+      items: validated.data.map(mapPriceListItemDtoToPriceListItem),
+      lastPage: validated.meta.last_page,
+    };
+  },
 };

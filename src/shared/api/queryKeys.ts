@@ -58,6 +58,7 @@ export const queryKeys = {
     landing: () => ["website", "landing"] as const,
     priceList: (categories: string[]) =>
       ["website", "price-list", categories] as const,
+    priceListAll: () => ["website", "price-list", "all"] as const,
   },
 
   dictionaries: {

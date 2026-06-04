@@ -6,4 +6,5 @@ export const WEBSITE_LINKS = {
   works: WEBSITE_ROUTES.works,
   reviews: WEBSITE_ROUTES.reviews,
   account: WEBSITE_ROUTES.account,
+  priceList: WEBSITE_ROUTES.priceList,
 } as const;

@@ -110,4 +110,5 @@ export type LandingDto = z.infer<typeof LandingDtoSchema>;
 
 export const PriceListResponseDtoSchema = z.object({
   data: z.array(PriceListItemDtoSchema),
+  meta: z.object({ last_page: z.number() }),
 });

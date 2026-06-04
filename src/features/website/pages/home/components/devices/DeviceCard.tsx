@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { DEVICE_ICONS } from "@/features/website/pages/home/components/devices/DeviceIcons";
+import { DEVICE_ICONS } from "@/features/website/components/DeviceIcons";
 import { type DeviceId } from "@/features/website/pages/home/components/devices/DevicesData";
 
 interface DeviceCardProps {

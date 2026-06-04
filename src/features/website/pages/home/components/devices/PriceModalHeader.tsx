@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
-import { DEVICE_ICONS } from "./DeviceIcons";
+import { DEVICE_ICONS } from "@/features/website/components/DeviceIcons";
+
 import { type DeviceId } from "./DevicesData";
 
 interface PriceModalHeaderProps {
