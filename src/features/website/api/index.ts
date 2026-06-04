@@ -1,5 +1,8 @@
 import { type Location } from "@/entities/location/types";
 import { type PriceListItem } from "@/entities/price-list/types";
+import { mapWorkDtoToWork } from "@/entities/work/adapters";
+import { WorksResponseDtoSchema } from "@/entities/work/dto";
+import { type Work } from "@/entities/work/types";
 import {
   type LandingDto,
   LandingDtoSchema,
@@ -72,6 +75,18 @@ export const websiteApi = {
     const validated = parseDto(PriceListResponseDtoSchema, response);
     return {
       items: validated.data.map(mapPriceListItemDtoToPriceListItem),
+      lastPage: validated.meta.last_page,
+    };
+  },
+  getWorksPage: async (
+    page: number,
+  ): Promise<{ items: Work[]; lastPage: number }> => {
+    const response = await get<unknown>(
+      `${WEBSITE_API.landingWorks()}?page=${page}`,
+    );
+    const validated = parseDto(WorksResponseDtoSchema, response);
+    return {
+      items: validated.data.map(mapWorkDtoToWork),
       lastPage: validated.meta.last_page,
     };
   },

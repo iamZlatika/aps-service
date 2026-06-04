@@ -12,6 +12,7 @@ const UserAccountPage = lazy(
 );
 const TrackPage = lazy(() => import("@/features/website/pages/track"));
 const PriceListPage = lazy(() => import("@/features/website/pages/price-list"));
+const WorksPage = lazy(() => import("@/features/website/pages/works"));
 
 export const websiteRoutes: RouteObject = {
   element: <WebsiteLayout />,
@@ -22,5 +23,6 @@ export const websiteRoutes: RouteObject = {
     { path: WEBSITE_ROUTES.account, element: <UserAccountPage /> },
     { path: WEBSITE_ROUTES.track, element: <TrackPage /> },
     { path: WEBSITE_ROUTES.priceList, element: <PriceListPage /> },
+    { path: WEBSITE_ROUTES.works, element: <WorksPage /> },
   ],
 };

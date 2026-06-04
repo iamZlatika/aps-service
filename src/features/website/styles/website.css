@@ -586,3 +586,61 @@
 @keyframes wsLoaderSpin {
   to { transform: rotate(360deg); }
 }
+
+/* ============================================================
+   Works page
+   ============================================================ */
+.ws-works-section {
+  padding: 32px 0 56px;
+}
+.ws-works-section .ws-section-eyebrow {
+  margin-bottom: 8px;
+}
+.ws-works-section .ws-section-title {
+  font-size: clamp(18px, 1.7vw, 24px);
+}
+@media (max-width: 880px) {
+  .ws-works-section {
+    padding: 20px 0 36px;
+  }
+}
+
+.ws-works-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.ws-work-card {
+  border: 1px solid var(--ws-line);
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.015);
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: stretch;
+}
+.light .ws-work-card {
+  background: rgba(255, 255, 255, 0.5);
+}
+.ws-work-card-reverse {
+  grid-template-columns: 1fr 1.15fr;
+}
+.ws-work-card-reverse .ws-work-media {
+  order: 2;
+}
+.ws-work-card-reverse .ws-work-info {
+  order: 1;
+}
+@media (max-width: 860px) {
+  .ws-work-card,
+  .ws-work-card-reverse {
+    grid-template-columns: 1fr;
+  }
+  .ws-work-media {
+    order: 2;
+  }
+  .ws-work-info {
+    order: 1;
+  }
+}

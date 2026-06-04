@@ -22,7 +22,7 @@ export const PriceSectionCard = ({
     <section
       ref={sectionRef}
       id={`price-section-${group.category.key}`}
-      className="scroll-mt-[calc(var(--ws-header-height,0px)_+_var(--ws-price-nav-height,0px)_+_16px)] overflow-hidden rounded-[18px] border border-ws-line bg-[rgba(255,255,255,0.015)]"
+      className="scroll-mt-[calc(var(--ws-header-height,0px)_+_var(--ws-price-nav-height,0px)_+_16px)] overflow-hidden rounded-[18px] border border-ws-line bg-[rgba(255,255,255,0.015)] lg:scroll-mt-[calc(var(--ws-header-height,0px)_+_24px)]"
     >
       <div className="flex items-center gap-3.5 border-b border-ws-line-soft px-[26px] py-[22px] max-sm:px-[18px]">
         <div

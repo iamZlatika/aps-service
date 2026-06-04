@@ -59,6 +59,7 @@ export const queryKeys = {
     priceList: (categories: string[]) =>
       ["website", "price-list", categories] as const,
     priceListAll: () => ["website", "price-list", "all"] as const,
+    works: () => ["website", "works"] as const,
   },
 
   dictionaries: {

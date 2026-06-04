@@ -249,6 +249,23 @@
     "copyright": "© 2016 — 2026 APS service · ЕДРПОУ 00000000",
     "privacy": "политика конфиденциальности · оферта"
   },
+  "works": {
+    "eyebrow": "Наши работы",
+    "heading": "Реальные примеры ремонта",
+    "headingBold": "до и после.",
+    "deviceType": "Устройство",
+    "brand": "Бренд",
+    "model": "Модель",
+    "reason": "Причина обращения",
+    "fix": "Что сделали",
+    "tagBefore": "До",
+    "tagAfter": "После",
+    "tagUpgrade": "Апгрейд",
+    "lightboxClose": "Закрыть",
+    "lightboxPrev": "Предыдущее фото",
+    "lightboxNext": "Следующее фото",
+    "lightboxTitle": "Просмотр фото"
+  },
   "pricePage": {
     "heading": "Стоимость работ мастера",
     "headingBold": "по категориям устройств.",
