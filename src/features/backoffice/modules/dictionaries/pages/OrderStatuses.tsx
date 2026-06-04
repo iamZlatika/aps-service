@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+import { AddButton } from "@/features/backoffice/components/AddButton";
 import { orderStatusesApi } from "@/features/backoffice/modules/dictionaries/api";
 import type { OrderStatusDto } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
-import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
 import { RowActions } from "@/features/backoffice/modules/dictionaries/components/RowActions.tsx";
 import {
   EditOrderStatusSchema,

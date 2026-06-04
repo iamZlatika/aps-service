@@ -78,6 +78,7 @@
     "settings": "Настройки",
     "masters": "Мастера",
     "dictionaries": "Справочники",
+    "works": "Работы",
     "dictionaries_list": {
       "title": "Справочники",
       "accessories": "Комплектации",
@@ -163,7 +164,8 @@
     "customer_phone": "Поиск по имени, комментарию или номеру телефона",
     "orders_any_match": "Найти заказ, бренд, модель или номер телефона",
     "orders_any_match_mobile": "Номер, бренд, модель",
-    "card_number": "Поиск по номеру карты"
+    "card_number": "Поиск по номеру карты",
+    "works_name": "Поиск по модели или бренду"
   },
   "breadcrumbs": {
     "home": "Главная",
@@ -604,6 +606,7 @@
       "print_error": "Не удалось открыть диалог печати"
     },
     "filters": {
+
       "all": "Все",
       "schastlivaya": "Счастливая",
       "active": "Активные",
@@ -615,6 +618,29 @@
         "in_progress": "В работе",
         "with_partners": "У партнеров"
       }
+    }
+  },
+  "works": {
+    "table_fields": {
+      "device_type": "Тип устройства",
+      "manufacturer": "Производитель",
+      "device_model": "Модель",
+      "work_type": "Тип работы",
+      "created_at": "Дата",
+      "is_published": "Публикация"
+    },
+    "published": "Опубликовано",
+    "draft": "Черновик",
+    "actions": {
+      "delete": "Удалить",
+      "delete_confirm": "Вы уверены, что хотите удалить эту запись? Это действие нельзя отменить.",
+      "cancel": "Отмена"
+    },
+    "create": {
+      "title": "Новая работа"
+    },
+    "detail": {
+      "title": "Редактирование работы"
     }
   }
 }

@@ -7,6 +7,7 @@ import { DICTIONARIES_ROUTES } from "@/features/backoffice/modules/dictionaries/
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
 import { PROFILE_ROUTES } from "@/features/backoffice/modules/profile/routes.ts";
 import { USERS_ROUTES } from "@/features/backoffice/modules/users/routes";
+import { WORKS_ROUTES } from "@/features/backoffice/modules/works/routes";
 import { ROLES } from "@/shared/types.ts";
 
 const OrdersPage = lazy(
@@ -84,6 +85,15 @@ const BankCardsPage = lazy(
 );
 const PriceListPage = lazy(
   () => import("@/features/backoffice/modules/dictionaries/pages/price-list"),
+);
+const WorksPage = lazy(
+  () => import("@/features/backoffice/modules/works/pages"),
+);
+const WorkCreatePage = lazy(
+  () => import("@/features/backoffice/modules/works/pages/WorkCreatePage"),
+);
+const WorkDetailPage = lazy(
+  () => import("@/features/backoffice/modules/works/pages/WorkDetailPage"),
 );
 
 export const backofficeRoutes: RouteObject = {
@@ -164,6 +174,18 @@ export const backofficeRoutes: RouteObject = {
         {
           path: DICTIONARIES_ROUTES.priceList,
           element: <PriceListPage />,
+        },
+        {
+          path: WORKS_ROUTES.root,
+          element: <WorksPage />,
+        },
+        {
+          path: WORKS_ROUTES.create,
+          element: <WorkCreatePage />,
+        },
+        {
+          path: WORKS_ROUTES.detail,
+          element: <WorkDetailPage />,
         },
       ],
     },

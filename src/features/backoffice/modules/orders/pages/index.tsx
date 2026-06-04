@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
+import { AddButton } from "@/features/backoffice/components/AddButton";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
 import { OrdersFilterBar } from "@/features/backoffice/modules/orders/components/OrdersFilterBar.tsx";
 import { useIsUkLocale } from "@/features/backoffice/modules/orders/hooks/useIsUkLocale.ts";

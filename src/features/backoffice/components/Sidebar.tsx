@@ -1,6 +1,7 @@
 import {
   BookOpenText,
   ChevronDown,
+  Images,
   Package,
   Settings,
   Users,
@@ -16,6 +17,7 @@ import { CUSTOMERS_ROUTES } from "@/features/backoffice/modules/customers/routes
 import { DICTIONARIES_LINKS } from "@/features/backoffice/modules/dictionaries/navigation";
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
 import { USERS_ROUTES } from "@/features/backoffice/modules/users/routes";
+import { WORKS_LINKS } from "@/features/backoffice/modules/works/navigation";
 import {
   Collapsible,
   CollapsibleContent,
@@ -116,6 +118,17 @@ export const Sidebar = memo(() => {
                             >
                               <BookOpenText className="h-4 w-4" />
                               <span>{t("sidebar.dictionaries")}</span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                        <SidebarMenuSubItem>
+                          <SidebarMenuSubButton asChild>
+                            <Link
+                              to={WORKS_LINKS.root()}
+                              onClick={closeMobileSidebar}
+                            >
+                              <Images className="h-4 w-4" />
+                              <span>{t("sidebar.works")}</span>
                             </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>

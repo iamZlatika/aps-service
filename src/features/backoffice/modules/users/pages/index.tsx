@@ -4,7 +4,7 @@ import { type UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
+import { AddButton } from "@/features/backoffice/components/AddButton";
 import { usersApi } from "@/features/backoffice/modules/users/api";
 import { UserLocationSelect } from "@/features/backoffice/modules/users/components/UserLocationSelect.tsx";
 import { getUserRoleOptions } from "@/features/backoffice/modules/users/data.ts";

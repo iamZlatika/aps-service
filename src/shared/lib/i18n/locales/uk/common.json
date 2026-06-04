@@ -78,6 +78,7 @@
     "settings": "Налаштування",
     "masters": "Майстри",
     "dictionaries": "Довідники",
+    "works": "Роботи",
     "dictionaries_list": {
       "title": "Довідники",
       "accessories": "Комплектації",
@@ -160,7 +161,8 @@
     "customer_phone": "Пошук за іменем, коментарем або номером телефону",
     "orders_any_match": "Знайти замовлення, бренд, модель або номер телефону",
     "orders_any_match_mobile": "Номер, бренд, модель",
-    "card_number": "Пошук за номером картки"
+    "card_number": "Пошук за номером картки",
+    "works_name": "Пошук за моделлю або брендом"
   },
   "breadcrumbs": {
     "home": "Головна",
@@ -613,6 +615,29 @@
         "in_progress": "В роботі",
         "with_partners": "У партнерів"
       }
+    }
+  },
+  "works": {
+    "table_fields": {
+      "device_type": "Тип пристрою",
+      "manufacturer": "Виробник",
+      "device_model": "Модель",
+      "work_type": "Тип роботи",
+      "created_at": "Дата",
+      "is_published": "Публікація"
+    },
+    "published": "Опубліковано",
+    "draft": "Чернетка",
+    "actions": {
+      "delete": "Видалити",
+      "delete_confirm": "Ви впевнені, що хочете видалити цей запис? Цю дію не можна скасувати.",
+      "cancel": "Скасувати"
+    },
+    "create": {
+      "title": "Нова робота"
+    },
+    "detail": {
+      "title": "Редагування роботи"
     }
   }
 }

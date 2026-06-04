@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { Button } from "@/shared/components/ui/button.tsx";
+import { Button } from "@/shared/components/ui/button";
 
 interface AddButtonProps {
   onClick: () => void;

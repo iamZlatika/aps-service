@@ -4,13 +4,13 @@ import type { UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+import { AddButton } from "@/features/backoffice/components/AddButton";
 import { newCustomerSchema } from "@/features/backoffice/modules/customers/lib/schemas.ts";
 import {
   type Customer,
   type NewCustomer,
   type Phone,
 } from "@/features/backoffice/modules/customers/types.ts";
-import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import { ItemFormDialog } from "@/features/backoffice/widgets/table/components/dialogs";
 import type {

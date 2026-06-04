@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { type Location } from "@/entities/location/types";
+import { AddButton } from "@/features/backoffice/components/AddButton";
 import { PhoneDropdown } from "@/features/backoffice/components/PhoneDropdown";
 import { locationApi } from "@/features/backoffice/modules/dictionaries/api";
-import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
 import { LocationFormDialog } from "@/features/backoffice/modules/dictionaries/components/LocationFormDialog.tsx";
 import { RowActions } from "@/features/backoffice/modules/dictionaries/components/RowActions.tsx";
 import { SmartTable } from "@/features/backoffice/widgets/table";

@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
-import { AddButton } from "@/features/backoffice/modules/dictionaries/components/AddButton.tsx";
+import { AddButton } from "@/features/backoffice/components/AddButton";
 import { RowActions } from "@/features/backoffice/modules/dictionaries/components/RowActions.tsx";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import {

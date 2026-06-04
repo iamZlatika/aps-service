@@ -52,6 +52,12 @@ export const queryKeys = {
     detail: (token: string) => ["tracking", "detail", token] as const,
   },
 
+  works: {
+    all: ["works"] as const,
+    list: makeEntityKey(["works"], "list"),
+    detail: (id: number) => ["works", "detail", id] as const,
+  },
+
   website: {
     all: ["website"] as const,
     locations: () => ["website", "locations"] as const,
