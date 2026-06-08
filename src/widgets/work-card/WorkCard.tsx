@@ -1,3 +1,5 @@
+import "./work-card.css";
+
 import { type Work } from "@/entities/work/types";
 import { cn } from "@/shared/lib/utils";
 

@@ -1,14 +1,10 @@
 import { type SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams";
 import { type PaginatedResponse } from "@/features/backoffice/widgets/table/models/types";
-import { buildPaginatedParams, del, get, put } from "@/shared/api/api";
+import { buildPaginatedParams, del, get, post, put } from "@/shared/api/api";
 import { parseDto } from "@/shared/api/parseDto";
 
 import { mapBackofficeWorkDtoToBackofficeWork } from "../lib/adapters";
-import {
-  type BackofficeWork,
-  type SetPublishedPayload,
-  type WorkPayload,
-} from "../types";
+import { type BackofficeWork, type SetPublishedPayload } from "../types";
 import {
   BackofficeWorkItemDtoSchema,
   BackofficeWorksListDtoSchema,
@@ -44,14 +40,14 @@ export const worksApi = {
     };
   },
 
-  show: async (id: number): Promise<BackofficeWork> => {
-    const response = await get<unknown>(WORKS_API.item(id));
+  create: async (data: FormData): Promise<BackofficeWork> => {
+    const response = await post<FormData, unknown>(WORKS_API.list(), data);
     const validated = parseDto(BackofficeWorkItemDtoSchema, response);
     return mapBackofficeWorkDtoToBackofficeWork(validated.data);
   },
 
-  update: async (id: number, data: WorkPayload): Promise<BackofficeWork> => {
-    const response = await put<WorkPayload, unknown>(WORKS_API.item(id), data);
+  show: async (id: number): Promise<BackofficeWork> => {
+    const response = await get<unknown>(WORKS_API.item(id));
     const validated = parseDto(BackofficeWorkItemDtoSchema, response);
     return mapBackofficeWorkDtoToBackofficeWork(validated.data);
   },

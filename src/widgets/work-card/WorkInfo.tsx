@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { type Work } from "@/entities/work/types";
+import { type Work, WORK_PHOTO_TYPES } from "@/entities/work/types";
 import { useLocalize } from "@/shared/hooks/useLocalize";
 
 interface WorkInfoProps {
@@ -16,6 +16,9 @@ export const WorkInfo = ({ work }: WorkInfoProps) => {
     work.reasonUk ?? work.reasonRu ?? "",
   );
   const description = localize(work.descriptionRu, work.descriptionUk);
+  const additionalPhotos = work.photos.filter(
+    (p) => p.type === WORK_PHOTO_TYPES.ADDITIONAL,
+  );
 
   return (
     <div className="ws-work-info flex flex-col gap-5 p-8 max-sm:px-5 max-sm:py-[22px]">
@@ -51,7 +54,7 @@ export const WorkInfo = ({ work }: WorkInfoProps) => {
           <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ws-ember-bright">
             {t("works.reason")}
           </span>
-          <p className="text-[15px] leading-[1.6] text-ws-ink-soft text-pretty">
+          <p className="text-pretty text-[15px] leading-[1.6] text-ws-ink-soft">
             {reason}
           </p>
         </div>
@@ -61,10 +64,28 @@ export const WorkInfo = ({ work }: WorkInfoProps) => {
         <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-ws-ember-bright">
           {t("works.fix")}
         </span>
-        <p className="text-[15px] leading-[1.6] text-ws-ink-soft text-pretty">
+        <p className="text-pretty text-[15px] leading-[1.6] text-ws-ink-soft">
           {description}
         </p>
       </div>
+
+      {additionalPhotos.length > 0 && (
+        <div className="flex gap-1.5">
+          {additionalPhotos.map((photo, i) => (
+            <div
+              key={i}
+              className="aspect-square flex-1 overflow-hidden rounded-[8px]"
+            >
+              <img
+                src={photo.url}
+                alt=""
+                loading="lazy"
+                className="size-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

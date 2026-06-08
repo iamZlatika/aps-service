@@ -92,9 +92,6 @@ const WorksPage = lazy(
 const WorkCreatePage = lazy(
   () => import("@/features/backoffice/modules/works/pages/WorkCreatePage"),
 );
-const WorkDetailPage = lazy(
-  () => import("@/features/backoffice/modules/works/pages/WorkDetailPage"),
-);
 
 export const backofficeRoutes: RouteObject = {
   children: [
@@ -182,10 +179,6 @@ export const backofficeRoutes: RouteObject = {
         {
           path: WORKS_ROUTES.create,
           element: <WorkCreatePage />,
-        },
-        {
-          path: WORKS_ROUTES.detail,
-          element: <WorkDetailPage />,
         },
       ],
     },

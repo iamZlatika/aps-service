@@ -152,7 +152,9 @@
     "minCharsIs": "Мінімальна кількість символів {{chars}}",
     "minQuantity": "Мінімальне значення — 1",
     "colorRequired": "Виберіть колір",
-    "time_end_before_start": "Час закінчення має бути пізніше часу початку"
+    "time_end_before_start": "Час закінчення має бути пізніше часу початку",
+    "image_type": "Допустимі формати: JPEG, PNG, WebP",
+    "image_max_size": "Файл не повинен перевищувати 2 МБ"
   },
   "search_placeholders": {
     "dictionaries_name": "Пошук по назві",
@@ -626,18 +628,63 @@
       "created_at": "Дата",
       "is_published": "Публікація"
     },
+    "photo": {
+      "main": "Головне фото",
+      "before": "Фото до",
+      "after": "Фото після",
+      "additional": "Додаткові фото",
+      "additional_hint": "до 5 файлів",
+      "select": "Вибрати файл",
+      "selected": "Вибрано: {{name}}",
+      "selected_count": "Вибрано файлів: {{count}}",
+      "clear": "Прибрати файл",
+      "max_size": "макс. {{size}}",
+      "compressing": "Стиснення..."
+    },
     "published": "Опубліковано",
     "draft": "Чернетка",
     "actions": {
       "delete": "Видалити",
       "delete_confirm": "Ви впевнені, що хочете видалити цей запис? Цю дію не можна скасувати.",
+      "cancel": "Скасувати",
+      "publish": "Опублікувати",
+      "publish_confirm": "Ви впевнені, що хочете опублікувати цю роботу?",
+      "unpublish": "Зняти з публікації",
+      "unpublish_confirm": "Ви впевнені, що хочете зняти роботу з публікації?"
+    },
+    "form": {
+      "create_title": "Нова робота",
+      "section_device": "Пристрій",
+      "section_content": "Опис роботи",
+      "type_key": "Тип роботи",
+      "type_repair": "Ремонт",
+      "type_upgrade": "Апгрейд",
+      "device_type": "Тип пристрою",
+      "manufacturer": "Виробник",
+      "device_model": "Модель пристрою",
+      "description_ru": "Опис (RU)",
+      "description_uk": "Опис (UK)",
+      "reason_ru": "Причина звернення (RU)",
+      "reason_uk": "Причина звернення (UK)",
+      "reason_optional": "необов'язково",
+      "section_photos": "Фотографії",
+      "is_published": "Опублікувати одразу",
+      "submit": "Зберегти",
       "cancel": "Скасувати"
     },
     "create": {
       "title": "Нова робота"
     },
     "detail": {
-      "title": "Редагування роботи"
+      "title": "Перегляд роботи",
+      "no_reason": "Не вказано"
+    },
+    "preview": {
+      "title": "Попередній перегляд",
+      "confirm": "Створити",
+      "back": "Назад",
+      "darkTheme": "Темна тема",
+      "lightTheme": "Світла тема"
     }
   }
 }

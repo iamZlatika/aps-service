@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { WebsiteErrorFallback } from "@/features/website/components/ErrorFallback";
 import { useWorks } from "@/features/website/hooks/useWorks";
-
-import { WorkCard } from "./components/WorkCard";
+import { WorkCard } from "@/widgets/work-card";
 
 const WorksListSkeleton = () => (
   <div className="flex flex-col gap-6">

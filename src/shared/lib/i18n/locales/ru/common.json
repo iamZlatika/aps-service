@@ -155,7 +155,9 @@
     "minCharsIs": "Минимальное количество символов {{chars}}",
     "minQuantity": "Минимальное значение — 1",
     "colorRequired": "Выберите цвет",
-    "time_end_before_start": "Время окончания должно быть позже времени начала"
+    "time_end_before_start": "Время окончания должно быть позже времени начала",
+    "image_type": "Допустимые форматы: JPEG, PNG, WebP",
+    "image_max_size": "Файл не должен превышать 2 МБ"
   },
   "search_placeholders": {
     "dictionaries_name": "Поиск по названию",
@@ -629,18 +631,63 @@
       "created_at": "Дата",
       "is_published": "Публикация"
     },
+    "photo": {
+      "main": "Главное фото",
+      "before": "Фото до",
+      "after": "Фото после",
+      "additional": "Дополнительные фото",
+      "additional_hint": "до 5 файлов",
+      "select": "Выбрать файл",
+      "selected": "Выбран: {{name}}",
+      "selected_count": "Выбрано файлов: {{count}}",
+      "clear": "Убрать файл",
+      "max_size": "макс. {{size}}",
+      "compressing": "Сжатие..."
+    },
     "published": "Опубликовано",
     "draft": "Черновик",
     "actions": {
       "delete": "Удалить",
       "delete_confirm": "Вы уверены, что хотите удалить эту запись? Это действие нельзя отменить.",
+      "cancel": "Отмена",
+      "publish": "Опубликовать",
+      "publish_confirm": "Вы уверены, что хотите опубликовать эту работу?",
+      "unpublish": "Снять с публикации",
+      "unpublish_confirm": "Вы уверены, что хотите снять работу с публикации?"
+    },
+    "form": {
+      "create_title": "Новая работа",
+      "section_device": "Устройство",
+      "section_content": "Описание работы",
+      "type_key": "Тип работы",
+      "type_repair": "Ремонт",
+      "type_upgrade": "Апгрейд",
+      "device_type": "Тип устройства",
+      "manufacturer": "Производитель",
+      "device_model": "Модель устройства",
+      "description_ru": "Описание (RU)",
+      "description_uk": "Описание (UK)",
+      "reason_ru": "Причина обращения (RU)",
+      "reason_uk": "Причина обращения (UK)",
+      "reason_optional": "необязательно",
+      "section_photos": "Фотографии",
+      "is_published": "Опубликовать сразу",
+      "submit": "Сохранить",
       "cancel": "Отмена"
     },
     "create": {
       "title": "Новая работа"
     },
     "detail": {
-      "title": "Редактирование работы"
+      "title": "Просмотр работы",
+      "no_reason": "Не указана"
+    },
+    "preview": {
+      "title": "Предпросмотр",
+      "confirm": "Создать",
+      "back": "Назад",
+      "darkTheme": "Тёмная тема",
+      "lightTheme": "Светлая тема"
     }
   }
 }

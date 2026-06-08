@@ -1,15 +1,11 @@
 import { ZoomIn } from "lucide-react";
-import { useState } from "react";
+import { type SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { type Work } from "@/entities/work/types";
-import { WORK_TYPES } from "@/entities/work/types";
-import { Lightbox } from "@/features/website/components/Lightbox";
-import {
-  getTagClass,
-  type LightboxImage,
-} from "@/features/website/components/Lightbox/utils";
+import { type Work, WORK_TYPES } from "@/entities/work/types";
 import { cn } from "@/shared/lib/utils";
+import { Lightbox } from "@/widgets/lightbox";
+import { getTagClass, type LightboxImage } from "@/widgets/lightbox/utils";
 
 interface WorkMediaProps {
   work: Work;
@@ -20,6 +16,8 @@ type PhotoLabels = {
   after: string;
   upgrade: string;
 };
+
+type Orientation = "portrait" | "landscape";
 
 function buildLightboxImages(work: Work, labels: PhotoLabels): LightboxImage[] {
   if (work.type.key === WORK_TYPES.REPAIR) {
@@ -47,7 +45,13 @@ function buildLightboxImages(work: Work, labels: PhotoLabels): LightboxImage[] {
   const additional = work.photos.filter((p) => p.type === "additional");
   return [
     ...(main
-      ? [{ url: main.url, tag: labels.upgrade, tagVariant: "upgrade" as const }]
+      ? [
+          {
+            url: main.url,
+            tag: labels.upgrade,
+            tagVariant: "upgrade" as const,
+          },
+        ]
       : []),
     ...additional.map((p) => ({ url: p.url })),
   ];
@@ -66,6 +70,9 @@ function buildGridImages(work: Work, labels: PhotoLabels): LightboxImage[] {
 export const WorkMedia = ({ work }: WorkMediaProps) => {
   const { t } = useTranslation("website");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [orientations, setOrientations] = useState<Record<number, Orientation>>(
+    {},
+  );
 
   const labels: PhotoLabels = {
     before: t("works.tagBefore"),
@@ -75,13 +82,31 @@ export const WorkMedia = ({ work }: WorkMediaProps) => {
 
   const allImages = buildLightboxImages(work, labels);
   const gridImages = buildGridImages(work, labels);
+
+  const firstPhotoUrl = gridImages[0]?.url;
+  useEffect(() => {
+    setOrientations({});
+  }, [firstPhotoUrl, gridImages.length]);
+
+  const handleImgLoad = (e: SyntheticEvent<HTMLImageElement>, i: number) => {
+    const { naturalWidth, naturalHeight } = e.currentTarget;
+    setOrientations((prev) => ({
+      ...prev,
+      [i]: naturalWidth >= naturalHeight ? "landscape" : "portrait",
+    }));
+  };
+
   const isSingle = gridImages.length === 1;
+  const allDetected =
+    !isSingle && Object.keys(orientations).length === gridImages.length;
+  const isStacked =
+    allDetected && Object.values(orientations).every((o) => o === "landscape");
 
   return (
     <div
       className={cn(
         "ws-work-media grid gap-[2px] bg-ws-line-soft",
-        isSingle ? "grid-cols-1" : "grid-cols-2",
+        isSingle || isStacked ? "grid-cols-1" : "grid-cols-2",
       )}
     >
       {gridImages.map((img, i) => {
@@ -91,13 +116,17 @@ export const WorkMedia = ({ work }: WorkMediaProps) => {
             key={`${img.url}-${i}`}
             type="button"
             onClick={() => setLightboxIndex(lightboxIdx >= 0 ? lightboxIdx : i)}
-            className="group relative aspect-[3/4] cursor-zoom-in overflow-hidden bg-ws-bg-2 max-[860px]:aspect-square"
+            className={cn(
+              "group relative cursor-zoom-in overflow-hidden bg-ws-bg-2",
+              isStacked ? "aspect-[2/1]" : "max-[860px]:aspect-square",
+            )}
             aria-label={img.tag ?? `${t("works.eyebrow")} ${i + 1}`}
           >
             <img
               src={img.url}
               alt=""
               loading="lazy"
+              onLoad={(e) => handleImgLoad(e, i)}
               className="size-full object-cover"
             />
             {img.tag && (

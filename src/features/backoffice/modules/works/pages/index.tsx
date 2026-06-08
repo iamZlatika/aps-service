@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Pencil, Trash2 } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -7,13 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { type WorkTypeInfo } from "@/entities/work/types";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { worksApi } from "@/features/backoffice/modules/works/api";
+import { WorkPreviewModal } from "@/features/backoffice/modules/works/components/WorkPreviewModal";
+import { WorkPublishButton } from "@/features/backoffice/modules/works/components/WorkPublishButton";
 import { WORKS_LINKS } from "@/features/backoffice/modules/works/navigation";
 import { type BackofficeWork } from "@/features/backoffice/modules/works/types";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import { DeleteConfirmDialog } from "@/features/backoffice/widgets/table/components/dialogs";
 import { type ColumnConfig } from "@/features/backoffice/widgets/table/models/types";
 import { queryKeys } from "@/shared/api/queryKeys";
-import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { useLocalize } from "@/shared/hooks/useLocalize";
 import { formatDate } from "@/shared/lib/utils";
@@ -30,19 +31,19 @@ const WorksPage = () => {
         key: "deviceType",
         field: "deviceType",
         labelKey: "works.table_fields.device_type",
-        sortable: true,
+        sortable: false,
       },
       {
         key: "manufacturer",
         field: "manufacturer",
         labelKey: "works.table_fields.manufacturer",
-        sortable: true,
+        sortable: false,
       },
       {
         key: "deviceModel",
         field: "deviceModel",
         labelKey: "works.table_fields.device_model",
-        sortable: true,
+        sortable: false,
       },
       {
         key: "type",
@@ -58,7 +59,7 @@ const WorksPage = () => {
         key: "createdAt",
         field: "createdAt",
         labelKey: "works.table_fields.created_at",
-        sortable: true,
+        sortable: false,
         renderCell: (value) => formatDate(String(value)) ?? "—",
       },
       {
@@ -66,29 +67,53 @@ const WorksPage = () => {
         field: "isPublished",
         labelKey: "works.table_fields.is_published",
         sortable: false,
-        renderCell: (value) => (
-          <Badge variant={value ? "default" : "secondary"}>
-            {value ? t("works.published") : t("works.draft")}
-          </Badge>
+        renderCell: (value, item) => (
+          <div onClick={(e) => e.stopPropagation()}>
+            <WorkPublishButton
+              isPublished={Boolean(value)}
+              onClick={() => setWorkToToggle(item)}
+            />
+          </div>
         ),
       },
     ],
-    [t, localize],
+    [localize],
   );
 
-  const [targetWork, setTargetWork] = useState<BackofficeWork | null>(null);
+  const [workToDelete, setWorkToDelete] = useState<BackofficeWork | null>(null);
+  const [workToToggle, setWorkToToggle] = useState<BackofficeWork | null>(null);
+  const [workToPreview, setWorkToPreview] = useState<BackofficeWork | null>(
+    null,
+  );
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => worksApi.delete(id),
     onSuccess: () => {
-      setTargetWork(null);
+      setWorkToDelete(null);
+      return queryClient.invalidateQueries({ queryKey: queryKeys.works.all });
+    },
+  });
+
+  const publishMutation = useMutation({
+    mutationFn: ({ id, isPublished }: { id: number; isPublished: boolean }) =>
+      worksApi.setPublished(id, { is_published: isPublished }),
+    onSuccess: () => {
+      setWorkToToggle(null);
       return queryClient.invalidateQueries({ queryKey: queryKeys.works.all });
     },
   });
 
   const handleDeleteConfirm = useCallback(() => {
-    if (targetWork) deleteMutation.mutate(targetWork.id);
-  }, [targetWork, deleteMutation]);
+    if (workToDelete) deleteMutation.mutate(workToDelete.id);
+  }, [workToDelete, deleteMutation]);
+
+  const handlePublishConfirm = useCallback(() => {
+    if (workToToggle)
+      publishMutation.mutate({
+        id: workToToggle.id,
+        isPublished: !workToToggle.isPublished,
+      });
+  }, [workToToggle, publishMutation]);
 
   return (
     <>
@@ -107,14 +132,14 @@ const WorksPage = () => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate(WORKS_LINKS.detail(item.id))}
+              onClick={() => setWorkToPreview(item)}
             >
-              <Pencil className="h-4 w-4" />
+              <Eye className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setTargetWork(item)}
+              onClick={() => setWorkToDelete(item)}
             >
               <Trash2 className="h-4 w-4 text-destructive" />
             </Button>
@@ -123,9 +148,9 @@ const WorksPage = () => {
       />
 
       <DeleteConfirmDialog
-        isOpen={targetWork !== null}
+        isOpen={workToDelete !== null}
         onOpenChange={(open) => {
-          if (!open) setTargetWork(null);
+          if (!open) setWorkToDelete(null);
         }}
         title={t("works.actions.delete")}
         description={t("works.actions.delete_confirm")}
@@ -133,6 +158,36 @@ const WorksPage = () => {
         confirmLabel={t("works.actions.delete")}
         onConfirm={handleDeleteConfirm}
         isPending={deleteMutation.isPending}
+      />
+
+      <WorkPreviewModal
+        work={workToPreview}
+        onClose={() => setWorkToPreview(null)}
+      />
+
+      <DeleteConfirmDialog
+        isOpen={workToToggle !== null}
+        onOpenChange={(open) => {
+          if (!open) setWorkToToggle(null);
+        }}
+        title={
+          workToToggle?.isPublished
+            ? t("works.actions.unpublish")
+            : t("works.actions.publish")
+        }
+        description={
+          workToToggle?.isPublished
+            ? t("works.actions.unpublish_confirm")
+            : t("works.actions.publish_confirm")
+        }
+        cancelLabel={t("works.actions.cancel")}
+        confirmLabel={
+          workToToggle?.isPublished
+            ? t("works.actions.unpublish")
+            : t("works.actions.publish")
+        }
+        onConfirm={handlePublishConfirm}
+        isPending={publishMutation.isPending}
       />
     </>
   );

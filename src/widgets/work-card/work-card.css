@@ -1,0 +1,97 @@
+/* ============================================================
+   Theme scopes — used by WorkPreviewModal in backoffice.
+   On the website the same variables are provided by .website / .website.light
+   in website.css.
+   ============================================================ */
+.ws-theme-dark,
+.ws-theme-light {
+  background: var(--ws-bg);
+  color: var(--ws-ink);
+  font-family: "Manrope", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ws-theme-dark {
+  --ws-bg:           #28241c;
+  --ws-bg-2:         #3b352a;
+  --ws-bg-3:         #4a4234;
+  --ws-line:         #4a4434;
+  --ws-line-soft:    #3a352a;
+  --ws-ink:          #efe8db;
+  --ws-ink-hi:       #ffffff;
+  --ws-ink-soft:     #a8a194;
+  --ws-ink-mute:     #6f6a5e;
+  --ws-ember:        #ee7a3a;
+  --ws-ember-bright: #ffa55e;
+  --ws-ember-deep:   #b94a14;
+  --ws-cream:        #f4ead7;
+}
+
+.ws-theme-light {
+  --ws-bg:           #f4ead7;
+  --ws-bg-2:         #ffffff;
+  --ws-bg-3:         #ede4cc;
+  --ws-line:         #dccfb1;
+  --ws-line-soft:    #ebe1c6;
+  --ws-ink:          #1d1b18;
+  --ws-ink-hi:       #1d1b18;
+  --ws-ink-soft:     #5b5448;
+  --ws-ink-mute:     #a39a87;
+  --ws-ember:        #1a6db5;
+  --ws-ember-bright: #2e8cd6;
+  --ws-ember-deep:   #0f4f8a;
+  --ws-cream:        #1d1b18;
+}
+
+.ws-theme-light .ws-work-card {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* ============================================================
+   Work card layout
+   ============================================================ */
+.ws-work-card {
+  border: 1px solid var(--ws-line);
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.015);
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: stretch;
+}
+
+.ws-work-card-reverse {
+  grid-template-columns: 1fr 1.15fr;
+}
+
+.ws-work-card-reverse .ws-work-media {
+  order: 2;
+}
+
+.ws-work-card-reverse .ws-work-info {
+  order: 1;
+}
+
+.ws-work-media {
+  height: 100%;
+  min-height: 280px;
+  grid-auto-rows: 1fr;
+}
+
+@media (max-width: 860px) {
+  .ws-work-card,
+  .ws-work-card-reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .ws-work-media {
+    order: 2;
+    height: auto;
+    min-height: 0;
+    grid-auto-rows: auto;
+  }
+
+  .ws-work-info {
+    order: 1;
+  }
+}
