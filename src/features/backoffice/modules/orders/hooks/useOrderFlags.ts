@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { addDays, parseISO } from "date-fns";
-import { format } from "date-fns";
+import { addDays, format, parseISO } from "date-fns";
 
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
 import { mapOrderInfoToEditFormValues } from "@/features/backoffice/modules/orders/lib/adapters.ts";
@@ -21,7 +20,7 @@ export const useOrderFlags = (
 ): UseOrderFlagsReturn => {
   const invalidate = () =>
     queryClient.invalidateQueries({
-      queryKey: queryKeys.orders.detail(orderId),
+      queryKey: queryKeys.orders.all,
     });
 
   const { mutate: toggleCalled, isPending: calledPending } = useMutation({

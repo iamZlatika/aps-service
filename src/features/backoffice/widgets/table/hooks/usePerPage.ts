@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
 const DEFAULT_PER_PAGE = 15;
-const PER_PAGE_OPTIONS = [10, 15, 20, 25] as const;
+const PER_PAGE_OPTIONS = [15, 25, 50, 100] as const;
 
 export type PerPageOption = (typeof PER_PAGE_OPTIONS)[number];
 

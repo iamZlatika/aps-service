@@ -1,4 +1,4 @@
-import { CircleCheck } from "lucide-react";
+import { Flame, PhoneOff, PhoneOutgoing } from "lucide-react";
 
 import { PhoneDropdown } from "@/features/backoffice/components/PhoneDropdown";
 import type { Customer } from "@/features/backoffice/modules/customers/types.ts";
@@ -36,6 +36,21 @@ export function buildOrderColumns(locale: string): {
       field: "orderNumber",
       labelKey: "orders.table_fields.number",
       sortable: false,
+      renderCell: (value, item) => (
+        <div className="flex flex-col items-center justify-center gap-0.5 pr-4">
+          <span>{value as string}</span>
+          <div className="flex items-center gap-1">
+            {item.isCalled ? (
+              <PhoneOutgoing className="size-4 text-green-600" />
+            ) : (
+              <PhoneOff className="size-4 text-red-600" />
+            )}
+            {item.isUrgent && (
+              <Flame className="size-4 text-red-600 fill-red-600" />
+            )}
+          </div>
+        </div>
+      ),
     },
     {
       key: "dueDate",
@@ -183,31 +198,7 @@ export function buildOrderColumns(locale: string): {
       field: "estimatedCost",
       labelKey: "orders.table_fields.estimatedCost",
       sortable: false,
-      renderCell: (value) => <span>{value as string} ₴</span>,
-    },
-    {
-      key: "isCalled",
-      field: "isCalled",
-      labelKey: "orders.table_fields.isCalled",
-      sortable: false,
-      renderCell: (value) =>
-        value ? (
-          <CircleCheck className="text-green-600 size-6" />
-        ) : (
-          <span>—</span>
-        ),
-    },
-    {
-      key: "isUrgent",
-      field: "isUrgent",
-      labelKey: "orders.table_fields.isUrgent",
-      sortable: false,
-      renderCell: (value) =>
-        value ? (
-          <CircleCheck className="text-green-600 size-6" />
-        ) : (
-          <span>—</span>
-        ),
+      renderCell: (value) => (value ? <span>{value as string} ₴</span> : null),
     },
   ];
 
