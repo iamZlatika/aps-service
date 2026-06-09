@@ -92,6 +92,7 @@
       "order_statuses": "Статусы заказов",
       "products": "Товары",
       "suppliers": "Поставщики",
+      "outsourcers": "Аутсорсеры",
       "locations": "Локации",
       "bank_cards": "Банковские карты",
       "price_list": "Прайс-лист",
@@ -263,6 +264,12 @@
     }
   },
   "customers": {
+    "page_title": "Настройки клиента",
+    "orders": {
+      "title": "Заказы клиента",
+      "empty": "Заказов нет",
+      "error": "Не удалось загрузить заказы"
+    },
     "table_fields": {
       "name": "Имя",
       "lastOrderAt": "Последний заказ",
@@ -559,6 +566,7 @@
       "successEditProduct": "Товар успешно обновлён",
       "successEditService": "Услуга успешно обновлена",
       "successAddSupplier": "Поставщик успешно добавлен в словарь",
+      "successAddOutsourcer": "Аутсорсер успешно добавлен в словарь",
       "successAddProductToDict": "Товар успешно добавлен в словарь",
       "successAddServiceToDict": "Услуга успешно добавлена в словарь",
       "products": "Товары",
@@ -575,6 +583,7 @@
         "costPrice": "Себестоимость",
         "quantity": "Количество *",
         "supplierName": "Поставщик",
+        "outsourcer": "Аутсорсер",
         "executor": "Исполнитель"
       }
     },
@@ -657,6 +666,7 @@
     },
     "form": {
       "create_title": "Новая работа",
+      "edit_title": "Редактирование работы",
       "section_device": "Устройство",
       "section_content": "Описание работы",
       "type_key": "Тип работы",

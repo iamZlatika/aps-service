@@ -3,8 +3,10 @@ import { parseDto } from "@/shared/api/parseDto";
 
 import {
   mapLocationDtoToLocation,
+  mapOutsourcerDtoToOutsourcer,
   mapPriceListFormDataToPayload,
   mapPriceListItemDtoToPriceListItem,
+  mapSupplierDtoToSupplier,
 } from "../lib/adapters";
 import type { PriceListItem } from "../types";
 import {
@@ -16,6 +18,7 @@ import {
   LocationDtoSchema,
   type LocationPayload,
   OrderStatusDtoSchema,
+  OutsourcerDtoSchema,
   PriceListItemDtoSchema,
   type PriceListItemPayload,
   SupplierDtoSchema,
@@ -67,6 +70,15 @@ export const suppliersApi = createTypedDictionaryApi(
     item: (id) => DICTIONARIES_API.supplier(id),
   },
   SupplierDtoSchema,
+  mapSupplierDtoToSupplier,
+);
+export const outsourcersApi = createTypedDictionaryApi(
+  {
+    list: () => DICTIONARIES_API.outsourcers(),
+    item: (id) => DICTIONARIES_API.outsourcer(id),
+  },
+  OutsourcerDtoSchema,
+  mapOutsourcerDtoToOutsourcer,
 );
 export const productsApi = createDictionaryApi({
   list: () => DICTIONARIES_API.products(),

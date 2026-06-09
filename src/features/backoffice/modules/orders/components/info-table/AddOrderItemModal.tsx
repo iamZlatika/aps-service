@@ -45,7 +45,7 @@ const AddOrderItemModal = ({
 }: AddOrderItemModalProps) => {
   const { t } = useTranslation();
 
-  const initialValues = editItem
+  const initialData = editItem
     ? getOrderItemInitialValues(editItem)
     : undefined;
 
@@ -61,7 +61,20 @@ const AddOrderItemModal = ({
     onCreateNameItem,
     fetchSuppliers,
     onCreateSupplier,
-  } = useAddOrderItemForm({ type, initialValues });
+    supplierDisplay,
+    onSupplierChange,
+    onSupplierSelect,
+    fetchOutsourcers,
+    onCreateOutsourcer,
+    outsourcerDisplay,
+    onOutsourcerChange,
+    onOutsourcerSelect,
+  } = useAddOrderItemForm({
+    type,
+    initialValues: initialData?.formValues,
+    initialSupplierDisplay: initialData?.supplierDisplay,
+    initialOutsourcerDisplay: initialData?.outsourcerDisplay,
+  });
 
   const { onSubmit, isPending } = useOrderItemSubmit({
     orderId,
@@ -143,18 +156,26 @@ const AddOrderItemModal = ({
             {type === "product" && (
               <div className="flex flex-col gap-1">
                 <Label>{t("orders.orderTable.form.supplierName")}</Label>
-                <Controller
-                  name="supplierName"
-                  control={control}
-                  render={({ field }) => (
-                    <SearchableSelect
-                      value={field.value ?? ""}
-                      onChange={field.onChange}
-                      fetchItems={fetchSuppliers}
-                      queryKey={queryKeys.dictionaries.suppliers()}
-                      onCreateItem={onCreateSupplier}
-                    />
-                  )}
+                <SearchableSelect
+                  value={supplierDisplay}
+                  onChange={onSupplierChange}
+                  onSelect={onSupplierSelect}
+                  fetchItems={fetchSuppliers}
+                  queryKey={queryKeys.dictionaries.suppliers()}
+                  onCreateItem={onCreateSupplier}
+                />
+              </div>
+            )}
+            {type === "service" && (
+              <div className="flex flex-col gap-1">
+                <Label>{t("orders.orderTable.form.outsourcer")}</Label>
+                <SearchableSelect
+                  value={outsourcerDisplay}
+                  onChange={onOutsourcerChange}
+                  onSelect={onOutsourcerSelect}
+                  fetchItems={fetchOutsourcers}
+                  queryKey={queryKeys.dictionaries.outsourcers()}
+                  onCreateItem={onCreateOutsourcer}
                 />
               </div>
             )}

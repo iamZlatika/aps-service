@@ -1,8 +1,14 @@
-import { type Control, Controller, type FieldErrors } from "react-hook-form";
+import {
+  type Control,
+  Controller,
+  type FieldError,
+  type FieldErrors,
+  type FieldValues,
+  type Path,
+} from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { WORK_TYPES } from "@/entities/work/types";
-import { type WorkFormValues } from "@/features/backoffice/modules/works/lib/work.schema";
 import {
   fetchWorkDeviceModels,
   fetchWorkDeviceTypes,
@@ -25,16 +31,30 @@ import {
 } from "@/shared/components/ui/select";
 import SearchableSelect from "@/widgets/searchable-select";
 
-interface WorkDeviceSectionProps {
-  control: Control<WorkFormValues>;
-  errors: FieldErrors<WorkFormValues>;
+type DeviceFields = {
+  device_type: string;
+  manufacturer: string;
+  device_model: string;
+};
+
+type WithWorkType = DeviceFields & { type: string };
+
+interface WorkDeviceSectionProps<T extends FieldValues & DeviceFields> {
+  control: Control<T>;
+  errors: FieldErrors<T>;
+  showWorkType?: boolean;
 }
 
-export const WorkDeviceSection = ({
+export const WorkDeviceSection = <T extends FieldValues & DeviceFields>({
   control,
   errors,
-}: WorkDeviceSectionProps) => {
+  showWorkType = true,
+}: WorkDeviceSectionProps<T>) => {
   const { t } = useTranslation();
+
+  const deviceErrors = errors as unknown as Partial<
+    Record<keyof DeviceFields, FieldError>
+  >;
 
   return (
     <Card>
@@ -44,45 +64,51 @@ export const WorkDeviceSection = ({
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1.5">
-          <Label>{t("works.form.type_key")}</Label>
-          <Controller
-            control={control}
-            name="type"
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger
-                  className={errors.type ? "border-destructive" : undefined}
-                >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value={WORK_TYPES.REPAIR}>
-                    {t("works.form.type_repair")}
-                  </SelectItem>
-                  <SelectItem value={WORK_TYPES.UPGRADE}>
-                    {t("works.form.type_upgrade")}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            )}
-          />
-        </div>
+        {showWorkType && (
+          <div className="flex flex-col gap-1.5">
+            <Label>{t("works.form.type_key")}</Label>
+            <Controller
+              control={control as unknown as Control<WithWorkType>}
+              name="type"
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger
+                    className={
+                      (errors as unknown as FieldErrors<WithWorkType>).type
+                        ? "border-destructive"
+                        : undefined
+                    }
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={WORK_TYPES.REPAIR}>
+                      {t("works.form.type_repair")}
+                    </SelectItem>
+                    <SelectItem value={WORK_TYPES.UPGRADE}>
+                      {t("works.form.type_upgrade")}
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+        )}
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="flex flex-col gap-1.5">
             <Label>{t("works.form.device_type")}</Label>
             <Controller
               control={control}
-              name="device_type"
+              name={"device_type" as Path<T>}
               render={({ field }) => (
                 <SearchableSelect
-                  value={field.value}
+                  value={field.value as string}
                   onChange={field.onChange}
                   fetchItems={fetchWorkDeviceTypes}
                   queryKey={queryKeys.dictionaries.deviceTypes()}
                   placeholder={t("works.form.device_type")}
-                  error={errors.device_type}
+                  error={deviceErrors.device_type}
                 />
               )}
             />
@@ -91,15 +117,15 @@ export const WorkDeviceSection = ({
             <Label>{t("works.form.manufacturer")}</Label>
             <Controller
               control={control}
-              name="manufacturer"
+              name={"manufacturer" as Path<T>}
               render={({ field }) => (
                 <SearchableSelect
-                  value={field.value}
+                  value={field.value as string}
                   onChange={field.onChange}
                   fetchItems={fetchWorkManufacturers}
                   queryKey={queryKeys.dictionaries.manufacturers()}
                   placeholder={t("works.form.manufacturer")}
-                  error={errors.manufacturer}
+                  error={deviceErrors.manufacturer}
                 />
               )}
             />
@@ -108,15 +134,15 @@ export const WorkDeviceSection = ({
             <Label>{t("works.form.device_model")}</Label>
             <Controller
               control={control}
-              name="device_model"
+              name={"device_model" as Path<T>}
               render={({ field }) => (
                 <SearchableSelect
-                  value={field.value}
+                  value={field.value as string}
                   onChange={field.onChange}
                   fetchItems={fetchWorkDeviceModels}
                   queryKey={queryKeys.dictionaries.deviceModels()}
                   placeholder={t("works.form.device_model")}
-                  error={errors.device_model}
+                  error={deviceErrors.device_model}
                 />
               )}
             />

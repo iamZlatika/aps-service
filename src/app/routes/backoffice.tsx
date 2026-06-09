@@ -92,6 +92,12 @@ const WorksPage = lazy(
 const WorkCreatePage = lazy(
   () => import("@/features/backoffice/modules/works/pages/WorkCreatePage"),
 );
+const WorkEditPage = lazy(
+  () => import("@/features/backoffice/modules/works/pages/WorkEditPage"),
+);
+const OutsourcersPage = lazy(
+  () => import("@/features/backoffice/modules/dictionaries/pages/Outsourcers"),
+);
 
 export const backofficeRoutes: RouteObject = {
   children: [
@@ -157,6 +163,10 @@ export const backofficeRoutes: RouteObject = {
           element: <SuppliersPage />,
         },
         {
+          path: DICTIONARIES_ROUTES.outsourcers,
+          element: <OutsourcersPage />,
+        },
+        {
           path: DICTIONARIES_ROUTES.products,
           element: <ProductsPage />,
         },
@@ -179,6 +189,10 @@ export const backofficeRoutes: RouteObject = {
         {
           path: WORKS_ROUTES.create,
           element: <WorkCreatePage />,
+        },
+        {
+          path: WORKS_ROUTES.edit,
+          element: <WorkEditPage />,
         },
       ],
     },

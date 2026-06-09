@@ -5,7 +5,11 @@ import {
   CustomerDtoSchema,
   CustomerInfoDtoSchema,
 } from "@/features/backoffice/modules/customers/api/dto.ts";
-import { LocationDtoSchema } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
+import {
+  LocationDtoSchema,
+  OutsourcerDtoSchema,
+  SupplierDtoSchema,
+} from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { UserDtoSchema } from "@/features/backoffice/modules/users/api/dto.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
 import {
@@ -90,7 +94,7 @@ export type OrderCommentDto = z.infer<typeof OrderCommentDtoSchema>;
 export const OrderProductSchema = z.object({
   id: z.number(),
   manager: UserDtoSchema,
-  supplier_name: z.string().nullable().optional(),
+  supplier: SupplierDtoSchema.nullable().optional(),
   name: z.string(),
   price: z.string(),
   purchase_price: z.string().nullable().optional(),
@@ -110,6 +114,7 @@ export const OrderServiceSchema = z.object({
   name: z.string(),
   price: z.string(),
   cost_price: z.string().nullable().optional(),
+  outsourcer: OutsourcerDtoSchema.nullable().optional(),
   quantity: z.number(),
   created_at: z.iso.datetime(),
   completed_at: z.iso.datetime().nullable(),

@@ -12,6 +12,7 @@ import {
   Smartphone,
   Stethoscope,
   StickyNote,
+  Users,
   Wrench,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -74,6 +75,11 @@ const DictionariesPage = () => {
       title: t("sidebar.dictionaries_list.suppliers"),
       icon: Container,
       href: DICTIONARIES_LINKS.suppliers(),
+    },
+    {
+      title: t("sidebar.dictionaries_list.outsourcers"),
+      icon: Users,
+      href: DICTIONARIES_LINKS.outsourcers(),
     },
     {
       title: t("sidebar.dictionaries_list.products"),

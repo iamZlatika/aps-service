@@ -64,7 +64,10 @@ export const SupplierDtoSchema = z.object({
   website: z.string().nullable().optional().default(""),
 });
 
-export type Supplier = z.infer<typeof SupplierDtoSchema>;
+export type SupplierDto = z.infer<typeof SupplierDtoSchema>;
+
+export const OutsourcerDtoSchema = SupplierDtoSchema;
+export type OutsourcerDto = z.infer<typeof OutsourcerDtoSchema>;
 
 export const ProductDtoSchema = z.object({
   id: z.number(),

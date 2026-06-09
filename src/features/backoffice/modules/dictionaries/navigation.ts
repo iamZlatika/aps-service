@@ -12,6 +12,7 @@ export const DICTIONARIES_LINKS = {
   services: () => `${BASE}/services`,
   orderStatuses: () => `${BASE}/order-statuses`,
   suppliers: () => `${BASE}/suppliers`,
+  outsourcers: () => `${BASE}/outsourcers`,
   products: () => `${BASE}/products`,
   locations: () => `${BASE}/locations`,
   bankCards: () => `${BASE}/bank-cards`,

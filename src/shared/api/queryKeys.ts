@@ -45,6 +45,13 @@ export const queryKeys = {
     all: ["orders"] as const,
     list: makeEntityKey(["orders"], "list"),
     detail: (id: number) => ["orders", "detail", id] as const,
+    byCustomer: (customerId: number, page?: number) =>
+      [
+        "orders",
+        "byCustomer",
+        customerId,
+        ...(page !== undefined ? [page] : []),
+      ] as const,
   },
 
   tracking: {
@@ -80,6 +87,7 @@ export const queryKeys = {
     services: makeEntityKey(["dictionaries"], "services"),
     orderStatuses: makeEntityKey(["dictionaries"], "order-statuses"),
     suppliers: makeEntityKey(["dictionaries"], "suppliers"),
+    outsourcers: makeEntityKey(["dictionaries"], "outsourcers"),
     products: makeEntityKey(["dictionaries"], "products"),
     locations: makeEntityKey(["dictionaries"], "locations"),
     bankCards: makeEntityKey(["dictionaries"], "bank-cards"),

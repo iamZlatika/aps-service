@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import i18next from "i18next";
+import { useState } from "react";
 import {
   type Control,
   type FieldErrors,
@@ -12,6 +13,7 @@ import { toast } from "sonner";
 
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import {
+  outsourcersApi,
   productsApi,
   servicesApi,
   suppliersApi,
@@ -30,11 +32,14 @@ import type { SearchableSelectOption } from "@/widgets/searchable-select";
 
 const fetchServices = createNameSearchFetcher(servicesApi.getAll);
 const fetchProducts = createNameSearchFetcher(productsApi.getAll);
-const fetchSuppliers = createNameSearchFetcher(suppliersApi.getAll);
+const fetchSupplierItems = createNameSearchFetcher(suppliersApi.getAll);
+const fetchOutsourcerItems = createNameSearchFetcher(outsourcersApi.getAll);
 
 type UseAddOrderItemFormParams = {
   type: OrderItemType;
   initialValues?: Partial<NewOrderItemFormValues>;
+  initialSupplierDisplay?: string;
+  initialOutsourcerDisplay?: string;
 };
 
 type UseAddOrderItemFormReturn = {
@@ -49,11 +54,21 @@ type UseAddOrderItemFormReturn = {
   onCreateNameItem: (name: string) => Promise<void>;
   fetchSuppliers: (search: string) => Promise<SearchableSelectOption[]>;
   onCreateSupplier: (name: string) => Promise<void>;
+  supplierDisplay: string;
+  onSupplierChange: (value: string) => void;
+  onSupplierSelect: (option: SearchableSelectOption) => void;
+  fetchOutsourcers: (search: string) => Promise<SearchableSelectOption[]>;
+  onCreateOutsourcer: (name: string) => Promise<void>;
+  outsourcerDisplay: string;
+  onOutsourcerChange: (value: string) => void;
+  onOutsourcerSelect: (option: SearchableSelectOption) => void;
 };
 
 export const useAddOrderItemForm = ({
   type,
   initialValues,
+  initialSupplierDisplay = "",
+  initialOutsourcerDisplay = "",
 }: UseAddOrderItemFormParams): UseAddOrderItemFormReturn => {
   const { user } = useAuth();
 
@@ -67,12 +82,20 @@ export const useAddOrderItemForm = ({
   const {
     control,
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<NewOrderItemFormValues, unknown, NewOrderItemSchema>({
     resolver: zodResolver(newOrderItemSchema()),
     defaultValues: initialValues ?? { quantity: 1, managerId: user?.id },
   });
+
+  const [supplierDisplay, setSupplierDisplay] = useState(
+    initialSupplierDisplay,
+  );
+  const [outsourcerDisplay, setOutsourcerDisplay] = useState(
+    initialOutsourcerDisplay,
+  );
 
   const fetchNameItems = type === "service" ? fetchServices : fetchProducts;
 
@@ -95,6 +118,31 @@ export const useAddOrderItemForm = ({
       toast.success(i18next.t("orders.orderTable.successAddSupplier"));
     });
 
+  const onSupplierChange = (value: string) => {
+    setSupplierDisplay(value);
+    if (!value) setValue("supplierId", null);
+  };
+
+  const onSupplierSelect = (option: SearchableSelectOption) => {
+    setSupplierDisplay(option.name);
+    setValue("supplierId", option.id);
+  };
+
+  const onCreateOutsourcer = (name: string): Promise<void> =>
+    outsourcersApi.create({ name }).then(() => {
+      toast.success(i18next.t("orders.orderTable.successAddOutsourcer"));
+    });
+
+  const onOutsourcerChange = (value: string) => {
+    setOutsourcerDisplay(value);
+    if (!value) setValue("outsourcerId", null);
+  };
+
+  const onOutsourcerSelect = (option: SearchableSelectOption) => {
+    setOutsourcerDisplay(option.name);
+    setValue("outsourcerId", option.id);
+  };
+
   return {
     control,
     register,
@@ -105,7 +153,15 @@ export const useAddOrderItemForm = ({
     fetchNameItems,
     nameQueryKey,
     onCreateNameItem,
-    fetchSuppliers,
+    fetchSuppliers: fetchSupplierItems,
     onCreateSupplier,
+    supplierDisplay,
+    onSupplierChange,
+    onSupplierSelect,
+    fetchOutsourcers: fetchOutsourcerItems,
+    onCreateOutsourcer,
+    outsourcerDisplay,
+    onOutsourcerChange,
+    onOutsourcerSelect,
   };
 };

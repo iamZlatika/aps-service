@@ -10,6 +10,7 @@ export const DICTIONARIES_ROUTES = {
   services: "dictionaries/services",
   orderStatuses: "dictionaries/order-statuses",
   suppliers: "dictionaries/suppliers",
+  outsourcers: "dictionaries/outsourcers",
   products: "dictionaries/products",
   locations: "dictionaries/locations",
   bankCards: "dictionaries/bank-cards",

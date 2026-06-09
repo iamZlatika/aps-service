@@ -4,6 +4,7 @@ import { buildPaginatedParams, del, get, post, put } from "@/shared/api/api";
 import { parseDto } from "@/shared/api/parseDto";
 
 import { mapBackofficeWorkDtoToBackofficeWork } from "../lib/adapters";
+import type { WorkEditFormValues } from "../lib/work-edit.schema";
 import { type BackofficeWork, type SetPublishedPayload } from "../types";
 import {
   BackofficeWorkItemDtoSchema,
@@ -62,6 +63,18 @@ export const worksApi = {
   ): Promise<BackofficeWork> => {
     const response = await put<SetPublishedPayload, unknown>(
       WORKS_API.publish(id),
+      data,
+    );
+    const validated = parseDto(BackofficeWorkItemDtoSchema, response);
+    return mapBackofficeWorkDtoToBackofficeWork(validated.data);
+  },
+
+  update: async (
+    id: number,
+    data: WorkEditFormValues,
+  ): Promise<BackofficeWork> => {
+    const response = await put<WorkEditFormValues, unknown>(
+      WORKS_API.item(id),
       data,
     );
     const validated = parseDto(BackofficeWorkItemDtoSchema, response);

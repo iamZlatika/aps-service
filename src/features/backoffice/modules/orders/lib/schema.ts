@@ -66,8 +66,9 @@ export const newOrderItemSchema = () =>
       .int()
       .min(1, i18next.t("validation.minQuantity")),
     purchasePrice: z.string().optional().default(""),
-    supplierName: z.string().optional(),
+    supplierId: z.number().nullable().optional(),
     costPrice: z.string().optional().default(""),
+    outsourcerId: z.number().nullable().optional(),
     managerId: z.number().int().positive().optional(),
   });
 

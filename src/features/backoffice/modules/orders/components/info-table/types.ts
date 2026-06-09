@@ -1,16 +1,7 @@
-export type OrderItemInitialValues =
-  | {
-      name: string;
-      price: string;
-      quantity: number;
-      managerId: number | undefined;
-      purchasePrice: string;
-      supplierName: string;
-    }
-  | {
-      name: string;
-      price: string;
-      quantity: number;
-      managerId: number | undefined;
-      costPrice: string;
-    };
+import type { NewOrderItemFormValues } from "@/features/backoffice/modules/orders/lib/schema.ts";
+
+export type OrderItemInitialData = {
+  formValues: Partial<NewOrderItemFormValues>;
+  supplierDisplay: string;
+  outsourcerDisplay: string;
+};

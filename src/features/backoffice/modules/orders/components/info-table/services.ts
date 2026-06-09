@@ -1,4 +1,4 @@
-import type { OrderItemInitialValues } from "@/features/backoffice/modules/orders/components/info-table/types.ts";
+import type { OrderItemInitialData } from "@/features/backoffice/modules/orders/components/info-table/types.ts";
 import type {
   OrderItem,
   OrderItemType,
@@ -6,25 +6,34 @@ import type {
 
 export function getOrderItemInitialValues(
   editItem: OrderItem,
-): OrderItemInitialValues {
+): OrderItemInitialData {
   const base = {
     name: editItem.name,
     price: editItem.price,
     quantity: editItem.quantity,
-    managerId: editItem.manager?.id,
+    managerId: editItem.manager.id,
   };
 
   if (editItem.type === "product") {
     return {
-      ...base,
-      purchasePrice: editItem.purchasePrice ?? "",
-      supplierName: editItem.supplierName ?? "",
+      formValues: {
+        ...base,
+        purchasePrice: editItem.purchasePrice ?? "",
+        supplierId: editItem.supplier?.id ?? null,
+      },
+      supplierDisplay: editItem.supplier?.name ?? "",
+      outsourcerDisplay: "",
     };
   }
 
   return {
-    ...base,
-    costPrice: editItem.costPrice ?? "",
+    formValues: {
+      ...base,
+      costPrice: editItem.costPrice ?? "",
+      outsourcerId: editItem.outsourcer?.id ?? null,
+    },
+    supplierDisplay: "",
+    outsourcerDisplay: editItem.outsourcer?.name ?? "",
   };
 }
 

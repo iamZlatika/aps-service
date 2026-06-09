@@ -92,6 +92,7 @@
       "order_statuses": "Статуси замовлень",
       "products": "Товари",
       "suppliers": "Постачальники",
+      "outsourcers": "Аутсорсери",
       "locations": "Локації",
       "bank_cards": "Банківські картки",
       "price_list": "Прайс-лист"
@@ -260,6 +261,12 @@
     }
   },
   "customers": {
+    "page_title": "Налаштування клієнта",
+    "orders": {
+      "title": "Замовлення клієнта",
+      "empty": "Замовлень немає",
+      "error": "Не вдалося завантажити замовлення"
+    },
     "table_fields": {
       "name": "Ім'я",
       "lastOrderAt": "Останнє замовлення",
@@ -557,6 +564,7 @@
       "successEditProduct": "Товар успішно оновлено",
       "successEditService": "Послугу успішно оновлено",
       "successAddSupplier": "Постачальника успішно додано до словника",
+      "successAddOutsourcer": "Аутсорсера успішно додано до словника",
       "successAddProductToDict": "Товар успішно додано до словника",
       "successAddServiceToDict": "Послугу успішно додано до словника",
       "products": "Товари",
@@ -573,6 +581,7 @@
         "costPrice": "Собівартість",
         "quantity": "Кількість *",
         "supplierName": "Постачальник",
+        "outsourcerId": "Аутсорсер",
         "executor": "Виконавець"
       }
     },
@@ -654,6 +663,7 @@
     },
     "form": {
       "create_title": "Нова робота",
+      "edit_title": "Редагування роботи",
       "section_device": "Пристрій",
       "section_content": "Опис роботи",
       "type_key": "Тип роботи",

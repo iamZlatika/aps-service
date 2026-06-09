@@ -1,12 +1,12 @@
 import { PhoneDropdown } from "@/features/backoffice/components/PhoneDropdown";
-import { suppliersApi } from "@/features/backoffice/modules/dictionaries/api";
+import { outsourcersApi } from "@/features/backoffice/modules/dictionaries/api";
 import { DictionaryTablePage } from "@/features/backoffice/modules/dictionaries/components/DictionaryTablePage.tsx";
-import { type Supplier } from "@/features/backoffice/modules/dictionaries/types.ts";
+import { type Outsourcer } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
-const SuppliersPage = () => {
-  const columns: ColumnConfig<Supplier>[] = [
+const OutsourcersPage = () => {
+  const columns: ColumnConfig<Outsourcer>[] = [
     {
       key: "name",
       field: "name",
@@ -56,12 +56,12 @@ const SuppliersPage = () => {
 
   return (
     <DictionaryTablePage
-      titleKey="sidebar.dictionaries_list.suppliers"
-      api={suppliersApi}
-      queryKeyFn={queryKeys.dictionaries.suppliers}
+      titleKey="sidebar.dictionaries_list.outsourcers"
+      api={outsourcersApi}
+      queryKeyFn={queryKeys.dictionaries.outsourcers}
       columns={columns}
     />
   );
 };
 
-export default SuppliersPage;
+export default OutsourcersPage;

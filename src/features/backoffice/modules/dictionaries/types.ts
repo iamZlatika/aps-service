@@ -9,6 +9,16 @@ export type DictionaryItem = {
   name: string;
 };
 
+export type Supplier = {
+  id: number;
+  name: string;
+  managerName: string | null;
+  phone: string | null;
+  website: string | null;
+};
+
+export type Outsourcer = Supplier;
+
 export type PaginationMeta = {
   currentPage: number;
   lastPage: number;

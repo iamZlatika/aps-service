@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Eye, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -135,6 +135,13 @@ const WorksPage = () => {
               onClick={() => setWorkToPreview(item)}
             >
               <Eye className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate(WORKS_LINKS.edit(item.id))}
+            >
+              <Pencil className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"

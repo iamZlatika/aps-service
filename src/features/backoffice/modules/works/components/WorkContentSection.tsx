@@ -1,7 +1,12 @@
-import { type FieldErrors, type UseFormRegister } from "react-hook-form";
+import {
+  type FieldError,
+  type FieldErrors,
+  type FieldValues,
+  type Path,
+  type UseFormRegister,
+} from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { type WorkFormValues } from "@/features/backoffice/modules/works/lib/work.schema";
 import {
   Card,
   CardContent,
@@ -11,16 +16,27 @@ import {
 import { Label } from "@/shared/components/ui/label";
 import { Textarea } from "@/shared/components/ui/textarea";
 
-interface WorkContentSectionProps {
-  register: UseFormRegister<WorkFormValues>;
-  errors: FieldErrors<WorkFormValues>;
+type ContentFields = {
+  description_ru: string;
+  description_uk: string;
+  reason_ru?: string;
+  reason_uk?: string;
+};
+
+interface WorkContentSectionProps<T extends FieldValues & ContentFields> {
+  register: UseFormRegister<T>;
+  errors: FieldErrors<T>;
 }
 
-export const WorkContentSection = ({
+export const WorkContentSection = <T extends FieldValues & ContentFields>({
   register,
   errors,
-}: WorkContentSectionProps) => {
+}: WorkContentSectionProps<T>) => {
   const { t } = useTranslation();
+
+  const contentErrors = errors as unknown as Partial<
+    Record<keyof ContentFields, FieldError>
+  >;
 
   return (
     <Card>
@@ -37,7 +53,7 @@ export const WorkContentSection = ({
               ({t("works.form.reason_optional")})
             </span>
           </Label>
-          <Textarea {...register("reason_ru")} rows={3} />
+          <Textarea {...register("reason_ru" as Path<T>)} rows={3} />
         </div>
         <div className="flex flex-col gap-1.5">
           <Label>
@@ -46,31 +62,35 @@ export const WorkContentSection = ({
               ({t("works.form.reason_optional")})
             </span>
           </Label>
-          <Textarea {...register("reason_uk")} rows={3} />
+          <Textarea {...register("reason_uk" as Path<T>)} rows={3} />
         </div>
         <div className="flex flex-col gap-1.5">
           <Label>{t("works.form.description_ru")}</Label>
           <Textarea
-            {...register("description_ru")}
-            className={errors.description_ru ? "border-destructive" : undefined}
+            {...register("description_ru" as Path<T>)}
+            className={
+              contentErrors.description_ru ? "border-destructive" : undefined
+            }
             rows={4}
           />
-          {errors.description_ru && (
+          {contentErrors.description_ru && (
             <p className="text-sm text-destructive">
-              {errors.description_ru.message}
+              {contentErrors.description_ru.message}
             </p>
           )}
         </div>
         <div className="flex flex-col gap-1.5">
           <Label>{t("works.form.description_uk")}</Label>
           <Textarea
-            {...register("description_uk")}
-            className={errors.description_uk ? "border-destructive" : undefined}
+            {...register("description_uk" as Path<T>)}
+            className={
+              contentErrors.description_uk ? "border-destructive" : undefined
+            }
             rows={4}
           />
-          {errors.description_uk && (
+          {contentErrors.description_uk && (
             <p className="text-sm text-destructive">
-              {errors.description_uk.message}
+              {contentErrors.description_uk.message}
             </p>
           )}
         </div>

@@ -3,6 +3,10 @@ import {
   type Customer,
   type CustomerInfo,
 } from "@/features/backoffice/modules/customers/types.ts";
+import type {
+  Outsourcer,
+  Supplier,
+} from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type {
@@ -80,7 +84,7 @@ export type OrderComment = {
 export type OrderProduct = {
   id: number;
   manager: User;
-  supplierName: null | string;
+  supplier: Supplier | null;
   name: string;
   price: string;
   purchasePrice: string | null;
@@ -100,7 +104,8 @@ export type NewOrderProduct = Omit<
   | "deletedAt"
   | "completedAt"
   | "deletedByUser"
-> & { managerId: number | null };
+  | "supplier"
+> & { managerId: number | null; supplierId: number | null };
 export type OrderService = {
   id: number;
   manager: User;
@@ -108,7 +113,7 @@ export type OrderService = {
   name: string;
   price: string;
   costPrice?: string | null;
-  supplierName?: null | string;
+  outsourcer: Outsourcer | null;
   quantity: number;
   createdAt: string;
   updatedAt: string;
@@ -126,7 +131,8 @@ export type NewOrderService = Omit<
   | "repairOperationId"
   | "completedAt"
   | "deletedByUser"
-> & { managerId: number | null };
+  | "outsourcer"
+> & { managerId: number | null; outsourcerId: number | null };
 
 export type OrderItemType = "product" | "service";
 
