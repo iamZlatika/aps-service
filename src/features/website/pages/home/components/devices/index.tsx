@@ -1,7 +1,8 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useLanding } from "@/features/website/hooks/useLanding";
+import { useModalParam } from "@/features/website/hooks/useModalParam";
+import { DEVICE_PARAM } from "@/features/website/lib/modalParams";
 import { DeviceCard } from "@/features/website/pages/home/components/devices/DeviceCard";
 import { DevicePriceModal } from "@/features/website/pages/home/components/devices/DevicePriceModal";
 import {
@@ -12,8 +13,16 @@ import { findCheapestCategory } from "@/features/website/pages/home/components/d
 
 export const DevicesSection = () => {
   const { t } = useTranslation("website");
-  const [selectedId, setSelectedId] = useState<DeviceId | null>(null);
+  const {
+    value: deviceParam,
+    set: setDevice,
+    clear: clearDevice,
+  } = useModalParam(DEVICE_PARAM);
   const { landing } = useLanding();
+
+  const selectedId = DEVICES.some((d) => d.id === deviceParam)
+    ? (deviceParam as DeviceId)
+    : null;
 
   return (
     <>
@@ -43,11 +52,11 @@ export const DevicesSection = () => {
                   key={id}
                   id={id}
                   minPrice={cheapest?.minPrice ?? null}
-                  onClick={() => setSelectedId(id)}
+                  onClick={() => setDevice(id)}
                 />
               );
             })}
-            <div className="md:hidden flex flex-col gap-3 rounded-ws-card border border-dashed border-ws-line p-5 text-[12.5px] leading-[1.55] tracking-[.005em] text-ws-ink-mute">
+            <div className="md:hidden flex flex-col gap-3 rounded-ws-card border border-dashed border-ws-line p-5 text-[12.5px] leading-[1.55] tracking-[.005em] text-ws-ember-bright">
               <b className="text-[22px] font-bold leading-none text-ws-ember-bright">
                 *
               </b>
@@ -56,7 +65,7 @@ export const DevicesSection = () => {
             </div>
           </div>
 
-          <p className="hidden md:block mt-[18px] rounded-xl border border-dashed border-ws-line bg-white/[.012] px-[22px] py-4 text-[13px] leading-[1.55] tracking-[.005em]  text-ws-ink-mute">
+          <p className="hidden md:block mt-[18px] rounded-xl border border-dashed border-ws-line bg-white/[.012] px-[22px] py-4 text-[13px] leading-[1.55] tracking-[.005em] text-ws-ember-bright">
             <b className="mr-1.5 align-middle text-[20px] font-bold leading-none text-ws-ember-bright">
               *
             </b>
@@ -65,10 +74,7 @@ export const DevicesSection = () => {
         </div>
       </section>
 
-      <DevicePriceModal
-        deviceId={selectedId}
-        onClose={() => setSelectedId(null)}
-      />
+      <DevicePriceModal deviceId={selectedId} onClose={clearDevice} />
     </>
   );
 };

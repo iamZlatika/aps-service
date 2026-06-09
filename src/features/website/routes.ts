@@ -6,4 +6,6 @@ export const WEBSITE_ROUTES = {
   account: "/account",
   track: "/track/:token",
   priceList: "/price-list",
+  warranty: "/warranty",
+  about: "/about",
 } as const;
