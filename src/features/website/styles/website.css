@@ -610,3 +610,67 @@
   flex-direction: column;
   gap: 24px;
 }
+
+/* ============================================================
+   Reviews page
+   ============================================================ */
+.ws-reviews-section {
+  padding: 32px 0 80px;
+}
+
+@media (max-width: 880px) {
+  .ws-reviews-section {
+    padding: 20px 0 56px;
+  }
+}
+
+.ws-rv3 {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+@media (max-width: 980px) {
+  .ws-rv3 {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+.ws-rv3-aside {
+  position: sticky;
+  top: 32px;
+}
+
+@media (max-width: 980px) {
+  .ws-rv3-aside {
+    position: static;
+  }
+}
+
+.ws-rv3-aside h1 {
+  font-weight: 300;
+  font-size: clamp(26px, 2.8vw, 38px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--ws-ink-soft);
+  margin-bottom: 26px;
+  text-wrap: balance;
+}
+
+.ws-rv3-aside h1 strong {
+  font-weight: 600;
+  color: var(--ws-ink);
+}
+
+.ws-rv3-wall {
+  columns: 2;
+  column-gap: 18px;
+}
+
+@media (max-width: 760px) {
+  .ws-rv3-wall {
+    columns: 1;
+  }
+}

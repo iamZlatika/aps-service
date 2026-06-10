@@ -253,6 +253,14 @@
     "copyright": "© 2016 — 2026 APS service",
     "privacy": "политика конфиденциальности · оферта"
   },
+  "reviews": {
+    "eyebrow": "Отзывы",
+    "heading": "Нас",
+    "headingBold": "рекомендуют.",
+    "scoreLabel": "Оценка в Google",
+    "reviewsCount": "{{count}} отзывов",
+    "leaveReview": "Оставить отзыв"
+  },
   "works": {
     "eyebrow": "Наши работы",
     "heading": "Реальные примеры ремонта",

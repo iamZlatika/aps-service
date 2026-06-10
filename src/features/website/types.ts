@@ -72,6 +72,17 @@ export type OrderPreview = Pick<
   | "issueType"
 >;
 
+// --- Reviews ---
+
+export type Review = {
+  id: string;
+  authorName: string;
+  authorPhotoUrl: string;
+  rating: number;
+  text: string;
+  publishedAt: string;
+};
+
 // --- Price list ---
 
 export type {

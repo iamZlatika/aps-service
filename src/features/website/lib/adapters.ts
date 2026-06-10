@@ -4,6 +4,7 @@ import { mapPriceListItemDtoToPriceListItem } from "@/entities/price-list/adapte
 import {
   type LandingDto,
   type OrderPreviewDto,
+  type ReviewDto,
   type TrackDto,
   type TrackPaymentDto,
   type TrackProductDto,
@@ -12,6 +13,7 @@ import {
 import {
   type LandingData,
   type OrderPreview,
+  type Review,
   type Track,
   type TrackPayment,
   type TrackProduct,
@@ -81,6 +83,17 @@ export function mapTrackDtoToTrack(dto: TrackDto): Track {
     products: dto.products.map(mapTrackProductDtoToTrackProduct),
     services: dto.services.map(mapTrackServiceDtoToTrackService),
     payments: dto.payments.map(mapTrackPaymentDtoToTrackPayment),
+  };
+}
+
+export function mapReviewDtoToReview(dto: ReviewDto): Review {
+  return {
+    id: dto.id,
+    authorName: dto.author_name,
+    authorPhotoUrl: dto.author_photo_url,
+    rating: dto.rating,
+    text: dto.text,
+    publishedAt: dto.published_at,
   };
 }
 

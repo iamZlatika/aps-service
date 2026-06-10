@@ -11,6 +11,7 @@ import {
   type OrderPreviewDto,
   OrderPreviewDtoSchema,
   PriceListResponseDtoSchema,
+  ReviewsResponseDtoSchema,
   type TrackDto,
   TrackDtoSchema,
 } from "@/features/website/api/dto";
@@ -20,11 +21,13 @@ import {
   mapLocationDtoToLocation,
   mapOrderPreviewDtoToOrderPreview,
   mapPriceListItemDtoToPriceListItem,
+  mapReviewDtoToReview,
   mapTrackDtoToTrack,
 } from "@/features/website/lib/adapters";
 import {
   type LandingData,
   type OrderPreview,
+  type Review,
   type Track,
 } from "@/features/website/types";
 import { get } from "@/shared/api/api";
@@ -89,5 +92,10 @@ export const websiteApi = {
       items: validated.data.map(mapWorkDtoToWork),
       lastPage: validated.meta.last_page,
     };
+  },
+  getReviews: async (): Promise<Review[]> => {
+    const response = await get<unknown>(WEBSITE_API.reviews());
+    const validated = parseDto(ReviewsResponseDtoSchema, response);
+    return validated.data.map(mapReviewDtoToReview);
   },
 };
