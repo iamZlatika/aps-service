@@ -92,6 +92,32 @@ Each card shows address, phone number, messenger buttons, and a map embed.
 
 ---
 
+### Works (`/works`)
+
+Portfolio / completed works showcase. Loads works from the API in pages (`getWorksPage`) via `useSuspenseInfiniteQuery`. Uses the same `ErrorBoundary` + `Suspense` + skeleton pattern as the price list page.
+
+---
+
+### Reviews (`/reviews`)
+
+Google reviews page. Two-column layout: sticky aside on the left, masonry card wall on the right.
+
+**Aside** contains:
+- Section eyebrow and heading
+- Score card: Google spinner icon, computed average rating (`avg.toFixed(1)`), count, filled/empty stars based on `Math.round(avg)`, distribution bars (5→1) as percentage bars
+- "Leave a review" CTA button — links to Google Maps write-review URL derived from the first review's place ID
+
+**Card wall** renders one `ReviewCard` per review, in a CSS masonry layout (`columns: 2`, `break-inside-avoid`). Each card shows a colored letter avatar (color deterministically derived from the author's name via `getAvatarColor`), author name, formatted date, star rating, and review text.
+
+**Service functions** in `lib/service.ts`:
+- `getAvatarColor(name)` — maps name to one of 7 palette colors
+- `getGoogleReviewUrl(reviewId)` — extracts Google place ID from the review ID string and builds the write-review URL
+- `computeReviewStats(ratings)` — computes `{ avg, dist }` from a `number[]` in a single reduce pass
+
+Uses `useReviews()` + `useSuspenseQuery`. Page-level loading state shows a skeleton that already renders the `h1#reviews-heading` so `aria-labelledby` resolves during Suspense.
+
+---
+
 ### User Account (`/account`)
 
 Not yet implemented. Planned features:
@@ -115,6 +141,8 @@ WEBSITE_API = {
   status: (orderNumber)     => `${BASE}/orders/status/${orderNumber}`,
   landing: ()               => `${BASE}/landing`,
   priceList: ()             => `${BASE}/dictionaries/price-list`,
+  landingWorks: ()          => `${BASE}/landing/works`,
+  reviews: ()               => `${BASE}/reviews`,
 }
 ```
 
@@ -126,6 +154,8 @@ WEBSITE_API = {
 | `getLanding()` | `LandingData` — landing page data (active order count, category min prices) |
 | `getPriceList(categories)` | `PriceListItem[]` — price list items filtered by category keys. Used by the device price modal. |
 | `getPriceListPage(page)` | `{ items: PriceListItem[], lastPage: number }` — one page (100 items) of the full unfiltered price list. Used by `usePriceListAll`. |
+| `getWorksPage(page)` | `{ items: Work[], lastPage: number }` — one page of portfolio works. |
+| `getReviews()` | `Review[]` — all Google reviews. |
 
 ---
 
@@ -149,6 +179,8 @@ Shared entity types (used across features) live in `src/entities/`.
 **`LandingData`** — data returned by the landing endpoint: `activeCount` (number of active orders) and `prices` (`CategoryMinPrice[]` — minimum price per device category shown in hero).
 
 **`PriceListItem`** — repair service entry from the price list. Lives in `src/entities/price-list/types.ts`. Includes `id`, `name`, `categoryKey`, `price`, and optional `sortOrder`.
+
+**`Review`** — a single Google review. Fields: `id`, `authorName`, `authorPhotoUrl`, `rating` (1–5), `text`, `publishedAt`.
 
 ### OrderHistory types (UI layer)
 
@@ -218,6 +250,8 @@ const history = useMemo(() => buildOrderHistory(track), [track]);
 | `useActiveCount()` | Reads active order count from `useLanding()`. Returns `{ activeCount }` — does not fetch independently |
 | `usePriceList(categories)` | Fetches price list items via `useSuspenseQuery`. Accepts `readonly string[]` of category keys. Returns `{ priceList }`. Used by the device price modal. |
 | `usePriceListAll()` | Fetches the complete price list across all pages via `useSuspenseInfiniteQuery` (max 100 items/page). Returns `{ priceList, hasNextPage, isLoadingMore, fetchNextPage }`. The caller is responsible for triggering subsequent pages — call `fetchNextPage()` in a `useEffect` when `hasNextPage && !isLoadingMore`. |
+| `useWorks(page)` | Fetches one page of portfolio works via `useSuspenseInfiniteQuery`. Returns `{ works, hasNextPage, isLoadingMore, fetchNextPage }` |
+| `useReviews()` | Fetches all Google reviews via `useSuspenseQuery`. Returns `{ reviews: Review[] }` |
 | `useMobileNav()` | Mobile navigation drawer state: `{ isOpen, open, close }`. Locks scroll and handles Escape key |
 | `useWebsiteThemeManager()` | Manages theme selection and persistence — used once inside `WebsiteLayout` |
 

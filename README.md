@@ -46,6 +46,7 @@ cp .env.example .env
 | `VITE_SENTRY_DSN` | Sentry DSN for error tracking (optional) |
 | `VITE_BACKOFFICE_LANGUAGE` | Default language for backoffice (`ru` or `uk`) |
 | `VITE_CLIENT_LANGUAGE` | Default language for public website (`ru` or `uk`) |
+| `VITE_GOOGLE_MAPS_KEY` | Google Maps API key (used for the map embed on the contacts page) |
 
 ```bash
 npm run dev        # development server

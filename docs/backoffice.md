@@ -68,6 +68,34 @@ The core module of the system. Manages the full lifecycle of a repair order — 
 | `useLeaveGuard` | Blocks page navigation if the create-order form has unsaved changes |
 | `useOrderFormDefaults` | Computes default values for the create-order form |
 
+### Filter persistence
+
+When opening an order from the list, the orders list passes its current query string (`location.search`) to the order detail page via React Router's `state.back`:
+
+```ts
+// OrdersPage — on row click
+navigate(ORDERS_LINKS.detail(order.id), {
+  state: { back: locationSearchRef.current },
+});
+```
+
+The order detail page reads `state.back` and uses it when navigating back — via the back button, via `Escape`, or via any other back-navigation in the page:
+
+```ts
+// OrderPage
+const backSearch = (location.state as { back?: string } | null)?.back ?? "";
+
+navigate(ORDERS_LINKS.root() + backSearch);  // restores filters + pagination
+```
+
+This pattern propagates through `CustomerOrdersSection` as well: when the section is rendered inside an order detail page, it forwards `backSearch` as a `state.back` prop on its order links. This means navigating from `customer → order 2` while already on `order 1` still returns to the filtered list correctly.
+
+### Order history sidebar
+
+The order detail page shows a chronological event log in a sidebar (`HistorySidebar`) on desktop and a bottom drawer (`MobileHistoryDrawer`) on mobile.
+
+The history is built by `buildOrderHistory(orderInfo)` in `pages/order-page/services.ts` — same function as on the website track page. It merges status changes, payments, products, and services into a unified `OrderHistoryItem[]` sorted newest-first.
+
 ### Status system
 
 Order statuses are dynamic — they are managed in the Dictionaries module, not hardcoded.
@@ -96,6 +124,7 @@ Manages the customer database. Each customer can have multiple phone numbers, a 
 
 **`CustomerInfo`** — detail view. Extends `Customer` with:
 - `telegram` — linked Telegram account info, QR code, invite link
+- order history is shown via `CustomerOrdersSection` (fetched separately, not part of the type)
 
 **`Phone`** — a customer's phone number. One phone is always marked `isPrimary`.
 
@@ -112,6 +141,15 @@ Manages the customer database. Each customer can have multiple phone numbers, a 
 | `useCustomerRating(customerId)` | Set the customer rating (1–5) |
 | `useCustomerStatus(customerId)` | Toggle customer status: `active` / `blocked` |
 | `useCustomerTelegram(customerId)` | Generate or revoke Telegram invite link |
+| `useCustomerOrders(customerId)` | Fetches paginated order history for a customer. Returns `{ orders, isLoading, isError, page, lastPage, setPage }` |
+
+### Customer order history
+
+The customer detail page shows a list of the customer's orders via `CustomerOrdersSection`.
+
+`CustomerOrdersSection` accepts an optional `backSearch` prop — the current orders list query string — so that navigating from a customer's order into the order detail and then pressing "back" correctly restores the original filter state on the orders list (see [filter persistence](#filter-persistence) in the Orders section).
+
+Each row highlights the currently open order (`currentOrderId`) and links to the order detail page.
 
 ---
 
