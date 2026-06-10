@@ -127,6 +127,7 @@ export const CustomerInfoCard = ({
     </>
   ) : (
     <button
+      type="button"
       onClick={() => setIsInfoEditing(true)}
       className="p-2 text-muted-foreground hover:text-foreground transition-colors"
     >
@@ -159,7 +160,7 @@ export const CustomerInfoCard = ({
           customer={customer}
           onSuccess={onSuccess}
         />
-        <Separator className="my-4 h-px bg-border" />
+        <Separator className="my-2 h-px bg-border" />
         <CustomerTelegramSection
           customerId={customer.id}
           telegram={customer.telegram}

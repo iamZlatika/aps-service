@@ -42,7 +42,7 @@ export const CustomerTelegramSection = ({
   return (
     <>
       <div>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2">
           <CardTitle className="text-xl font-bold">
             {t("customers.profile.telegram")}
           </CardTitle>

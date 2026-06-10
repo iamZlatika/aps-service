@@ -16,14 +16,18 @@ import {
 } from "@/shared/components/ui/pagination.tsx";
 import { useLocalizedName } from "@/shared/hooks/useLocalizedName.ts";
 import { getPageNumbers } from "@/shared/lib/pagination.ts";
-import { formatDate } from "@/shared/lib/utils.ts";
+import { cn, formatDate } from "@/shared/lib/utils.ts";
 
 interface CustomerOrdersSectionProps {
   customerId: number;
+  currentOrderId?: number;
+  backSearch?: string;
 }
 
 export const CustomerOrdersSection = ({
   customerId,
+  currentOrderId,
+  backSearch,
 }: CustomerOrdersSectionProps) => {
   const { t } = useTranslation();
   const { orders, isLoading, isError, page, lastPage, setPage } =
@@ -31,7 +35,7 @@ export const CustomerOrdersSection = ({
   const getLocalizedName = useLocalizedName();
 
   return (
-    <div className="mt-6">
+    <div className="mt-4">
       <h2 className="mb-3 text-lg font-semibold">
         {t("customers.orders.title")}
       </h2>
@@ -52,7 +56,13 @@ export const CustomerOrdersSection = ({
               <Link
                 key={order.id}
                 to={ORDERS_LINKS.detail(order.id)}
-                className="flex items-center justify-between px-4 py-3 hover:bg-accent"
+                state={backSearch ? { back: backSearch } : undefined}
+                className={cn(
+                  "flex items-center justify-between px-4 py-3 border-l-2",
+                  order.id === currentOrderId
+                    ? "bg-primary/10 border-primary cursor-default"
+                    : "border-transparent hover:bg-accent",
+                )}
               >
                 <div className="flex flex-col gap-0.5">
                   <span className="text-sm font-medium">

@@ -1,5 +1,5 @@
-import { useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
@@ -15,9 +15,15 @@ import { buildOrderColumns } from "./columns";
 
 const OrdersPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const locationSearchRef = useRef(location.search);
   const isUk = useIsUkLocale();
   const locale = isUk ? "uk-UA" : "ru-RU";
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    locationSearchRef.current = location.search;
+  }, [location.search]);
 
   const { columns, mobileColumns } = useMemo(
     () => buildOrderColumns(locale),
@@ -25,7 +31,10 @@ const OrdersPage = () => {
   );
 
   const onRowClick = useCallback(
-    (order: Order) => navigate(`/backoffice/orders/${order.id}`),
+    (order: Order) =>
+      navigate(ORDERS_LINKS.detail(order.id), {
+        state: { back: locationSearchRef.current },
+      }),
     [navigate],
   );
 

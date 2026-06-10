@@ -53,7 +53,7 @@ export const CustomerPhonesSection = ({
 
   return (
     <>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-2">
         <CardTitle className="text-xl font-bold">
           {t("customers.profile.phones")}
         </CardTitle>
