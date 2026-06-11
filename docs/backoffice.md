@@ -56,7 +56,8 @@ The core module of the system. Manages the full lifecycle of a repair order — 
 |------|-------------|
 | `useOrder(id)` | Fetches full `OrderInfo` for the detail page |
 | `useCreateOrder()` | Mutation to submit a new order form |
-| `useEditOrderInfo(orderId)` | Mutation to update order device/contact details |
+| `useEditOrderInfo(orderId, order, onSuccess, formValuesStorage)` | Form state and mutation for editing order device/contact details. Persists unsaved form values in `formValuesStorage` when navigating between orders so changes survive order-to-order transitions. |
+| `useOrderEditingState()` | Manages which orders are currently in edit mode. Enforces single-order editing: opening a second order's form while one is already being edited triggers a conflict dialog. Returns `editingOrderIds`, `formValuesStorage`, `editConflict`, and handlers. |
 | `useOrderFlags(orderId)` | Mutations to toggle `isUrgent` and `isCalled` flags |
 | `useAddOrderItemForm` | Form state for adding a product or service to an order |
 | `useOrderItemSubmit` | Submit logic for adding/editing order products and services |

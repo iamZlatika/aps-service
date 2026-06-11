@@ -1,8 +1,8 @@
 import { Pencil } from "lucide-react";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useEditOrderInfo } from "@/features/backoffice/modules/orders/hooks/useEditOrderInfo.ts";
+import type { FormValuesStorage } from "@/features/backoffice/modules/orders/hooks/useOrderEditingState.ts";
 import { useOrderFlags } from "@/features/backoffice/modules/orders/hooks/useOrderFlags.ts";
 import type { OrderInfo } from "@/features/backoffice/modules/orders/types.ts";
 import { AcceptButton } from "@/shared/components/common/buttons/AcceptButton.tsx";
@@ -16,22 +16,34 @@ import { OrderInfoFields } from "./OrderInfoFields.tsx";
 
 interface OrderInfoCardProps {
   order: OrderInfo;
+  isEditing: boolean;
+  onStartEditing: () => void;
+  onStopEditing: () => void;
+  formValuesStorage: FormValuesStorage;
 }
 
-export const OrderInfoCard = ({ order }: OrderInfoCardProps) => {
+export const OrderInfoCard = ({
+  order,
+  isEditing,
+  onStartEditing,
+  onStopEditing,
+  formValuesStorage,
+}: OrderInfoCardProps) => {
   const { t } = useTranslation();
-  const [isEditing, setIsEditing] = useState(false);
 
   const { toggleCalled, calledPending, toggleUrgent, urgentPending } =
     useOrderFlags(order.id, order);
 
-  const { form, onSubmit, isPending } = useEditOrderInfo(order.id, order, () =>
-    setIsEditing(false),
+  const { form, onSubmit, isPending } = useEditOrderInfo(
+    order.id,
+    order,
+    onStopEditing,
+    formValuesStorage,
   );
 
   const handleCancel = () => {
     form.reset();
-    setIsEditing(false);
+    onStopEditing();
   };
 
   return (
@@ -52,7 +64,8 @@ export const OrderInfoCard = ({ order }: OrderInfoCardProps) => {
             </>
           ) : (
             <button
-              onClick={() => setIsEditing(true)}
+              type="button"
+              onClick={onStartEditing}
               className="h-9 w-9 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
             >
               <Pencil className="h-4 w-4" />
