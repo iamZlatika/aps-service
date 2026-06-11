@@ -17,7 +17,7 @@ export const PriceRow = ({ item }: PriceRowProps) => {
       <div className="min-w-0 flex-1 text-[14.5px] font-medium leading-[1.4] text-ws-ink">
         {localize(item.nameRu, item.nameUk)}
         {note && (
-          <small className="mt-[3px] block text-[11.5px] font-normal leading-[1.4] text-ws-ink-mute">
+          <small className="mt-[3px] block text-[11.5px] font-normal leading-[1.4] text-ws-ink">
             {note}
           </small>
         )}

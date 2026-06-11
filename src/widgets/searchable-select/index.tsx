@@ -58,6 +58,7 @@ const defaultRenderInput = (props: SearchableSelectInputProps) => (
     {props.onClear && props.value && (
       <button
         type="button"
+        tabIndex={-1}
         onMouseDown={() => {
           props.onClear!();
         }}
@@ -183,6 +184,12 @@ function SearchableSelect<TMeta = undefined>({
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Tab" && isOpen) {
+      setIsOpen(false);
+      setActiveIndex(-1);
+      return;
+    }
+
     if (!isOpen || options.length === 0) return;
 
     if (e.key === "ArrowDown") {
@@ -252,6 +259,7 @@ function SearchableSelect<TMeta = undefined>({
               {canCreate && (
                 <button
                   type="button"
+                  tabIndex={-1}
                   disabled={isSaving}
                   onMouseDown={(e) => {
                     e.preventDefault();

@@ -125,7 +125,7 @@ export const MultiSearchableSelect = ({
             className="h-7 shrink-0 gap-1 py-0.5 text-sm"
           >
             {item}
-            <button type="button" data-remove={item}>
+            <button type="button" tabIndex={-1} data-remove={item}>
               <X size={12} />
             </button>
           </Badge>
@@ -159,6 +159,7 @@ export const MultiSearchableSelect = ({
               {canCreate && (
                 <button
                   type="button"
+                  tabIndex={-1}
                   disabled={isSaving}
                   onMouseDown={(e) => {
                     e.preventDefault();

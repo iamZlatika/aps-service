@@ -22,6 +22,10 @@ import {
 import { useLocalizedName } from "@/shared/hooks/useLocalizedName.ts";
 
 const CLOSED_STATUS_KEY = "closed";
+const STATUSES_THAT_RESET_IS_CALLED = [
+  "waiting_for_approval",
+  "ready",
+] as const;
 
 interface StatusSelectProps {
   orderId: number;
@@ -45,10 +49,17 @@ export const StatusSelect = ({
   });
 
   const mutation = useMutation({
-    mutationFn: (statusId: number) => ordersApi.changeStatus(orderId, statusId),
-    onSuccess: () => {
+    mutationFn: ({ id }: { id: number; key: string }) =>
+      ordersApi.changeStatus(orderId, id),
+    onSuccess: (_, { key }) => {
+      const resetsIsCalled = (
+        STATUSES_THAT_RESET_IS_CALLED as readonly string[]
+      ).includes(key);
       if (onSuccess) {
         onSuccess();
+        if (resetsIsCalled) {
+          queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+        }
       } else {
         return queryClient.invalidateQueries({
           queryKey: queryKeys.orders.all,
@@ -80,7 +91,7 @@ export const StatusSelect = ({
                 if (s.key === CLOSED_STATUS_KEY) {
                   setClosedStatusId(s.id);
                 } else {
-                  mutation.mutate(s.id);
+                  mutation.mutate({ id: s.id, key: s.key });
                 }
               }}
               disabled={s.id === status.id || mutation.isPending}

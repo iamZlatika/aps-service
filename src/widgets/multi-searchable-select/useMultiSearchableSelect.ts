@@ -171,7 +171,13 @@ export const useMultiSearchableSelect = ({
         item?.scrollIntoView({ block: "nearest" });
       };
 
-      if (e.key === "ArrowDown") {
+      if (e.key === "Tab") {
+        if (isOpen) {
+          setIsOpen(false);
+          setActiveIndex(-1);
+        }
+        return;
+      } else if (e.key === "ArrowDown") {
         if (!isOpen) {
           setIsOpen(true);
           return;

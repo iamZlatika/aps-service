@@ -158,6 +158,7 @@ export function buildOrderColumns(locale: string): {
       field: "deviceType",
       labelKey: "orders.table_fields.deviceType",
       sortable: false,
+      renderCell: renderWrappedText,
     },
     {
       key: "manufacturer",
@@ -198,7 +199,7 @@ export function buildOrderColumns(locale: string): {
       field: "estimatedCost",
       labelKey: "orders.table_fields.estimatedCost",
       sortable: false,
-      renderCell: (value) => (value ? <span>{value as string} ₴</span> : null),
+      renderCell: (value) => (value ? renderWrappedText(value) : null),
     },
   ];
 
