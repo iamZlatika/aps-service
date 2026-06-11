@@ -1,6 +1,9 @@
+import { Check, Copy } from "lucide-react";
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Label } from "@/shared/components/ui/label.tsx";
+import { useCopyToClipboard } from "@/shared/hooks/useCopyToClipboard.ts";
 
 interface LabeledFieldProps {
   htmlFor?: string;
@@ -26,10 +29,32 @@ export const LabeledField = ({
 
 interface DisplayFieldProps {
   value?: string | null;
+  copyable?: boolean;
 }
 
-export const DisplayField = ({ value }: DisplayFieldProps) => (
-  <div className="h-11 rounded-md border border-input bg-muted px-3 text-base flex items-center">
-    {value || <span className="text-muted-foreground">—</span>}
-  </div>
-);
+export const DisplayField = ({ value, copyable = true }: DisplayFieldProps) => {
+  const { t } = useTranslation();
+  const { copied, copy } = useCopyToClipboard();
+
+  return (
+    <div className="h-11 rounded-md border border-input bg-muted px-3 text-base flex items-center justify-between gap-2">
+      <span className="truncate min-w-0">
+        {value || <span className="text-muted-foreground">—</span>}
+      </span>
+      {copyable && value && (
+        <button
+          type="button"
+          onClick={() => copy(value)}
+          aria-label={t("common.copy")}
+          className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+        >
+          {copied ? (
+            <Check className="h-4 w-4" />
+          ) : (
+            <Copy className="h-4 w-4" />
+          )}
+        </button>
+      )}
+    </div>
+  );
+};

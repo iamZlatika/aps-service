@@ -54,7 +54,7 @@ export const OrderInfoFields = ({
             )}
           />
         ) : (
-          <DisplayField value={formatDate(order.dueDate)} />
+          <DisplayField value={formatDate(order.dueDate)} copyable={false} />
         )}
       </LabeledField>
 

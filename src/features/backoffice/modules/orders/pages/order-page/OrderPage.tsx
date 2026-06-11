@@ -6,6 +6,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -68,13 +69,22 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
     handleConflictCancel,
   } = useOrderEditingState();
 
+  const locationKeyRef = useRef(location.key);
+  locationKeyRef.current = location.key;
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") navigate(ORDERS_LINKS.root() + backSearch);
+      if (e.key === "Escape") {
+        if (locationKeyRef.current === "default") {
+          navigate(ORDERS_LINKS.root());
+        } else {
+          navigate(-1);
+        }
+      }
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [navigate, backSearch]);
+  }, [navigate]);
 
   const [isPrintOpen, setIsPrintOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<OrderTab>("order");
