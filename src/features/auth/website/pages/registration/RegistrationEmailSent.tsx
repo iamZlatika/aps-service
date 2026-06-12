@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { cn } from "@/shared/lib/utils";
 
 import { useCountdown } from "./useCountdown";
+import { useResendEmail } from "./useResendEmail";
 
 const RESEND_COOLDOWN_SECONDS = 60;
 
@@ -18,6 +19,7 @@ export const RegistrationEmailSent = ({
 }: RegistrationEmailSentProps) => {
   const { t } = useTranslation("website");
   const { seconds, isRunning, reset } = useCountdown(RESEND_COOLDOWN_SECONDS);
+  const { resend, isPending } = useResendEmail();
 
   const resendLabel = isRunning
     ? t("registration.emailSent.resendWait", { seconds })
@@ -63,8 +65,8 @@ export const RegistrationEmailSent = ({
 
       <button
         type="button"
-        disabled={isRunning}
-        onClick={reset}
+        disabled={isRunning || isPending}
+        onClick={() => resend(email, reset)}
         className={cn(
           "ws-btn mt-5 w-full justify-center",
           "disabled:border disabled:border-ws-line disabled:[background:none] disabled:cursor-default disabled:shadow-none disabled:tabular-nums disabled:text-ws-ink-mute",

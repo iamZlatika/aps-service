@@ -1,21 +1,44 @@
 import {
   type AuthResponseDto,
-  type ClientUserDto,
+  type CustomerDto,
+  type CustomerPhoneDto,
   type RegistrationResponseDto,
 } from "@/features/auth/website/api/dto";
 import {
   type AuthResponse,
-  type ClientUser,
+  type Customer,
+  type CustomerPhone,
   type RegistrationResponse,
 } from "@/features/auth/website/types";
 
-export function mapClientUserDtoToClientUser(dto: ClientUserDto): ClientUser {
+export function mapCustomerPhoneDtoToCustomerPhone(
+  dto: CustomerPhoneDto,
+): CustomerPhone {
+  return {
+    id: dto.id,
+    phoneNumber: dto.phone_number,
+    phoneVerifiedAt: dto.phone_verified_at,
+    isPrimary: dto.is_primary,
+  };
+}
+
+export function mapCustomerDtoToCustomer(dto: CustomerDto): Customer {
   return {
     id: dto.id,
     name: dto.name,
+    portalName: dto.portal_name,
     email: dto.email,
-    phone: dto.phone,
-    role: dto.role,
+    pendingEmail: dto.pending_email,
+    emailVerifiedAt: dto.email_verified_at,
+    hasGoogle: dto.has_google,
+    avatarUrl: dto.avatar_url,
+    phones: dto.phones.map(mapCustomerPhoneDtoToCustomerPhone),
+    status: dto.status,
+    rating: dto.rating,
+    comment: dto.comment,
+    lastOrderAt: dto.last_order_at,
+    createdAt: dto.created_at,
+    updatedAt: dto.updated_at,
   };
 }
 
@@ -24,7 +47,7 @@ export function mapAuthResponseDtoToAuthResponse(
 ): AuthResponse {
   return {
     token: dto.token,
-    user: mapClientUserDtoToClientUser(dto.user),
+    customer: mapCustomerDtoToCustomer(dto.customer),
   };
 }
 
@@ -32,6 +55,6 @@ export function mapRegistrationResponseDtoToRegistrationResponse(
   dto: RegistrationResponseDto,
 ): RegistrationResponse {
   return {
-    emailVerified: dto.email_verified,
+    email: dto.email,
   };
 }

@@ -1,12 +1,25 @@
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
+import { authService } from "@/features/auth/lib/authService";
 import { AuthModalBrand } from "@/features/auth/website/components/AuthModalBrand";
 import { useAuthModal } from "@/features/auth/website/hooks/useAuthModal";
+import { type AuthResponse } from "@/features/auth/website/types";
 import { WebsiteModal } from "@/features/website/components/WebsiteModal";
+import { WEBSITE_LINKS } from "@/features/website/navigation";
+
+import { LoginForm } from "./LoginForm";
 
 export const LoginModal = () => {
   const { t } = useTranslation("website");
   const { isLoginOpen, openRegister, close } = useAuthModal();
+  const navigate = useNavigate();
+
+  const handleSuccess = (data: AuthResponse) => {
+    authService.setToken(data.token);
+    close();
+    void navigate(WEBSITE_LINKS.account);
+  };
 
   return (
     <WebsiteModal open={isLoginOpen} onClose={close} maxWidth="max-w-[440px]">
@@ -21,7 +34,9 @@ export const LoginModal = () => {
           {t("login.subtitle")}
         </p>
 
-        <div className="mt-[22px] text-center text-[13.5px] text-ws-ink-soft">
+        <LoginForm onSuccess={handleSuccess} />
+
+        <div className="mt-[18px] text-center text-[13.5px] text-ws-ink-soft">
           {t("login.noAccount")}{" "}
           <button
             type="button"

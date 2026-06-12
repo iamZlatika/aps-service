@@ -1,20 +1,38 @@
 import { z } from "zod";
 
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers";
-import { ROLES } from "@/shared/types";
+import { USER_STATUSES } from "@/shared/types";
 
-export const ClientUserDtoSchema = z.object({
+export const CustomerPhoneDtoSchema = z.object({
+  id: z.number(),
+  phone_number: z.string(),
+  phone_verified_at: z.string().nullable(),
+  is_primary: z.boolean(),
+});
+export type CustomerPhoneDto = z.infer<typeof CustomerPhoneDtoSchema>;
+
+export const CustomerDtoSchema = z.object({
   id: z.number(),
   name: z.string(),
-  email: z.string(),
-  phone: z.string(),
-  role: zodEnumFromConst(ROLES),
+  portal_name: z.string().nullable(),
+  email: z.string().nullable(),
+  pending_email: z.string().nullable(),
+  email_verified_at: z.string().nullable(),
+  has_google: z.boolean(),
+  avatar_url: z.string(),
+  phones: z.array(CustomerPhoneDtoSchema),
+  status: zodEnumFromConst(USER_STATUSES),
+  rating: z.number().nullable(),
+  comment: z.string().nullable(),
+  last_order_at: z.string().nullable(),
+  created_at: z.string(),
+  updated_at: z.string(),
 });
-export type ClientUserDto = z.infer<typeof ClientUserDtoSchema>;
+export type CustomerDto = z.infer<typeof CustomerDtoSchema>;
 
 export const AuthResponseDtoSchema = z.object({
   token: z.string(),
-  user: ClientUserDtoSchema,
+  customer: CustomerDtoSchema,
 });
 export type AuthResponseDto = z.infer<typeof AuthResponseDtoSchema>;
 
@@ -27,7 +45,7 @@ export type RegistrationRequestBody = {
 };
 
 export const RegistrationResponseDtoSchema = z.object({
-  email_verified: z.boolean(),
+  email: z.string(),
 });
 export type RegistrationResponseDto = z.infer<
   typeof RegistrationResponseDtoSchema

@@ -27,6 +27,9 @@ export const websiteAuthApi = {
     const validated = parseDto(RegistrationResponseDtoSchema, response);
     return mapRegistrationResponseDtoToRegistrationResponse(validated);
   },
+  emailResend: async (email: string): Promise<void> => {
+    await post(WEBSITE_AUTH_API.emailResend(), { email });
+  },
   login: async (body: LoginRequestBody): Promise<AuthResponse> => {
     const response = await post<LoginRequestBody, unknown>(
       WEBSITE_AUTH_API.login(),

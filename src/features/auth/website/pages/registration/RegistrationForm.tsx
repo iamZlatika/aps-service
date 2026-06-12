@@ -89,7 +89,7 @@ export const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
 
   const onSubmit = (values: RegistrationFormValues) => {
     submit(values, {
-      onSuccess: () => onSuccess(values.email),
+      onSuccess: (data) => onSuccess(data.email),
       onError: (error) =>
         handleFormError<RegistrationFormValues>(error, setError, {
           fieldMap: { password_confirmation: "passwordConfirmation" },

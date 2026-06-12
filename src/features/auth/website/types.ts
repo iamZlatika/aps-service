@@ -1,18 +1,35 @@
-import { type Role } from "@/shared/types";
+import { type UserStatus } from "@/shared/types";
 
-export type ClientUser = {
+export type CustomerPhone = {
+  id: number;
+  phoneNumber: string;
+  phoneVerifiedAt: string | null;
+  isPrimary: boolean;
+};
+
+export type Customer = {
   id: number;
   name: string;
-  email: string;
-  phone: string;
-  role: Role;
+  portalName: string | null;
+  email: string | null;
+  pendingEmail: string | null;
+  emailVerifiedAt: string | null;
+  hasGoogle: boolean;
+  avatarUrl: string;
+  phones: CustomerPhone[];
+  status: UserStatus;
+  rating: number | null;
+  comment: string | null;
+  lastOrderAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type AuthResponse = {
   token: string;
-  user: ClientUser;
+  customer: Customer;
 };
 
 export type RegistrationResponse = {
-  emailVerified: boolean;
+  email: string;
 };
