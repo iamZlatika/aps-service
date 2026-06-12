@@ -35,9 +35,10 @@
   --ws-cream: #f4ead7;
 
   /* Status colors */
-  --ws-green: #5db86f;
-  --ws-red:   #d8553e;
-  --ws-blue:  #3a8fd9;
+  --ws-green:      #5db86f;
+  --ws-red:        #d8553e;
+  --ws-red-bright: #ee8a72;
+  --ws-blue:       #3a8fd9;
 
   /* Overlay chips (frosted glass panels in hero) */
   --ws-overlay-chip:   rgba(29,27,24,0.55);
@@ -78,6 +79,9 @@
 
   /* Cream flips dark so active pills stay legible */
   --ws-cream: #1d1b18;
+
+  /* Brighter red for light bg contrast */
+  --ws-red-bright: #c43020;
 
   /* Overlay chips in light */
   --ws-overlay-chip:   rgba(255,255,255,0.55);

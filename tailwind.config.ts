@@ -21,6 +21,8 @@ const config: Config = {
   			'ws-ember-deep':     'var(--ws-ember-deep)',
   			'ws-ember-text':     'var(--ws-ember-text)',
   			'ws-cream':          'var(--ws-cream)',
+  			'ws-red':            'var(--ws-red)',
+  			'ws-red-bright':     'var(--ws-red-bright)',
   			'ws-overlay-chip':   'var(--ws-overlay-chip)',
   			'ws-overlay-border': 'var(--ws-overlay-border)',
   			border: 'hsl(var(--border))',

@@ -7,5 +7,5 @@ export const WEBSITE_API = {
   landing: () => `${BASE}/landing`,
   priceList: () => `${BASE}/dictionaries/price-list`,
   landingWorks: () => `${BASE}/landing/works`,
-  reviews: () => `${BASE}/reviews`,
+  reviews: () => `${BASE}/landing/reviews`,
 } as const;

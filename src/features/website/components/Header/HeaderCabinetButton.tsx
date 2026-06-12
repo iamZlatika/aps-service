@@ -1,8 +1,11 @@
 import { MoveRight, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 
-import { WEBSITE_LINKS } from "@/features/website/navigation";
+import { useModalParam } from "@/features/website/hooks/useModalParam";
+import {
+  MODAL_PARAM,
+  REGISTER_MODAL_VALUE,
+} from "@/features/website/lib/modalParams";
 import { cn } from "@/shared/lib/utils";
 
 interface HeaderCabinetButtonProps {
@@ -13,10 +16,12 @@ export const HeaderCabinetButton = ({
   className,
 }: HeaderCabinetButtonProps) => {
   const { t } = useTranslation("website");
+  const { set: openModal } = useModalParam(MODAL_PARAM);
 
   return (
-    <Link
-      to={WEBSITE_LINKS.account}
+    <button
+      type="button"
+      onClick={() => openModal(REGISTER_MODAL_VALUE)}
       className={cn(
         "ws-btn-cream inline-flex items-center justify-center gap-2.5",
         className,
@@ -25,6 +30,6 @@ export const HeaderCabinetButton = ({
       <User className="size-3.5 shrink-0" />
       <span>{t("nav.cabinet")}</span>
       <MoveRight className="size-3.5 shrink-0" />
-    </Link>
+    </button>
   );
 };
