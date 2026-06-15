@@ -18,6 +18,7 @@ import { CustomerOrdersSection } from "@/features/backoffice/modules/customers/c
 import { StatusSelect } from "@/features/backoffice/modules/orders/components/StatusSelect.tsx";
 import { useOrder } from "@/features/backoffice/modules/orders/hooks/useOrder.ts";
 import { useOrderEditingState } from "@/features/backoffice/modules/orders/hooks/useOrderEditingState.ts";
+import { useOrderSocket } from "@/features/backoffice/modules/orders/hooks/useOrderSocket.ts";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation.ts";
 import { HistorySidebar } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/HistorySidebar.tsx";
 import { MobileHistoryDrawer } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/MobileHistoryDrawer.tsx";
@@ -58,6 +59,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   const isMobile = useIsMobile();
   const { selectedOrder, isLoading, isFetching, isError, error, refetch } =
     useOrder(orderId);
+  useOrderSocket(orderId);
 
   const {
     editingOrderIds,

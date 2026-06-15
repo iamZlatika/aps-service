@@ -8,6 +8,7 @@ import type {
   Supplier,
 } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
+import { type OrderDto } from "@/features/backoffice/modules/orders/api/dto";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type {
   SearchPreset,
@@ -197,3 +198,7 @@ export type OrderPresetFilters = {
 };
 
 export type OrderSearchPreset = SearchPreset<OrderPresetFilters>;
+
+export type OrderSocketEvent = {
+  data: { order: OrderDto };
+};

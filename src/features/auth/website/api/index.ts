@@ -13,7 +13,7 @@ import {
   type AuthResponse,
   type RegistrationResponse,
 } from "@/features/auth/website/types";
-import { post } from "@/shared/api/api";
+import { get, post } from "@/shared/api/api";
 import { parseDto } from "@/shared/api/parseDto";
 
 export const websiteAuthApi = {
@@ -29,6 +29,9 @@ export const websiteAuthApi = {
   },
   emailResend: async (email: string): Promise<void> => {
     await post(WEBSITE_AUTH_API.emailResend(), { email });
+  },
+  emailVerify: async (verifyUrl: string): Promise<void> => {
+    await get(verifyUrl);
   },
   login: async (body: LoginRequestBody): Promise<AuthResponse> => {
     const response = await post<LoginRequestBody, unknown>(

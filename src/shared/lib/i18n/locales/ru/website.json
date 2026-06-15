@@ -304,6 +304,13 @@
     "submitting": "Вход...",
     "emailNotVerified": "Сначала подтвердите email — перейдите по ссылке из письма"
   },
+  "emailVerify": {
+    "loading": "Подтверждаем email...",
+    "redirecting": "Email подтверждён! Открываем вход...",
+    "errorTitle": "Ссылка недействительна",
+    "errorSubtitle": "Ссылка устарела или уже была использована. Запросите новое письмо через форму регистрации.",
+    "goToLogin": "Войти"
+  },
   "registration": {
     "titleLine": "Создать",
     "titleBold": "аккаунт.",

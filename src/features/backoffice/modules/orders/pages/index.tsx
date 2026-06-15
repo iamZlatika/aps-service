@@ -5,6 +5,7 @@ import { AddButton } from "@/features/backoffice/components/AddButton";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
 import { OrdersFilterBar } from "@/features/backoffice/modules/orders/components/OrdersFilterBar.tsx";
 import { useIsUkLocale } from "@/features/backoffice/modules/orders/hooks/useIsUkLocale.ts";
+import { useOrdersSocket } from "@/features/backoffice/modules/orders/hooks/useOrdersSocket.ts";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation.ts";
 import { type Order } from "@/features/backoffice/modules/orders/types.ts";
 import { SmartTable } from "@/features/backoffice/widgets/table";
@@ -20,6 +21,8 @@ const OrdersPage = () => {
   const isUk = useIsUkLocale();
   const locale = isUk ? "uk-UA" : "ru-RU";
   const isMobile = useIsMobile();
+
+  useOrdersSocket();
 
   useEffect(() => {
     locationSearchRef.current = location.search;

@@ -6,6 +6,7 @@ import { authService } from "@/features/auth/lib/authService.ts";
 import { logout as sessionLogout } from "@/features/auth/lib/sessionManager.ts";
 import { usersApi } from "@/features/backoffice/modules/users/api";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { getEcho, initEcho } from "@/shared/lib/echo.ts";
 
 import { authApi } from "../api";
 
@@ -29,9 +30,16 @@ export const useAuth = () => {
 
   useEffect(() => {
     if (user?.locale && user.locale !== i18n.language) {
-      i18n.changeLanguage(user.locale);
+      void i18n.changeLanguage(user.locale);
     }
   }, [i18n, user?.locale]);
+
+  useEffect(() => {
+    const currentToken = authService.getToken();
+    if (user && currentToken && !getEcho()) {
+      initEcho(currentToken);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (isError) {
