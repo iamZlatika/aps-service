@@ -37,7 +37,7 @@ export const useAuth = () => {
   useEffect(() => {
     const currentToken = authService.getToken();
     if (user && currentToken && !getEcho()) {
-      initEcho(currentToken);
+      void initEcho(currentToken);
     }
   }, [user]);
 
