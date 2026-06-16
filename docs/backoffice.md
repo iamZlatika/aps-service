@@ -68,6 +68,17 @@ The core module of the system. Manages the full lifecycle of a repair order — 
 | `useOrderSearchPresets` | CRUD for saved filter presets; reordering via drag-and-drop |
 | `useLeaveGuard` | Blocks page navigation if the create-order form has unsaved changes |
 | `useOrderFormDefaults` | Computes default values for the create-order form |
+| `useOrdersSocket()` | Subscribes to `backoffice.orders` WebSocket channel. Keeps the order list in sync in real time. |
+| `useOrderSocket(id)` | Subscribes to `backoffice.orders.{id}` WebSocket channel. Keeps the order detail cache in sync in real time. |
+
+### Real-time updates
+
+Order data updates in real time via WebSocket (Ably). See [Real-time Updates](architecture.md#real-time-updates-websockets) in the architecture doc for the full event and payload table.
+
+- `useOrdersSocket()` is mounted on the orders **list** page — keeps the table rows in sync
+- `useOrderSocket(orderId)` is mounted on the order **detail** page — patches `OrderInfo` in the cache as events arrive
+
+---
 
 ### Filter persistence
 

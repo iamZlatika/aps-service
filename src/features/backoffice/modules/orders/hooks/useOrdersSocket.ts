@@ -15,6 +15,9 @@ const ORDER_UPDATE_EVENTS = [
   ".order.updated",
   ".order.urgency_changed",
   ".order.called_changed",
+  ".order.payment_changed",
+  ".order.service_changed",
+  ".order.product_changed",
 ] as const;
 
 export const useOrdersSocket = (): void => {

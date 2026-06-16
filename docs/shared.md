@@ -190,6 +190,34 @@ From `src/shared/lib/constants.ts`:
 
 ---
 
+## WebSocket / Echo
+
+The Echo singleton for WebSocket connections (Ably via `@ably/laravel-echo`) is managed in `src/shared/lib/`.
+
+### `initEcho(token)` / `getEcho()` / `destroyEcho()`
+
+Lifecycle functions from `shared/lib/echo.ts`.
+
+```ts
+import { initEcho, getEcho, destroyEcho } from "@/shared/lib/echo";
+
+// called by useAuth after login
+await initEcho(token);
+
+// called at the top of a socket hook
+const echo = getEcho();
+if (!echo) return;
+
+// called by sessionManager on logout
+destroyEcho();
+```
+
+**Do not import from `echoFactory.ts` directly** — it carries all Ably code and is lazy-loaded. Always go through `echo.ts`.
+
+Connection error handling (Sentry capture + error toasts for `failed` / `suspended` states) is wired up inside `echoFactory.ts` and fires automatically for every connection — no per-hook handling needed.
+
+---
+
 ## Error Handling Helpers
 
 From `src/shared/lib/errors/services.ts`:

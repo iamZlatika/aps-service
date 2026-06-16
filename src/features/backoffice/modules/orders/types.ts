@@ -8,7 +8,16 @@ import type {
   Supplier,
 } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
-import { type OrderDto } from "@/features/backoffice/modules/orders/api/dto";
+import type {
+  CallHistoryDto,
+  DocumentDto,
+  OrderCommentDto,
+  OrderDto,
+  OrderPaymentDto,
+  OrderProductDto,
+  OrderServiceDto,
+  StatusHistoryItemDto,
+} from "@/features/backoffice/modules/orders/api/dto";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
 import type {
   SearchPreset,
@@ -201,4 +210,41 @@ export type OrderSearchPreset = SearchPreset<OrderPresetFilters>;
 
 export type OrderSocketEvent = {
   data: { order: OrderDto };
+};
+
+export type OrderStatusChangedSocketEvent = {
+  data: { order: OrderDto; status_history_item: StatusHistoryItemDto };
+};
+
+export type OrderCalledChangedSocketEvent = {
+  data: { order: OrderDto; call_history_item: CallHistoryDto };
+};
+
+export const ORDER_ITEM_ACTIONS = {
+  CREATED: "created",
+  UPDATED: "updated",
+  DELETED: "deleted",
+} as const;
+
+export type OrderItemAction =
+  (typeof ORDER_ITEM_ACTIONS)[keyof typeof ORDER_ITEM_ACTIONS];
+
+export type OrderPaymentSocketEvent = {
+  data: { order: OrderDto; payment: OrderPaymentDto; action: OrderItemAction };
+};
+
+export type OrderServiceSocketEvent = {
+  data: { order: OrderDto; service: OrderServiceDto; action: OrderItemAction };
+};
+
+export type OrderProductSocketEvent = {
+  data: { order: OrderDto; product: OrderProductDto; action: OrderItemAction };
+};
+
+export type OrderCommentSocketEvent = {
+  data: { comment: OrderCommentDto };
+};
+
+export type OrderDocumentSocketEvent = {
+  data: { document: DocumentDto };
 };

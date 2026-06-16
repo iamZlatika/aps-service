@@ -10,6 +10,7 @@ The goal is to help new developers (and future-you) understand *why* the code is
 - [API Layer](#api-layer)
 - [Error Handling](#error-handling)
 - [Server State: React Query](#server-state-react-query)
+- [Real-time Updates (WebSockets)](#real-time-updates-websockets)
 - [Routing & Navigation](#routing--navigation)
 - [Forms](#forms)
 - [Enums & Shared Types](#enums--shared-types)
@@ -308,6 +309,93 @@ useQuery({ queryKey: ["orders", id], queryFn: ... });
 
 Mutations that don't define `onError` automatically show an error toast via `notifyError`.
 To suppress this (e.g. for silent background mutations), set `meta: { silent: true }`.
+
+---
+
+## Real-time Updates (WebSockets)
+
+The backoffice receives live order updates via Ably, integrated through `@ably/laravel-echo` with Laravel Broadcasting.
+
+### Setup
+
+The Echo singleton is split across two files to keep Ably out of the main bundle:
+
+| File | Role |
+|------|------|
+| `shared/lib/echo.ts` | Thin wrapper — lifecycle API: `initEcho`, `getEcho`, `destroyEcho`. Imports Echo type-only (zero runtime cost). |
+| `shared/lib/echoFactory.ts` | Heavy implementation with all Ably imports. Lazy-loaded via dynamic `import()` on first call to `initEcho`. |
+
+This split keeps Ably (~234 KB) out of the main bundle — it loads only when `initEcho` is called.
+
+### Lifecycle
+
+- **Login** — `useAuth` calls `initEcho(token)` after `GET /me` succeeds
+- **Page refresh** — `echo.ts` module initializer checks for a stored token and calls `initEcho()` immediately (fires before hooks mount, so Echo is ready by the time components subscribe)
+- **Logout** — `sessionManager` calls `destroyEcho()`, which disconnects and clears the singleton
+
+### Connection error handling
+
+`echoFactory.ts` attaches a connection state listener on every new instance:
+- `failed` state → captured in Sentry + error toast
+- `suspended` state → error toast (connection unstable)
+
+No per-subscription error handling is needed — it's all centralized here.
+
+### How socket events update the UI
+
+Socket events bypass the network — they patch the React Query cache directly via `setQueryData` / `setQueriesData`. No refetch needed.
+
+Data flow for an incoming event:
+1. Echo fires a callback with the raw payload (DTO shape)
+2. The hook maps the DTO to a domain type via the existing adapter
+3. `queryClient.setQueryData` / `setQueriesData` patches the cached value
+4. React Query re-renders the affected components automatically
+
+**Rule:** If the payload carries the new data, patch the cache directly — never `invalidateQueries`. Only use `invalidateQueries` when the payload doesn't contain the new data (e.g. `.order.created`).
+
+### Channels and events
+
+Two channels are used for the orders module:
+
+#### `backoffice.orders` — list channel
+
+Subscribed in `useOrdersSocket()`, mounted on the orders list page.
+
+| Event | Payload | Cache update |
+|-------|---------|--------------|
+| `.order.created` | — | `invalidateQueries` orders list |
+| `.order.status_changed` | `{ order }` | Update matching row in all list pages |
+| `.order.updated` | `{ order }` | Update matching row in all list pages |
+| `.order.urgency_changed` | `{ order }` | Update matching row in all list pages |
+| `.order.called_changed` | `{ order }` | Update matching row in all list pages |
+| `.order.payment_changed` | `{ order, payment, action }` | Update matching row totals |
+| `.order.service_changed` | `{ order, service, action }` | Update matching row totals |
+| `.order.product_changed` | `{ order, product, action }` | Update matching row totals |
+
+#### `backoffice.orders.{id}` — card channel
+
+Subscribed in `useOrderSocket(orderId)`, mounted on the order detail page.
+
+| Event | Payload | Cache update |
+|-------|---------|--------------|
+| `.order.status_changed` | `{ order }` | Merge header fields into `OrderInfo` |
+| `.order.updated` | `{ order }` | Merge header fields into `OrderInfo` |
+| `.order.urgency_changed` | `{ order }` | Merge header fields into `OrderInfo` |
+| `.order.called_changed` | `{ order }` | Merge header fields into `OrderInfo` |
+| `.order.payment_changed` | `{ order, payment, action }` | Merge header + upsert/delete in `payments` |
+| `.order.service_changed` | `{ order, service, action }` | Merge header + upsert/delete in `services` |
+| `.order.product_changed` | `{ order, product, action }` | Merge header + upsert/delete in `products` |
+| `.order.comment_added` | `{ comment }` | Append to `comments` |
+| `.order.document_added` | `{ document }` | Append to `documents` |
+
+#### Idempotency
+
+Payment, service, and product events fire on **both** channels simultaneously. Each hook handles only its own cache slice — they don't interfere.
+
+#### `action` field
+
+For `*_changed` events: `action` is `"created" | "updated" | "deleted"`.
+The `applyItemAction` helper in `orders/lib/services.ts` handles upsert/delete logic for sub-collections.
 
 ---
 
