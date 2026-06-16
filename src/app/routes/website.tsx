@@ -2,6 +2,8 @@ import { lazy } from "react";
 import { type RouteObject } from "react-router-dom";
 
 import { CustomerProtectedRoute } from "@/app/CustomerProtectedRoute";
+import { CUSTOMER_ACCOUNT_ROUTES } from "@/features/website/modules/account/routes";
+import { CUSTOMER_PROFILE_ROUTES } from "@/features/website/modules/profile/routes";
 import { WebsiteLayout } from "@/features/website/components/WebsiteLayout";
 import HomePage from "@/features/website/pages/home";
 import { WEBSITE_ROUTES } from "@/features/website/routes";
@@ -9,10 +11,10 @@ import { WEBSITE_ROUTES } from "@/features/website/routes";
 const ContactsPage = lazy(() => import("@/features/website/pages/contacts"));
 const ReviewsPage = lazy(() => import("@/features/website/pages/reviews"));
 const UserAccountPage = lazy(
-  () => import("@/features/website/pages/user-account"),
+  () => import("@/features/website/modules/account/pages"),
 );
 const UserProfilePage = lazy(
-  () => import("@/features/website/pages/user-profile"),
+  () => import("@/features/website/modules/profile/pages"),
 );
 const TrackPage = lazy(() => import("@/features/website/pages/track"));
 const PriceListPage = lazy(() => import("@/features/website/pages/price-list"));
@@ -32,8 +34,8 @@ export const websiteRoutes: RouteObject = {
     {
       element: <CustomerProtectedRoute />,
       children: [
-        { path: WEBSITE_ROUTES.account, element: <UserAccountPage /> },
-        { path: WEBSITE_ROUTES.accountProfile, element: <UserProfilePage /> },
+        { path: CUSTOMER_ACCOUNT_ROUTES.root, element: <UserAccountPage /> },
+        { path: CUSTOMER_PROFILE_ROUTES.root, element: <UserProfilePage /> },
       ],
     },
     { path: WEBSITE_ROUTES.track, element: <TrackPage /> },

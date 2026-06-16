@@ -5,8 +5,6 @@ export const WEBSITE_LINKS = {
   contacts: WEBSITE_ROUTES.contacts,
   works: WEBSITE_ROUTES.works,
   reviews: WEBSITE_ROUTES.reviews,
-  account: WEBSITE_ROUTES.account,
-  accountProfile: WEBSITE_ROUTES.accountProfile,
   priceList: WEBSITE_ROUTES.priceList,
   warranty: WEBSITE_ROUTES.warranty,
   about: WEBSITE_ROUTES.about,

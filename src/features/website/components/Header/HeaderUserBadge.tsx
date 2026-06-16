@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
+import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
 import { useCustomerMe } from "@/features/auth/website/hooks/useCustomerMe";
-import { WEBSITE_LINKS } from "@/features/website/navigation";
 
 interface HeaderUserBadgeProps {
   logout: () => void;
@@ -22,7 +22,7 @@ export const HeaderUserBadge = ({
   return (
     <div className="flex items-center gap-2">
       <Link
-        to={WEBSITE_LINKS.account}
+        to={CUSTOMER_ACCOUNT_LINKS.root()}
         aria-label={firstName}
         className="inline-flex items-center gap-[10px] rounded-full border border-ws-line bg-[rgba(255,255,255,.015)] py-[7px] pl-[7px] pr-[14px] text-ws-ink no-underline transition-all duration-150 hover:border-ws-ink-mute"
       >

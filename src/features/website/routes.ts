@@ -3,8 +3,6 @@ export const WEBSITE_ROUTES = {
   contacts: "/contacts",
   works: "/works",
   reviews: "/reviews",
-  account: "/account",
-  accountProfile: "/account/profile",
   track: "/track/:token",
   priceList: "/price-list",
   warranty: "/warranty",

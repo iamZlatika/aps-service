@@ -6,11 +6,14 @@ import { AuthModalBrand } from "@/features/auth/website/components/AuthModalBran
 import { useAuthModal } from "@/features/auth/website/hooks/useAuthModal";
 import { type AuthResponse } from "@/features/auth/website/types";
 import { WebsiteModal } from "@/features/website/components/WebsiteModal";
-import { WEBSITE_LINKS } from "@/features/website/navigation";
 
 import { LoginForm } from "./LoginForm";
 
-export const LoginModal = () => {
+interface LoginModalProps {
+  redirectTo: string;
+}
+
+export const LoginModal = ({ redirectTo }: LoginModalProps) => {
   const { t } = useTranslation("website");
   const { isLoginOpen, openRegister, close } = useAuthModal();
   const navigate = useNavigate();
@@ -18,7 +21,7 @@ export const LoginModal = () => {
   const handleSuccess = (data: AuthResponse) => {
     authService.setToken(data.token);
     close();
-    void navigate(WEBSITE_LINKS.account);
+    void navigate(redirectTo);
   };
 
   return (

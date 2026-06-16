@@ -14,6 +14,7 @@ import { Header } from "@/features/website/components/Header";
 import { WebsiteLoader } from "@/features/website/components/Loader";
 import { useMobileNav } from "@/features/website/hooks/useMobileNav";
 import { useWebsiteThemeManager } from "@/features/website/hooks/useWebsiteThemeManager";
+import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
 import { WebsiteThemeContext } from "@/features/website/websiteTheme";
 import { LANG_STORAGE_KEY } from "@/shared/lib/constants";
 import { captureErrorWithId } from "@/shared/lib/sentry";
@@ -119,7 +120,7 @@ export const WebsiteLayout = () => {
             <Footer />
           </ErrorBoundary>
         </Suspense>
-        <LoginModal />
+        <LoginModal redirectTo={CUSTOMER_ACCOUNT_LINKS.root()} />
         <RegistrationModal />
         <Toaster richColors position="top-right" />
       </div>

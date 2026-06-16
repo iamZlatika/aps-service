@@ -2,8 +2,9 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { useCustomerMe } from "@/features/auth/website/hooks/useCustomerMe";
-import { WEBSITE_LINKS } from "@/features/website/navigation";
-import { ProfilePanel } from "@/features/website/pages/user-account/components/ProfilePanel";
+import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
+
+import { ProfilePanel } from "./components/ProfilePanel";
 
 export const UserProfilePage = () => {
   const { data: customer } = useCustomerMe();
@@ -23,7 +24,7 @@ export const UserProfilePage = () => {
 
         <ProfilePanel
           customer={customer}
-          onBack={() => void navigate(WEBSITE_LINKS.account)}
+          onBack={() => void navigate(CUSTOMER_ACCOUNT_LINKS.root())}
         />
       </div>
     </section>
