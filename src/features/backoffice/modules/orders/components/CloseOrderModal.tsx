@@ -1,10 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useAuth } from "@/features/auth/hooks/useAuth.ts";
-import { ordersApi } from "@/features/backoffice/modules/orders/api";
-import { useDocumentActions } from "@/features/backoffice/modules/orders/hooks/useDocumentActions.ts";
+import { useCloseOrder } from "@/features/backoffice/modules/orders/hooks/useCloseOrder";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
@@ -16,11 +12,7 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
-import {
-  PAYMENT_METHODS,
-  type PaymentMethodType,
-  PAYMENTS,
-} from "@/shared/types.ts";
+import { PAYMENT_METHODS } from "@/shared/types.ts";
 
 interface CloseOrderModalProps {
   open: boolean;
@@ -40,51 +32,22 @@ export const CloseOrderModal = ({
   onSuccess,
 }: CloseOrderModalProps) => {
   const { t } = useTranslation();
-  const { user } = useAuth();
-  const { printAsync } = useDocumentActions();
-
-  const [method, setMethod] = useState<PaymentMethodType>(PAYMENT_METHODS.CASH);
-
-  const remaining = parseFloat(remainingToPay);
-  const isOverpayment = remaining < 0;
-  const displayAmount = parseFloat(Math.abs(remaining).toFixed(2)).toString();
-  const hasBalance = remaining !== 0;
-
-  const { mutate: close, isPending } = useMutation({
-    mutationFn: async (withPrint: boolean) => {
-      if (hasBalance && user) {
-        await ordersApi.makePayment(orderId, {
-          type: isOverpayment ? PAYMENTS.REFUND : PAYMENTS.PAYMENT,
-          method,
-          amount: String(Math.abs(remaining)),
-          note: isOverpayment
-            ? t("orders.refundNoteOnClose")
-            : t("orders.paymentNoteOnClose"),
-          managerId: user.id,
-        });
-      }
-
-      await ordersApi.changeStatus(orderId, statusId);
-
-      if (withPrint) {
-        const updated = await ordersApi.getOrder(orderId);
-        const closingDoc = updated.documents.find(
-          (d) => d.type === "closing_receipt",
-        );
-        if (closingDoc) {
-          await printAsync([{ orderId, documentId: closingDoc.id }]);
-        }
-      }
-    },
-    onSuccess: () => {
-      onSuccess?.();
-      onClose();
-    },
-  });
+  const {
+    close,
+    isPending,
+    method,
+    setMethod,
+    isOverpayment,
+    hasBalance,
+    displayAmount,
+  } = useCloseOrder({ orderId, statusId, remainingToPay, onSuccess, onClose });
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent onEscapeKeyDown={(e) => e.stopPropagation()}>
+      <DialogContent
+        className="sm:max-w-2xl"
+        onEscapeKeyDown={(e) => e.stopPropagation()}
+      >
         <DialogHeader>
           <DialogTitle>{t("orders.closeOrder")}</DialogTitle>
         </DialogHeader>
