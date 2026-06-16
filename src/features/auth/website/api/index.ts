@@ -1,7 +1,7 @@
 import {
   AuthResponseDtoSchema,
-  CustomerDtoSchema,
   type LoginRequestBody,
+  MeResponseDtoSchema,
   type RegistrationRequestBody,
   RegistrationResponseDtoSchema,
 } from "@/features/auth/website/api/dto";
@@ -44,9 +44,12 @@ export const websiteAuthApi = {
     const validated = parseDto(AuthResponseDtoSchema, response);
     return mapAuthResponseDtoToAuthResponse(validated);
   },
+  logout: async (): Promise<void> => {
+    await post(WEBSITE_AUTH_API.logout());
+  },
   me: async (): Promise<Customer> => {
     const response = await get(WEBSITE_AUTH_API.me());
-    const validated = parseDto(CustomerDtoSchema, response);
-    return mapCustomerDtoToCustomer(validated);
+    const validated = parseDto(MeResponseDtoSchema, response);
+    return mapCustomerDtoToCustomer(validated.data);
   },
 };

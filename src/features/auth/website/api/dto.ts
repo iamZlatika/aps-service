@@ -28,6 +28,11 @@ export const CustomerDtoSchema = z.object({
 });
 export type CustomerDto = z.infer<typeof CustomerDtoSchema>;
 
+export const MeResponseDtoSchema = z.object({
+  data: CustomerDtoSchema,
+});
+export type MeResponseDto = z.infer<typeof MeResponseDtoSchema>;
+
 export const AuthResponseDtoSchema = z.object({
   token: z.string(),
   customer: CustomerDtoSchema,

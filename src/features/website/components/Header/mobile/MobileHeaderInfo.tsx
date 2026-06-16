@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
-import { HeaderCabinetButton } from "@/features/website/components/Header/HeaderCabinetButton";
+import { HeaderAuthArea } from "@/features/website/components/Header/HeaderAuthArea";
 import { PhoneIcon } from "@/features/website/components/icons/PhoneIcon";
 import { PinIcon } from "@/features/website/components/icons/PinIcon";
 import { MESSENGER_ICONS } from "@/features/website/config";
@@ -22,7 +22,7 @@ export const MobileHeaderInfo = () => {
   return (
     <div className="md:hidden">
       <div className="pb-3 pt-[10px]">
-        <HeaderCabinetButton className="w-full" />
+        <HeaderAuthArea buttonClassName="w-full" />
       </div>
 
       {!isContacts && (

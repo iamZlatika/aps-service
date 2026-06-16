@@ -1,7 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 import { useCustomerAuth } from "@/features/auth/website/hooks/useCustomerAuth";
-import { WebsiteLoader } from "@/features/website/components/Loader";
 import {
   LOGIN_MODAL_VALUE,
   MODAL_PARAM,
@@ -9,11 +8,7 @@ import {
 import { WEBSITE_LINKS } from "@/features/website/navigation";
 
 export const CustomerProtectedRoute = () => {
-  const { isAuthenticated, isLoading } = useCustomerAuth();
-
-  if (isLoading) {
-    return <WebsiteLoader />;
-  }
+  const { isAuthenticated } = useCustomerAuth();
 
   if (!isAuthenticated) {
     return (

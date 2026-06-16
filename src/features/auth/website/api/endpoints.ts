@@ -5,4 +5,5 @@ export const WEBSITE_AUTH_API = {
   login: () => `${BASE}/login`,
   emailResend: () => `${BASE}/email/resend`,
   me: () => "/api/me",
+  logout: () => `${BASE}/logout`,
 } as const;

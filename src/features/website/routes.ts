@@ -4,6 +4,7 @@ export const WEBSITE_ROUTES = {
   works: "/works",
   reviews: "/reviews",
   account: "/account",
+  accountProfile: "/account/profile",
   track: "/track/:token",
   priceList: "/price-list",
   warranty: "/warranty",

@@ -35,10 +35,12 @@
   --ws-cream: #f4ead7;
 
   /* Status colors */
-  --ws-green:      #5db86f;
-  --ws-red:        #d8553e;
-  --ws-red-bright: #ee8a72;
-  --ws-blue:       #3a8fd9;
+  --ws-green:        #5db86f;
+  --ws-green-soft:   #9bdba6;
+  --ws-green-bright: #5fcf78;
+  --ws-red:          #d8553e;
+  --ws-red-bright:   #ee8a72;
+  --ws-blue:         #3a8fd9;
 
   /* Overlay chips (frosted glass panels in hero) */
   --ws-overlay-chip:   rgba(29,27,24,0.55);

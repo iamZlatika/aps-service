@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 
-import { HeaderCabinetButton } from "@/features/website/components/Header/HeaderCabinetButton";
+import { HeaderAuthArea } from "@/features/website/components/Header/HeaderAuthArea";
 import { NAV_TABS } from "@/features/website/components/Header/HeaderData";
 import { LangSwitch } from "@/features/website/components/LangSwitch";
 import { ThemeSwitch } from "@/features/website/components/ThemeSwitch";
@@ -41,7 +41,7 @@ export const DesktopNav = () => {
       <div className="flex items-center gap-[18px]">
         <LangSwitch />
         <ThemeSwitch />
-        <HeaderCabinetButton className="ml-1.5" />
+        <HeaderAuthArea buttonClassName="ml-1.5" />
       </div>
     </nav>
   );

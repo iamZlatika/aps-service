@@ -11,6 +11,9 @@ const ReviewsPage = lazy(() => import("@/features/website/pages/reviews"));
 const UserAccountPage = lazy(
   () => import("@/features/website/pages/user-account"),
 );
+const UserProfilePage = lazy(
+  () => import("@/features/website/pages/user-profile"),
+);
 const TrackPage = lazy(() => import("@/features/website/pages/track"));
 const PriceListPage = lazy(() => import("@/features/website/pages/price-list"));
 const WorksPage = lazy(() => import("@/features/website/pages/works"));
@@ -30,6 +33,7 @@ export const websiteRoutes: RouteObject = {
       element: <CustomerProtectedRoute />,
       children: [
         { path: WEBSITE_ROUTES.account, element: <UserAccountPage /> },
+        { path: WEBSITE_ROUTES.accountProfile, element: <UserProfilePage /> },
       ],
     },
     { path: WEBSITE_ROUTES.track, element: <TrackPage /> },
