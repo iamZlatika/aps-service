@@ -34,8 +34,6 @@ export function mapCustomerDtoToCustomer(dto: CustomerDto): Customer {
     avatarUrl: dto.avatar_url,
     phones: dto.phones.map(mapCustomerPhoneDtoToCustomerPhone),
     status: dto.status,
-    rating: dto.rating,
-    comment: dto.comment,
     lastOrderAt: dto.last_order_at,
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,

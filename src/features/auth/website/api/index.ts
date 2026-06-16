@@ -1,5 +1,6 @@
 import {
   AuthResponseDtoSchema,
+  CustomerDtoSchema,
   type LoginRequestBody,
   type RegistrationRequestBody,
   RegistrationResponseDtoSchema,
@@ -7,10 +8,12 @@ import {
 import { WEBSITE_AUTH_API } from "@/features/auth/website/api/endpoints";
 import {
   mapAuthResponseDtoToAuthResponse,
+  mapCustomerDtoToCustomer,
   mapRegistrationResponseDtoToRegistrationResponse,
 } from "@/features/auth/website/lib/adapters";
 import {
   type AuthResponse,
+  type Customer,
   type RegistrationResponse,
 } from "@/features/auth/website/types";
 import { get, post } from "@/shared/api/api";
@@ -40,5 +43,10 @@ export const websiteAuthApi = {
     );
     const validated = parseDto(AuthResponseDtoSchema, response);
     return mapAuthResponseDtoToAuthResponse(validated);
+  },
+  me: async (): Promise<Customer> => {
+    const response = await get(WEBSITE_AUTH_API.me());
+    const validated = parseDto(CustomerDtoSchema, response);
+    return mapCustomerDtoToCustomer(validated);
   },
 };

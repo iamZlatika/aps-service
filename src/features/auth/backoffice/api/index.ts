@@ -3,11 +3,11 @@ import {
   type CheckTokenData,
   type LoginResponse,
   type ResetPasswordData,
-} from "@/features/auth/types.ts";
+} from "@/features/auth/backoffice/types.ts";
 import { post } from "@/shared/api/api.ts";
 import { type SuccessResponse } from "@/shared/types.ts";
 
-import { type LoginFormValues } from "../backoffice/pages/login/login.schema.ts";
+import { type LoginFormValues } from "../pages/login/login.schema.ts";
 import { AuthRoutes } from "./routes.ts";
 
 export const authApi = {

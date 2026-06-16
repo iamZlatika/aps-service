@@ -12,7 +12,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { AuthRoutes } from "@/features/auth/api/routes.ts";
+import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
 import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard";
 import { CustomerOrdersSection } from "@/features/backoffice/modules/customers/components/CustomerOrdersSection";
 import { StatusSelect } from "@/features/backoffice/modules/orders/components/StatusSelect.tsx";

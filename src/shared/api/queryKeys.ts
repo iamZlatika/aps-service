@@ -24,6 +24,7 @@ export const queryKeys = {
   auth: {
     all: ["auth"] as const,
     user: () => [...queryKeys.auth.all, "user"] as const,
+    customer: () => [...queryKeys.auth.all, "customer"] as const,
     resetCheck: (token: string, email: string) =>
       [...queryKeys.auth.all, "resetCheck", token, email] as const,
   },

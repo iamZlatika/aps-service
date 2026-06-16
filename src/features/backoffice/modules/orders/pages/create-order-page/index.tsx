@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
-import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { LeaveConfirmDialog } from "@/features/backoffice/modules/orders/components/LeaveConfirmDialog.tsx";
 import { useCreateOrder } from "@/features/backoffice/modules/orders/hooks/useCreateOrder.ts";
 import { useLeaveGuard } from "@/features/backoffice/modules/orders/hooks/useLeaveGuard.ts";

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
 import type { OrderSearchPreset } from "@/features/backoffice/modules/orders/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";

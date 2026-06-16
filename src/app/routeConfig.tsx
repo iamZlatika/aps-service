@@ -4,19 +4,13 @@ import { Navigate, type RouteObject } from "react-router-dom";
 import { authRoutes } from "@/app/routes/auth.tsx";
 import { backofficeRoutes } from "@/app/routes/backoffice.tsx";
 import { websiteRoutes } from "@/app/routes/website.tsx";
-import { AuthRoutes } from "@/features/auth/api/routes.ts";
+import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
-import { WebsiteLayout } from "@/features/website/components/WebsiteLayout";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { ROLES } from "@/shared/types.ts";
 
 import { ProtectedRoute } from "./ProtectedRoute";
-
-// website
-const UserAccountPage = lazy(
-  () => import("@/features/website/pages/user-account"),
-);
 
 // Layouts
 const BackofficeLayout = lazy(
@@ -35,21 +29,6 @@ export const routeConfig: RouteObject[] = [
   // public website
   websiteRoutes,
 
-  // client account
-  {
-    element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
-    children: [
-      {
-        element: <WebsiteLayout />,
-        children: [
-          {
-            path: "/account",
-            element: <UserAccountPage />,
-          },
-        ],
-      },
-    ],
-  },
   // backoffice auth
   {
     path: AuthRoutes.backofficeRoot(),

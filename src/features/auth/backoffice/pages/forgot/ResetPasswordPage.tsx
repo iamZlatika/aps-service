@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { authApi } from "@/features/auth/api";
-import { AuthRoutes } from "@/features/auth/api/routes.ts";
+import { authApi } from "@/features/auth/backoffice/api";
+import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard";

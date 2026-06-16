@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 

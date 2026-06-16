@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { ManagerSelect } from "@/features/backoffice/modules/orders/components/ManagerSelect.tsx";
 import { usePaymentSubmit } from "@/features/backoffice/modules/orders/hooks/usePaymentSubmit.ts";
 import {

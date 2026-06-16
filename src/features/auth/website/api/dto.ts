@@ -22,8 +22,6 @@ export const CustomerDtoSchema = z.object({
   avatar_url: z.string(),
   phones: z.array(CustomerPhoneDtoSchema),
   status: zodEnumFromConst(USER_STATUSES),
-  rating: z.number().nullable(),
-  comment: z.string().nullable(),
   last_order_at: z.string().nullable(),
   created_at: z.string(),
   updated_at: z.string(),

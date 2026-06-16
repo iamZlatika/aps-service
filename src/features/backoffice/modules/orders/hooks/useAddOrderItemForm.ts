@@ -11,7 +11,7 @@ import {
 } from "react-hook-form";
 import { toast } from "sonner";
 
-import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import {
   outsourcersApi,
   productsApi,

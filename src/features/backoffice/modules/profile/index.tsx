@@ -2,7 +2,7 @@ import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import UserAvatar from "@/features/backoffice/modules/profile/components/avatar/components/UserAvatar.tsx";
 import ChangePasswordForm from "@/features/backoffice/modules/profile/components/ChangePasswordForm.tsx";
 import ChangeUserInfoForm from "@/features/backoffice/modules/profile/components/ChangeUserInfoForm.tsx";

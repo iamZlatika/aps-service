@@ -18,8 +18,6 @@ export type Customer = {
   avatarUrl: string;
   phones: CustomerPhone[];
   status: UserStatus;
-  rating: number | null;
-  comment: string | null;
   lastOrderAt: string | null;
   createdAt: string;
   updatedAt: string;

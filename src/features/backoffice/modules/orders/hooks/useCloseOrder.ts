@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
 import { useDocumentActions } from "@/features/backoffice/modules/orders/hooks/useDocumentActions";
 import {

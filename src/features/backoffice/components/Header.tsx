@@ -3,7 +3,7 @@ import { memo, type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import SegmentedControl from "@/features/backoffice/components/SegmentedControl.tsx";
 import { PROFILE_LINKS } from "@/features/backoffice/modules/profile/navigation.ts";
 import { useUpdateLocale } from "@/features/backoffice/modules/users/hooks/useUpdateLocale.ts";

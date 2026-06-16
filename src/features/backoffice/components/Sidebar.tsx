@@ -11,8 +11,8 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-import { AuthRoutes } from "@/features/auth/api/routes.ts";
-import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { CUSTOMERS_ROUTES } from "@/features/backoffice/modules/customers/routes";
 import { DICTIONARIES_LINKS } from "@/features/backoffice/modules/dictionaries/navigation";
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
