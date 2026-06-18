@@ -2,9 +2,9 @@ import { lazy } from "react";
 import { type RouteObject } from "react-router-dom";
 
 import { CustomerProtectedRoute } from "@/app/CustomerProtectedRoute";
+import { WebsiteLayout } from "@/features/website/components/WebsiteLayout";
 import { CUSTOMER_ACCOUNT_ROUTES } from "@/features/website/modules/account/routes";
 import { CUSTOMER_PROFILE_ROUTES } from "@/features/website/modules/profile/routes";
-import { WebsiteLayout } from "@/features/website/components/WebsiteLayout";
 import HomePage from "@/features/website/pages/home";
 import { WEBSITE_ROUTES } from "@/features/website/routes";
 

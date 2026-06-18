@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
 import { useCustomerMe } from "@/features/auth/website/hooks/useCustomerMe";
+import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
 
 interface HeaderUserBadgeProps {
   logout: () => void;

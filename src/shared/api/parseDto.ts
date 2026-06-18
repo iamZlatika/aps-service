@@ -1,8 +1,8 @@
-import { type ZodSchema } from "zod";
+import { type ZodType } from "zod";
 
 import { captureError } from "@/shared/lib/sentry";
 
-export function parseDto<T>(schema: ZodSchema<T>, data: unknown): T {
+export function parseDto<T>(schema: ZodType<T>, data: unknown): T {
   try {
     return schema.parse(data);
   } catch (error) {

@@ -1,8 +1,4 @@
-export const COMPRESSION_OPTIONS = {
-  maxSizeMB: 2,
-  maxWidthOrHeight: 1920,
-  useWebWorker: true,
-} as const;
+export { IMAGE_COMPRESSION_OPTIONS as COMPRESSION_OPTIONS } from "@/shared/lib/imageCompression";
 
 export function formatSize(bytes: number): string {
   if (bytes >= 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} МБ`;
