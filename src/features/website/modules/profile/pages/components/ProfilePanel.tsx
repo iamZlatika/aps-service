@@ -1,8 +1,10 @@
 import { Check, ChevronLeft, Lock, Phone } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 import { type Customer } from "@/features/auth/website/types";
+import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
 import { ChangePasswordModal } from "@/features/website/modules/profile/pages/components/ChangePasswordModal";
 import { ProfileAvatar } from "@/features/website/modules/profile/pages/components/ProfileAvatar";
 import { ProfileEmailField } from "@/features/website/modules/profile/pages/components/ProfileEmailField";
@@ -10,7 +12,6 @@ import { ProfileNameField } from "@/features/website/modules/profile/pages/compo
 
 interface ProfilePanelProps {
   customer: Customer;
-  onBack: () => void;
 }
 
 const labelClass =
@@ -19,7 +20,7 @@ const labelClass =
 const inputClass =
   "w-full rounded-ws-md border border-ws-line bg-[rgba(255,255,255,.025)] py-[13px] pl-[42px] pr-[40px] font-[inherit] text-ws-md font-medium text-ws-ink disabled:cursor-not-allowed disabled:opacity-55";
 
-export const ProfilePanel = ({ customer, onBack }: ProfilePanelProps) => {
+export const ProfilePanel = ({ customer }: ProfilePanelProps) => {
   const { t } = useTranslation("website");
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
@@ -32,14 +33,13 @@ export const ProfilePanel = ({ customer, onBack }: ProfilePanelProps) => {
 
   return (
     <div className="max-w-[800px]">
-      <button
-        type="button"
-        onClick={onBack}
-        className="mb-[18px] inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 font-[inherit] text-ws-base font-semibold text-ws-ink-soft transition-colors duration-150 hover:text-ws-ember-bright"
+      <Link
+        to={CUSTOMER_ACCOUNT_LINKS.root()}
+        className="mb-[18px] inline-flex items-center gap-2 border-0 bg-transparent p-0 font-[inherit] text-ws-base font-semibold text-ws-ink-soft no-underline transition-colors duration-150 hover:text-ws-ember-bright"
       >
         <ChevronLeft className="size-[15px]" aria-hidden="true" />
         {t("cabinet.backToOrders")}
-      </button>
+      </Link>
 
       <div className="rounded-ws-card border border-ws-line bg-[rgba(255,255,255,.015)] p-[26px]">
         <div className="mb-[22px] flex flex-wrap items-center justify-between gap-4 border-b border-ws-line-soft pb-[22px]">

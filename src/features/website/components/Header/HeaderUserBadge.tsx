@@ -26,8 +26,16 @@ export const HeaderUserBadge = ({
         aria-label={firstName}
         className="inline-flex items-center gap-[10px] rounded-full border border-ws-line bg-[rgba(255,255,255,.015)] py-[7px] pl-[7px] pr-[14px] text-ws-ink no-underline transition-all duration-150 hover:border-ws-ink-mute"
       >
-        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-ws-ember to-ws-ember-deep text-[15px] font-semibold text-white">
-          {avatarInitial}
+        <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-ws-ember to-ws-ember-deep text-[15px] font-semibold text-white">
+          {customer.avatarUrl ? (
+            <img
+              src={customer.avatarUrl}
+              alt={customer.name}
+              className="size-full object-cover"
+            />
+          ) : (
+            avatarInitial
+          )}
         </span>
         <span className="hidden text-[14px] font-semibold tracking-[-0.005em] min-[960px]:block">
           {firstName}

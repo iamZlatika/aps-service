@@ -43,6 +43,10 @@ export function notifyError(
 
   const SERVER_MESSAGE_MAP: Record<string, string> = {
     "The name has already been taken.": i18next.t("errors.name_taken"),
+    "The verification code is incorrect or has expired.": i18next.t(
+      "errors.code_invalid_or_expired",
+    ),
+    "Too Many Attempts.": i18next.t("errors.too_many_attempts"),
   };
 
   const message =

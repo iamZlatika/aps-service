@@ -4,6 +4,8 @@ import {
   MeResponseDtoSchema,
   type RegistrationRequestBody,
   RegistrationResponseDtoSchema,
+  type SendPhoneCodeRequestBody,
+  type VerifyPhoneCodeRequestBody,
 } from "@/features/auth/website/api/dto";
 import { WEBSITE_AUTH_API } from "@/features/auth/website/api/endpoints";
 import {
@@ -49,6 +51,19 @@ export const websiteAuthApi = {
   },
   me: async (): Promise<Customer> => {
     const response = await get(WEBSITE_AUTH_API.me());
+    const validated = parseDto(MeResponseDtoSchema, response);
+    return mapCustomerDtoToCustomer(validated.data);
+  },
+  sendPhoneCode: async (body: SendPhoneCodeRequestBody): Promise<void> => {
+    await post(WEBSITE_AUTH_API.phoneSend(), body);
+  },
+  verifyPhoneCode: async (
+    body: VerifyPhoneCodeRequestBody,
+  ): Promise<Customer> => {
+    const response = await post<VerifyPhoneCodeRequestBody, unknown>(
+      WEBSITE_AUTH_API.phoneVerify(),
+      body,
+    );
     const validated = parseDto(MeResponseDtoSchema, response);
     return mapCustomerDtoToCustomer(validated.data);
   },

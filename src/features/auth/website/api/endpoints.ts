@@ -6,4 +6,6 @@ export const WEBSITE_AUTH_API = {
   emailResend: () => `${BASE}/email/resend`,
   me: () => "/api/me",
   logout: () => `${BASE}/logout`,
+  phoneSend: () => `${BASE}/phone/send`,
+  phoneVerify: () => `${BASE}/phone/verify`,
 } as const;

@@ -9,6 +9,17 @@ type HandleFormErrorOptions<TFieldValues extends FieldValues> = {
   messageMap?: Record<string, string>;
 };
 
+function getBuiltInMessageMap(): Record<string, string> {
+  return {
+    "The name has already been taken.": i18next.t("errors.name_taken"),
+    "The email has already been taken.": i18next.t("errors.email_taken"),
+    "The verification code is incorrect or has expired.": i18next.t(
+      "errors.code_invalid_or_expired",
+    ),
+    "Too Many Attempts.": i18next.t("errors.too_many_attempts"),
+  };
+}
+
 export function handleFormError<TFieldValues extends FieldValues>(
   error: unknown,
   setError: UseFormSetError<TFieldValues>,
@@ -23,13 +34,9 @@ export function handleFormError<TFieldValues extends FieldValues>(
   }
 
   const { data, message } = error;
+  const builtInMessageMap = getBuiltInMessageMap();
 
   if (data?.errors) {
-    const builtInMessageMap: Record<string, string> = {
-      "The name has already been taken.": i18next.t("errors.name_taken"),
-      "The email has already been taken.": i18next.t("errors.email_taken"),
-    };
-
     Object.entries(data.errors).forEach(([field, messages]) => {
       const mappedField =
         options?.fieldMap?.[field] ?? (field as Path<TFieldValues>);
@@ -47,8 +54,12 @@ export function handleFormError<TFieldValues extends FieldValues>(
     return;
   }
 
+  const mappedMessage = message
+    ? (options?.messageMap?.[message] ?? builtInMessageMap[message] ?? message)
+    : i18next.t("errors.server");
+
   setError("root" as Path<TFieldValues>, {
     type: "server",
-    message: message || i18next.t("errors.server"),
+    message: mappedMessage,
   });
 }

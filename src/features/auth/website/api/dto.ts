@@ -58,3 +58,11 @@ export type LoginRequestBody = {
   email: string;
   password: string;
 };
+
+export type SendPhoneCodeRequestBody = {
+  phone: string;
+};
+
+export type VerifyPhoneCodeRequestBody = {
+  code: string;
+};
