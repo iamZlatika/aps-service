@@ -33,6 +33,14 @@ export const queryKeys = {
   customer: {
     all: ["customer"] as const,
     me: () => [...queryKeys.customer.all, "me"] as const,
+    orders: (page?: number) =>
+      [
+        ...queryKeys.customer.all,
+        "orders",
+        ...(page !== undefined ? [page] : []),
+      ] as const,
+    orderDetail: (id: number) =>
+      [...queryKeys.customer.all, "orders", "detail", id] as const,
   },
 
   users: {

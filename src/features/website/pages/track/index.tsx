@@ -7,8 +7,8 @@ import { WebsiteLoader } from "@/features/website/components/Loader";
 import { OrderHistoryAccordion } from "@/features/website/components/OrderHistoryAccordion";
 import { StatusBadge } from "@/features/website/components/StatusBadge";
 import { useOrderTracking } from "@/features/website/hooks/useOrderTracking";
+import { buildOrderHistory } from "@/features/website/lib/orderHistory";
 import { TrackSpecsTable } from "@/features/website/pages/track/components/TrackSpecsTable";
-import { buildOrderHistory } from "@/features/website/pages/track/services";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard";
 
 export const TrackPage = () => {

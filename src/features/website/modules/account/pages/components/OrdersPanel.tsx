@@ -1,5 +1,6 @@
 import { type Customer } from "@/features/auth/website/types";
 import { VerifyGate } from "@/features/website/modules/account/pages/components/VerifyGate";
+import { OrdersList } from "@/features/website/modules/orders/components/OrdersList";
 
 import { lockedOrders } from "./OrdersPanelData";
 
@@ -14,7 +15,7 @@ export const OrdersPanel = ({ customer }: OrdersPanelProps) => {
   const isPhoneVerified = !!primaryPhone?.phoneVerifiedAt;
 
   if (isPhoneVerified) {
-    return <div className="mt-6 text-ws-ink-mute text-ws-base">—</div>;
+    return <OrdersList />;
   }
 
   return (
