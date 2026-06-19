@@ -26,7 +26,7 @@ const fieldClass =
 export const ProfileNameField = ({ customer }: ProfileNameFieldProps) => {
   const { t } = useTranslation("website");
   const [isEditing, setIsEditing] = useState(false);
-  const displayName = customer.portalName ?? customer.name;
+  const displayName = (customer.portalName ?? customer.portalName) || "Client";
 
   const {
     register,

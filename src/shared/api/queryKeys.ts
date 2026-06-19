@@ -26,6 +26,8 @@ export const queryKeys = {
     user: () => [...queryKeys.auth.all, "user"] as const,
     resetCheck: (token: string, email: string) =>
       [...queryKeys.auth.all, "resetCheck", token, email] as const,
+    customerResetCheck: (token: string, email: string) =>
+      [...queryKeys.auth.all, "customerResetCheck", token, email] as const,
   },
 
   // Everything owned by the logged-in customer (profile, future orders, etc.)

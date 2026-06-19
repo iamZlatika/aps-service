@@ -1,9 +1,12 @@
 import {
   AuthResponseDtoSchema,
+  type CheckResetTokenRequestBody,
+  type ForgotPasswordRequestBody,
   type LoginRequestBody,
   MeResponseDtoSchema,
   type RegistrationRequestBody,
   RegistrationResponseDtoSchema,
+  type ResetPasswordRequestBody,
   type SendPhoneCodeRequestBody,
   type VerifyPhoneCodeRequestBody,
 } from "@/features/auth/website/api/dto";
@@ -48,6 +51,17 @@ export const websiteAuthApi = {
   },
   logout: (): Promise<void> => {
     return post(WEBSITE_AUTH_API.logout());
+  },
+  forgotPassword: async (email: string): Promise<void> => {
+    await post<ForgotPasswordRequestBody>(WEBSITE_AUTH_API.passwordForgot(), {
+      email,
+    });
+  },
+  resetCheckToken: async (body: CheckResetTokenRequestBody): Promise<void> => {
+    await post(WEBSITE_AUTH_API.passwordCheckToken(), body);
+  },
+  resetPassword: async (body: ResetPasswordRequestBody): Promise<void> => {
+    await post(WEBSITE_AUTH_API.passwordReset(), body);
   },
   me: async (): Promise<Customer> => {
     const response = await get(WEBSITE_AUTH_API.me());

@@ -28,7 +28,7 @@ export const ProfilePanel = ({ customer }: ProfilePanelProps) => {
     customer.phones.find((p) => p.isPrimary) ?? customer.phones[0];
 
   const isPhoneVerified = !!primaryPhone?.phoneVerifiedAt;
-  const displayName = customer.portalName ?? customer.name;
+  const displayName = customer.portalName ?? "Client";
 
   return (
     <div className="max-w-[800px]">
