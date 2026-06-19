@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 
 import { useModalParam } from "@/features/website/hooks/useModalParam";
 import {
+  LOGIN_MODAL_VALUE,
   MODAL_PARAM,
-  REGISTER_MODAL_VALUE,
 } from "@/features/website/lib/modalParams";
 import { cn } from "@/shared/lib/utils";
 
@@ -21,7 +21,7 @@ export const HeaderCabinetButton = ({
   return (
     <button
       type="button"
-      onClick={() => openModal(REGISTER_MODAL_VALUE)}
+      onClick={() => openModal(LOGIN_MODAL_VALUE)}
       className={cn(
         "ws-btn-cream inline-flex items-center justify-center gap-2.5",
         className,

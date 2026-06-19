@@ -30,10 +30,19 @@ export const logout = (scope: AuthScope, redirectTo?: string) => {
     queryClient.clear();
   } else {
     customerAuthService.clearToken();
-    queryClient.removeQueries({ queryKey: queryKeys.customer.all });
   }
 
   void router.navigate(redirectTo ?? DEFAULT_REDIRECT_BY_SCOPE[scope]);
+
+  if (scope === "customer") {
+    // Deferred to the next tick: components like HeaderUserBadge are still
+    // mounted and subscribed to customer.* queries at this point (navigate()
+    // hasn't unmounted them yet). Removing the cache while they're still
+    // active observers makes them refetch immediately with no token.
+    setTimeout(() => {
+      queryClient.removeQueries({ queryKey: queryKeys.customer.all });
+    }, 0);
+  }
 
   queueMicrotask(() => {
     isLoggingOutByScope[scope] = false;
