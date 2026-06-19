@@ -3,15 +3,18 @@ import { Link } from "react-router-dom";
 
 import { useCustomerMe } from "@/features/auth/website/hooks/useCustomerMe";
 import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
+import { cn } from "@/shared/lib/utils";
 
 interface HeaderUserBadgeProps {
   logout: () => void;
   isLoggingOut: boolean;
+  showUserName?: boolean;
 }
 
 export const HeaderUserBadge = ({
   logout,
   isLoggingOut,
+  showUserName = false,
 }: HeaderUserBadgeProps) => {
   const { t } = useTranslation("website");
   const { data: customer } = useCustomerMe();
@@ -37,7 +40,12 @@ export const HeaderUserBadge = ({
             avatarInitial
           )}
         </span>
-        <span className="hidden text-[14px] font-semibold tracking-[-0.005em] min-[960px]:block">
+        <span
+          className={cn(
+            "text-[14px] font-semibold tracking-[-0.005em]",
+            showUserName ? "block" : "hidden min-[960px]:block",
+          )}
+        >
           {firstName}
         </span>
       </Link>

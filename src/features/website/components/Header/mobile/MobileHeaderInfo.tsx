@@ -21,8 +21,8 @@ export const MobileHeaderInfo = () => {
 
   return (
     <div className="md:hidden">
-      <div className="pb-3 pt-[10px]">
-        <HeaderAuthArea buttonClassName="w-full" />
+      <div className="flex justify-end pb-3 pt-[10px]">
+        <HeaderAuthArea buttonClassName="w-full" showUserName />
       </div>
 
       {!isContacts && (

@@ -20,7 +20,7 @@ export const OrderListCard = ({ order }: OrderListCardProps) => {
       to={CUSTOMER_ORDERS_LINKS.detail(order.id)}
       className="group grid grid-cols-[154px_1.4fr_150px_120px_30px] items-center gap-[18px] rounded-[14px] border border-ws-line bg-[rgba(255,255,255,.015)] px-5 py-4 no-underline transition-all duration-150 hover:-translate-y-px hover:border-ws-ember max-[860px]:relative max-[860px]:grid-cols-2 max-[860px]:gap-x-4 max-[860px]:gap-y-3.5 max-[860px]:p-[18px]"
     >
-      <span className="text-[13.5px] font-bold tabular-nums tracking-[-0.005em] text-ws-ink max-[860px]:col-span-2">
+      <span className="text-[13.5px] font-bold tabular-nums tracking-[-0.005em] text-ws-ink max-[860px]:col-span-2 max-[860px]:pr-9">
         {order.orderNumber}
       </span>
 
@@ -28,7 +28,7 @@ export const OrderListCard = ({ order }: OrderListCardProps) => {
         <span className="mb-[3px] hidden text-[10px] font-semibold uppercase tracking-[.12em] text-ws-ink-mute max-[860px]:block">
           {t("cabinet.orderDeviceLabel")}
         </span>
-        <h4 className="truncate text-ws-md font-semibold leading-[1.25] text-ws-ink">
+        <h4 className="text-ws-md font-semibold leading-[1.25] text-ws-ink">
           {order.manufacturer} {order.deviceModel}
         </h4>
         <p className="truncate text-ws-xs leading-[1.4] text-ws-ink-soft">
@@ -36,11 +36,11 @@ export const OrderListCard = ({ order }: OrderListCardProps) => {
         </p>
       </span>
 
-      <span className="justify-self-start">
+      <span className="justify-self-start max-[860px]:border-t max-[860px]:border-ws-line-soft max-[860px]:pt-3.5">
         <StatusBadge status={order.status} />
       </span>
 
-      <span className="text-right max-[860px]:text-left">
+      <span className="text-right max-[860px]:border-t max-[860px]:border-ws-line-soft max-[860px]:pt-3.5">
         {dueDate && (
           <span className="block text-[12.5px] tabular-nums text-ws-ink-soft">
             {dueDate}

@@ -27,7 +27,6 @@ export const ProfilePanel = ({ customer }: ProfilePanelProps) => {
   const primaryPhone =
     customer.phones.find((p) => p.isPrimary) ?? customer.phones[0];
 
-  const isEmailVerified = !!customer.emailVerifiedAt;
   const isPhoneVerified = !!primaryPhone?.phoneVerifiedAt;
   const displayName = customer.portalName ?? customer.name;
 
@@ -42,31 +41,18 @@ export const ProfilePanel = ({ customer }: ProfilePanelProps) => {
       </Link>
 
       <div className="rounded-ws-card border border-ws-line bg-[rgba(255,255,255,.015)] p-[26px]">
-        <div className="mb-[22px] flex flex-wrap items-center justify-between gap-4 border-b border-ws-line-soft pb-[22px]">
-          <div className="flex items-center gap-4">
-            <ProfileAvatar customer={customer} />
-            <div>
-              <p className="text-ws-lg font-semibold tracking-[-0.01em] text-ws-ink">
-                {displayName}
+        <div className="mb-[22px] flex items-center gap-4 border-b border-ws-line-soft pb-[22px]">
+          <ProfileAvatar customer={customer} />
+          <div>
+            <p className="text-ws-lg font-semibold tracking-[-0.01em] text-ws-ink">
+              {displayName}
+            </p>
+            {customer.email && (
+              <p className="mt-[3px] text-ws-sm text-ws-ink-soft">
+                {customer.email}
               </p>
-              {customer.email && (
-                <p className="mt-[3px] text-ws-sm text-ws-ink-soft">
-                  {customer.email}
-                </p>
-              )}
-            </div>
+            )}
           </div>
-
-          {isEmailVerified && (
-            <span className="inline-flex items-center gap-[7px] rounded-full border border-ws-green/30 bg-ws-green/12 px-[13px] py-[6px] text-ws-2xs font-semibold text-ws-green-soft">
-              <Check
-                strokeWidth={2.4}
-                className="size-[13px]"
-                aria-hidden="true"
-              />
-              {t("cabinet.accountConfirmed")}
-            </span>
-          )}
         </div>
 
         <h3 className="mb-[18px] text-[11px] font-semibold uppercase tracking-[.16em] text-ws-ink-mute">

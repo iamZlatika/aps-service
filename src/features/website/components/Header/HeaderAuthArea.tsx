@@ -8,9 +8,14 @@ import { WEBSITE_LINKS } from "@/features/website/navigation";
 
 interface HeaderAuthAreaProps {
   buttonClassName?: string;
+  showUserName?: boolean;
 }
 
-const HeaderLoggedInArea = () => {
+interface HeaderLoggedInAreaProps {
+  showUserName?: boolean;
+}
+
+const HeaderLoggedInArea = ({ showUserName }: HeaderLoggedInAreaProps) => {
   const { logout, isLoggingOut } = useLogout(WEBSITE_LINKS.home);
 
   return (
@@ -22,17 +27,24 @@ const HeaderLoggedInArea = () => {
         />
       }
     >
-      <HeaderUserBadge logout={logout} isLoggingOut={isLoggingOut} />
+      <HeaderUserBadge
+        logout={logout}
+        isLoggingOut={isLoggingOut}
+        showUserName={showUserName}
+      />
     </Suspense>
   );
 };
 
-export const HeaderAuthArea = ({ buttonClassName }: HeaderAuthAreaProps) => {
+export const HeaderAuthArea = ({
+  buttonClassName,
+  showUserName,
+}: HeaderAuthAreaProps) => {
   const { isAuthenticated } = useCustomerAuth();
 
   if (!isAuthenticated) {
     return <HeaderCabinetButton className={buttonClassName} />;
   }
 
-  return <HeaderLoggedInArea />;
+  return <HeaderLoggedInArea showUserName={showUserName} />;
 };
