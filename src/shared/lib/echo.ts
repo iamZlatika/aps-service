@@ -1,6 +1,6 @@
 import type Echo from "@ably/laravel-echo";
 
-import { authService } from "@/features/auth/lib/authService";
+import { backofficeAuthService } from "@/features/auth/lib/authService";
 
 let echo: Echo | null = null;
 
@@ -22,7 +22,7 @@ export function getEcho(): Echo | null {
 }
 
 // Page refresh: echoFactory loads faster than GET /me, so echo is ready before hooks mount.
-const existingToken = authService.getToken();
+const existingToken = backofficeAuthService.getToken();
 if (existingToken) {
   void initEcho(existingToken);
 }

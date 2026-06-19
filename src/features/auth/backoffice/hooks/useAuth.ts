@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { authService } from "@/features/auth/lib/authService.ts";
+import { backofficeAuthService } from "@/features/auth/lib/authService.ts";
 import { logout as sessionLogout } from "@/features/auth/lib/sessionManager.ts";
 import { usersApi } from "@/features/backoffice/modules/users/api";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
@@ -12,7 +12,7 @@ import { authApi } from "../api";
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
-  const token = authService.getToken();
+  const token = backofficeAuthService.getToken();
 
   const { i18n } = useTranslation();
 
@@ -35,7 +35,7 @@ export const useAuth = () => {
   }, [i18n, user?.locale]);
 
   useEffect(() => {
-    const currentToken = authService.getToken();
+    const currentToken = backofficeAuthService.getToken();
     if (user && currentToken && !getEcho()) {
       void initEcho(currentToken);
     }
@@ -43,14 +43,14 @@ export const useAuth = () => {
 
   useEffect(() => {
     if (isError) {
-      sessionLogout(true);
+      sessionLogout("backoffice");
     }
   }, [isError]);
   const loginMutation = useMutation({
     mutationFn: authApi.login,
     onSuccess: (response) => {
       if (response.token) {
-        authService.setToken(response.token);
+        backofficeAuthService.setToken(response.token);
         return queryClient.invalidateQueries({
           queryKey: queryKeys.auth.user(),
         });
@@ -73,9 +73,13 @@ export const useAuth = () => {
     applyDark(user.theme === "dark");
   }, [user?.theme]);
 
-  const logout = () => {
-    sessionLogout(true);
-  };
+  const logoutMutation = useMutation({
+    mutationFn: authApi.logout,
+    meta: { silent: true },
+    onSettled: () => {
+      sessionLogout("backoffice");
+    },
+  });
 
   return {
     user,
@@ -84,6 +88,7 @@ export const useAuth = () => {
     isLoading: isLoading || (!!token && !user && !isError),
     login: loginMutation.mutate,
     isLoggingIn: loginMutation.isPending,
-    logout,
+    logout: () => logoutMutation.mutate(),
+    isLoggingOut: logoutMutation.isPending,
   };
 };

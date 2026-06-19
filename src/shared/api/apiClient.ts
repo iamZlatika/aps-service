@@ -1,11 +1,22 @@
 import axios, { type AxiosError } from "axios";
 import i18next from "i18next";
 
-import { authService } from "@/features/auth/lib/authService.ts";
+import {
+  type AuthScope,
+  type AuthService,
+  backofficeAuthService,
+  customerAuthService,
+} from "@/features/auth/lib/authService.ts";
 import { logout } from "@/features/auth/lib/sessionManager.ts";
 import { type ServerErrorResponse } from "@/shared/api/types.ts";
 import { ApiError } from "@/shared/lib/errors/services.ts";
 import { captureError } from "@/shared/lib/sentry.ts";
+
+const getRequestAuthScope = (url?: string): AuthScope =>
+  url?.startsWith("/backoffice") ? "backoffice" : "customer";
+
+const getAuthServiceForScope = (scope: AuthScope): AuthService =>
+  scope === "backoffice" ? backofficeAuthService : customerAuthService;
 
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -19,7 +30,8 @@ export const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    const token = authService.getToken();
+    const scope = getRequestAuthScope(config.url);
+    const token = getAuthServiceForScope(scope).getToken();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -37,8 +49,11 @@ apiClient.interceptors.response.use(
     const status = error.response?.status;
     const data = error.response?.data;
 
-    if (status === 401 && authService.getToken()) {
-      logout();
+    if (status === 401) {
+      const scope = getRequestAuthScope(error.config?.url);
+      if (getAuthServiceForScope(scope).getToken()) {
+        logout(scope);
+      }
     }
 
     const isNetworkError = !error.response && error.code === "ERR_NETWORK";

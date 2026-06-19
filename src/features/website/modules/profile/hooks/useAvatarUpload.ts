@@ -11,7 +11,7 @@ export const useAvatarUpload = () => {
   return useMutation<Customer, Error, File>({
     mutationFn: customerProfileApi.uploadAvatar,
     onSuccess: (customer) => {
-      queryClient.setQueryData(queryKeys.auth.customer(), customer);
+      queryClient.setQueryData(queryKeys.customer.me(), customer);
     },
     onError: (error) => notifyError(error),
   });

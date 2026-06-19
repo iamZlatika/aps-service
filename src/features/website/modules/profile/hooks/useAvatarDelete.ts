@@ -11,7 +11,7 @@ export const useAvatarDelete = () => {
     mutationFn: customerProfileApi.deleteAvatar,
     onSuccess: () => {
       void queryClient.invalidateQueries({
-        queryKey: queryKeys.auth.customer(),
+        queryKey: queryKeys.customer.me(),
       });
     },
     onError: (error) => notifyError(error),

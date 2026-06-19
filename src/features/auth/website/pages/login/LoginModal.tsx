@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { authService } from "@/features/auth/lib/authService";
+import { customerAuthService } from "@/features/auth/lib/authService";
 import { AuthModalBrand } from "@/features/auth/website/components/AuthModalBrand";
 import { useAuthModal } from "@/features/auth/website/hooks/useAuthModal";
 import { type AuthResponse } from "@/features/auth/website/types";
@@ -19,7 +19,7 @@ export const LoginModal = ({ redirectTo }: LoginModalProps) => {
   const navigate = useNavigate();
 
   const handleSuccess = (data: AuthResponse) => {
-    authService.setToken(data.token);
+    customerAuthService.setToken(data.token);
     close();
     void navigate(redirectTo);
   };

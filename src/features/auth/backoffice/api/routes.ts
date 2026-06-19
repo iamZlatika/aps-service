@@ -14,6 +14,7 @@ export const AuthRoutes = {
   // api
   backofficeForgotApi: () => "/backoffice/auth/forgot-password",
   backofficeLoginApi: () => "/backoffice/auth/login",
+  backofficeLogoutApi: () => "/backoffice/auth/logout",
   backofficeResetCheckTokenApi: () => "/backoffice/auth/check-token",
   backofficeResetPasswordApi: () => "/backoffice/auth/reset-password",
 };
