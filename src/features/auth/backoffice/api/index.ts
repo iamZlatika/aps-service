@@ -26,4 +26,7 @@ export const authApi = {
   resetPassword: (data: ResetPasswordData): Promise<SuccessResponse> => {
     return post(AuthRoutes.backofficeResetPasswordApi(), data);
   },
+  logout: (): Promise<void> => {
+    return post(AuthRoutes.backofficeLogoutApi());
+  },
 };

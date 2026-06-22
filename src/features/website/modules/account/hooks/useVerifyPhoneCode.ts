@@ -26,7 +26,7 @@ export const useVerifyPhoneCode = (
     mutationFn: (values) =>
       websiteAuthApi.verifyPhoneCode(mapVerifyPhoneCodeToRequestBody(values)),
     onSuccess: (customer) => {
-      queryClient.setQueryData(queryKeys.auth.customer(), customer);
+      queryClient.setQueryData(queryKeys.customer.me(), customer);
     },
     onError: (error) => {
       notifyError(error);

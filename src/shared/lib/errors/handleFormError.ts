@@ -13,6 +13,7 @@ function getBuiltInMessageMap(): Record<string, string> {
   return {
     "The name has already been taken.": i18next.t("errors.name_taken"),
     "The email has already been taken.": i18next.t("errors.email_taken"),
+    "The new email has already been taken.": i18next.t("errors.email_taken"),
     "The verification code is incorrect or has expired.": i18next.t(
       "errors.code_invalid_or_expired",
     ),

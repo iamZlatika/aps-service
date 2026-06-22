@@ -13,7 +13,6 @@ export type CustomerPhoneDto = z.infer<typeof CustomerPhoneDtoSchema>;
 
 export const CustomerDtoSchema = z.object({
   id: z.number(),
-  name: z.string(),
   portal_name: z.string().nullable(),
   email: z.string().nullable(),
   pending_email: z.string().nullable(),
@@ -65,4 +64,20 @@ export type SendPhoneCodeRequestBody = {
 
 export type VerifyPhoneCodeRequestBody = {
   code: string;
+};
+
+export type ForgotPasswordRequestBody = {
+  email: string;
+};
+
+export type CheckResetTokenRequestBody = {
+  token: string;
+  email: string;
+};
+
+export type ResetPasswordRequestBody = {
+  token: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
 };

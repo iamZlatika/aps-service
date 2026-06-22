@@ -9,7 +9,6 @@ export type CustomerPhone = {
 
 export type Customer = {
   id: number;
-  name: string;
   portalName: string | null;
   email: string | null;
   pendingEmail: string | null;
@@ -30,4 +29,13 @@ export type AuthResponse = {
 
 export type RegistrationResponse = {
   email: string;
+};
+
+export type ForgotPasswordValues = {
+  email: string;
+};
+
+export type ResetPasswordValues = {
+  password: string;
+  confirmPassword: string;
 };

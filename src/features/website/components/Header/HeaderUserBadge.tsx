@@ -3,21 +3,25 @@ import { Link } from "react-router-dom";
 
 import { useCustomerMe } from "@/features/auth/website/hooks/useCustomerMe";
 import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
+import { cn } from "@/shared/lib/utils";
 
 interface HeaderUserBadgeProps {
   logout: () => void;
   isLoggingOut: boolean;
+  showUserName?: boolean;
 }
 
 export const HeaderUserBadge = ({
   logout,
   isLoggingOut,
+  showUserName = false,
 }: HeaderUserBadgeProps) => {
   const { t } = useTranslation("website");
   const { data: customer } = useCustomerMe();
 
-  const firstName = customer.name.split(" ")[0];
-  const avatarInitial = customer.name.charAt(0).toUpperCase();
+  const firstName = customer?.portalName?.split(" ")[0] || "";
+  const avatarInitial = "Client";
+  // const avatarInitial = customer.name.charAt(0).toUpperCase();
 
   return (
     <div className="flex items-center gap-2">
@@ -30,14 +34,19 @@ export const HeaderUserBadge = ({
           {customer.avatarUrl ? (
             <img
               src={customer.avatarUrl}
-              alt={customer.name}
+              alt="Client"
               className="size-full object-cover"
             />
           ) : (
             avatarInitial
           )}
         </span>
-        <span className="hidden text-[14px] font-semibold tracking-[-0.005em] min-[960px]:block">
+        <span
+          className={cn(
+            "text-[14px] font-semibold tracking-[-0.005em]",
+            showUserName ? "block" : "hidden min-[960px]:block",
+          )}
+        >
           {firstName}
         </span>
       </Link>

@@ -26,7 +26,7 @@ export const useChangeEmail = (
       customerProfileApi.changeEmail(mapChangeEmailToRequestBody(values)),
     onSuccess: () => {
       void queryClient.invalidateQueries({
-        queryKey: queryKeys.auth.customer(),
+        queryKey: queryKeys.customer.me(),
       });
     },
     onError: (error) => {

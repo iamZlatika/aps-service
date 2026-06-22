@@ -3,12 +3,14 @@ import {
   type CustomerDto,
   type CustomerPhoneDto,
   type RegistrationResponseDto,
+  type ResetPasswordRequestBody,
 } from "@/features/auth/website/api/dto";
 import {
   type AuthResponse,
   type Customer,
   type CustomerPhone,
   type RegistrationResponse,
+  type ResetPasswordValues,
 } from "@/features/auth/website/types";
 
 export function mapCustomerPhoneDtoToCustomerPhone(
@@ -25,7 +27,6 @@ export function mapCustomerPhoneDtoToCustomerPhone(
 export function mapCustomerDtoToCustomer(dto: CustomerDto): Customer {
   return {
     id: dto.id,
-    name: dto.name,
     portalName: dto.portal_name,
     email: dto.email,
     pendingEmail: dto.pending_email,
@@ -54,5 +55,14 @@ export function mapRegistrationResponseDtoToRegistrationResponse(
 ): RegistrationResponse {
   return {
     email: dto.email,
+  };
+}
+
+export function mapResetPasswordValuesToRequestBody(
+  values: ResetPasswordValues,
+): Pick<ResetPasswordRequestBody, "password" | "password_confirmation"> {
+  return {
+    password: values.password,
+    password_confirmation: values.confirmPassword,
   };
 }

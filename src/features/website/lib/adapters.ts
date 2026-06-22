@@ -48,7 +48,9 @@ function mapTrackServiceDtoToTrackService(dto: TrackServiceDto): TrackService {
   };
 }
 
-function mapTrackPaymentDtoToTrackPayment(dto: TrackPaymentDto): TrackPayment {
+export function mapTrackPaymentDtoToTrackPayment(
+  dto: TrackPaymentDto,
+): TrackPayment {
   return {
     type: dto.type,
     method: dto.method,

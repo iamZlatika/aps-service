@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Lock, Mail } from "lucide-react";
+import { AlertTriangle, Lock, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -57,6 +57,14 @@ export const ChangeEmailModal = ({ open, onClose }: ChangeEmailModalProps) => {
         <h2 className="text-[22px] font-light text-ws-ink">
           {t("cabinet.changeEmail")}
         </h2>
+
+        <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-dashed border-ws-ember-bright px-4 py-3 text-[12.5px] leading-[1.5] text-ws-ember-bright">
+          <AlertTriangle
+            className="mt-0.5 size-4 shrink-0"
+            aria-hidden="true"
+          />
+          <span>{t("cabinet.changeEmailLogoutNotice")}</span>
+        </div>
 
         <form
           onSubmit={handleSubmit(onSubmit)}

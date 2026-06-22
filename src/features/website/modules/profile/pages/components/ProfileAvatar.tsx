@@ -29,7 +29,8 @@ export const ProfileAvatar = ({ customer }: ProfileAvatarProps) => {
     closeEditor,
   } = useAvatarEditorFlow();
 
-  const avatarInitial = customer.name.charAt(0).toUpperCase();
+  const avatarInitial =
+    customer?.portalName?.charAt(0).toUpperCase() || "Client";
 
   return (
     <div className="relative shrink-0">
@@ -37,7 +38,7 @@ export const ProfileAvatar = ({ customer }: ProfileAvatarProps) => {
         {customer.avatarUrl ? (
           <img
             src={customer.avatarUrl}
-            alt={customer.name}
+            alt="Client"
             className="size-full object-cover"
           />
         ) : (

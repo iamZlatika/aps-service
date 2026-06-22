@@ -8,4 +8,7 @@ export const WEBSITE_AUTH_API = {
   logout: () => `${BASE}/logout`,
   phoneSend: () => `${BASE}/phone/send`,
   phoneVerify: () => `${BASE}/phone/verify`,
+  passwordForgot: () => `${BASE}/password/forgot`,
+  passwordCheckToken: () => `${BASE}/password/check-token`,
+  passwordReset: () => `${BASE}/password/reset`,
 } as const;

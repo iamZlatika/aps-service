@@ -24,9 +24,25 @@ export const queryKeys = {
   auth: {
     all: ["auth"] as const,
     user: () => [...queryKeys.auth.all, "user"] as const,
-    customer: () => [...queryKeys.auth.all, "customer"] as const,
     resetCheck: (token: string, email: string) =>
       [...queryKeys.auth.all, "resetCheck", token, email] as const,
+    customerResetCheck: (token: string, email: string) =>
+      [...queryKeys.auth.all, "customerResetCheck", token, email] as const,
+  },
+
+  // Everything owned by the logged-in customer (profile, future orders, etc.)
+  // must nest under this root so logout can clear it in one prefix removal.
+  customer: {
+    all: ["customer"] as const,
+    me: () => [...queryKeys.customer.all, "me"] as const,
+    orders: (page?: number) =>
+      [
+        ...queryKeys.customer.all,
+        "orders",
+        ...(page !== undefined ? [page] : []),
+      ] as const,
+    orderDetail: (id: number) =>
+      [...queryKeys.customer.all, "orders", "detail", id] as const,
   },
 
   users: {

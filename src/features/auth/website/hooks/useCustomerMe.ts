@@ -9,6 +9,6 @@ import { queryKeys } from "@/shared/api/queryKeys";
 
 export const useCustomerMe = (): UseSuspenseQueryResult<Customer> =>
   useSuspenseQuery({
-    queryKey: queryKeys.auth.customer(),
+    queryKey: queryKeys.customer.me(),
     queryFn: websiteAuthApi.me,
   });

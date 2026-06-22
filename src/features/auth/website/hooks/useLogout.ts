@@ -1,7 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
-import { authService } from "@/features/auth/lib/authService";
+import { logout as sessionLogout } from "@/features/auth/lib/sessionManager";
 import { websiteAuthApi } from "@/features/auth/website/api";
 
 type UseLogoutReturn = {
@@ -10,16 +9,11 @@ type UseLogoutReturn = {
 };
 
 export const useLogout = (redirectTo: string): UseLogoutReturn => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
   const { mutate, isPending: isLoggingOut } = useMutation({
     mutationFn: websiteAuthApi.logout,
     meta: { silent: true },
     onSettled: () => {
-      authService.clearToken();
-      queryClient.clear();
-      void navigate(redirectTo);
+      sessionLogout("customer", redirectTo);
     },
   });
 
