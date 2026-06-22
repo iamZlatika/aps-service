@@ -25,6 +25,7 @@ const PriceListPage = lazy(() => import("@/features/website/pages/price-list"));
 const WorksPage = lazy(() => import("@/features/website/pages/works"));
 const WarrantyPage = lazy(() => import("@/features/website/pages/warranty"));
 const AboutPage = lazy(() => import("@/features/website/pages/about"));
+const NotFoundPage = lazy(() => import("@/features/website/pages/not-found"));
 const EmailVerifyPage = lazy(
   () => import("@/features/auth/website/pages/email-verify/EmailVerifyPage"),
 );
@@ -49,5 +50,6 @@ export const websiteRoutes: RouteObject = {
     { path: WEBSITE_ROUTES.warranty, element: <WarrantyPage /> },
     { path: WEBSITE_ROUTES.about, element: <AboutPage /> },
     { path: WEBSITE_ROUTES.emailVerify, element: <EmailVerifyPage /> },
+    { path: "*", element: <NotFoundPage /> },
   ],
 };

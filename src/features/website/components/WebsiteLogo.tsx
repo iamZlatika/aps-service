@@ -27,7 +27,7 @@ export const WebsiteLogo = ({ className }: WebsiteLogoProps) => {
       <span className="text-ws-xl font-bold leading-none tracking-[-0.01em]">
         APS
         <span className="font-medium text-ws-ink-mute"> service</span>
-        <small className="mt-1 block text-ws-2xs font-medium tracking-[0.02em] text-ws-ink-mute">
+        <small className="mt-1 block text-ws-2xs font-medium tracking-[0.02em] text-ws-ember-bright">
           {t("nav.logoSubtitle")}
         </small>
       </span>

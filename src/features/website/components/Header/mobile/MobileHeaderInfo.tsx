@@ -41,21 +41,19 @@ export const MobileHeaderInfo = () => {
                   href={getMapsUrl(address)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-start gap-2 no-underline"
+                  className="flex flex-col no-underline"
                 >
-                  <PinIcon className="mt-[3px] size-3.5 shrink-0 text-ws-ember-bright" />
-                  <div>
-                    <div className="mb-[3px]">
-                      <span className="mb-[2px] block text-ws-2xs font-medium lowercase tracking-[0.02em] text-ws-ink-soft">
-                        {t("nav.streetLabel")}
-                      </span>
-                      <span className="text-ws-sm font-semibold leading-[1.2] tracking-[-0.005em] text-ws-ink">
-                        {street}, {location.building}
-                      </span>
-                    </div>
-                    <div className="text-[8.5px] font-semibold uppercase tracking-[0.14em] text-ws-ink-mute">
-                      {district} мкр-н
-                    </div>
+                  <div className="mb-[2px] flex items-center gap-1">
+                    <PinIcon className="size-3.5 shrink-0 text-ws-ember-bright" />
+                    <span className="text-ws-2xs font-medium lowercase tracking-[0.02em] text-ws-ink-soft">
+                      {t("nav.streetLabel")}
+                    </span>
+                  </div>
+                  <span className="mb-[3px] text-ws-sm font-semibold leading-[1.2] tracking-[-0.005em] text-ws-ink">
+                    {street}, {location.building}
+                  </span>
+                  <div className="text-[8.5px] font-semibold uppercase tracking-[0.14em] text-ws-ink-mute">
+                    {district} мкр-н
                   </div>
                 </a>
 
