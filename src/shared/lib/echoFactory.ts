@@ -21,13 +21,33 @@ type AblyConnector = {
 // @ably/laravel-echo resolves Ably from window at runtime
 (window as unknown as { Ably: unknown }).Ably = Ably;
 
-function attachConnectionListener(instance: Echo): void {
-  const { connection } = (instance.connector as AblyConnector).ably;
+export class EchoConnection {
+  private failed = false;
 
-  connection.on((stateChange) => {
+  constructor(readonly echo: Echo) {}
+
+  markFailed(): void {
+    this.failed = true;
+  }
+
+  get isUsable(): boolean {
+    return !this.failed;
+  }
+}
+
+function attachConnectionListener(
+  instance: Echo,
+  connection: EchoConnection,
+): void {
+  const { connection: ablyConnection } = (instance.connector as AblyConnector)
+    .ably;
+
+  ablyConnection.on((stateChange) => {
     if (stateChange.current === "failed") {
       captureError(stateChange.reason, { source: "ably_connection" });
       toast.error(i18next.t("errors.socket_failed"));
+      instance.disconnect();
+      connection.markFailed();
     }
     if (stateChange.current === "suspended") {
       toast.error(i18next.t("errors.socket_suspended"));
@@ -35,7 +55,7 @@ function attachConnectionListener(instance: Echo): void {
   });
 }
 
-export function createEchoInstance(token: string): Echo {
+export function createEchoInstance(token: string): EchoConnection {
   const instance = new Echo({
     broadcaster: "ably",
     authEndpoint: `${import.meta.env.VITE_API_URL}/broadcasting/auth`,
@@ -43,6 +63,7 @@ export function createEchoInstance(token: string): Echo {
       headers: { Authorization: `Bearer ${token}` },
     },
   });
-  attachConnectionListener(instance);
-  return instance;
+  const connection = new EchoConnection(instance);
+  attachConnectionListener(instance, connection);
+  return connection;
 }
