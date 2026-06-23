@@ -1,6 +1,7 @@
 import axios, { type AxiosError } from "axios";
 import i18next from "i18next";
 
+import { router } from "@/app/router.ts";
 import {
   type AuthScope,
   type AuthService,
@@ -8,6 +9,8 @@ import {
   customerAuthService,
 } from "@/features/auth/lib/authService.ts";
 import { logout } from "@/features/auth/lib/sessionManager.ts";
+import { SharedRoutes } from "@/shared/api/routes.ts";
+import { isSecurityBlockedResponse } from "@/shared/api/securityBlock.ts";
 import { type ServerErrorResponse } from "@/shared/api/types.ts";
 import { ApiError } from "@/shared/lib/errors/services.ts";
 import { captureError } from "@/shared/lib/sentry.ts";
@@ -54,6 +57,10 @@ apiClient.interceptors.response.use(
       if (getAuthServiceForScope(scope).getToken()) {
         logout(scope);
       }
+    }
+
+    if (isSecurityBlockedResponse(status, data?.message)) {
+      void router.navigate(SharedRoutes.blocked());
     }
 
     const isNetworkError = !error.response && error.code === "ERR_NETWORK";
