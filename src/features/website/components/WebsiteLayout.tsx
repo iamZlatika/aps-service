@@ -16,6 +16,9 @@ import { useMobileNav } from "@/features/website/hooks/useMobileNav";
 import { useWebsiteThemeManager } from "@/features/website/hooks/useWebsiteThemeManager";
 import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
 import { WebsiteThemeContext } from "@/features/website/websiteTheme";
+import { PullToRefreshIndicator } from "@/shared/components/PullToRefreshIndicator";
+import { PullToRefreshLoaderFrame } from "@/shared/components/PullToRefreshLoaderFrame";
+import { usePullToRefresh } from "@/shared/hooks/usePullToRefresh";
 import { LANG_STORAGE_KEY } from "@/shared/lib/constants";
 import { captureErrorWithId } from "@/shared/lib/sentry";
 import { storageGet } from "@/shared/lib/storage";
@@ -31,6 +34,7 @@ export const WebsiteLayout = () => {
   const themeValue = useWebsiteThemeManager();
   const { isOpen: isNavOpen, open: openNav, close: closeNav } = useMobileNav();
   const rootRef = useRef<HTMLDivElement>(null);
+  const { progress, status } = usePullToRefresh(rootRef);
 
   useEffect(() => {
     const saved = storageGet(LANG_STORAGE_KEY);
@@ -83,7 +87,7 @@ export const WebsiteLayout = () => {
       <div
         ref={rootRef}
         className={cn(
-          "website flex min-h-screen flex-col",
+          "website relative flex min-h-screen flex-col",
           themeValue.resolvedTheme === "light" && "light",
         )}
       >
@@ -114,10 +118,23 @@ export const WebsiteLayout = () => {
               openNav={openNav}
               closeNav={closeNav}
             />
-            <main id="main-content" className="flex-1">
-              <Outlet />
-            </main>
-            <Footer />
+            <div className="relative flex flex-1 flex-col">
+              <PullToRefreshIndicator
+                status={status}
+                progress={progress}
+                refreshingLabel={t("pullToRefresh.refreshing")}
+              >
+                <PullToRefreshLoaderFrame scaleClassName="scale-[0.6]">
+                  <WebsiteLoader />
+                </PullToRefreshLoaderFrame>
+              </PullToRefreshIndicator>
+              <div className="flex flex-1 flex-col translate-y-[var(--pull-distance)]">
+                <main id="main-content" className="flex-1">
+                  <Outlet />
+                </main>
+                <Footer />
+              </div>
+            </div>
           </ErrorBoundary>
         </Suspense>
         <LoginModal redirectTo={CUSTOMER_ACCOUNT_LINKS.root()} />

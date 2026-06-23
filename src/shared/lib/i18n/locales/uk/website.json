@@ -2,6 +2,9 @@
   "address": {
     "streetPrefix": "вул."
   },
+  "pullToRefresh": {
+    "refreshing": "Оновлення сторінки..."
+  },
   "nav": {
     "home": "Головна",
     "contacts": "Контакти",

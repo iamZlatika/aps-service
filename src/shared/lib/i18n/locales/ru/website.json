@@ -2,6 +2,9 @@
   "address": {
     "streetPrefix": "ул."
   },
+  "pullToRefresh": {
+    "refreshing": "Обновление страницы..."
+  },
   "nav": {
     "home": "Главная",
     "contacts": "Контакты",

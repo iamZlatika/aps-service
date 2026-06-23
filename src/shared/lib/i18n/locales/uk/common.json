@@ -30,6 +30,9 @@
     "backoffice": "Завантаження бекофісу",
     "control_panel": "Завантаження панелі керування"
   },
+  "pullToRefresh": {
+    "refreshing": "Оновлення сторінки..."
+  },
   "auth": {
     "login": {
       "title": "Вхід до системи",
