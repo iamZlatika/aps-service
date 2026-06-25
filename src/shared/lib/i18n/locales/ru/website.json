@@ -306,7 +306,15 @@
     "submit": "Войти",
     "submitting": "Вход...",
     "emailNotVerified": "Сначала подтвердите email — перейдите по ссылке из письма",
-    "forgotPassword": "Забыли пароль?"
+    "forgotPassword": "Забыли пароль?",
+    "orDivider": "или",
+    "googleButton": "Войти через Google"
+  },
+  "googleCallback": {
+    "loading": "Входим через Google...",
+    "redirecting": "Переходим...",
+    "accessDenied": "Вход через Google отменён",
+    "failed": "Не удалось войти через Google. Попробуйте ещё раз."
   },
   "emailVerify": {
     "loading": "Подтверждаем email...",

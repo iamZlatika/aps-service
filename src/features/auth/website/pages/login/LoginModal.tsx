@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { customerAuthService } from "@/features/auth/lib/authService";
 import { AuthModalBrand } from "@/features/auth/website/components/AuthModalBrand";
+import { GoogleSignInButton } from "@/features/auth/website/components/GoogleSignInButton";
 import { useAuthModal } from "@/features/auth/website/hooks/useAuthModal";
 import { type AuthResponse } from "@/features/auth/website/types";
 import { WebsiteModal } from "@/features/website/components/WebsiteModal";
@@ -38,6 +39,14 @@ export const LoginModal = ({ redirectTo }: LoginModalProps) => {
         </p>
 
         <LoginForm onSuccess={handleSuccess} onForgotPassword={openForgot} />
+
+        <div className="my-5 flex items-center gap-[14px] text-[12px] tracking-[.04em] text-ws-ink-mute">
+          <span className="h-px flex-1 bg-ws-line" />
+          {t("login.orDivider")}
+          <span className="h-px flex-1 bg-ws-line" />
+        </div>
+
+        <GoogleSignInButton />
 
         <div className="mt-[18px] text-center text-[13.5px] text-ws-ink-soft">
           {t("login.noAccount")}{" "}

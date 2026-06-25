@@ -8,4 +8,5 @@ export const WEBSITE_LINKS = {
   priceList: WEBSITE_ROUTES.priceList,
   warranty: WEBSITE_ROUTES.warranty,
   about: WEBSITE_ROUTES.about,
+  googleCallback: WEBSITE_ROUTES.googleCallback,
 } as const;

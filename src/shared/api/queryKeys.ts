@@ -30,6 +30,8 @@ export const queryKeys = {
       [...queryKeys.auth.all, "customerResetCheck", token, email] as const,
     emailVerify: (verifyUrl: string) =>
       [...queryKeys.auth.all, "emailVerify", verifyUrl] as const,
+    googleCallback: (code: string) =>
+      [...queryKeys.auth.all, "googleCallback", code] as const,
   },
 
   // Everything owned by the logged-in customer (profile, future orders, etc.)

@@ -63,6 +63,14 @@ export const websiteAuthApi = {
     const validated = parseDto(MeResponseDtoSchema, response);
     return mapCustomerDtoToCustomer(validated.data);
   },
+  googleCallback: async (code: string): Promise<AuthResponse> => {
+    const response = await post<{ code: string }, unknown>(
+      WEBSITE_AUTH_API.googleCallback(),
+      { code },
+    );
+    const validated = parseDto(AuthResponseDtoSchema, response);
+    return mapAuthResponseDtoToAuthResponse(validated);
+  },
   sendPhoneCode: async (body: SendPhoneCodeData): Promise<void> => {
     await post(WEBSITE_AUTH_API.phoneSend(), body);
   },

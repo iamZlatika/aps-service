@@ -9,4 +9,5 @@ export const WEBSITE_ROUTES = {
   about: "/about",
   emailVerify: "/auth/email-verify",
   resetPassword: "/auth/reset-password",
+  googleCallback: "/auth/google/callback",
 } as const;

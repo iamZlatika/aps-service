@@ -306,7 +306,15 @@
     "submit": "Увійти",
     "submitting": "Вхід...",
     "emailNotVerified": "Спочатку підтвердьте email — перейдіть за посиланням із листа",
-    "forgotPassword": "Забули пароль?"
+    "forgotPassword": "Забули пароль?",
+    "orDivider": "або",
+    "googleButton": "Увійти через Google"
+  },
+  "googleCallback": {
+    "loading": "Входимо через Google...",
+    "redirecting": "Переходимо...",
+    "accessDenied": "Вхід через Google скасовано",
+    "failed": "Не вдалось увійти через Google. Спробуйте ще раз."
   },
   "emailVerify": {
     "loading": "Підтверджуємо email...",

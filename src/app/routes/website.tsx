@@ -33,6 +33,10 @@ const ResetPasswordPage = lazy(
   () =>
     import("@/features/auth/website/pages/reset-password/ResetPasswordPage"),
 );
+const GoogleCallbackPage = lazy(
+  () =>
+    import("@/features/auth/website/pages/google-callback/GoogleCallbackPage"),
+);
 
 export const websiteRoutes: RouteObject = {
   element: <WebsiteLayout />,
@@ -55,6 +59,7 @@ export const websiteRoutes: RouteObject = {
     { path: WEBSITE_ROUTES.about, element: <AboutPage /> },
     { path: WEBSITE_ROUTES.emailVerify, element: <EmailVerifyPage /> },
     { path: WEBSITE_ROUTES.resetPassword, element: <ResetPasswordPage /> },
+    { path: WEBSITE_ROUTES.googleCallback, element: <GoogleCallbackPage /> },
     { path: "*", element: <NotFoundPage /> },
   ],
 };
