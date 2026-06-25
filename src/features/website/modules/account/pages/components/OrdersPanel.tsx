@@ -10,8 +10,7 @@ interface OrdersPanelProps {
 }
 
 export const OrdersPanel = ({ customer }: OrdersPanelProps) => {
-  const primaryPhone =
-    customer.phones.find((p) => p.isPrimary) ?? customer.phones[0];
+  const primaryPhone = customer.phones.find((p) => p.isPrimary);
 
   const isPhoneVerified = !!primaryPhone?.phoneVerifiedAt;
 

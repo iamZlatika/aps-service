@@ -8,7 +8,6 @@ import { type VerifyPhoneCodeFormValues } from "@/features/website/modules/accou
 import { mapVerifyPhoneCodeToRequestBody } from "@/features/website/modules/account/lib/adapters";
 import { queryKeys } from "@/shared/api/queryKeys";
 import { handleFormError } from "@/shared/lib/errors/handleFormError";
-import { notifyError } from "@/shared/lib/errors/services";
 
 type UseVerifyPhoneCodeReturn = {
   submit: (
@@ -35,7 +34,6 @@ export const useVerifyPhoneCode = (
       queryClient.setQueryData(queryKeys.customer.me(), customer);
     },
     onError: (error) => {
-      notifyError(error);
       handleFormError<VerifyPhoneCodeFormValues>(error, setError, {
         fieldMap: { code: "code" },
       });

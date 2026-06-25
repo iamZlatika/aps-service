@@ -73,7 +73,9 @@ export function mapOrderDetailDtoToOrderDetail(
     payments: dto.payments.map(mapTrackPaymentDtoToTrackPayment),
     services: dto.services.map(mapOrderLineItemDtoToOrderLineItem),
     products: dto.products.map(mapOrderLineItemDtoToOrderLineItem),
-    documents: dto.documents.map(mapOrderDocumentDtoToOrderDocument),
+    documents: dto.documents
+      .map(mapOrderDocumentDtoToOrderDocument)
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
   };
 }
 

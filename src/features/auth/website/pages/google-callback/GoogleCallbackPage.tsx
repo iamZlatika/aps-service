@@ -47,10 +47,13 @@ const GoogleCallbackPage = () => {
 
   return (
     <div className="flex min-h-[calc(100vh-var(--ws-header-height))] items-center justify-center p-6">
-      <div className="w-full max-w-[400px] text-center">
+      <div className="w-full max-w-[400px] text-center" role="status">
         {isLoading && (
           <>
-            <Loader2 className="mx-auto mb-5 size-12 animate-spin text-ws-ember-bright" />
+            <Loader2
+              className="mx-auto mb-5 size-12 animate-spin text-ws-ember-bright"
+              aria-hidden="true"
+            />
             <p className="text-[15px] text-ws-ink-soft">
               {t("googleCallback.loading")}
             </p>
@@ -59,7 +62,10 @@ const GoogleCallbackPage = () => {
 
         {isError && (
           <>
-            <XCircle className="mx-auto mb-5 size-12 text-ws-red-bright" />
+            <XCircle
+              className="mx-auto mb-5 size-12 text-ws-red-bright"
+              aria-hidden="true"
+            />
             <p className="text-[15px] text-ws-ink-soft">
               {t("googleCallback.redirecting")}
             </p>

@@ -47,6 +47,8 @@ export function notifyError(
       "errors.code_invalid_or_expired",
     ),
     "Too Many Attempts.": i18next.t("errors.too_many_attempts"),
+    "This phone number is already registered. Please log in instead.":
+      i18next.t("errors.phone_already_registered"),
   };
 
   const message =
