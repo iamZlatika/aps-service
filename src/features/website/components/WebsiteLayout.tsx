@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 
+import { ForgotPasswordModal } from "@/features/auth/website/pages/forgot/ForgotPasswordModal";
 import { LoginModal } from "@/features/auth/website/pages/login/LoginModal";
 import { RegistrationModal } from "@/features/auth/website/pages/registration/RegistrationModal";
 import { WebsiteErrorFallback } from "@/features/website/components/ErrorFallback";
@@ -139,6 +140,7 @@ export const WebsiteLayout = () => {
         </Suspense>
         <LoginModal redirectTo={CUSTOMER_ACCOUNT_LINKS.root()} />
         <RegistrationModal />
+        <ForgotPasswordModal />
         <Toaster richColors position="top-right" />
       </div>
     </WebsiteThemeContext.Provider>

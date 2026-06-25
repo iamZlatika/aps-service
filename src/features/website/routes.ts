@@ -8,4 +8,5 @@ export const WEBSITE_ROUTES = {
   warranty: "/warranty",
   about: "/about",
   emailVerify: "/auth/email-verify",
+  resetPassword: "/auth/reset-password",
 } as const;

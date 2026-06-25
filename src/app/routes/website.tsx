@@ -29,6 +29,10 @@ const NotFoundPage = lazy(() => import("@/features/website/pages/not-found"));
 const EmailVerifyPage = lazy(
   () => import("@/features/auth/website/pages/email-verify/EmailVerifyPage"),
 );
+const ResetPasswordPage = lazy(
+  () =>
+    import("@/features/auth/website/pages/reset-password/ResetPasswordPage"),
+);
 
 export const websiteRoutes: RouteObject = {
   element: <WebsiteLayout />,
@@ -50,6 +54,7 @@ export const websiteRoutes: RouteObject = {
     { path: WEBSITE_ROUTES.warranty, element: <WarrantyPage /> },
     { path: WEBSITE_ROUTES.about, element: <AboutPage /> },
     { path: WEBSITE_ROUTES.emailVerify, element: <EmailVerifyPage /> },
+    { path: WEBSITE_ROUTES.resetPassword, element: <ResetPasswordPage /> },
     { path: "*", element: <NotFoundPage /> },
   ],
 };

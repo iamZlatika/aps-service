@@ -30,12 +30,3 @@ export type AuthResponse = {
 export type RegistrationResponse = {
   email: string;
 };
-
-export type ForgotPasswordValues = {
-  email: string;
-};
-
-export type ResetPasswordValues = {
-  password: string;
-  confirmPassword: string;
-};

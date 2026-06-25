@@ -3,3 +3,4 @@ export const MODAL_PARAM = "modal";
 export const PC_BUILD_MODAL_VALUE = "pc-build";
 export const REGISTER_MODAL_VALUE = "register";
 export const LOGIN_MODAL_VALUE = "login";
+export const FORGOT_PASSWORD_MODAL_VALUE = "forgot-password";

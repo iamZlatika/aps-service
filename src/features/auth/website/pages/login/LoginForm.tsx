@@ -25,9 +25,10 @@ const labelClass =
 
 interface LoginFormProps {
   onSuccess: (data: AuthResponse) => void;
+  onForgotPassword: () => void;
 }
 
-export const LoginForm = ({ onSuccess }: LoginFormProps) => {
+export const LoginForm = ({ onSuccess, onForgotPassword }: LoginFormProps) => {
   const { t } = useTranslation("website");
 
   const {
@@ -102,6 +103,16 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             </p>
           )}
         </div>
+      </div>
+
+      <div className="mt-[12px] flex justify-end">
+        <button
+          type="button"
+          className="text-[13px] font-medium text-ws-ember-bright hover:underline"
+          onClick={onForgotPassword}
+        >
+          {t("login.forgotPassword")}
+        </button>
       </div>
 
       {errors.root && (

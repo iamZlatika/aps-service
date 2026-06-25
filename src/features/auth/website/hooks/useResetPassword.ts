@@ -3,13 +3,13 @@ import type { UseFormSetError } from "react-hook-form";
 
 import { websiteAuthApi } from "@/features/auth/website/api";
 import { mapResetPasswordValuesToRequestBody } from "@/features/auth/website/lib/adapters";
-import { type ResetPasswordValues } from "@/features/auth/website/types";
+import { type ResetPasswordFormValues } from "@/features/auth/website/pages/reset-password/reset-password.schema";
 import { handleFormError } from "@/shared/lib/errors/handleFormError";
 import { notifyError } from "@/shared/lib/errors/services";
 
 type UseResetPasswordReturn = {
   submit: (
-    values: ResetPasswordValues,
+    values: ResetPasswordFormValues,
     options?: { onSuccess?: () => void },
   ) => void;
   isPending: boolean;
@@ -18,9 +18,9 @@ type UseResetPasswordReturn = {
 export const useResetPassword = (
   token: string,
   email: string,
-  setError: UseFormSetError<ResetPasswordValues>,
+  setError: UseFormSetError<ResetPasswordFormValues>,
 ): UseResetPasswordReturn => {
-  const mutation = useMutation<void, Error, ResetPasswordValues>({
+  const mutation = useMutation<void, Error, ResetPasswordFormValues>({
     mutationFn: (values) =>
       websiteAuthApi.resetPassword({
         token,
@@ -29,7 +29,7 @@ export const useResetPassword = (
       }),
     onError: (error) => {
       notifyError(error);
-      handleFormError<ResetPasswordValues>(error, setError, {
+      handleFormError<ResetPasswordFormValues>(error, setError, {
         fieldMap: { password_confirmation: "confirmPassword" },
       });
     },

@@ -15,7 +15,7 @@ interface LoginModalProps {
 
 export const LoginModal = ({ redirectTo }: LoginModalProps) => {
   const { t } = useTranslation("website");
-  const { isLoginOpen, openRegister, close } = useAuthModal();
+  const { isLoginOpen, openRegister, openForgot, close } = useAuthModal();
   const navigate = useNavigate();
 
   const handleSuccess = (data: AuthResponse) => {
@@ -37,7 +37,7 @@ export const LoginModal = ({ redirectTo }: LoginModalProps) => {
           {t("login.subtitle")}
         </p>
 
-        <LoginForm onSuccess={handleSuccess} />
+        <LoginForm onSuccess={handleSuccess} onForgotPassword={openForgot} />
 
         <div className="mt-[18px] text-center text-[13.5px] text-ws-ink-soft">
           {t("login.noAccount")}{" "}
