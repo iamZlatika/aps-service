@@ -1,9 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Lock, Mail, Phone, User } from "lucide-react";
+import { Mail, User } from "lucide-react";
 import { type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { IMaskInput } from "react-imask";
 
 import { handleFormError } from "@/shared/lib/errors/handleFormError";
 import { cn } from "@/shared/lib/utils";
@@ -12,6 +11,8 @@ import {
   createRegistrationSchema,
   type RegistrationFormValues,
 } from "./registration.schema";
+import { RegistrationPasswordFields } from "./RegistrationPasswordFields";
+import { RegistrationPhoneField } from "./RegistrationPhoneField";
 import { useRegistration } from "./useRegistration";
 
 function getPasswordStrength(password: string): number {
@@ -23,8 +24,6 @@ function getPasswordStrength(password: string): number {
   if (/[^A-Za-z0-9]/.test(password)) score++;
   return score;
 }
-
-const STRENGTH_COLORS = ["#d8553e", "#e0a64a", "#c9b24a", "#5fcf78"] as const;
 
 const inputWrapClass = (hasError: boolean) =>
   cn(
@@ -108,7 +107,7 @@ export const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
             {t("registration.name")}
           </label>
           <div className={inputWrapClass(!!errors.name)}>
-            <User className="absolute left-[14px] size-4 shrink-0 text-ws-ink-mute pointer-events-none" />
+            <User className="pointer-events-none absolute left-[14px] size-4 shrink-0 text-ws-ink-mute" />
             <input
               id="reg-name"
               type="text"
@@ -126,7 +125,7 @@ export const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
             {t("registration.email")}
           </label>
           <div className={inputWrapClass(!!errors.email)}>
-            <Mail className="absolute left-[14px] size-4 shrink-0 text-ws-ink-mute pointer-events-none" />
+            <Mail className="pointer-events-none absolute left-[14px] size-4 shrink-0 text-ws-ink-mute" />
             <input
               id="reg-email"
               type="email"
@@ -138,85 +137,22 @@ export const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
           </div>
         </Field>
 
-        <Field error={errors.phone?.message} hint={t("registration.phoneHint")}>
-          <label htmlFor="reg-phone" className={labelClass}>
-            {t("registration.phone")}
-          </label>
-          <div className={inputWrapClass(!!errors.phone)}>
-            <Phone className="absolute left-[14px] size-4 shrink-0 text-ws-ink-mute pointer-events-none" />
-            <span className="select-none pl-[42px] pr-1 text-[15px] font-medium text-ws-ink-mute">
-              +38
-            </span>
-            <IMaskInput
-              id="reg-phone"
-              mask="000-000-00-00"
-              value={
-                watch("phone").startsWith("+38")
-                  ? watch("phone").slice(3)
-                  : watch("phone")
-              }
-              onAccept={(masked: string) => {
-                const digits = masked.replace(/\D/g, "");
-                setValue("phone", digits ? "+38" + digits : "", {
-                  shouldValidate: true,
-                });
-              }}
-              placeholder="0__-___-__-__"
-              autoComplete="tel"
-              className={cn(inputClass, "flex-1 pl-1")}
-            />
-          </div>
-        </Field>
+        <RegistrationPhoneField
+          value={watch("phone")}
+          onChange={(value) =>
+            setValue("phone", value, { shouldValidate: true })
+          }
+          error={errors.phone?.message}
+          hint={t("registration.phoneHint")}
+        />
 
-        <div className="grid grid-cols-2 gap-[14px]">
-          <Field error={errors.password?.message}>
-            <label htmlFor="reg-password" className={labelClass}>
-              {t("registration.password")}
-            </label>
-            <div className={inputWrapClass(!!errors.password)}>
-              <Lock className="absolute left-[14px] size-4 shrink-0 text-ws-ink-mute pointer-events-none" />
-              <input
-                id="reg-password"
-                type="password"
-                autoComplete="new-password"
-                placeholder="••••••••"
-                {...register("password")}
-                className={cn(inputClass, "pl-[42px]")}
-              />
-            </div>
-            <div className="mt-[10px] flex gap-[5px]">
-              {[0, 1, 2, 3].map((i) => (
-                <span
-                  key={i}
-                  className="h-[4px] flex-1 rounded-[2px] transition-colors duration-200"
-                  style={{
-                    background:
-                      password && i < strength
-                        ? STRENGTH_COLORS[strength - 1]
-                        : "var(--ws-line)",
-                  }}
-                />
-              ))}
-            </div>
-          </Field>
-
-          <Field error={errors.passwordConfirmation?.message}>
-            <label htmlFor="reg-password-confirm" className={labelClass}>
-              {t("registration.passwordConfirmation")}
-            </label>
-            <div className={inputWrapClass(!!errors.passwordConfirmation)}>
-              <Lock className="absolute left-[14px] size-4 shrink-0 text-ws-ink-mute pointer-events-none" />
-              <input
-                id="reg-password-confirm"
-                type="password"
-                autoComplete="new-password"
-                placeholder="••••••••"
-                {...register("passwordConfirmation")}
-                className={cn(inputClass, "pl-[42px]")}
-              />
-            </div>
-          </Field>
-        </div>
+        <RegistrationPasswordFields
+          passwordProps={register("password")}
+          confirmProps={register("passwordConfirmation")}
+          passwordError={errors.password?.message}
+          confirmError={errors.passwordConfirmation?.message}
+          strength={strength}
+        />
       </div>
 
       {errors.root && (

@@ -17,21 +17,22 @@ const EmailVerifyPage = () => {
   const navigate = useNavigate();
   const verifyUrl = searchParams.get("verify_url");
 
-  const { status } = useEmailVerify(verifyUrl);
+  const hasUrl = !!verifyUrl;
+  const { isLoading, isSuccess, isError } = useEmailVerify(verifyUrl);
 
   useEffect(() => {
-    if (status === "success") {
+    if (isSuccess) {
       void navigate(
         `${WEBSITE_LINKS.home}?${MODAL_PARAM}=${LOGIN_MODAL_VALUE}`,
         { replace: true },
       );
     }
-  }, [status, navigate]);
+  }, [isSuccess, navigate]);
 
   return (
     <div className="flex min-h-[calc(100vh-var(--ws-header-height))] items-center justify-center p-6">
       <div className="w-full max-w-[400px] text-center">
-        {status === "loading" && (
+        {isLoading && (
           <>
             <Loader2 className="mx-auto mb-5 size-12 animate-spin text-ws-ember-bright" />
             <p className="text-[15px] text-ws-ink-soft">
@@ -40,7 +41,7 @@ const EmailVerifyPage = () => {
           </>
         )}
 
-        {status === "success" && (
+        {isSuccess && (
           <>
             <CheckCircle className="mx-auto mb-5 size-12 text-ws-green" />
             <p className="text-[15px] text-ws-ink-soft">
@@ -49,7 +50,7 @@ const EmailVerifyPage = () => {
           </>
         )}
 
-        {status === "error" && (
+        {(!hasUrl || isError) && (
           <>
             <XCircle className="mx-auto mb-5 size-12 text-ws-red-bright" />
             <h1 className="text-[22px] font-semibold text-ws-ink">

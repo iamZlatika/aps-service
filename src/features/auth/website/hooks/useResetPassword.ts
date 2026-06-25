@@ -5,7 +5,7 @@ import { websiteAuthApi } from "@/features/auth/website/api";
 import { mapResetPasswordValuesToRequestBody } from "@/features/auth/website/lib/adapters";
 import { type ResetPasswordFormValues } from "@/features/auth/website/pages/reset-password/reset-password.schema";
 import { handleFormError } from "@/shared/lib/errors/handleFormError";
-import { notifyError } from "@/shared/lib/errors/services";
+import { isApiError, notifyError } from "@/shared/lib/errors/services";
 
 type UseResetPasswordReturn = {
   submit: (
@@ -28,7 +28,9 @@ export const useResetPassword = (
         ...mapResetPasswordValuesToRequestBody(values),
       }),
     onError: (error) => {
-      notifyError(error);
+      if (!isApiError(error) || error.status !== 422) {
+        notifyError(error);
+      }
       handleFormError<ResetPasswordFormValues>(error, setError, {
         fieldMap: { password_confirmation: "confirmPassword" },
       });

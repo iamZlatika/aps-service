@@ -30,3 +30,29 @@ export type AuthResponse = {
 export type RegistrationResponse = {
   email: string;
 };
+
+export type RegistrationData = {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  password_confirmation: string;
+};
+
+export type SendPhoneCodeData = {
+  phone: string;
+};
+
+export type VerifyPhoneCodeData = {
+  code: string;
+};
+
+export type CheckResetTokenData = {
+  token: string;
+  email: string;
+};
+
+export type ResetPasswordData = CheckResetTokenData & {
+  password: string;
+  password_confirmation: string;
+};

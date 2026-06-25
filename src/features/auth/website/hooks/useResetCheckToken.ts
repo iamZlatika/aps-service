@@ -7,15 +7,13 @@ type UseResetCheckTokenReturn = {
   isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
-  error: Error | null;
-  refetch: () => void;
 };
 
 export const useResetCheckToken = (
   token: string,
   email: string,
 ): UseResetCheckTokenReturn => {
-  const { isLoading, isSuccess, isError, error, refetch } = useQuery({
+  const { isLoading, isSuccess, isError } = useQuery({
     queryKey: queryKeys.auth.customerResetCheck(token, email),
     queryFn: async () => {
       await websiteAuthApi.resetCheckToken({ token, email });
@@ -25,5 +23,5 @@ export const useResetCheckToken = (
     retry: false,
   });
 
-  return { isLoading, isSuccess, isError, error, refetch };
+  return { isLoading, isSuccess, isError };
 };

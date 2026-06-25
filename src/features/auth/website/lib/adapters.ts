@@ -3,7 +3,6 @@ import {
   type CustomerDto,
   type CustomerPhoneDto,
   type RegistrationResponseDto,
-  type ResetPasswordRequestBody,
 } from "@/features/auth/website/api/dto";
 import { type ResetPasswordFormValues } from "@/features/auth/website/pages/reset-password/reset-password.schema";
 import {
@@ -11,6 +10,7 @@ import {
   type Customer,
   type CustomerPhone,
   type RegistrationResponse,
+  type ResetPasswordData,
 } from "@/features/auth/website/types";
 
 export function mapCustomerPhoneDtoToCustomerPhone(
@@ -60,7 +60,7 @@ export function mapRegistrationResponseDtoToRegistrationResponse(
 
 export function mapResetPasswordValuesToRequestBody(
   values: ResetPasswordFormValues,
-): Pick<ResetPasswordRequestBody, "password" | "password_confirmation"> {
+): Pick<ResetPasswordData, "password" | "password_confirmation"> {
   return {
     password: values.password,
     password_confirmation: values.confirmPassword,

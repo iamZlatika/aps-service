@@ -1,14 +1,7 @@
 import {
   AuthResponseDtoSchema,
-  type CheckResetTokenRequestBody,
-  type ForgotPasswordRequestBody,
-  type LoginRequestBody,
   MeResponseDtoSchema,
-  type RegistrationRequestBody,
   RegistrationResponseDtoSchema,
-  type ResetPasswordRequestBody,
-  type SendPhoneCodeRequestBody,
-  type VerifyPhoneCodeRequestBody,
 } from "@/features/auth/website/api/dto";
 import { WEBSITE_AUTH_API } from "@/features/auth/website/api/endpoints";
 import {
@@ -16,19 +9,23 @@ import {
   mapCustomerDtoToCustomer,
   mapRegistrationResponseDtoToRegistrationResponse,
 } from "@/features/auth/website/lib/adapters";
+import { type LoginFormValues } from "@/features/auth/website/pages/login/login.schema";
 import {
   type AuthResponse,
+  type CheckResetTokenData,
   type Customer,
+  type RegistrationData,
   type RegistrationResponse,
+  type ResetPasswordData,
+  type SendPhoneCodeData,
+  type VerifyPhoneCodeData,
 } from "@/features/auth/website/types";
 import { get, post } from "@/shared/api/api";
 import { parseDto } from "@/shared/api/parseDto";
 
 export const websiteAuthApi = {
-  register: async (
-    body: RegistrationRequestBody,
-  ): Promise<RegistrationResponse> => {
-    const response = await post<RegistrationRequestBody, unknown>(
+  register: async (body: RegistrationData): Promise<RegistrationResponse> => {
+    const response = await post<RegistrationData, unknown>(
       WEBSITE_AUTH_API.register(),
       body,
     );
@@ -41,8 +38,8 @@ export const websiteAuthApi = {
   emailVerify: async (verifyUrl: string): Promise<void> => {
     await get(verifyUrl);
   },
-  login: async (body: LoginRequestBody): Promise<AuthResponse> => {
-    const response = await post<LoginRequestBody, unknown>(
+  login: async (body: LoginFormValues): Promise<AuthResponse> => {
+    const response = await post<LoginFormValues, unknown>(
       WEBSITE_AUTH_API.login(),
       body,
     );
@@ -53,14 +50,12 @@ export const websiteAuthApi = {
     return post(WEBSITE_AUTH_API.logout());
   },
   forgotPassword: async (email: string): Promise<void> => {
-    await post<ForgotPasswordRequestBody>(WEBSITE_AUTH_API.passwordForgot(), {
-      email,
-    });
+    await post(WEBSITE_AUTH_API.passwordForgot(), { email });
   },
-  resetCheckToken: async (body: CheckResetTokenRequestBody): Promise<void> => {
+  resetCheckToken: async (body: CheckResetTokenData): Promise<void> => {
     await post(WEBSITE_AUTH_API.passwordCheckToken(), body);
   },
-  resetPassword: async (body: ResetPasswordRequestBody): Promise<void> => {
+  resetPassword: async (body: ResetPasswordData): Promise<void> => {
     await post(WEBSITE_AUTH_API.passwordReset(), body);
   },
   me: async (): Promise<Customer> => {
@@ -68,13 +63,11 @@ export const websiteAuthApi = {
     const validated = parseDto(MeResponseDtoSchema, response);
     return mapCustomerDtoToCustomer(validated.data);
   },
-  sendPhoneCode: async (body: SendPhoneCodeRequestBody): Promise<void> => {
+  sendPhoneCode: async (body: SendPhoneCodeData): Promise<void> => {
     await post(WEBSITE_AUTH_API.phoneSend(), body);
   },
-  verifyPhoneCode: async (
-    body: VerifyPhoneCodeRequestBody,
-  ): Promise<Customer> => {
-    const response = await post<VerifyPhoneCodeRequestBody, unknown>(
+  verifyPhoneCode: async (body: VerifyPhoneCodeData): Promise<Customer> => {
+    const response = await post<VerifyPhoneCodeData, unknown>(
       WEBSITE_AUTH_API.phoneVerify(),
       body,
     );

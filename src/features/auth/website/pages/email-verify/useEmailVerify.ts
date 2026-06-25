@@ -1,28 +1,26 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { websiteAuthApi } from "@/features/auth/website/api";
-
-type VerifyStatus = "loading" | "success" | "error";
+import { queryKeys } from "@/shared/api/queryKeys";
 
 type UseEmailVerifyReturn = {
-  status: VerifyStatus;
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
 };
 
 export const useEmailVerify = (
   verifyUrl: string | null,
 ): UseEmailVerifyReturn => {
-  const [status, setStatus] = useState<VerifyStatus>(
-    verifyUrl ? "loading" : "error",
-  );
+  const { isLoading, isSuccess, isError } = useQuery({
+    queryKey: queryKeys.auth.emailVerify(verifyUrl ?? ""),
+    queryFn: async () => {
+      await websiteAuthApi.emailVerify(verifyUrl!);
+      return true;
+    },
+    enabled: !!verifyUrl,
+    retry: false,
+  });
 
-  useEffect(() => {
-    if (!verifyUrl) return;
-
-    websiteAuthApi
-      .emailVerify(verifyUrl)
-      .then(() => setStatus("success"))
-      .catch(() => setStatus("error"));
-  }, [verifyUrl]);
-
-  return { status };
+  return { isLoading, isSuccess, isError };
 };

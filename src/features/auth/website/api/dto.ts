@@ -38,46 +38,9 @@ export const AuthResponseDtoSchema = z.object({
 });
 export type AuthResponseDto = z.infer<typeof AuthResponseDtoSchema>;
 
-export type RegistrationRequestBody = {
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
-  password_confirmation: string;
-};
-
 export const RegistrationResponseDtoSchema = z.object({
   email: z.string(),
 });
 export type RegistrationResponseDto = z.infer<
   typeof RegistrationResponseDtoSchema
 >;
-
-export type LoginRequestBody = {
-  email: string;
-  password: string;
-};
-
-export type SendPhoneCodeRequestBody = {
-  phone: string;
-};
-
-export type VerifyPhoneCodeRequestBody = {
-  code: string;
-};
-
-export type ForgotPasswordRequestBody = {
-  email: string;
-};
-
-export type CheckResetTokenRequestBody = {
-  token: string;
-  email: string;
-};
-
-export type ResetPasswordRequestBody = {
-  token: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
-};
