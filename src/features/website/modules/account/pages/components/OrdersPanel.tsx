@@ -1,4 +1,5 @@
 import { type Customer } from "@/features/auth/website/types";
+import { AddPhoneGate } from "@/features/website/modules/account/pages/components/AddPhoneGate";
 import { VerifyGate } from "@/features/website/modules/account/pages/components/VerifyGate";
 import { OrdersList } from "@/features/website/modules/orders/components/OrdersList";
 
@@ -20,7 +21,11 @@ export const OrdersPanel = ({ customer }: OrdersPanelProps) => {
 
   return (
     <div>
-      {primaryPhone && <VerifyGate phoneNumber={primaryPhone.phoneNumber} />}
+      {!primaryPhone ? (
+        <AddPhoneGate />
+      ) : (
+        <VerifyGate phoneNumber={primaryPhone.phoneNumber} />
+      )}
 
       <div
         className="pointer-events-none mt-[26px] flex select-none flex-col gap-3 opacity-50 blur-[4px]"

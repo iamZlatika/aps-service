@@ -47,6 +47,11 @@ export type VerifyPhoneCodeData = {
   code: string;
 };
 
+export type VerifyPhoneResponse = {
+  token: string | null;
+  customer: Customer;
+};
+
 export type CheckResetTokenData = {
   token: string;
   email: string;

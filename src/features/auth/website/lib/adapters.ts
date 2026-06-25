@@ -3,6 +3,7 @@ import {
   type CustomerDto,
   type CustomerPhoneDto,
   type RegistrationResponseDto,
+  type VerifyPhoneResponseDto,
 } from "@/features/auth/website/api/dto";
 import { type ResetPasswordFormValues } from "@/features/auth/website/pages/reset-password/reset-password.schema";
 import {
@@ -11,6 +12,7 @@ import {
   type CustomerPhone,
   type RegistrationResponse,
   type ResetPasswordData,
+  type VerifyPhoneResponse,
 } from "@/features/auth/website/types";
 
 export function mapCustomerPhoneDtoToCustomerPhone(
@@ -56,6 +58,18 @@ export function mapRegistrationResponseDtoToRegistrationResponse(
   return {
     email: dto.email,
   };
+}
+
+export function mapVerifyPhoneResponseDtoToVerifyPhoneResponse(
+  dto: VerifyPhoneResponseDto,
+): VerifyPhoneResponse {
+  if ("token" in dto) {
+    return {
+      token: dto.token,
+      customer: mapCustomerDtoToCustomer(dto.customer),
+    };
+  }
+  return { token: null, customer: mapCustomerDtoToCustomer(dto.data) };
 }
 
 export function mapResetPasswordValuesToRequestBody(

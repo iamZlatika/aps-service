@@ -38,6 +38,14 @@ export const AuthResponseDtoSchema = z.object({
 });
 export type AuthResponseDto = z.infer<typeof AuthResponseDtoSchema>;
 
+export const VerifyPhoneResponseDtoSchema = z.union([
+  z.object({ token: z.string(), customer: CustomerDtoSchema }),
+  z.object({ data: CustomerDtoSchema }),
+]);
+export type VerifyPhoneResponseDto = z.infer<
+  typeof VerifyPhoneResponseDtoSchema
+>;
+
 export const RegistrationResponseDtoSchema = z.object({
   email: z.string(),
 });

@@ -5,4 +5,7 @@ export const CUSTOMER_PROFILE_API = {
   avatar: () => `${BASE}/avatar`,
   changePassword: () => `${BASE}/password`,
   changeEmail: () => `${BASE}/email/change`,
+  primaryPhone: () => `${BASE}/phone`,
+  phones: () => `${BASE}/phones`,
+  phoneById: (id: number) => `${BASE}/phones/${id}`,
 } as const;

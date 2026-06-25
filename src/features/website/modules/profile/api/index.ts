@@ -40,4 +40,23 @@ export const customerProfileApi = {
   changeEmail: async (body: ChangeEmailRequestBody): Promise<void> => {
     await post(CUSTOMER_PROFILE_API.changeEmail(), body);
   },
+  setPrimaryPhone: async (phone: string): Promise<Customer> => {
+    const response = await put<{ phone: string }, unknown>(
+      CUSTOMER_PROFILE_API.primaryPhone(),
+      { phone },
+    );
+    const validated = parseDto(MeResponseDtoSchema, response);
+    return mapCustomerDtoToCustomer(validated.data);
+  },
+  addPhone: async (phone: string): Promise<Customer> => {
+    const response = await post<{ phone: string }, unknown>(
+      CUSTOMER_PROFILE_API.phones(),
+      { phone },
+    );
+    const validated = parseDto(MeResponseDtoSchema, response);
+    return mapCustomerDtoToCustomer(validated.data);
+  },
+  deletePhone: async (id: number): Promise<void> => {
+    await del(CUSTOMER_PROFILE_API.phoneById(id));
+  },
 };

@@ -2,12 +2,14 @@ import {
   AuthResponseDtoSchema,
   MeResponseDtoSchema,
   RegistrationResponseDtoSchema,
+  VerifyPhoneResponseDtoSchema,
 } from "@/features/auth/website/api/dto";
 import { WEBSITE_AUTH_API } from "@/features/auth/website/api/endpoints";
 import {
   mapAuthResponseDtoToAuthResponse,
   mapCustomerDtoToCustomer,
   mapRegistrationResponseDtoToRegistrationResponse,
+  mapVerifyPhoneResponseDtoToVerifyPhoneResponse,
 } from "@/features/auth/website/lib/adapters";
 import { type LoginFormValues } from "@/features/auth/website/pages/login/login.schema";
 import {
@@ -19,6 +21,7 @@ import {
   type ResetPasswordData,
   type SendPhoneCodeData,
   type VerifyPhoneCodeData,
+  type VerifyPhoneResponse,
 } from "@/features/auth/website/types";
 import { get, post } from "@/shared/api/api";
 import { parseDto } from "@/shared/api/parseDto";
@@ -74,12 +77,14 @@ export const websiteAuthApi = {
   sendPhoneCode: async (body: SendPhoneCodeData): Promise<void> => {
     await post(WEBSITE_AUTH_API.phoneSend(), body);
   },
-  verifyPhoneCode: async (body: VerifyPhoneCodeData): Promise<Customer> => {
+  verifyPhoneCode: async (
+    body: VerifyPhoneCodeData,
+  ): Promise<VerifyPhoneResponse> => {
     const response = await post<VerifyPhoneCodeData, unknown>(
       WEBSITE_AUTH_API.phoneVerify(),
       body,
     );
-    const validated = parseDto(MeResponseDtoSchema, response);
-    return mapCustomerDtoToCustomer(validated.data);
+    const validated = parseDto(VerifyPhoneResponseDtoSchema, response);
+    return mapVerifyPhoneResponseDtoToVerifyPhoneResponse(validated);
   },
 };

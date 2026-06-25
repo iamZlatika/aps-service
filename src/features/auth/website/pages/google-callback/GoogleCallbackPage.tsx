@@ -6,6 +6,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 import { customerAuthService } from "@/features/auth/lib/authService";
+import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
 import { WEBSITE_LINKS } from "@/features/website/navigation";
 import { queryKeys } from "@/shared/api/queryKeys";
 
@@ -33,7 +34,7 @@ const GoogleCallbackPage = () => {
     if (isSuccess && data) {
       customerAuthService.setToken(data.token);
       queryClient.setQueryData(queryKeys.customer.me(), data.customer);
-      void navigate(WEBSITE_LINKS.home, { replace: true });
+      void navigate(CUSTOMER_ACCOUNT_LINKS.root(), { replace: true });
     }
   }, [isSuccess, data, navigate, queryClient]);
 
