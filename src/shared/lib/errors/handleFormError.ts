@@ -18,6 +18,11 @@ function getBuiltInMessageMap(): Record<string, string> {
       "errors.code_invalid_or_expired",
     ),
     "Too Many Attempts.": i18next.t("errors.too_many_attempts"),
+    "These credentials do not match our records.": i18next.t(
+      "errors.invalid_credentials",
+    ),
+    "This phone number is already registered. Please log in instead.":
+      i18next.t("errors.phone_already_registered"),
   };
 }
 

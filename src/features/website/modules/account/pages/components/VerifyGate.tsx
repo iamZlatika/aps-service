@@ -108,9 +108,6 @@ export const VerifyGate = ({ phoneNumber }: VerifyGateProps) => {
                 disabled={isVerifying}
                 className="w-full rounded-ws-md border border-ws-line bg-[rgba(255,255,255,.025)] px-[16px] py-[13px] text-center font-[inherit] text-ws-md font-semibold tracking-[0.4em] text-ws-ink focus:outline-none disabled:cursor-not-allowed disabled:opacity-55"
               />
-              <p className="mt-[7px] min-h-[17px] text-[12px] text-ws-red-bright">
-                {errors.code?.message ?? errors.root?.message}
-              </p>
             </div>
 
             <button
@@ -130,6 +127,9 @@ export const VerifyGate = ({ phoneNumber }: VerifyGateProps) => {
               {t("cabinet.resendCode")}
             </button>
           </div>
+          <p className="mt-[7px] min-h-[17px] text-[12px] text-ws-red-bright">
+            {errors.code?.message ?? errors.root?.message}
+          </p>
         </form>
       )}
     </div>

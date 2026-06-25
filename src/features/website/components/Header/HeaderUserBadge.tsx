@@ -20,8 +20,7 @@ export const HeaderUserBadge = ({
   const { data: customer } = useCustomerMe();
 
   const firstName = customer?.portalName?.split(" ")[0] || "";
-  const avatarInitial = "Client";
-  // const avatarInitial = customer.name.charAt(0).toUpperCase();
+  const avatarInitial = firstName.charAt(0).toUpperCase();
 
   return (
     <div className="flex items-center gap-2">
