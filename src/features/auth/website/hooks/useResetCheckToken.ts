@@ -17,7 +17,10 @@ export const useResetCheckToken = (
 ): UseResetCheckTokenReturn => {
   const { isLoading, isSuccess, isError, error, refetch } = useQuery({
     queryKey: queryKeys.auth.customerResetCheck(token, email),
-    queryFn: () => websiteAuthApi.resetCheckToken({ token, email }),
+    queryFn: async () => {
+      await websiteAuthApi.resetCheckToken({ token, email });
+      return true;
+    },
     enabled: !!token && !!email,
     retry: false,
   });
