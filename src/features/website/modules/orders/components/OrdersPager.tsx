@@ -14,7 +14,7 @@ const pageButtonClass =
   "inline-flex h-10 min-w-10 items-center justify-center rounded-[11px] border px-3 text-sm font-semibold tabular-nums transition-all duration-150";
 
 const idleButtonClass =
-  "border-ws-line bg-[rgba(255,255,255,.015)] text-ws-ink-soft hover:border-ws-ink-mute hover:text-ws-ink";
+  "border-ws-line bg-ws-card text-ws-ink-soft hover:border-ws-ink-mute hover:text-ws-ink";
 
 export const OrdersPager = ({
   page,

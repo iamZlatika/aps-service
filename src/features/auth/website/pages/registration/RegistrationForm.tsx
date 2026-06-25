@@ -27,7 +27,7 @@ function getPasswordStrength(password: string): number {
 
 const inputWrapClass = (hasError: boolean) =>
   cn(
-    "relative flex items-center rounded-[12px] border border-ws-line bg-[rgba(255,255,255,.025)] transition-[border-color,box-shadow] focus-within:border-ws-ember focus-within:shadow-[0_0_0_4px_rgba(238,122,58,.18)]",
+    "relative flex items-center rounded-[12px] border border-ws-line bg-ws-input-bg transition-[border-color,box-shadow] focus-within:border-ws-ember focus-within:shadow-[0_0_0_4px_rgba(238,122,58,.18)]",
     hasError && "border-ws-red shadow-[0_0_0_4px_rgba(216,85,62,.18)]",
   );
 

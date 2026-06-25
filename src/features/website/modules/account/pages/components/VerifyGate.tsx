@@ -106,7 +106,7 @@ export const VerifyGate = ({ phoneNumber }: VerifyGateProps) => {
                 autoFocus
                 placeholder="••••"
                 disabled={isVerifying}
-                className="w-full rounded-ws-md border border-ws-line bg-[rgba(255,255,255,.025)] px-[16px] py-[13px] text-center font-[inherit] text-ws-md font-semibold tracking-[0.4em] text-ws-ink focus:outline-none disabled:cursor-not-allowed disabled:opacity-55"
+                className="w-full rounded-ws-md border border-ws-line bg-ws-input-bg px-[16px] py-[13px] text-center font-[inherit] text-ws-md font-semibold tracking-[0.4em] text-ws-ink focus:outline-none disabled:cursor-not-allowed disabled:opacity-55"
               />
             </div>
 

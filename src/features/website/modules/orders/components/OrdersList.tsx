@@ -53,7 +53,9 @@ export const OrdersList = () => {
             <b className="font-semibold tabular-nums text-ws-ink">
               {meta.total}
             </b>{" "}
-            {t("cabinet.ordersCountWord", { count: meta.total })}
+            <b className="font-semibold text-ws-ink">
+              {t("cabinet.ordersCountWord", { count: meta.total })}
+            </b>
           </span>
         )}
       </div>

@@ -65,7 +65,7 @@ export const AddPhoneGate = () => {
         </label>
         <div
           className={cn(
-            "relative flex items-center rounded-[12px] border border-ws-line bg-[rgba(255,255,255,.025)] transition-[border-color,box-shadow]",
+            "relative flex items-center rounded-[12px] border border-ws-line bg-ws-input-bg transition-[border-color,box-shadow]",
             !isCodeSent &&
               "focus-within:border-ws-ember focus-within:shadow-[0_0_0_4px_rgba(238,122,58,.18)]",
             errors.phone &&
@@ -73,7 +73,10 @@ export const AddPhoneGate = () => {
             isCodeSent && "opacity-60",
           )}
         >
-          <Phone className="pointer-events-none absolute left-[14px] size-4 shrink-0 text-ws-ink-mute" />
+          <Phone
+            className="pointer-events-none absolute left-[14px] size-4 shrink-0 text-ws-ink-mute"
+            aria-hidden="true"
+          />
           <span className="select-none pl-[42px] pr-1 text-[15px] font-medium text-ws-ink-mute">
             +38
           </span>

@@ -13,7 +13,7 @@ export const OrderSectionCard = ({
   aside,
   children,
 }: OrderSectionCardProps) => (
-  <div className="overflow-hidden rounded-[18px] border border-ws-line bg-[rgba(255,255,255,.015)]">
+  <div className="overflow-hidden rounded-[18px] border border-ws-line bg-ws-card">
     <div className="flex items-center justify-between gap-3 border-b border-ws-line-soft px-[22px] py-[18px]">
       <h3 className="flex items-center gap-2.5 text-[13px] font-bold uppercase tracking-[.1em] text-ws-ink">
         <span className="text-ws-ember-bright">{icon}</span>

@@ -2,6 +2,7 @@ import i18next from "i18next";
 import { z } from "zod";
 
 import { emailRegex } from "@/shared/lib/constants.ts";
+import { phoneField } from "@/shared/lib/zod-helpers.ts";
 
 export const editCustomerInfoSchema = z.object({
   name: z.string().trim().min(1, i18next.t("validation.field_required")),
@@ -18,13 +19,8 @@ export type EditCustomerInfoFormValues = z.infer<typeof editCustomerInfoSchema>;
 
 export const newCustomerSchema = z.object({
   name: z.string().trim().min(1, i18next.t("validation.field_required")),
-  phone: z
-    .string()
-    .regex(/^\+380\d{9}$/, i18next.t("validation.phone_invalid")),
-  secondaryPhone: z
-    .string()
-    .regex(/^\+380\d{9}$/, i18next.t("validation.phone_invalid"))
-    .optional(),
+  phone: phoneField(),
+  secondaryPhone: phoneField().optional(),
   email: z
     .string()
     .trim()
@@ -40,7 +36,5 @@ export const newCustomerSchema = z.object({
 });
 
 export const addPhoneSchema = z.object({
-  phone: z
-    .string()
-    .regex(/^\+380\d{9}$/, i18next.t("validation.phone_invalid")),
+  phone: phoneField(),
 });

@@ -21,7 +21,7 @@ const labelClass =
   "mb-[9px] block text-[11px] font-semibold uppercase tracking-[.14em] text-ws-ink-mute";
 
 const fieldClass =
-  "w-full truncate rounded-ws-md border border-ws-line bg-[rgba(255,255,255,.025)] py-[13px] pl-[42px] font-[inherit] text-ws-md font-medium text-ws-ink focus:outline-none focus:ring-1 focus:ring-ws-ember-bright";
+  "w-full truncate rounded-ws-md border border-ws-line bg-ws-input-bg py-[13px] pl-[42px] font-[inherit] text-ws-md font-medium text-ws-ink focus:outline-none focus:ring-1 focus:ring-ws-ember-bright";
 
 export const ProfileNameField = ({ customer }: ProfileNameFieldProps) => {
   const { t } = useTranslation("website");

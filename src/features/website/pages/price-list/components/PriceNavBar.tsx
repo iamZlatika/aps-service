@@ -48,7 +48,7 @@ export const PriceNavBar = ({
                   "max-lg:w-auto max-lg:rounded-full max-lg:font-semibold lg:w-full",
                   isActive
                     ? "border-[color-mix(in_oklab,var(--ws-ember)_28%,transparent)] bg-[color-mix(in_oklab,var(--ws-ember)_10%,transparent)] text-ws-ink"
-                    : "border-transparent text-ws-ink-soft hover:text-ws-ink lg:hover:bg-[rgba(255,255,255,0.025)] max-lg:border-ws-line",
+                    : "border-transparent text-ws-ink-soft hover:text-ws-ink lg:hover:bg-ws-input-bg max-lg:border-ws-line",
                 )}
               >
                 <span

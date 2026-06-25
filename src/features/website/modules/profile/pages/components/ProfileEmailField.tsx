@@ -13,7 +13,7 @@ const labelClass =
   "block text-[11px] font-semibold uppercase tracking-[.14em] text-ws-ink-mute";
 
 const fieldClass =
-  "w-full truncate rounded-ws-md border border-ws-line bg-[rgba(255,255,255,.025)] py-[13px] pl-[42px] pr-[40px] font-[inherit] text-ws-md font-medium text-ws-ink";
+  "w-full truncate rounded-ws-md border border-ws-line bg-ws-input-bg py-[13px] pl-[42px] pr-[40px] font-[inherit] text-ws-md font-medium text-ws-ink";
 
 export const ProfileEmailField = ({ customer }: ProfileEmailFieldProps) => {
   const { t } = useTranslation("website");

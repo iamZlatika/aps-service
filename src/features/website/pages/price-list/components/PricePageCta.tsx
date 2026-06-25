@@ -17,7 +17,7 @@ export const PricePageCta = () => {
         />
         <span>{t("priceModal.note")}</span>
       </div>
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-[16px] border border-ws-line bg-[rgba(255,255,255,.015)] px-[26px] py-6">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-[16px] border border-ws-line bg-ws-card px-[26px] py-6">
         <p className="max-w-[440px] text-[15px] font-medium text-ws-ink text-pretty">
           <b className="font-semibold text-ws-ember-bright">
             {t("pricePage.ctaText")}

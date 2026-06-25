@@ -40,7 +40,7 @@ export const PriceSkeleton = () => (
       {Array.from({ length: 4 }).map((_, i) => (
         <div
           key={i}
-          className="overflow-hidden rounded-[18px] border border-ws-line bg-[rgba(255,255,255,0.015)]"
+          className="overflow-hidden rounded-[18px] border border-ws-line bg-ws-card"
         >
           <div className="flex items-center gap-3.5 border-b border-ws-line-soft px-[26px] py-[22px]">
             <div className="size-11 animate-pulse rounded-[12px] bg-ws-bg-3" />

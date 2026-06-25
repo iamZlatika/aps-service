@@ -85,7 +85,7 @@ export const TrackStatusModalForm = ({
           errorMessage ? "track-order-error" : "track-order-hint"
         }
         className={cn(
-          "w-full rounded-[12px] border border-ws-line bg-[rgba(255,255,255,.025)] px-[18px] py-4 font-[inherit] text-[18px] font-semibold tracking-[.04em] text-ws-ink transition-[border-color,box-shadow] placeholder:font-normal placeholder:text-ws-ink-mute focus:border-ws-ember focus:outline-none",
+          "w-full rounded-[12px] border border-ws-line bg-ws-input-bg px-[18px] py-4 font-[inherit] text-[18px] font-semibold tracking-[.04em] text-ws-ink transition-[border-color,box-shadow] placeholder:font-normal placeholder:text-ws-ink-mute focus:border-ws-ember focus:outline-none",
           (errors.orderNumber || apiError) &&
             "border-ws-red shadow-[0_0_0_4px_rgba(216,85,62,.18)]",
         )}

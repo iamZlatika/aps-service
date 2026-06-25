@@ -28,6 +28,8 @@ const config: Config = {
   			'ws-red-bright':     'var(--ws-red-bright)',
   			'ws-overlay-chip':   'var(--ws-overlay-chip)',
   			'ws-overlay-border': 'var(--ws-overlay-border)',
+  			'ws-card':           'var(--ws-card)',
+  			'ws-input-bg':       'var(--ws-input-bg)',
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',

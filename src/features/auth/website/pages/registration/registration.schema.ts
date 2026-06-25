@@ -2,6 +2,7 @@ import i18next from "i18next";
 import { z } from "zod";
 
 import { emailRegex } from "@/shared/lib/constants";
+import { phoneField } from "@/shared/lib/zod-helpers";
 
 export const createRegistrationSchema = () =>
   z
@@ -12,9 +13,7 @@ export const createRegistrationSchema = () =>
       email: z.string().refine((val) => emailRegex.test(val), {
         message: i18next.t("validation.email_invalid"),
       }),
-      phone: z.string().regex(/^\+380\d{9}$/, {
-        message: i18next.t("validation.phone_invalid"),
-      }),
+      phone: phoneField(),
       password: z
         .string()
         .min(8, { message: i18next.t("validation.password_min") }),

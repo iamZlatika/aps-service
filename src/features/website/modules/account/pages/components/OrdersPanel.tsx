@@ -33,7 +33,7 @@ export const OrdersPanel = ({ customer }: OrdersPanelProps) => {
         {lockedOrders.map((order) => (
           <div
             key={order.id}
-            className="flex items-center gap-[18px] rounded-[16px] border border-ws-line bg-[rgba(255,255,255,.015)] px-[22px] py-5"
+            className="flex items-center gap-[18px] rounded-[16px] border border-ws-line bg-ws-card px-[22px] py-5"
           >
             <span className="text-ws-sm font-bold tabular-nums tracking-[-0.005em] text-ws-ink">
               {order.id}

@@ -11,7 +11,7 @@ const WorksListSkeleton = () => (
     {Array.from({ length: 3 }).map((_, i) => (
       <div
         key={i}
-        className="overflow-hidden rounded-[20px] border border-ws-line bg-[rgba(255,255,255,0.015)]"
+        className="overflow-hidden rounded-[20px] border border-ws-line bg-ws-card"
       >
         <div className="grid grid-cols-2 max-[860px]:grid-cols-1">
           <div className="grid grid-cols-2 gap-[2px] bg-ws-line-soft">

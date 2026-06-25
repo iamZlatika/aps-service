@@ -1,4 +1,5 @@
 export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const phoneRegex = /^\+380\d{9}$/;
 
 export const LANG_STORAGE_KEY = "aps-lang";
 export const THEME_STORAGE_KEY = "aps-theme";

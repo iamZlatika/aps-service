@@ -1,8 +1,8 @@
 import i18next from "i18next";
 import { z } from "zod";
 
-import { emailRegex } from "@/shared/lib/constants.ts";
-import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
+import { emailRegex, phoneRegex } from "@/shared/lib/constants.ts";
+import { phoneField, zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
 import { PAYMENT_METHODS, PAYMENTS } from "@/shared/types.ts";
 
 export const newOrderSchema = () =>
@@ -11,15 +11,13 @@ export const newOrderSchema = () =>
       .string()
       .trim()
       .min(1, i18next.t("validation.field_required")),
-    customerPrimaryPhone: z
-      .string()
-      .regex(/^\+380\d{9}$/, i18next.t("validation.phone_invalid")),
+    customerPrimaryPhone: phoneField(),
     customerSecondaryPhone: z
       .string()
       .transform((val) => (val === "" ? undefined : val))
       .optional()
       .refine(
-        (val) => !val || /^\+380\d{9}$/.test(val),
+        (val) => !val || phoneRegex.test(val),
         i18next.t("validation.phone_invalid"),
       ),
     customerEmail: z

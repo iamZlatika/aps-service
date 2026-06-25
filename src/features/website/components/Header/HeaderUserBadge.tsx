@@ -27,7 +27,7 @@ export const HeaderUserBadge = ({
       <Link
         to={CUSTOMER_ACCOUNT_LINKS.root()}
         aria-label={firstName}
-        className="inline-flex items-center gap-[10px] rounded-full border border-ws-line bg-[rgba(255,255,255,.015)] py-[7px] pl-[7px] pr-[14px] text-ws-ink no-underline transition-all duration-150 hover:border-ws-ink-mute"
+        className="inline-flex items-center gap-[10px] rounded-full border border-ws-line bg-ws-card py-[7px] pl-[7px] pr-[14px] text-ws-ink no-underline transition-all duration-150 hover:border-ws-ink-mute"
       >
         <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-ws-ember to-ws-ember-deep text-[15px] font-semibold text-white">
           {customer.avatarUrl ? (
