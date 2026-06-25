@@ -16,7 +16,7 @@ export const DesktopNav = () => {
       <div className="flex items-center gap-7">
         <WebsiteLogo className="text-ws-ink" />
 
-        <ul className="flex items-center gap-[2px] rounded-full border border-ws-line bg-white/[0.015] p-[5px]">
+        <ul className="flex h-[53px] items-center gap-[2px] rounded-full border border-ws-line bg-white/[0.015] px-[5px]">
           {NAV_TABS.map(({ labelKey, to, end }) => (
             <li key={to}>
               <NavLink
@@ -24,7 +24,7 @@ export const DesktopNav = () => {
                 end={end}
                 className={({ isActive }) =>
                   cn(
-                    "whitespace-nowrap rounded-full px-[18px] py-[9px] text-ws-base font-medium no-underline transition-colors duration-200",
+                    "whitespace-nowrap rounded-full px-[18px] py-[10px] text-ws-base font-medium no-underline transition-colors duration-200",
                     isActive
                       ? "bg-ws-cream font-semibold text-ws-bg"
                       : "text-ws-ink-soft hover:text-ws-ink",
