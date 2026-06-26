@@ -25,8 +25,8 @@ export const CommentsForm = ({ orderId }: CommentsFormProps) => {
 
   return (
     <div className="border-t px-4 py-3 space-y-3">
-      {pendingImage && (
-        pendingImage.progress < 100 ? (
+      {pendingImage &&
+        (pendingImage.progress < 100 ? (
           <div className="w-40">
             <Progress value={pendingImage.progress} />
           </div>
@@ -55,8 +55,7 @@ export const CommentsForm = ({ orderId }: CommentsFormProps) => {
               </p>
             </div>
           </div>
-        )
-      )}
+        ))}
 
       <div className="flex items-end gap-2">
         <input
@@ -94,7 +93,7 @@ export const CommentsForm = ({ orderId }: CommentsFormProps) => {
               );
               if (file) {
                 e.preventDefault();
-                handleFile(file);
+                void handleFile(file);
               }
             }}
           />

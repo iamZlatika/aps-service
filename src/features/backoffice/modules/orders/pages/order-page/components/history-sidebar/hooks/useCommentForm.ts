@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { type ChangeEvent, useRef, useState } from "react";
+import imageCompression from "browser-image-compression";
+import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import { type RefObject } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -7,6 +8,7 @@ import { toast } from "sonner";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
 import type { OrderInfo } from "@/features/backoffice/modules/orders/types";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { IMAGE_COMPRESSION_OPTIONS } from "@/shared/lib/imageCompression.ts";
 
 type PendingImage = {
   file: File;
@@ -23,16 +25,32 @@ type UseCommentFormReturn = {
   setComment: (value: string) => void;
   clearPendingImage: () => void;
   handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleFile: (file: File) => void;
+  handleFile: (file: File) => Promise<void>;
   handleSend: () => void;
 };
+
+const MAX_BYTES = IMAGE_COMPRESSION_OPTIONS.maxSizeMB * 1024 * 1024;
 
 export function useCommentForm(orderId: number): UseCommentFormReturn {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewUrlRef = useRef<string | null>(null);
   const [comment, setComment] = useState("");
   const [pendingImage, setPendingImage] = useState<PendingImage | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    };
+  }, []);
+
+  const revokePreview = () => {
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
+    }
+  };
 
   const { mutate: sendComment, isPending } = useMutation({
     mutationFn: () =>
@@ -42,6 +60,7 @@ export function useCommentForm(orderId: number): UseCommentFormReturn {
       }),
     onSuccess: (newComment) => {
       setComment("");
+      revokePreview();
       setPendingImage(null);
       toast.success(t("orders.successAddComment"));
       queryClient.setQueryData<OrderInfo>(
@@ -52,39 +71,32 @@ export function useCommentForm(orderId: number): UseCommentFormReturn {
     },
   });
 
-  const handleFile = (file: File) => {
+  const handleFile = async (file: File) => {
     setPendingImage({ file, previewUrl: "", progress: 0 });
 
-    const reader = new FileReader();
+    let finalFile = file;
 
-    reader.onprogress = (event) => {
-      if (event.lengthComputable) {
-        setPendingImage((prev) =>
-          prev
-            ? {
-                ...prev,
-                progress: Math.round((event.loaded / event.total) * 100),
-              }
-            : null,
-        );
-      }
-    };
+    if (file.size > MAX_BYTES) {
+      const blob = await imageCompression(file, {
+        ...IMAGE_COMPRESSION_OPTIONS,
+        onProgress: (p) => {
+          setPendingImage((prev) => (prev ? { ...prev, progress: p } : null));
+        },
+      });
+      finalFile = new File([blob], file.name, { type: blob.type });
+    }
 
-    reader.onload = () => {
-      setPendingImage((prev) =>
-        prev
-          ? { ...prev, previewUrl: reader.result as string, progress: 100 }
-          : null,
-      );
-    };
+    revokePreview();
+    const previewUrl = URL.createObjectURL(finalFile);
+    previewUrlRef.current = previewUrl;
 
-    reader.readAsDataURL(file);
+    setPendingImage({ file: finalFile, previewUrl, progress: 100 });
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    handleFile(file);
+    void handleFile(file);
     e.target.value = "";
   };
 
@@ -98,7 +110,10 @@ export function useCommentForm(orderId: number): UseCommentFormReturn {
     canSend,
     fileInputRef,
     setComment,
-    clearPendingImage: () => setPendingImage(null),
+    clearPendingImage: () => {
+      revokePreview();
+      setPendingImage(null);
+    },
     handleFileChange,
     handleFile,
     handleSend: () => sendComment(undefined),

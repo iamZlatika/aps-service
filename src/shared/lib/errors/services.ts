@@ -42,6 +42,7 @@ export function notifyError(
   }
 
   const SERVER_MESSAGE_MAP: Record<string, string> = {
+    "The image failed to upload.": i18next.t("errors.image_upload_failed"),
     "The name has already been taken.": i18next.t("errors.name_taken"),
     "The verification code is incorrect or has expired.": i18next.t(
       "errors.code_invalid_or_expired",
