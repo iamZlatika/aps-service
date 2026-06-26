@@ -46,6 +46,16 @@ export const CommentsForm = ({ orderId }: CommentsFormProps) => {
                 >
                   <X size={14} />
                 </button>
+                <div className="mt-1 max-w-[160px] space-y-0.5">
+                  <p className="truncate text-xs text-muted-foreground">
+                    {pendingImage.file.name}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {pendingImage.file.size >= 1024 * 1024
+                      ? `${(pendingImage.file.size / 1024 / 1024).toFixed(1)} MB`
+                      : `${(pendingImage.file.size / 1024).toFixed(0)} KB`}
+                  </p>
+                </div>
               </div>
             )}
           </div>

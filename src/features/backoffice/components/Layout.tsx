@@ -43,7 +43,7 @@ const Layout = () => {
                 <Loader className="min-h-0 w-auto p-0" />
               </PullToRefreshLoaderFrame>
             </PullToRefreshIndicator>
-            <div className="translate-y-[var(--pull-distance)]">
+            <div className="translate-y-[var(--pull-distance)] h-full">
               <ErrorBoundary
                 FallbackComponent={ErrorFallback}
                 resetKeys={[location.pathname]}

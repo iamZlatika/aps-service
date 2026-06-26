@@ -42,7 +42,12 @@ export const PaymentsCard = ({ orderId, selectedOrder }: PaymentsCardProps) => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const activePayments = selectedOrder.payments.filter((p) => !p.deletedAt);
+  const activePayments = selectedOrder.payments
+    .filter((p) => !p.deletedAt)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
 
   const columns: InfoTableColumn<OrderPayment>[] = [
     {

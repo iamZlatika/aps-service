@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
+import type { OrderInfo } from "@/features/backoffice/modules/orders/types";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
 type PendingImage = {
@@ -39,13 +40,15 @@ export function useCommentForm(orderId: number): UseCommentFormReturn {
         comment: comment.trim() || undefined,
         file: pendingImage?.file,
       }),
-    onSuccess: () => {
+    onSuccess: (newComment) => {
       setComment("");
       setPendingImage(null);
       toast.success(t("orders.successAddComment"));
-      return queryClient.invalidateQueries({
-        queryKey: queryKeys.orders.detail(orderId),
-      });
+      queryClient.setQueryData<OrderInfo>(
+        queryKeys.orders.detail(orderId),
+        (old) =>
+          old ? { ...old, comments: [...old.comments, newComment] } : old,
+      );
     },
   });
 
