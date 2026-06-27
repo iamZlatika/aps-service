@@ -1,5 +1,6 @@
 import { type Customer } from "@/features/auth/website/types";
 import { AddPhoneGate } from "@/features/website/modules/account/pages/components/AddPhoneGate";
+import { TelegramBanner } from "@/features/website/modules/account/pages/components/TelegramBanner";
 import { VerifyGate } from "@/features/website/modules/account/pages/components/VerifyGate";
 import { OrdersList } from "@/features/website/modules/orders/components/OrdersList";
 
@@ -15,7 +16,12 @@ export const OrdersPanel = ({ customer }: OrdersPanelProps) => {
   const isPhoneVerified = !!primaryPhone?.phoneVerifiedAt;
 
   if (isPhoneVerified) {
-    return <OrdersList />;
+    return (
+      <>
+        <TelegramBanner telegram={customer.telegram} />
+        <OrdersList />
+      </>
+    );
   }
 
   return (

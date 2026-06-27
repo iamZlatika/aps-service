@@ -1,23 +1,25 @@
+import type { TelegramLinkDto } from "@/features/website/modules/profile/api/dto";
 import {
   type ChangeEmailFormValues,
   type ChangePasswordFormValues,
   type ProfileNameFormValues,
 } from "@/features/website/modules/profile/profile.schema";
+import type { TelegramLink } from "@/features/website/modules/profile/types";
 
-export interface UpdateProfileNameRequestBody {
+export type UpdateProfileNameRequestBody = {
   portal_name: string;
-}
+};
 
-export interface ChangePasswordRequestBody {
+export type ChangePasswordRequestBody = {
   current_password: string;
   password: string;
   password_confirmation: string;
-}
+};
 
-export interface ChangeEmailRequestBody {
+export type ChangeEmailRequestBody = {
   new_email: string;
   current_password: string;
-}
+};
 
 export function mapProfileNameToRequestBody(
   values: ProfileNameFormValues,
@@ -41,5 +43,14 @@ export function mapChangeEmailToRequestBody(
   return {
     new_email: values.newEmail,
     current_password: values.currentPassword,
+  };
+}
+
+export function mapTelegramLinkDtoToTelegramLink(
+  dto: TelegramLinkDto,
+): TelegramLink {
+  return {
+    link: dto.link,
+    qrCode: dto.qr_code,
   };
 }

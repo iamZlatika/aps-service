@@ -10,6 +10,7 @@ import { ExtraPhonesSection } from "@/features/website/modules/profile/pages/com
 import { ProfileAvatar } from "@/features/website/modules/profile/pages/components/ProfileAvatar";
 import { ProfileEmailField } from "@/features/website/modules/profile/pages/components/ProfileEmailField";
 import { ProfileNameField } from "@/features/website/modules/profile/pages/components/ProfileNameField";
+import { TelegramRow } from "@/features/website/modules/profile/pages/components/TelegramRow";
 
 interface ProfilePanelProps {
   customer: Customer;
@@ -110,6 +111,13 @@ export const ProfilePanel = ({ customer }: ProfilePanelProps) => {
         <div className="my-[22px] h-px bg-ws-line-soft" />
 
         <ExtraPhonesSection phones={extraPhones} />
+
+        <div className="my-[22px] h-px bg-ws-line-soft" />
+
+        <h3 className="mb-[14px] text-[11px] font-semibold uppercase tracking-[.16em] text-ws-ink-mute">
+          {t("cabinet.telegramNotificationsTitle")}
+        </h3>
+        <TelegramRow telegram={customer.telegram} />
 
         <div className="my-[22px] h-px bg-ws-line-soft" />
 

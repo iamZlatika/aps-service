@@ -1,12 +1,18 @@
 import { MeResponseDtoSchema } from "@/features/auth/website/api/dto";
 import { mapCustomerDtoToCustomer } from "@/features/auth/website/lib/adapters";
 import { type Customer } from "@/features/auth/website/types";
+import {
+  type TelegramLinkDto,
+  TelegramLinkDtoSchema,
+} from "@/features/website/modules/profile/api/dto";
 import { CUSTOMER_PROFILE_API } from "@/features/website/modules/profile/api/endpoints";
 import {
   type ChangeEmailRequestBody,
   type ChangePasswordRequestBody,
+  mapTelegramLinkDtoToTelegramLink,
   type UpdateProfileNameRequestBody,
 } from "@/features/website/modules/profile/lib/adapters";
+import { type TelegramLink } from "@/features/website/modules/profile/types";
 import { del, post, put } from "@/shared/api/api";
 import { parseDto } from "@/shared/api/parseDto";
 
@@ -58,5 +64,15 @@ export const customerProfileApi = {
   },
   deletePhone: async (id: number): Promise<void> => {
     await del(CUSTOMER_PROFILE_API.phoneById(id));
+  },
+  generateTelegramLink: async (): Promise<TelegramLink> => {
+    const response = await post<void, { data: TelegramLinkDto }>(
+      CUSTOMER_PROFILE_API.generateTelegramLink(),
+    );
+    const validated = parseDto(TelegramLinkDtoSchema, response.data);
+    return mapTelegramLinkDtoToTelegramLink(validated);
+  },
+  revokeTelegramLink: async (): Promise<void> => {
+    await del(CUSTOMER_PROFILE_API.revokeTelegramLink());
   },
 };

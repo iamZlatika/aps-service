@@ -42,6 +42,11 @@
   --ws-red-bright:   #ee8a72;
   --ws-blue:         #3a8fd9;
 
+  /* Telegram brand */
+  --ws-tg:      #2aa3e3;
+  --ws-tg-soft: color-mix(in oklab, var(--ws-tg) 9%, transparent);
+  --ws-tg-line: color-mix(in oklab, var(--ws-tg) 32%, var(--ws-line));
+
   /* Overlay chips (frosted glass panels in hero) */
   --ws-overlay-chip:   rgba(29,27,24,0.55);
   --ws-overlay-border: rgba(255,255,255,0.08);

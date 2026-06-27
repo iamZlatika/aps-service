@@ -2,6 +2,7 @@ import {
   type AuthResponseDto,
   type CustomerDto,
   type CustomerPhoneDto,
+  type CustomerTelegramDto,
   type RegistrationResponseDto,
   type VerifyPhoneResponseDto,
 } from "@/features/auth/website/api/dto";
@@ -10,6 +11,7 @@ import {
   type AuthResponse,
   type Customer,
   type CustomerPhone,
+  type CustomerTelegram,
   type RegistrationResponse,
   type ResetPasswordData,
   type VerifyPhoneResponse,
@@ -26,6 +28,15 @@ export function mapCustomerPhoneDtoToCustomerPhone(
   };
 }
 
+function mapCustomerTelegramDtoToCustomerTelegram(
+  dto: CustomerTelegramDto,
+): CustomerTelegram {
+  return {
+    isSubscribed: dto.is_subscribed,
+    linkedAt: dto.linked_at,
+  };
+}
+
 export function mapCustomerDtoToCustomer(dto: CustomerDto): Customer {
   return {
     id: dto.id,
@@ -36,6 +47,9 @@ export function mapCustomerDtoToCustomer(dto: CustomerDto): Customer {
     hasGoogle: dto.has_google,
     avatarUrl: dto.avatar_url,
     phones: dto.phones.map(mapCustomerPhoneDtoToCustomerPhone),
+    telegram: dto.telegram
+      ? mapCustomerTelegramDtoToCustomerTelegram(dto.telegram)
+      : null,
     status: dto.status,
     lastOrderAt: dto.last_order_at,
     createdAt: dto.created_at,

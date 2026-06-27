@@ -8,4 +8,6 @@ export const CUSTOMER_PROFILE_API = {
   primaryPhone: () => `${BASE}/phone`,
   phones: () => `${BASE}/phones`,
   phoneById: (id: number) => `${BASE}/phones/${id}`,
+  generateTelegramLink: () => `${BASE}/telegram/generate-link`,
+  revokeTelegramLink: () => `${BASE}/telegram/revoke-link`,
 } as const;

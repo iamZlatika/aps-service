@@ -41,6 +41,8 @@ export default defineConfig({
             "class-variance-authority",
           ],
           "vendor-sonner": ["sonner"],
+          "vendor-pdf": ["pdf-lib"],
+          "vendor-ably": ["ably", "@ably/laravel-echo"],
         },
       },
     },

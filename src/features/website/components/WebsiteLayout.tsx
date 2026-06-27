@@ -1,14 +1,11 @@
 import "@/features/website/styles/website.css";
 
-import { Suspense, useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 
-import { ForgotPasswordModal } from "@/features/auth/website/pages/forgot/ForgotPasswordModal";
-import { LoginModal } from "@/features/auth/website/pages/login/LoginModal";
-import { RegistrationModal } from "@/features/auth/website/pages/registration/RegistrationModal";
 import { WebsiteErrorFallback } from "@/features/website/components/ErrorFallback";
 import { Footer } from "@/features/website/components/Footer";
 import { Header } from "@/features/website/components/Header";
@@ -25,6 +22,22 @@ import { captureErrorWithId } from "@/shared/lib/sentry";
 import { storageGet } from "@/shared/lib/storage";
 import { cn } from "@/shared/lib/utils";
 import { USER_LANGUAGES, type UserLanguage } from "@/shared/types";
+
+const ForgotPasswordModal = lazy(() =>
+  import("@/features/auth/website/pages/forgot/ForgotPasswordModal").then(
+    (m) => ({ default: m.ForgotPasswordModal }),
+  ),
+);
+const LoginModal = lazy(() =>
+  import("@/features/auth/website/pages/login/LoginModal").then((m) => ({
+    default: m.LoginModal,
+  })),
+);
+const RegistrationModal = lazy(() =>
+  import("@/features/auth/website/pages/registration/RegistrationModal").then(
+    (m) => ({ default: m.RegistrationModal }),
+  ),
+);
 
 const DEFAULT_LANG: UserLanguage = USER_LANGUAGES.UK;
 
@@ -138,9 +151,11 @@ export const WebsiteLayout = () => {
             </div>
           </ErrorBoundary>
         </Suspense>
-        <LoginModal redirectTo={CUSTOMER_ACCOUNT_LINKS.root()} />
-        <RegistrationModal />
-        <ForgotPasswordModal />
+        <Suspense fallback={null}>
+          <LoginModal redirectTo={CUSTOMER_ACCOUNT_LINKS.root()} />
+          <RegistrationModal />
+          <ForgotPasswordModal />
+        </Suspense>
         <Toaster richColors position="top-right" />
       </div>
     </WebsiteThemeContext.Provider>

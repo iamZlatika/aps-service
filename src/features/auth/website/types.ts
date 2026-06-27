@@ -7,6 +7,11 @@ export type CustomerPhone = {
   isPrimary: boolean;
 };
 
+export type CustomerTelegram = {
+  isSubscribed: boolean;
+  linkedAt: string | null;
+};
+
 export type Customer = {
   id: number;
   portalName: string | null;
@@ -16,6 +21,7 @@ export type Customer = {
   hasGoogle: boolean;
   avatarUrl: string;
   phones: CustomerPhone[];
+  telegram: CustomerTelegram | null;
   status: UserStatus;
   lastOrderAt: string | null;
   createdAt: string;

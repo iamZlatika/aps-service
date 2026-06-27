@@ -11,6 +11,12 @@ export const CustomerPhoneDtoSchema = z.object({
 });
 export type CustomerPhoneDto = z.infer<typeof CustomerPhoneDtoSchema>;
 
+export const CustomerTelegramDtoSchema = z.object({
+  is_subscribed: z.boolean(),
+  linked_at: z.string().nullable(),
+});
+export type CustomerTelegramDto = z.infer<typeof CustomerTelegramDtoSchema>;
+
 export const CustomerDtoSchema = z.object({
   id: z.number(),
   portal_name: z.string().nullable(),
@@ -20,6 +26,7 @@ export const CustomerDtoSchema = z.object({
   has_google: z.boolean(),
   avatar_url: z.string(),
   phones: z.array(CustomerPhoneDtoSchema),
+  telegram: CustomerTelegramDtoSchema.nullable(),
   status: zodEnumFromConst(USER_STATUSES),
   last_order_at: z.string().nullable(),
   created_at: z.string(),
