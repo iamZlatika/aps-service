@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { Printer, Users } from "lucide-react";
+import { Printer } from "lucide-react";
 import {
   lazy,
   Suspense,
@@ -12,10 +12,10 @@ import {
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
 import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard";
 import { CustomerOrdersSection } from "@/features/backoffice/modules/customers/components/CustomerOrdersSection";
 import { StatusSelect } from "@/features/backoffice/modules/orders/components/StatusSelect.tsx";
+import { useCreateOrderForCustomer } from "@/features/backoffice/modules/orders/hooks/useCreateOrderForCustomer.ts";
 import { useOrder } from "@/features/backoffice/modules/orders/hooks/useOrder.ts";
 import { useOrderEditingState } from "@/features/backoffice/modules/orders/hooks/useOrderEditingState.ts";
 import { useOrderSocket } from "@/features/backoffice/modules/orders/hooks/useOrderSocket.ts";
@@ -25,9 +25,9 @@ import { MobileHistoryDrawer } from "@/features/backoffice/modules/orders/pages/
 import { PaymentsCard } from "@/features/backoffice/modules/orders/pages/order-page/components/PaymentsCard.tsx";
 import { ProductsAndServicesCard } from "@/features/backoffice/modules/orders/pages/order-page/components/ProductsAndServicesCard.tsx";
 import { buildOrderHistory } from "@/features/backoffice/modules/orders/pages/order-page/services.ts";
-import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { CreateOrderForCustomerButton } from "@/shared/components/common/buttons/index.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
@@ -59,6 +59,8 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   const { selectedOrder, isLoading, isError, error, refetch } =
     useOrder(orderId);
   useOrderSocket(orderId);
+
+  const { createOrderForCustomer } = useCreateOrderForCustomer();
 
   const {
     editingOrderIds,
@@ -128,18 +130,11 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                         {t("orders.order")} {selectedOrder.orderNumber}
                       </h1>
                       <div className="flex items-center gap-2 shrink-0">
-                        <button
-                          type="button"
-                          className="h-9 w-9 sm:h-12 sm:w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"
+                        <CreateOrderForCustomerButton
                           onClick={() =>
-                            navigate(
-                              `${AuthRoutes.backofficeRoot()}/${ORDERS_ROUTES.createNewOrder}`,
-                              { state: { customer: selectedOrder.customer } },
-                            )
+                            createOrderForCustomer(selectedOrder.customer)
                           }
-                        >
-                          <Users className="h-4 w-4 sm:h-5 sm:w-5" />
-                        </button>
+                        />
                         <button
                           type="button"
                           className="h-9 w-9 sm:h-12 sm:w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"
