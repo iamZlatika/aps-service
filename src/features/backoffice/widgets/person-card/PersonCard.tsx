@@ -24,17 +24,19 @@ export const PersonCard = ({
 }: PersonCardProps) => {
   return (
     <Card className="p-2 sm:p-6">
+      {(leftAction || rightAction) && (
+        <div className="flex items-center justify-between mb-3">
+          <div>{leftAction}</div>
+          {rightAction && (
+            <div className="flex items-center gap-1">{rightAction}</div>
+          )}
+        </div>
+      )}
+
       <div className="flex items-start gap-4">
         <div className="shrink-0">{avatarSlot}</div>
         <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex-1 min-w-0">{infoSlot}</div>
-            {rightAction && (
-              <div className="flex items-center gap-1 shrink-0">
-                {rightAction}
-              </div>
-            )}
-          </div>
+          <div>{infoSlot}</div>
           {metaSlot && <div className="mt-2">{metaSlot}</div>}
           {commentSlot && (
             <div className="mt-2 text-sm text-muted-foreground">
@@ -43,8 +45,6 @@ export const PersonCard = ({
           )}
         </div>
       </div>
-
-      {leftAction && <div className="mt-3 flex">{leftAction}</div>}
 
       {children && (
         <>

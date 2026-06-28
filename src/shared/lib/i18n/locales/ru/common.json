@@ -321,6 +321,9 @@
     },
     "profile": {
       "phones": "Телефоны",
+      "phone_verified": "Телефон верифицирован",
+      "email_verified": "Email верифицирован",
+      "has_google": "Вход через Google",
       "telegram": "Telegram",
       "telegram_link": "Ссылка для подписки",
       "telegram_subscribed": "Клиент уже подписан на Telegram бот",

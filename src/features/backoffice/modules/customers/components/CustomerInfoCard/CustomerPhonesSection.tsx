@@ -1,4 +1,4 @@
-import { Plus, X } from "lucide-react";
+import { CircleCheck, Plus, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { PhoneDropdown } from "@/features/backoffice/components/PhoneDropdown";
@@ -84,6 +84,14 @@ export const CustomerPhonesSection = ({
             >
               <X />
             </Button>
+            {phone.phoneVerifiedAt && (
+              <div className="flex items-center gap-1 text-green-600">
+                <CircleCheck className="h-4 w-4 shrink-0" />
+                <span className="text-xs font-medium">
+                  {t("customers.profile.phone_verified")}
+                </span>
+              </div>
+            )}
           </div>
         ))}
       </div>
