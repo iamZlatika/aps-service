@@ -26,7 +26,7 @@ export const useTelegramSubscribeModal = (
   useEffect(() => {
     if (!open) return;
     return () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.customer.me() });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.customer.me() });
     };
   }, [open, queryClient]);
 

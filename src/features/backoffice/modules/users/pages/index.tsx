@@ -1,6 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
-import { type UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -8,12 +6,11 @@ import { AddButton } from "@/features/backoffice/components/AddButton";
 import { usersApi } from "@/features/backoffice/modules/users/api";
 import { UserLocationSelect } from "@/features/backoffice/modules/users/components/UserLocationSelect.tsx";
 import { getUserRoleOptions } from "@/features/backoffice/modules/users/data.ts";
+import { useRegisterUser } from "@/features/backoffice/modules/users/hooks/useRegisterUser.ts";
+import { useUpdateUserStatus } from "@/features/backoffice/modules/users/hooks/useUpdateUserStatus.ts";
 import { registerUserSchema } from "@/features/backoffice/modules/users/lib/registerUserSchema.ts";
 import { USERS_LINKS } from "@/features/backoffice/modules/users/navigation";
-import {
-  type NewUser,
-  type User,
-} from "@/features/backoffice/modules/users/types.ts";
+import { type User } from "@/features/backoffice/modules/users/types.ts";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import {
   DeleteConfirmDialog,
@@ -25,13 +22,11 @@ import type {
 } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { UserStatusButton } from "@/shared/components/common/UserStatusButton.tsx";
-import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 import { type UserStatus } from "@/shared/types.ts";
 
 const UsersPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const columns: ColumnConfig<User>[] = [
     {
@@ -78,14 +73,9 @@ const UsersPage = () => {
   const isActive = targetUser?.status === "active";
   const newStatus: UserStatus = isActive ? "blocked" : "active";
 
-  const statusMutation = useMutation({
-    mutationFn: ({ id, status }: { id: number; status: UserStatus }) =>
-      usersApi.updateUserStatus(id, status),
-    onSuccess: () => {
-      setTargetUser(null);
-      return queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
-    },
-  });
+  const { updateStatus, isPending: isStatusPending } = useUpdateUserStatus(() =>
+    setTargetUser(null),
+  );
 
   const handleStatusClick = useCallback((item: User) => {
     setTargetUser(item);
@@ -93,33 +83,14 @@ const UsersPage = () => {
 
   const handleConfirm = useCallback(() => {
     if (targetUser) {
-      statusMutation.mutate({ id: targetUser.id, status: newStatus });
+      updateStatus(targetUser.id, newStatus);
     }
-  }, [targetUser, newStatus, statusMutation]);
+  }, [targetUser, newStatus, updateStatus]);
 
   const [isAddOpen, setIsAddOpen] = useState(false);
 
-  const registerMutation = useMutation({
-    mutationFn: (data: NewUser) => usersApi.registerUser(data),
-    onSuccess: () => {
-      setIsAddOpen(false);
-      return queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
-    },
-  });
-
-  const handleRegisterSubmit = useCallback(
-    async (
-      values: Record<string, unknown>,
-      setError: UseFormSetError<Record<string, string>>,
-    ) => {
-      try {
-        await registerMutation.mutateAsync(registerUserSchema.parse(values));
-      } catch (error) {
-        handleFormError(error, setError);
-      }
-    },
-    [registerMutation],
-  );
+  const { onSubmit: handleRegisterSubmit, isPending: isRegisterPending } =
+    useRegisterUser(() => setIsAddOpen(false));
 
   const roleOptions = getUserRoleOptions(t);
 
@@ -193,7 +164,7 @@ const UsersPage = () => {
           isActive ? t("users.actions.block") : t("users.actions.unblock")
         }
         onConfirm={handleConfirm}
-        isPending={statusMutation.isPending}
+        isPending={isStatusPending}
       />
 
       <ItemFormDialog
@@ -205,7 +176,7 @@ const UsersPage = () => {
         cancelLabel={t("users.register_form.cancel")}
         confirmLabel={t("users.register_form.submit")}
         onConfirm={handleRegisterSubmit}
-        isPending={registerMutation.isPending}
+        isPending={isRegisterPending}
       />
     </>
   );

@@ -32,7 +32,7 @@ export const OrderInfoCard = ({
   const { t } = useTranslation();
 
   const { toggleCalled, calledPending, toggleUrgent, urgentPending } =
-    useOrderFlags(order.id, order);
+    useOrderFlags(order.id);
 
   const { form, onSubmit, isPending } = useEditOrderInfo(
     order.id,

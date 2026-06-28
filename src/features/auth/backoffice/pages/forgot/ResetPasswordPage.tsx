@@ -1,12 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { authApi } from "@/features/auth/backoffice/api";
 import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
-import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { useResetPassword } from "@/features/auth/backoffice/hooks/useResetPassword.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard";
 import { Button } from "@/shared/components/ui/button.tsx";
@@ -18,7 +16,6 @@ import {
 } from "@/shared/components/ui/card.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
-import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
 import {
@@ -35,17 +32,6 @@ const ResetPasswordPage = () => {
   const rawEmail = searchParams.get("email") || "";
   const email = decodeURIComponent(rawEmail);
 
-  const { isLoading, isError, error, refetch } = useQuery({
-    queryKey: queryKeys.auth.resetCheck(token!, email!),
-    queryFn: () => authApi.resetCheckToken({ token, email }),
-    enabled: !!token && !!email,
-    retry: false,
-  });
-
-  const resetMutation = useMutation({
-    mutationFn: authApi.resetPassword,
-  });
-
   const {
     register,
     handleSubmit,
@@ -59,16 +45,13 @@ const ResetPasswordPage = () => {
     },
   });
 
-  const onSubmit = (data: ResetPasswordFormValues) => {
-    resetMutation.mutate(
-      { ...data, token, email },
-      {
-        onSuccess: () => navigate(AuthRoutes.linkToLogin()),
-        onError: (error) =>
-          handleFormError<ResetPasswordFormValues>(error, setError),
-      },
-    );
-  };
+  const { isLoading, isError, error, refetch, resetPassword, isPending } =
+    useResetPassword({
+      token,
+      email,
+      setError,
+      onSuccess: () => navigate(AuthRoutes.linkToLogin()),
+    });
 
   if (!token || !email) {
     return (
@@ -103,7 +86,10 @@ const ResetPasswordPage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={handleSubmit((data) => resetPassword(data))}
+              className="space-y-4"
+            >
               <div className="space-y-2">
                 <Label htmlFor="password">{t("auth.reset.password")}</Label>
                 <Input
@@ -137,12 +123,8 @@ const ResetPasswordPage = () => {
                   </p>
                 )}
               </div>
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={resetMutation.isPending}
-              >
-                {resetMutation.isPending
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending
                   ? t("auth.reset.submitting")
                   : t("auth.reset.submit")}
               </Button>

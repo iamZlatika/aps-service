@@ -13,7 +13,7 @@ import {
 import { WORKS_LINKS } from "@/features/backoffice/modules/works/navigation.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
-import { notifyError } from "@/shared/lib/errors/services.ts";
+import { isApiError, notifyError } from "@/shared/lib/errors/services.ts";
 
 type UseEditWorkResult = {
   register: UseFormRegister<WorkEditFormValues>;
@@ -62,8 +62,11 @@ export const useEditWork = (workId: number): UseEditWorkResult => {
       navigate(WORKS_LINKS.root());
     },
     onError: (error) => {
-      notifyError(error);
-      handleFormError(error, setError);
+      if (!isApiError(error) || error.status !== 422) {
+        notifyError(error);
+      } else {
+        handleFormError(error, setError);
+      }
     },
   });
 

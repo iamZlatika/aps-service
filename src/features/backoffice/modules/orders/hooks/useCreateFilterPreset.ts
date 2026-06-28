@@ -39,9 +39,9 @@ export const useCreateFilterPreset = ({
         name: data.name,
         filters: mapFormToFilters(data),
       }),
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success(i18next.t("common.successAdd"));
-      queryClient.invalidateQueries({ queryKey: queryKeys.auth.user() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.auth.user() });
       onSuccess?.();
     },
     onError: (error) => notifyError(error),

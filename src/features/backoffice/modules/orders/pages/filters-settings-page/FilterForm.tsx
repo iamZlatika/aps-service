@@ -1,19 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import {
-  locationApi,
-  orderStatusesApi,
-} from "@/features/backoffice/modules/dictionaries/api";
 import { ManagerSelect } from "@/features/backoffice/modules/orders/components/ManagerSelect.tsx";
+import { useFilterFormOptions } from "@/features/backoffice/modules/orders/hooks/useFilterFormOptions.ts";
 import {
   type FilterPresetFormValues,
   filterPresetSchema,
 } from "@/features/backoffice/modules/orders/lib/filterPresetSchema.ts";
-import { usersApi } from "@/features/backoffice/modules/users/api";
-import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { LocationCheckboxGroup } from "@/shared/components/common/LocationCheckboxGroup.tsx";
 import { StatusBadge } from "@/shared/components/common/StatusBadge.tsx";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
@@ -30,21 +24,7 @@ interface FilterFormProps {
 export const FilterForm = ({ id, onSubmit }: FilterFormProps) => {
   const { t } = useTranslation();
   const getLocalizedName = useLocalizedName();
-
-  const { data: statusesData } = useQuery({
-    queryKey: queryKeys.dictionaries.orderStatuses(),
-    queryFn: () => orderStatusesApi.getAll(1, 100),
-  });
-
-  const { data: locationsData } = useQuery({
-    queryKey: queryKeys.dictionaries.locations(),
-    queryFn: () => locationApi.getAll(1, 100),
-  });
-
-  const { data: usersData, isLoading: isLoadingUsers } = useQuery({
-    queryKey: queryKeys.users.list(),
-    queryFn: () => usersApi.getAll(1, 100),
-  });
+  const { statuses, locations, users, isLoadingUsers } = useFilterFormOptions();
 
   const {
     register,
@@ -104,7 +84,7 @@ export const FilterForm = ({ id, onSubmit }: FilterFormProps) => {
           control={control}
           render={({ field }) => (
             <div className="flex flex-wrap gap-2">
-              {statusesData?.items.map((status) => {
+              {statuses.map((status) => {
                 const isSelected = field.value.includes(status.id);
                 return (
                   <button
@@ -148,7 +128,7 @@ export const FilterForm = ({ id, onSubmit }: FilterFormProps) => {
           control={control}
           render={({ field }) => (
             <LocationCheckboxGroup
-              locations={locationsData?.items ?? []}
+              locations={locations}
               value={field.value}
               onChange={field.onChange}
             />
@@ -197,7 +177,7 @@ export const FilterForm = ({ id, onSubmit }: FilterFormProps) => {
             <ManagerSelect
               value={field.value}
               onChange={(id) => field.onChange(id ?? null)}
-              users={usersData?.items ?? []}
+              users={users}
               isLoading={isLoadingUsers}
               clearable
             />

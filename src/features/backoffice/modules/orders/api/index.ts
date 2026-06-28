@@ -100,8 +100,18 @@ export const ordersApi = {
   changeIsCalled: async (orderId: number, isCalled: boolean): Promise<void> => {
     await put(ORDERS_API.changeIsCalled(orderId), { is_called: isCalled });
   },
-  changeIsUrgent: async (orderId: number, isUrgent: boolean): Promise<void> => {
-    await put(ORDERS_API.changeIsUrgent(orderId), { is_urgent: isUrgent });
+  changeIsUrgent: async (
+    orderId: number,
+    isUrgent: boolean,
+  ): Promise<{ isUrgent: boolean; dueDate: string }> => {
+    const response = await put<
+      { is_urgent: boolean },
+      { data: { is_urgent: boolean; due_date: string } }
+    >(ORDERS_API.changeIsUrgent(orderId), { is_urgent: isUrgent });
+    return {
+      isUrgent: response.data.is_urgent,
+      dueDate: response.data.due_date,
+    };
   },
   getOrder: async (id: number): Promise<OrderInfo> => {
     const response = await get<{ data: OrderInfoDto }>(

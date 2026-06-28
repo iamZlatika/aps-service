@@ -1,15 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
 import { Check, Copy, Lock, Unlock } from "lucide-react";
 
 import { bankCardsApi } from "@/features/backoffice/modules/dictionaries/api";
 import type { BankCardDto } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { DictionaryTablePage } from "@/features/backoffice/modules/dictionaries/components/DictionaryTablePage.tsx";
+import { useToggleBankCardStatus } from "@/features/backoffice/modules/dictionaries/hooks/useToggleBankCardStatus.ts";
 import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
-import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { useCopyToClipboard } from "@/shared/hooks/useCopyToClipboard";
-import { notifyError } from "@/shared/lib/errors/services.ts";
 
 const CopyCardNumber = ({ prettyNumber }: { prettyNumber: string }) => {
   const { copied, copy } = useCopyToClipboard();
@@ -32,16 +30,12 @@ const CopyCardNumber = ({ prettyNumber }: { prettyNumber: string }) => {
   );
 };
 
-const BankCardStatusToggle = ({ card }: { card: BankCardDto }) => {
-  const mutation = useMutation({
-    mutationFn: () => bankCardsApi.toggleActive(card.id, !card.is_active),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dictionaries.bankCards(),
-      });
-    },
-    onError: (error) => notifyError(error),
-  });
+interface BankCardStatusToggleProps {
+  card: BankCardDto;
+}
+
+const BankCardStatusToggle = ({ card }: BankCardStatusToggleProps) => {
+  const { toggle, isPending } = useToggleBankCardStatus(card);
 
   return (
     <Button
@@ -54,9 +48,9 @@ const BankCardStatusToggle = ({ card }: { card: BankCardDto }) => {
       }
       onClick={(e) => {
         e.stopPropagation();
-        mutation.mutate();
+        toggle();
       }}
-      disabled={mutation.isPending}
+      disabled={isPending}
     >
       {card.is_active ? (
         <Unlock className="h-4 w-4" />

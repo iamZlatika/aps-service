@@ -21,6 +21,7 @@ import { Avatar, AvatarImage } from "@/shared/components/ui/avatar.tsx";
 import { Separator } from "@/shared/components/ui/separator.tsx";
 import { Textarea } from "@/shared/components/ui/textarea.tsx";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
+import { isApiError } from "@/shared/lib/errors/services.ts";
 
 import { CustomerPhonesSection } from "./CustomerPhonesSection";
 import { CustomerStatusToggle } from "./CustomerStatusToggle";
@@ -76,7 +77,9 @@ export const CustomerInfoCard = ({
       });
       setIsInfoEditing(false);
     } catch (error) {
-      handleFormError(error, setError);
+      if (isApiError(error) && error.status === 422) {
+        handleFormError(error, setError);
+      }
     }
   };
 

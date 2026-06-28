@@ -1,12 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { locationApi } from "@/features/backoffice/modules/dictionaries/api";
-import { usersApi } from "@/features/backoffice/modules/users/api";
+import { useUpdateUserLocation } from "@/features/backoffice/modules/users/hooks/useUpdateUserLocation.ts";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
 import { DeleteConfirmDialog } from "@/features/backoffice/widgets/table/components/dialogs";
-import { queryKeys } from "@/shared/api/queryKeys.ts";
 import {
   Select,
   SelectContent,
@@ -15,35 +11,20 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select.tsx";
 
-type UserLocationSelectProps = {
+interface UserLocationSelectProps {
   user: User;
-};
+}
 
 export const UserLocationSelect = ({ user }: UserLocationSelectProps) => {
   const { t } = useTranslation();
-  const queryClient = useQueryClient();
-
-  const { data: locationsData } = useQuery({
-    queryKey: queryKeys.dictionaries.locations(),
-    queryFn: () => locationApi.getAll(1, 100),
-  });
-
-  const locations = locationsData?.items ?? [];
-
-  const [pendingLocationId, setPendingLocationId] = useState<number | null>(
-    null,
-  );
-
-  const mutation = useMutation({
-    mutationFn: (locationId: number) =>
-      usersApi.updateLocation(locationId, user.id),
-    onSuccess: () => {
-      setPendingLocationId(null);
-      return queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
-    },
-  });
-
-  const pendingLocation = locations.find((l) => l.id === pendingLocationId);
+  const {
+    locations,
+    pendingLocationId,
+    setPendingLocationId,
+    pendingLocation,
+    updateLocation,
+    isPending,
+  } = useUpdateUserLocation(user.id);
 
   return (
     <>
@@ -76,11 +57,9 @@ export const UserLocationSelect = ({ user }: UserLocationSelectProps) => {
         cancelLabel={t("users.actions.cancel")}
         confirmLabel={t("users.actions.confirm")}
         onConfirm={() => {
-          if (pendingLocationId !== null) {
-            mutation.mutate(pendingLocationId);
-          }
+          if (pendingLocationId !== null) updateLocation(pendingLocationId);
         }}
-        isPending={mutation.isPending}
+        isPending={isPending}
       />
     </>
   );

@@ -1,4 +1,3 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,6 +8,8 @@ import { AddButton } from "@/features/backoffice/components/AddButton";
 import { worksApi } from "@/features/backoffice/modules/works/api";
 import { WorkPreviewModal } from "@/features/backoffice/modules/works/components/WorkPreviewModal";
 import { WorkPublishButton } from "@/features/backoffice/modules/works/components/WorkPublishButton";
+import { useDeleteWork } from "@/features/backoffice/modules/works/hooks/useDeleteWork.ts";
+import { usePublishWork } from "@/features/backoffice/modules/works/hooks/usePublishWork.ts";
 import { WORKS_LINKS } from "@/features/backoffice/modules/works/navigation";
 import { type BackofficeWork } from "@/features/backoffice/modules/works/types";
 import { SmartTable } from "@/features/backoffice/widgets/table";
@@ -22,8 +23,21 @@ import { formatDate } from "@/shared/lib/utils";
 const WorksPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const localize = useLocalize();
+
+  const [workToDelete, setWorkToDelete] = useState<BackofficeWork | null>(null);
+  const [workToToggle, setWorkToToggle] = useState<BackofficeWork | null>(null);
+  const [workToPreview, setWorkToPreview] = useState<BackofficeWork | null>(
+    null,
+  );
+
+  const { deleteWork, isPending: isDeletePending } = useDeleteWork(() =>
+    setWorkToDelete(null),
+  );
+
+  const { publishWork, isPending: isPublishPending } = usePublishWork(() =>
+    setWorkToToggle(null),
+  );
 
   const columns: ColumnConfig<BackofficeWork>[] = useMemo(
     () => [
@@ -80,40 +94,13 @@ const WorksPage = () => {
     [localize],
   );
 
-  const [workToDelete, setWorkToDelete] = useState<BackofficeWork | null>(null);
-  const [workToToggle, setWorkToToggle] = useState<BackofficeWork | null>(null);
-  const [workToPreview, setWorkToPreview] = useState<BackofficeWork | null>(
-    null,
-  );
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => worksApi.delete(id),
-    onSuccess: () => {
-      setWorkToDelete(null);
-      return queryClient.invalidateQueries({ queryKey: queryKeys.works.all });
-    },
-  });
-
-  const publishMutation = useMutation({
-    mutationFn: ({ id, isPublished }: { id: number; isPublished: boolean }) =>
-      worksApi.setPublished(id, { is_published: isPublished }),
-    onSuccess: () => {
-      setWorkToToggle(null);
-      return queryClient.invalidateQueries({ queryKey: queryKeys.works.all });
-    },
-  });
-
   const handleDeleteConfirm = useCallback(() => {
-    if (workToDelete) deleteMutation.mutate(workToDelete.id);
-  }, [workToDelete, deleteMutation]);
+    if (workToDelete) deleteWork(workToDelete.id);
+  }, [workToDelete, deleteWork]);
 
   const handlePublishConfirm = useCallback(() => {
-    if (workToToggle)
-      publishMutation.mutate({
-        id: workToToggle.id,
-        isPublished: !workToToggle.isPublished,
-      });
-  }, [workToToggle, publishMutation]);
+    if (workToToggle) publishWork(workToToggle.id, !workToToggle.isPublished);
+  }, [workToToggle, publishWork]);
 
   return (
     <>
@@ -164,7 +151,7 @@ const WorksPage = () => {
         cancelLabel={t("works.actions.cancel")}
         confirmLabel={t("works.actions.delete")}
         onConfirm={handleDeleteConfirm}
-        isPending={deleteMutation.isPending}
+        isPending={isDeletePending}
       />
 
       <WorkPreviewModal
@@ -194,7 +181,7 @@ const WorksPage = () => {
             : t("works.actions.publish")
         }
         onConfirm={handlePublishConfirm}
-        isPending={publishMutation.isPending}
+        isPending={isPublishPending}
       />
     </>
   );

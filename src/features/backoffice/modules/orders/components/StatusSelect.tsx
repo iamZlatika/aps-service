@@ -1,16 +1,14 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { lazy, Suspense, useState } from "react";
-
-import { orderStatusesApi } from "@/features/backoffice/modules/dictionaries/api";
-import { ordersApi } from "@/features/backoffice/modules/orders/api";
 
 const CloseOrderModal = lazy(() =>
   import("@/features/backoffice/modules/orders/components/CloseOrderModal.tsx").then(
     (m) => ({ default: m.CloseOrderModal }),
   ),
 );
+import { useQueryClient } from "@tanstack/react-query";
+
+import { useChangeOrderStatus } from "@/features/backoffice/modules/orders/hooks/useChangeOrderStatus.ts";
 import type { OrderStatus } from "@/features/backoffice/modules/orders/types.ts";
-import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { StatusBadge } from "@/shared/components/common/StatusBadge.tsx";
 import {
@@ -22,10 +20,6 @@ import {
 import { useLocalizedName } from "@/shared/hooks/useLocalizedName.ts";
 
 const CLOSED_STATUS_KEY = "closed";
-const STATUSES_THAT_RESET_IS_CALLED = [
-  "waiting_for_approval",
-  "ready",
-] as const;
 
 interface StatusSelectProps {
   orderId: number;
@@ -41,32 +35,13 @@ export const StatusSelect = ({
   onSuccess,
 }: StatusSelectProps) => {
   const getLocalizedName = useLocalizedName();
+  const queryClient = useQueryClient();
   const [closedStatusId, setClosedStatusId] = useState<number | null>(null);
 
-  const { data } = useQuery({
-    queryKey: queryKeys.dictionaries.orderStatuses(),
-    queryFn: () => orderStatusesApi.getAll(1, 100),
-  });
-
-  const mutation = useMutation({
-    mutationFn: ({ id }: { id: number; key: string }) =>
-      ordersApi.changeStatus(orderId, id),
-    onSuccess: (_, { key }) => {
-      const resetsIsCalled = (
-        STATUSES_THAT_RESET_IS_CALLED as readonly string[]
-      ).includes(key);
-      if (onSuccess) {
-        onSuccess();
-        if (resetsIsCalled) {
-          queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
-        }
-      } else {
-        return queryClient.invalidateQueries({
-          queryKey: queryKeys.orders.all,
-        });
-      }
-    },
-  });
+  const { statuses, changeStatus, isPending } = useChangeOrderStatus(
+    orderId,
+    onSuccess,
+  );
 
   const displayName = getLocalizedName(status);
 
@@ -78,23 +53,23 @@ export const StatusSelect = ({
             <StatusBadge
               name={displayName}
               color={status.color}
-              isPending={mutation.isPending}
+              isPending={isPending}
               selectable
             />
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          {data?.items.map((s) => (
+          {statuses.map((s) => (
             <DropdownMenuItem
               key={s.id}
               onSelect={() => {
                 if (s.key === CLOSED_STATUS_KEY) {
                   setClosedStatusId(s.id);
                 } else {
-                  mutation.mutate({ id: s.id, key: s.key });
+                  changeStatus(s.id, s.key);
                 }
               }}
-              disabled={s.id === status.id || mutation.isPending}
+              disabled={s.id === status.id || isPending}
             >
               <StatusBadge
                 name={getLocalizedName({
@@ -119,7 +94,7 @@ export const StatusSelect = ({
             onSuccess={
               onSuccess ??
               (() =>
-                queryClient.invalidateQueries({
+                void queryClient.invalidateQueries({
                   queryKey: queryKeys.orders.all,
                 }))
             }

@@ -9,7 +9,7 @@ export const useAvatarUpload = () => {
   return useMutation({
     mutationFn: profileApi.uploadAvatar,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.auth.user() });
+      return queryClient.invalidateQueries({ queryKey: queryKeys.auth.user() });
     },
   });
 };

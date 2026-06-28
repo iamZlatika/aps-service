@@ -12,7 +12,7 @@ import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 
 export const useCustomerPhones = (
-  customerId: number | null,
+  customerId: number,
   customer: Customer | undefined,
   onSuccess?: () => void,
 ) => {
@@ -44,11 +44,11 @@ export const useCustomerPhones = (
 
   const addNewPhoneMutation = useMutation({
     mutationFn: (data: NewPhone) =>
-      customersApi.addSecondaryPhone(customerId!, data),
+      customersApi.addSecondaryPhone(customerId, data),
     onSuccess: async () => {
       setIsAddOpened(false);
       await queryClient.invalidateQueries({
-        queryKey: queryKeys.customers.detail(customerId!),
+        queryKey: queryKeys.customers.detail(customerId),
       });
       onSuccess?.();
     },
@@ -72,10 +72,10 @@ export const useCustomerPhones = (
 
   const deletePhoneMutation = useMutation({
     mutationFn: (phoneId: number) =>
-      customersApi.deleteSecondaryPhone(customerId!, phoneId),
+      customersApi.deleteSecondaryPhone(customerId, phoneId),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: queryKeys.customers.detail(customerId!),
+        queryKey: queryKeys.customers.detail(customerId),
       });
       onSuccess?.();
     },

@@ -1,17 +1,15 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Lock, Unlock } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
-import { usersApi } from "@/features/backoffice/modules/users/api";
 import { UserLocationSection } from "@/features/backoffice/modules/users/components/UserLocationSection.tsx";
 import { UserRateSection } from "@/features/backoffice/modules/users/components/UserRateSection.tsx";
+import { useUpdateUserStatus } from "@/features/backoffice/modules/users/hooks/useUpdateUserStatus.ts";
 import { useUser } from "@/features/backoffice/modules/users/hooks/useUser.ts";
 import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard.tsx";
 import { DeleteConfirmDialog } from "@/features/backoffice/widgets/table/components/dialogs";
-import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { Avatar, AvatarImage } from "@/shared/components/ui/avatar";
 import { Separator } from "@/shared/components/ui/separator.tsx";
@@ -21,7 +19,6 @@ const UserPage = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const userId = id ? parseInt(id, 10) : null;
-  const queryClient = useQueryClient();
 
   const { user, isLoading } = useUser(userId);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -29,16 +26,9 @@ const UserPage = () => {
   const isActive = user?.status === "active";
   const newStatus: UserStatus = isActive ? "blocked" : "active";
 
-  const statusMutation = useMutation({
-    mutationFn: ({ id, status }: { id: number; status: UserStatus }) =>
-      usersApi.updateUserStatus(id, status),
-    onSuccess: () => {
-      setIsConfirmOpen(false);
-      return queryClient.invalidateQueries({
-        queryKey: queryKeys.users.all,
-      });
-    },
-  });
+  const { updateStatus, isPending: isStatusPending } = useUpdateUserStatus(() =>
+    setIsConfirmOpen(false),
+  );
 
   if (isLoading) return <Loader />;
   if (!user) return null;
@@ -98,10 +88,8 @@ const UserPage = () => {
         confirmLabel={
           isActive ? t("users.actions.block") : t("users.actions.unblock")
         }
-        onConfirm={() =>
-          statusMutation.mutate({ id: user.id, status: newStatus })
-        }
-        isPending={statusMutation.isPending}
+        onConfirm={() => updateStatus(user.id, newStatus)}
+        isPending={isStatusPending}
       />
     </>
   );

@@ -11,9 +11,10 @@ import type { NewOrder } from "@/features/backoffice/modules/orders/types.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
+import { isApiError, notifyError } from "@/shared/lib/errors/services.ts";
 
 type UseCreateOrderReturn = {
-  onSubmit: (values: NewOrderSchema) => Promise<void>;
+  onSubmit: (values: NewOrderSchema) => void;
   isPending: boolean;
 };
 
@@ -34,14 +35,17 @@ export const useCreateOrder = (
         queryKey: queryKeys.customers.all,
       });
     },
+    onError: (error) => {
+      if (isApiError(error) && error.status === 422) {
+        handleFormError(error, setError);
+      } else {
+        notifyError(error);
+      }
+    },
   });
 
-  const onSubmit = async (values: NewOrderSchema) => {
-    try {
-      await mutation.mutateAsync(values);
-    } catch (error) {
-      handleFormError(error, setError);
-    }
+  const onSubmit = (values: NewOrderSchema) => {
+    mutation.mutate(values);
   };
 
   return { onSubmit, isPending: mutation.isPending };

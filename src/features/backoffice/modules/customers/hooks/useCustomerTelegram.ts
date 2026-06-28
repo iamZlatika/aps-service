@@ -21,8 +21,8 @@ export const useCustomerTelegram = (
 
   const generateMutation = useMutation({
     mutationFn: () => customersApi.getTelegramLink(customerId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: queryKeys.customers.detail(customerId),
       });
       onSuccess?.();
@@ -32,8 +32,8 @@ export const useCustomerTelegram = (
 
   const revokeMutation = useMutation({
     mutationFn: () => customersApi.revokeTelegramLink(customerId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: queryKeys.customers.detail(customerId),
       });
       toast.success(i18next.t("customers.profile.telegram_revoked"));

@@ -1,11 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { authApi } from "@/features/auth/backoffice/api";
 import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
+import { useForgotPassword } from "@/features/auth/backoffice/hooks/useForgotPassword.ts";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
@@ -16,7 +15,6 @@ import {
 } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
-import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
 import { type ForgotFormValues, forgotSchema } from "./forgot.schema";
@@ -24,6 +22,7 @@ import { type ForgotFormValues, forgotSchema } from "./forgot.schema";
 const ForgotPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -33,15 +32,9 @@ const ForgotPage = () => {
     resolver: zodResolver(forgotSchema),
   });
 
-  const forgotMutation = useMutation({
-    mutationFn: authApi.forgot,
-  });
-  const onSubmit = (data: ForgotFormValues) => {
-    forgotMutation.mutate(data, {
-      onSuccess: () => navigate(AuthRoutes.linkToEmailSent()),
-      onError: (error) => handleFormError<ForgotFormValues>(error, setError),
-    });
-  };
+  const { forgotPassword, isPending } = useForgotPassword(setError, () =>
+    navigate(AuthRoutes.linkToEmailSent()),
+  );
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
@@ -51,7 +44,10 @@ const ForgotPage = () => {
           <CardDescription>{t("auth.forgot.description")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={handleSubmit((data) => forgotPassword(data))}
+            className="space-y-4"
+          >
             <div className="space-y-2">
               <Label htmlFor="email">{t("auth.login.email")}</Label>
               <Input
@@ -68,12 +64,8 @@ const ForgotPage = () => {
                 </p>
               )}
             </div>
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={forgotMutation.isPending}
-            >
-              {forgotMutation.isPending
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending
                 ? t("auth.forgot.submitting")
                 : t("auth.forgot.submit")}
             </Button>

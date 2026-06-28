@@ -6,6 +6,7 @@ import type {
   Customer,
   EditedCustomer,
 } from "@/features/backoffice/modules/customers/types.ts";
+import { isApiError, notifyError } from "@/shared/lib/errors/services.ts";
 
 type UseCustomerInfoReturn = {
   handleChangeInfo: (data: EditedCustomer) => Promise<Customer | undefined>;
@@ -22,6 +23,11 @@ export const useCustomerInfo = (
     onSuccess: async (updatedCustomer) => {
       await updateCustomerCache(updatedCustomer);
       onSuccess?.();
+    },
+    onError: (error) => {
+      if (!isApiError(error) || error.status !== 422) {
+        notifyError(error);
+      }
     },
   });
 

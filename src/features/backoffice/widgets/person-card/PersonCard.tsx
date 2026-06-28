@@ -33,7 +33,7 @@ export const PersonCard = ({
         </div>
       )}
 
-      <div className="flex items-start gap-4">
+      <div className="flex flex-col sm:flex-row items-start gap-4">
         <div className="shrink-0">{avatarSlot}</div>
         <div className="flex-1 min-w-0">
           <div>{infoSlot}</div>

@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -8,11 +8,11 @@ import { PhoneDropdown } from "@/features/backoffice/components/PhoneDropdown";
 import { locationApi } from "@/features/backoffice/modules/dictionaries/api";
 import { LocationFormDialog } from "@/features/backoffice/modules/dictionaries/components/LocationFormDialog.tsx";
 import { RowActions } from "@/features/backoffice/modules/dictionaries/components/RowActions.tsx";
+import { useDeleteLocation } from "@/features/backoffice/modules/dictionaries/hooks/useDeleteLocation.ts";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import { DeleteConfirmDialog } from "@/features/backoffice/widgets/table/components/dialogs";
 import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { notifyError } from "@/shared/lib/errors/services.ts";
 
 const LocationsPage = () => {
   const { t } = useTranslation();
@@ -25,16 +25,9 @@ const LocationsPage = () => {
 
   const [deleteItem, setDeleteItem] = useState<Location | null>(null);
 
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => locationApi.remove(id),
-    onSuccess: () => {
-      setDeleteItem(null);
-      void queryClient.invalidateQueries({
-        queryKey: queryKeys.dictionaries.locations(),
-      });
-    },
-    onError: (error) => notifyError(error),
-  });
+  const { deleteLocation, isPending: isDeletePending } = useDeleteLocation(() =>
+    setDeleteItem(null),
+  );
 
   const columns: ColumnConfig<Location>[] = [
     {
@@ -121,9 +114,9 @@ const LocationsPage = () => {
         cancelLabel={t("table.delete_modal.cancel")}
         confirmLabel={t("table.delete_modal.confirm")}
         onConfirm={() => {
-          if (deleteItem) deleteMutation.mutate(deleteItem.id);
+          if (deleteItem) deleteLocation(deleteItem.id);
         }}
-        isPending={deleteMutation.isPending}
+        isPending={isDeletePending}
       />
     </>
   );

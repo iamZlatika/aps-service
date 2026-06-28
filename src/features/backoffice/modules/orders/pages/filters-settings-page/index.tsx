@@ -13,17 +13,11 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  locationApi,
-  orderStatusesApi,
-} from "@/features/backoffice/modules/dictionaries/api";
+import { useFilterFormOptions } from "@/features/backoffice/modules/orders/hooks/useFilterFormOptions.ts";
 import { useOrderSearchPresets } from "@/features/backoffice/modules/orders/hooks/useOrderSearchPresets.ts";
-import { usersApi } from "@/features/backoffice/modules/users/api";
-import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { useLocalizedName } from "@/shared/hooks/useLocalizedName.ts";
@@ -53,35 +47,20 @@ const FiltersSettingsPage = () => {
     [orderedIds, presets],
   );
 
-  const { data: statusesData } = useQuery({
-    queryKey: queryKeys.dictionaries.orderStatuses(),
-    queryFn: () => orderStatusesApi.getAll(1, 100),
-  });
-
-  const { data: locationsData } = useQuery({
-    queryKey: queryKeys.dictionaries.locations(),
-    queryFn: () => locationApi.getAll(1, 100),
-  });
-
-  const { data: usersData } = useQuery({
-    queryKey: queryKeys.users.list(),
-    queryFn: () => usersApi.getAll(1, 100),
-  });
+  const { statuses, locations, users } = useFilterFormOptions();
 
   const maps: PresetDisplayMaps = useMemo(
     () => ({
       statusMap: new Map(
-        statusesData?.items.map((s) => [
+        statuses.map((s) => [
           s.id,
           getLocalizedName({ nameRu: s.name_ru, nameUa: s.name_ua }),
-        ]) ?? [],
+        ]),
       ),
-      locationMap: new Map(
-        locationsData?.items.map((l) => [l.id, l.name]) ?? [],
-      ),
-      managerMap: new Map(usersData?.items.map((u) => [u.id, u.name]) ?? []),
+      locationMap: new Map(locations.map((l) => [l.id, l.name])),
+      managerMap: new Map(users.map((u) => [u.id, u.name])),
     }),
-    [statusesData, locationsData, usersData, getLocalizedName],
+    [statuses, locations, users, getLocalizedName],
   );
 
   const sensors = useSensors(

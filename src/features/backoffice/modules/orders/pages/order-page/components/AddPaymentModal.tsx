@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -11,8 +10,7 @@ import {
   type NewPaymentSchema,
   newPaymentSchema,
 } from "@/features/backoffice/modules/orders/lib/schema.ts";
-import { usersApi } from "@/features/backoffice/modules/users/api";
-import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { useManagerOptions } from "@/features/backoffice/modules/users/hooks/useManagerOptions.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
 import {
@@ -41,12 +39,7 @@ const AddPaymentModal = ({
 }: AddPaymentModalProps) => {
   const { t } = useTranslation();
   const { user } = useAuth();
-
-  const { data: usersData, isLoading: isLoadingUsers } = useQuery({
-    queryKey: queryKeys.users.list(),
-    queryFn: () => usersApi.getAll(1, 100),
-  });
-  const users = usersData?.items ?? [];
+  const { users, isLoadingUsers } = useManagerOptions();
 
   const {
     control,

@@ -1,14 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
-import type { UseFormSetError } from "react-hook-form";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { AddButton } from "@/features/backoffice/components/AddButton";
+import { useAddCustomer } from "@/features/backoffice/modules/customers/hooks/useAddCustomer.ts";
 import { newCustomerSchema } from "@/features/backoffice/modules/customers/lib/schemas.ts";
 import {
   type Customer,
-  type NewCustomer,
   type Phone,
 } from "@/features/backoffice/modules/customers/types.ts";
 import { SmartTable } from "@/features/backoffice/widgets/table";
@@ -17,9 +15,7 @@ import type {
   ColumnConfig,
   FieldConfig,
 } from "@/features/backoffice/widgets/table/models/types.ts";
-import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 
 import { customersApi } from "../api";
 import { CUSTOMERS_LINKS } from "../navigation";
@@ -28,6 +24,10 @@ const CustomersPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isAddOpen, setIsAddOpen] = useState(false);
+
+  const { onSubmit: handleAddCustomerSubmit, isPending } = useAddCustomer(() =>
+    setIsAddOpen(false),
+  );
 
   const columns: ColumnConfig<Customer>[] = [
     {
@@ -61,29 +61,6 @@ const CustomersPage = () => {
       },
     },
   ];
-  const addCustomerMutation = useMutation({
-    mutationFn: (data: NewCustomer) => customersApi.addNewCustomer(data),
-    onSuccess: () => {
-      setIsAddOpen(false);
-      return queryClient.invalidateQueries({
-        queryKey: queryKeys.customers.all,
-      });
-    },
-  });
-
-  const handleAddCustomerSubmit = useCallback(
-    async (
-      values: Record<string, unknown>,
-      setError: UseFormSetError<Record<string, string>>,
-    ) => {
-      try {
-        await addCustomerMutation.mutateAsync(newCustomerSchema.parse(values));
-      } catch (error) {
-        handleFormError(error, setError);
-      }
-    },
-    [addCustomerMutation],
-  );
 
   const registerFields: FieldConfig[] = [
     {
@@ -106,7 +83,6 @@ const CustomersPage = () => {
       required: true,
       inputType: "email",
     },
-
     {
       key: "comment",
       label: t("customers.register_form.comment"),
@@ -141,7 +117,7 @@ const CustomersPage = () => {
         cancelLabel={t("customers.register_form.cancel")}
         confirmLabel={t("customers.register_form.submit")}
         onConfirm={handleAddCustomerSubmit}
-        isPending={addCustomerMutation.isPending}
+        isPending={isPending}
       />
     </>
   );

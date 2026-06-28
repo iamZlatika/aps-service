@@ -9,7 +9,7 @@ export const useAvatarDelete = () => {
   return useMutation({
     mutationFn: profileApi.deleteAvatar,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.auth.user() });
+      return queryClient.invalidateQueries({ queryKey: queryKeys.auth.user() });
     },
   });
 };

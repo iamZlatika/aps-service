@@ -22,7 +22,7 @@ import { buildPreviewWork } from "@/features/backoffice/modules/works/lib/work-p
 import { WORKS_LINKS } from "@/features/backoffice/modules/works/navigation";
 import { queryKeys } from "@/shared/api/queryKeys";
 import { handleFormError } from "@/shared/lib/errors/handleFormError";
-import { notifyError } from "@/shared/lib/errors/services";
+import { isApiError, notifyError } from "@/shared/lib/errors/services";
 
 type UseCreateWorkResult = {
   register: UseFormRegister<WorkFormValues>;
@@ -113,8 +113,11 @@ export const useCreateWork = (): UseCreateWorkResult => {
     onError: (error) => {
       revokeBlobUrls();
       setPreviewWork(null);
-      notifyError(error);
-      handleFormError(error, setError);
+      if (!isApiError(error) || error.status !== 422) {
+        notifyError(error);
+      } else {
+        handleFormError(error, setError);
+      }
     },
   });
 
