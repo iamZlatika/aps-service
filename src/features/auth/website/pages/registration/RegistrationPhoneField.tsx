@@ -2,7 +2,7 @@ import { Phone } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { IMaskInput } from "react-imask";
 
-import { cn } from "@/shared/lib/utils";
+import { cn, stripNonDigits } from "@/shared/lib/utils";
 
 const inputWrapClass = (hasError: boolean) =>
   cn(
@@ -46,7 +46,7 @@ export const RegistrationPhoneField = ({
           mask="000-000-00-00"
           value={value.startsWith("+38") ? value.slice(3) : value}
           onAccept={(masked: string) => {
-            const digits = masked.replace(/\D/g, "");
+            const digits = stripNonDigits(masked);
             onChange(digits ? "+38" + digits : "");
           }}
           placeholder="0__-___-__-__"

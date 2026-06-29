@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { type Customer } from "@/features/auth/website/types";
 import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
 import { ChangePasswordModal } from "@/features/website/modules/profile/pages/components/ChangePasswordModal";
+import { ChangePhoneModal } from "@/features/website/modules/profile/pages/components/ChangePhoneModal";
 import { ExtraPhonesSection } from "@/features/website/modules/profile/pages/components/ExtraPhonesSection";
 import { ProfileAvatar } from "@/features/website/modules/profile/pages/components/ProfileAvatar";
 import { ProfileEmailField } from "@/features/website/modules/profile/pages/components/ProfileEmailField";
@@ -22,6 +23,8 @@ const inputClass =
 export const ProfilePanel = ({ customer }: ProfilePanelProps) => {
   const { t } = useTranslation("website");
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
+  const [phoneModalKey, setPhoneModalKey] = useState(0);
 
   const primaryPhone = customer.phones.find((p) => p.isPrimary);
   const extraPhones = customer.phones.filter((p) => !p.isPrimary);
@@ -85,6 +88,16 @@ export const ProfilePanel = ({ customer }: ProfilePanelProps) => {
                   {t("cabinet.phoneBadgeNotVerified")}
                 </span>
               )}
+              <button
+                type="button"
+                onClick={() => {
+                  setPhoneModalKey((k) => k + 1);
+                  setIsPhoneModalOpen(true);
+                }}
+                className="ml-auto text-[12px] font-semibold text-ws-ember-bright hover:underline"
+              >
+                {t("cabinet.changePhone")}
+              </button>
             </div>
             <div className="relative flex items-center">
               <span className="pointer-events-none absolute left-[14px] text-ws-ink-mute">
@@ -137,6 +150,11 @@ export const ProfilePanel = ({ customer }: ProfilePanelProps) => {
       <ChangePasswordModal
         open={isPasswordModalOpen}
         onClose={() => setIsPasswordModalOpen(false)}
+      />
+      <ChangePhoneModal
+        key={phoneModalKey}
+        open={isPhoneModalOpen}
+        onClose={() => setIsPhoneModalOpen(false)}
       />
     </div>
   );

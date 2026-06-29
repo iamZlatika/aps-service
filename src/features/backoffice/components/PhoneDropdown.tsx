@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu.tsx";
+import { stripNonDigits } from "@/shared/lib/utils";
 
 interface PhoneDropdownProps {
   phoneNumber: string;
@@ -21,7 +22,7 @@ export const PhoneDropdown = ({
   size = "sm",
 }: PhoneDropdownProps) => {
   const { t } = useTranslation();
-  const digits = phoneNumber.replace(/\D/g, "");
+  const digits = stripNonDigits(phoneNumber);
   const whatsappUrl = `https://wa.me/${digits}`;
   const viberUrl = `viber://chat?number=%2B${digits}`;
   const telegramUrl = `https://t.me/+${digits}`;

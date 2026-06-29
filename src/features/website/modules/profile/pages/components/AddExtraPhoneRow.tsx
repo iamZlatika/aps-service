@@ -8,7 +8,7 @@ import {
   createExtraPhoneSchema,
   type ExtraPhoneFormValues,
 } from "@/features/website/modules/profile/pages/components/addExtraPhoneRow.schema";
-import { cn } from "@/shared/lib/utils";
+import { cn, stripNonDigits } from "@/shared/lib/utils";
 
 interface AddExtraPhoneRowProps {
   onConfirm: (phone: string) => void;
@@ -34,7 +34,7 @@ export const AddExtraPhoneRow = ({
   });
 
   const handlePhoneChange = (masked: string) => {
-    const digits = masked.replace(/\D/g, "");
+    const digits = stripNonDigits(masked);
     setValue("phone", digits ? "+38" + digits : "", { shouldValidate: false });
   };
 

@@ -1,6 +1,6 @@
 import { IMaskInput } from "react-imask";
 
-import { cn } from "@/shared/lib/utils";
+import { cn, stripNonDigits } from "@/shared/lib/utils";
 
 interface CardNumberMaskInputProps {
   value: string;
@@ -25,7 +25,7 @@ export const CardNumberMaskInput = ({
     mask="0000-0000-0000-0000"
     value={value}
     onAccept={(maskedValue: string) => {
-      onChange(maskedValue.replace(/\D/g, ""));
+      onChange(stripNonDigits(maskedValue));
     }}
     onBlur={onBlur}
     placeholder={placeholder ?? "XXXX-XXXX-XXXX-XXXX"}

@@ -1,8 +1,9 @@
 import { type MessengerKey } from "@/features/website/config";
 import { assertNever } from "@/shared/lib/assertNever";
+import { stripNonDigits } from "@/shared/lib/utils";
 
 export function formatPhone(raw: string): string {
-  const digits = raw.replace(/\D/g, "");
+  const digits = stripNonDigits(raw);
   if (digits.length === 12 && digits.startsWith("380")) {
     return `+380 (${digits.slice(3, 5)}) ${digits.slice(5, 8)}-${digits.slice(8, 10)}-${digits.slice(10, 12)}`;
   }
@@ -61,7 +62,7 @@ export function computeReviewStats(ratings: number[]): ReviewStats {
 }
 
 export function getMessengerHref(key: MessengerKey, phone: string): string {
-  const digits = phone.replace(/\D/g, "");
+  const digits = stripNonDigits(phone);
   if (key === "telegram") return `https://t.me/+${digits}`;
   if (key === "viber") return `viber://chat?number=%2B${digits}`;
   if (key === "whatsapp") return `https://wa.me/${digits}`;

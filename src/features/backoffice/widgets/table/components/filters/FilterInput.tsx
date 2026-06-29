@@ -3,7 +3,7 @@ import { type ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Input } from "@/shared/components/ui/input.tsx";
 import { FILTER_DEBOUNCE_MS } from "@/shared/lib/constants.ts";
-import { cn } from "@/shared/lib/utils.ts";
+import { cn, stripNonDigits } from "@/shared/lib/utils.ts";
 
 interface SearchFilterProps {
   fieldName: string;
@@ -41,9 +41,7 @@ export const SearchFilter = ({
   }, [value]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const next = numbersOnly
-      ? e.target.value.replace(/\D/g, "")
-      : e.target.value;
+    const next = numbersOnly ? stripNonDigits(e.target.value) : e.target.value;
     setLocalValue(next);
 
     if (timerRef.current) {

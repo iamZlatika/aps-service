@@ -6,6 +6,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function stripNonDigits(value: string): string {
+  return value.replace(/\D/g, "");
+}
+
 export function formatDate(value?: string | null): string | null {
   if (!value) return null;
   const date = parseISO(value);

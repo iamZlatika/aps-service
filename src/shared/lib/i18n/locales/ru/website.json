@@ -395,6 +395,8 @@
     "phoneBadgeVerified": "Подтверждён",
     "phoneBadgeNotVerified": "Не подтверждён",
     "primaryPhoneHint": "По этому номеру вы видите свои заказы в разделе «Мои заказы».",
+    "changePhone": "Сменить номер",
+    "changePrimaryPhoneDesc": "Введите номер телефона, который хотите использовать как основной.",
     "extraPhonesTitle": "Дополнительные телефоны",
     "extraPhonesNote": "только для связи",
     "addPhone": "Добавить телефон",

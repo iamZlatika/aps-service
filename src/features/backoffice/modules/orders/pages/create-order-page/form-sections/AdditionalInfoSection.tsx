@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select.tsx";
+import { stripNonDigits } from "@/shared/lib/utils";
 import { PAYMENT_METHODS } from "@/shared/types.ts";
 
 type AdditionalInfoSectionProps = {
@@ -156,7 +157,7 @@ export const AdditionalInfoSection = ({
           className="h-11 text-base md:text-base"
           inputMode="numeric"
           onInput={(e) => {
-            e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "");
+            e.currentTarget.value = stripNonDigits(e.currentTarget.value);
           }}
           {...register("prepayment")}
         />

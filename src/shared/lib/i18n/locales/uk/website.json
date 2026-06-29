@@ -395,6 +395,8 @@
     "phoneBadgeVerified": "Підтверджено",
     "phoneBadgeNotVerified": "Не підтверджено",
     "primaryPhoneHint": "За цим номером ви бачите свої замовлення у розділі «Мої замовлення».",
+    "changePhone": "Змінити номер",
+    "changePrimaryPhoneDesc": "Введіть номер телефону, який хочете використовувати як основний.",
     "extraPhonesTitle": "Додаткові телефони",
     "extraPhonesNote": "лише для зв'язку",
     "addPhone": "Додати телефон",

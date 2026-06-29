@@ -1,7 +1,7 @@
 import { type KeyboardEvent } from "react";
 import { IMaskInput } from "react-imask";
 
-import { cn } from "@/shared/lib/utils";
+import { cn, stripNonDigits } from "@/shared/lib/utils";
 
 interface PhoneMaskInputProps {
   value: string;
@@ -48,7 +48,7 @@ export const PhoneMaskInput = ({
         mask="000-000-00-00"
         value={displayValue}
         onAccept={(maskedValue: string) => {
-          const digits = maskedValue.replace(/\D/g, "");
+          const digits = stripNonDigits(maskedValue);
           onChange(digits ? "+38" + digits : "");
         }}
         onFocus={onFocus}
