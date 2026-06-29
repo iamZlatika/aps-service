@@ -250,7 +250,10 @@
     },
     "roles": {
       "manager": "Менеджер",
-      "head_manager": "Адміністратор"
+      "head_manager": "Адміністратор",
+      "receptionist": "Приймальник",
+      "accountant": "Бухгалтер",
+      "support": "Підтримка"
     },
     "actions": {
       "block": "Заблокировать",
