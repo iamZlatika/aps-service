@@ -25,6 +25,9 @@ interface MultiSearchableSelectProps {
   error?: FieldError;
   onCreateItem?: CreateItemFn;
   quickSelectLabels?: string[];
+  fetchQuickSelectItems?: (
+    labels: string[],
+  ) => Promise<SearchableSelectOption[]>;
   dropUp?: boolean;
   maxVisible?: number;
 }
@@ -38,6 +41,7 @@ export const MultiSearchableSelect = ({
   error,
   onCreateItem,
   quickSelectLabels,
+  fetchQuickSelectItems,
   dropUp,
   maxVisible,
 }: MultiSearchableSelectProps) => {
@@ -71,6 +75,7 @@ export const MultiSearchableSelect = ({
     onChange,
     fetchItems,
     queryKey,
+    fetchQuickSelectItems,
     onCreateItem,
     quickSelectLabels,
   });

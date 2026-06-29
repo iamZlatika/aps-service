@@ -101,7 +101,7 @@ export const CustomerInfoCard = ({
   ) : (
     <div className="flex flex-col gap-1">
       <span className="text-2xl font-semibold">{customer.name}</span>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-1">
         <span className="text-xl text-muted-foreground">
           {customer.email ?? "—"}
         </span>

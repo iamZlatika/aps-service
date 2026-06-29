@@ -12,5 +12,5 @@ export type PaginatedGetAllFn<
   perPage: number,
   sortColumn?: string | null,
   sortType?: "asc" | "desc" | "none",
-  filters?: Record<string, string>,
+  filters?: Record<string, string | string[]>,
 ) => Promise<{ items: TItem[] }>;

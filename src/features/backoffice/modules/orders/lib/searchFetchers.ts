@@ -77,6 +77,15 @@ export const fetchUsersByName = (
     )
     .then((r) => r.items.map((u) => ({ id: u.id, name: u.name })));
 
+export const createQuickSelectFetcher =
+  (apiFn: PaginatedGetAllFn, arrayParamName: string) =>
+  (labels: string[]): Promise<SearchableSelectOption[]> =>
+    apiFn(1, labels.length, undefined, undefined, {
+      [arrayParamName]: labels,
+    }).then((r) =>
+      r.items.map((item) => ({ id: item.id, name: item.name as string })),
+    );
+
 export const createNameSearchFetcher =
   (apiFn: PaginatedGetAllFn) =>
   (search: string): Promise<SearchableSelectOption[]> =>

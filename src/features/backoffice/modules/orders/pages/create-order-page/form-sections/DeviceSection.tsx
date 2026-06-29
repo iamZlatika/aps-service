@@ -1,9 +1,11 @@
 import { Controller, type FieldError, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { accessoriesApi } from "@/features/backoffice/modules/dictionaries/api";
 import { DueDatePicker } from "@/features/backoffice/modules/orders/components/DueDatePicker.tsx";
 import { useDictionarySection } from "@/features/backoffice/modules/orders/hooks/useDictionarySection.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
+import { createQuickSelectFetcher } from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { CardTitle } from "@/shared/components/ui/card";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
@@ -15,6 +17,11 @@ import {
 } from "@/shared/lib/constants.ts";
 import { MultiSearchableSelect } from "@/widgets/multi-searchable-select";
 import SearchableSelect from "@/widgets/searchable-select";
+
+const fetchAccessoryQuickSelect = createQuickSelectFetcher(
+  accessoriesApi.getAll,
+  "names",
+);
 
 export const DeviceSection = () => {
   const { fetchers, createItemFns } = useDictionarySection();
@@ -168,6 +175,7 @@ export const DeviceSection = () => {
               error={errors.accessory as FieldError | undefined}
               onCreateItem={createItemFns.accessories}
               quickSelectLabels={[...ACCESSORY_QUICK_SELECT]}
+              fetchQuickSelectItems={fetchAccessoryQuickSelect}
             />
           )}
         />

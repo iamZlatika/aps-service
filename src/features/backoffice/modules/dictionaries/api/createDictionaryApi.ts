@@ -40,7 +40,7 @@ export const createTypedDictionaryApi = <
       perPage = 15,
       sortColumn?: string | null,
       sortType?: SortType,
-      filters?: Record<string, string>,
+      filters?: Record<string, string | string[]>,
     ): Promise<PaginatedDictionaryItems<TOut>> => {
       const params = buildPaginatedParams(
         page,

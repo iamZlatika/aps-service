@@ -7,7 +7,7 @@ export const buildPaginatedParams = (
   perPage: number,
   sortColumn?: string | null,
   sortType?: string,
-  filters?: Record<string, string>,
+  filters?: Record<string, string | string[]>,
 ): URLSearchParams => {
   const params = new URLSearchParams({
     page: String(page),
@@ -19,7 +19,11 @@ export const buildPaginatedParams = (
   }
   if (filters) {
     Object.entries(filters).forEach(([key, value]) => {
-      if (value) params.set(key, value);
+      if (Array.isArray(value)) {
+        value.forEach((v) => params.append(`${key}[]`, v));
+      } else if (value) {
+        params.set(key, value);
+      }
     });
   }
   return params;

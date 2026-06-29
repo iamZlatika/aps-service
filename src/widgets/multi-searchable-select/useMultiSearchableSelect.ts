@@ -1,9 +1,4 @@
-import {
-  useMutation,
-  useQueries,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   type ChangeEvent,
   type KeyboardEvent,
@@ -28,6 +23,9 @@ interface UseMultiSearchableSelectProps {
   queryKey: readonly unknown[];
   onCreateItem?: CreateItemFn;
   quickSelectLabels?: string[];
+  fetchQuickSelectItems?: (
+    labels: string[],
+  ) => Promise<SearchableSelectOption[]>;
 }
 
 export const useMultiSearchableSelect = ({
@@ -37,6 +35,7 @@ export const useMultiSearchableSelect = ({
   queryKey,
   onCreateItem,
   quickSelectLabels,
+  fetchQuickSelectItems,
 }: UseMultiSearchableSelectProps) => {
   const queryClientInstance = useQueryClient();
 
@@ -83,22 +82,11 @@ export const useMultiSearchableSelect = ({
     [allOptions, valueSet],
   );
 
-  const quickSelectResults = useQueries({
-    queries: (quickSelectLabels ?? []).map((label) => ({
-      queryKey: [...queryKey, "__quickselect", label],
-      queryFn: () => fetchItems(label),
-      enabled: !!quickSelectLabels?.length,
-      select: (items: SearchableSelectOption[]) =>
-        items.find((item) => item.name.toLowerCase() === label.toLowerCase()),
-    })),
+  const { data: quickSelectOptions = [] } = useQuery({
+    queryKey: [...queryKey, "__quickselect", quickSelectLabels],
+    queryFn: () => fetchQuickSelectItems!(quickSelectLabels!),
+    enabled: !!fetchQuickSelectItems && !!quickSelectLabels?.length,
   });
-  const quickSelectOptions = useMemo(
-    () =>
-      quickSelectResults
-        .map((r) => r.data)
-        .filter(Boolean) as SearchableSelectOption[],
-    [quickSelectResults],
-  );
 
   const isAlreadySelected = useMemo(() => {
     const trimmed = inputValue.trim();
