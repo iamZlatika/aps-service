@@ -83,6 +83,8 @@
     "masters": "Мастера",
     "dictionaries": "Справочники",
     "works": "Работы",
+    "billing": "Биллинг",
+    "roles_permissions": "Роли и доступы",
     "dictionaries_list": {
       "title": "Справочники",
       "accessories": "Комплектации",

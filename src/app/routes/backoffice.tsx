@@ -8,7 +8,7 @@ import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
 import { PROFILE_ROUTES } from "@/features/backoffice/modules/profile/routes.ts";
 import { USERS_ROUTES } from "@/features/backoffice/modules/users/routes";
 import { WORKS_ROUTES } from "@/features/backoffice/modules/works/routes";
-import { ROLES } from "@/shared/types.ts";
+
 
 const OrdersPage = lazy(
   () => import("@/features/backoffice/modules/orders/pages"),
@@ -114,9 +114,8 @@ export const backofficeRoutes: RouteObject = {
     { path: USERS_ROUTES.user, element: <UserPage /> },
     { path: PROFILE_ROUTES.root, element: <ProfilePage /> },
 
-    // super admin panel
     {
-      element: <ProtectedRoute allowedRoles={[ROLES.HEAD_MANAGER]} />,
+      element: <ProtectedRoute requiredAbility="dictionaries_services_view" />,
       children: [
         {
           path: DICTIONARIES_ROUTES.root,
@@ -182,6 +181,11 @@ export const backofficeRoutes: RouteObject = {
           path: DICTIONARIES_ROUTES.priceList,
           element: <PriceListPage />,
         },
+      ],
+    },
+    {
+      element: <ProtectedRoute requiredAbility="landing_works_view" />,
+      children: [
         {
           path: WORKS_ROUTES.root,
           element: <WorksPage />,
