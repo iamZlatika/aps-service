@@ -29,6 +29,14 @@ const NotFoundPage = lazy(() => import("@/features/website/pages/not-found"));
 const EmailVerifyPage = lazy(
   () => import("@/features/auth/website/pages/email-verify/EmailVerifyPage"),
 );
+const ConfirmAccountPage = lazy(
+  () =>
+    import("@/features/auth/website/pages/confirm-account/ConfirmAccountPage"),
+);
+const ConfirmEmailChangePage = lazy(
+  () =>
+    import("@/features/auth/website/pages/confirm-email-change/ConfirmEmailChangePage"),
+);
 const ResetPasswordPage = lazy(
   () =>
     import("@/features/auth/website/pages/reset-password/ResetPasswordPage"),
@@ -58,6 +66,11 @@ export const websiteRoutes: RouteObject = {
     { path: WEBSITE_ROUTES.warranty, element: <WarrantyPage /> },
     { path: WEBSITE_ROUTES.about, element: <AboutPage /> },
     { path: WEBSITE_ROUTES.emailVerify, element: <EmailVerifyPage /> },
+    { path: WEBSITE_ROUTES.confirmAccount, element: <ConfirmAccountPage /> },
+    {
+      path: WEBSITE_ROUTES.confirmEmailChange,
+      element: <ConfirmEmailChangePage />,
+    },
     { path: WEBSITE_ROUTES.resetPassword, element: <ResetPasswordPage /> },
     { path: WEBSITE_ROUTES.googleCallback, element: <GoogleCallbackPage /> },
     { path: "*", element: <NotFoundPage /> },

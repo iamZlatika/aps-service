@@ -41,6 +41,18 @@ export const websiteAuthApi = {
   emailVerify: async (verifyUrl: string): Promise<void> => {
     await get(verifyUrl);
   },
+  emailVerifyToken: async (token: string): Promise<AuthResponse> => {
+    const response = await post(WEBSITE_AUTH_API.emailVerifyToken(), { token });
+    const validated = parseDto(AuthResponseDtoSchema, response);
+    return mapAuthResponseDtoToAuthResponse(validated);
+  },
+  emailChangeVerify: async (token: string): Promise<AuthResponse> => {
+    const response = await post(WEBSITE_AUTH_API.emailChangeVerify(), {
+      token,
+    });
+    const validated = parseDto(AuthResponseDtoSchema, response);
+    return mapAuthResponseDtoToAuthResponse(validated);
+  },
   login: async (body: LoginFormValues): Promise<AuthResponse> => {
     const response = await post<LoginFormValues, unknown>(
       WEBSITE_AUTH_API.login(),

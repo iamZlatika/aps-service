@@ -1,4 +1,4 @@
-import { Check, Mail } from "lucide-react";
+import { Check, Clock, Mail } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -48,9 +48,12 @@ export const ProfileEmailField = ({ customer }: ProfileEmailFieldProps) => {
         )}
       </div>
       {customer.pendingEmail && (
-        <p className="mt-[7px] text-[12px] text-ws-ink-soft">
-          {t("cabinet.pendingEmailNotice", { email: customer.pendingEmail })}
-        </p>
+        <div className="mt-[7px]">
+          <span className="inline-flex items-center gap-[4px] rounded-full border border-[rgba(216,85,62,.22)] bg-[rgba(216,85,62,.1)] px-[8px] py-[3px] text-[10px] font-semibold leading-none text-ws-red">
+            <Clock className="size-[10px] shrink-0" aria-hidden="true" />
+            {t("cabinet.pendingEmailNotice", { email: customer.pendingEmail })}
+          </span>
+        </div>
       )}
 
       <ChangeEmailModal

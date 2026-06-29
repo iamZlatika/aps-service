@@ -11,6 +11,8 @@ export const WEBSITE_AUTH_API = {
   passwordForgot: () => `${BASE}/password/forgot`,
   passwordCheckToken: () => `${BASE}/password/check-token`,
   passwordReset: () => `${BASE}/password/reset`,
+  emailVerifyToken: () => `${BASE}/email/verify`,
+  emailChangeVerify: () => `${BASE}/email/change-verify`,
   googleRedirect: () => `${BASE}/google`,
   googleCallback: () => `${BASE}/google/callback`,
 } as const;
