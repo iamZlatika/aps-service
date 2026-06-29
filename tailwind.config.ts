@@ -93,6 +93,7 @@ const config: Config = {
   			'ws-sm':         '13px',
   			'ws-base':       '14px',
   			'ws-md':         '15px',
+  			'ws-body':       '15.5px',
   			'ws-lg':         '17px',
   			'ws-xl':         '18px',
   			'ws-2xl':        '28px',

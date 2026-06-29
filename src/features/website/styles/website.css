@@ -50,6 +50,7 @@
   /* Overlay chips (frosted glass panels in hero) */
   --ws-overlay-chip:   rgba(29,27,24,0.55);
   --ws-overlay-border: rgba(255,255,255,0.08);
+  --ws-photo-overlay:  rgba(8,6,4,0.82);
 
   /* Surface tokens */
   --ws-card:     rgba(255,255,255,.015);
@@ -419,6 +420,13 @@
 .website.light .ws-btn-primary {
   color: #fff;
   box-shadow: 0 8px 20px -10px rgba(26, 109, 181, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* ============================================================
+   About page
+   ============================================================ */
+.ws-about-section {
+  padding-top: 32px;
 }
 
 /* ============================================================
