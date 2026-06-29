@@ -115,7 +115,7 @@ export const backofficeRoutes: RouteObject = {
     { path: PROFILE_ROUTES.root, element: <ProfilePage /> },
 
     {
-      element: <ProtectedRoute requiredAbility="dictionaries_services_view" />,
+      element: <ProtectedRoute requiredAbility="dictionaries_view" />,
       children: [
         {
           path: DICTIONARIES_ROUTES.root,

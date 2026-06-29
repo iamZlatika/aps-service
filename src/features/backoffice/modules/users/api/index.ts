@@ -5,6 +5,7 @@ import {
   PermissionDtoSchema,
   RoleWithPermissionsDtoSchema,
   type UserDto,
+  UserDetailDtoSchema,
   UserDtoSchema,
 } from "@/features/backoffice/modules/users/api/dto.ts";
 import { USERS_API } from "@/features/backoffice/modules/users/api/endpoints";
@@ -14,6 +15,7 @@ import {
   mapPermissionDtoToPermission,
   mapRoleWithPermissionsDtoToRole,
   mapSalarySettingsToDto,
+  mapUserDetailDtoToUserDetail,
   mapUserDtoToUser,
 } from "@/features/backoffice/modules/users/lib/adapters.ts";
 import { type SalarySettings } from "@/features/backoffice/modules/users/lib/salarySettingsSchema.ts";
@@ -23,6 +25,7 @@ import {
   type Permission,
   type RoleWithPermissions,
   type User,
+  type UserDetail,
 } from "@/features/backoffice/modules/users/types.ts";
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
@@ -60,10 +63,9 @@ export const usersApi = {
     return mapMeDtoToMe(parseDto(MeDtoSchema, response.data));
   },
 
-  getUser: async (id: number): Promise<User> => {
-    const response = await get<{ data: UserDto }>(USERS_API.user(id));
-    const validated = parseDto(UserDtoSchema, response.data);
-    return mapUserDtoToUser(validated);
+  getUser: async (id: number): Promise<UserDetail> => {
+    const response = await get<{ data: unknown }>(USERS_API.user(id));
+    return mapUserDetailDtoToUserDetail(parseDto(UserDetailDtoSchema, response.data));
   },
 
   updateSalarySettings: async (
@@ -134,11 +136,11 @@ export const usersApi = {
   updateUserPermissions: async (
     userId: number,
     data: { roles: string[]; permissions: string[] },
-  ): Promise<User> => {
-    const response = await put<typeof data, { data: UserDto }>(
+  ): Promise<UserDetail> => {
+    const response = await put<typeof data, { data: unknown }>(
       USERS_API.updateUserPermissions(userId),
       data,
     );
-    return mapUserDtoToUser(parseDto(UserDtoSchema, response.data));
+    return mapUserDetailDtoToUserDetail(parseDto(UserDetailDtoSchema, response.data));
   },
 };

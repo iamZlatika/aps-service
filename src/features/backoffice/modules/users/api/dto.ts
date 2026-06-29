@@ -14,7 +14,6 @@ export const UserDtoSchema = z.object({
   name: z.string(),
   email: z.string().regex(emailRegex),
   roles: z.array(z.string()),
-  permissions: z.array(z.string()),
   status: zodEnumFromConst(USER_STATUSES),
   locale: zodEnumFromConst(USER_LANGUAGES),
   theme: zodEnumFromConst(USER_THEMES),
@@ -25,6 +24,12 @@ export const UserDtoSchema = z.object({
   intake_percent: z.number(),
 });
 export type UserDto = z.infer<typeof UserDtoSchema>;
+
+export const UserDetailDtoSchema = UserDtoSchema.extend({
+  permissions: z.array(z.string()),
+  abilities: z.array(z.string()),
+});
+export type UserDetailDto = z.infer<typeof UserDetailDtoSchema>;
 
 export const SearchPresetFiltersDtoSchema = z.object({
   page: z.number(),
@@ -51,8 +56,7 @@ export const SearchPresetDtoSchema = z.object({
 });
 export type SearchPresetDto = z.infer<typeof SearchPresetDtoSchema>;
 
-export const MeDtoSchema = UserDtoSchema.extend({
-  abilities: z.array(z.string()),
+export const MeDtoSchema = UserDetailDtoSchema.extend({
   balance: z.string(),
   search_presets: z.array(SearchPresetDtoSchema),
 });

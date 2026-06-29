@@ -96,7 +96,7 @@ export const Sidebar = memo(() => {
                 </SidebarMenuItem>
               )}
 
-              {can("dictionaries_services_view") && (
+              {can("dictionaries_view") && (
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild tooltip={t("sidebar.dictionaries")}>
                     <Link

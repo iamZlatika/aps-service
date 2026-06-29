@@ -7,9 +7,16 @@ import type {
   PaginatedUsersDto,
   PermissionDto,
   RoleWithPermissionsDto,
+  UserDetailDto,
 } from "../api/dto";
 import { type UserDto } from "../api/dto";
-import { type Me, type Permission, type RoleWithPermissions, type User } from "../types.ts";
+import {
+  type Me,
+  type Permission,
+  type RoleWithPermissions,
+  type User,
+  type UserDetail,
+} from "../types.ts";
 
 export const mapUserDtoToUser = (dto: UserDto): User => {
   return {
@@ -17,7 +24,6 @@ export const mapUserDtoToUser = (dto: UserDto): User => {
     name: dto.name,
     email: dto.email,
     roles: dto.roles,
-    permissions: dto.permissions,
     status: dto.status,
     locale: dto.locale,
     theme: dto.theme,
@@ -29,9 +35,14 @@ export const mapUserDtoToUser = (dto: UserDto): User => {
   };
 };
 
-export const mapMeDtoToMe = (dto: MeDto): Me => ({
+export const mapUserDetailDtoToUserDetail = (dto: UserDetailDto): UserDetail => ({
   ...mapUserDtoToUser(dto),
+  permissions: dto.permissions,
   abilities: dto.abilities,
+});
+
+export const mapMeDtoToMe = (dto: MeDto): Me => ({
+  ...mapUserDetailDtoToUserDetail(dto),
   balance: dto.balance,
   searchPresets: dto.search_presets.map((p) => ({
     id: p.id,
