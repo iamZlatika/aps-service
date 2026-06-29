@@ -4,7 +4,6 @@ import { LocationDtoSchema } from "@/entities/location/dto";
 import { emailRegex } from "@/shared/lib/constants.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
 import {
-  ROLES,
   USER_LANGUAGES,
   USER_STATUSES,
   USER_THEMES,
@@ -14,7 +13,8 @@ export const UserDtoSchema = z.object({
   id: z.number(),
   name: z.string(),
   email: z.string().regex(emailRegex),
-  role: zodEnumFromConst(ROLES),
+  roles: z.array(z.string()),
+  permissions: z.array(z.string()),
   status: zodEnumFromConst(USER_STATUSES),
   locale: zodEnumFromConst(USER_LANGUAGES),
   theme: zodEnumFromConst(USER_THEMES),
@@ -52,10 +52,26 @@ export const SearchPresetDtoSchema = z.object({
 export type SearchPresetDto = z.infer<typeof SearchPresetDtoSchema>;
 
 export const MeDtoSchema = UserDtoSchema.extend({
+  abilities: z.array(z.string()),
   balance: z.string(),
   search_presets: z.array(SearchPresetDtoSchema),
 });
 export type MeDto = z.infer<typeof MeDtoSchema>;
+
+export const PermissionDtoSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  group: z.string(),
+  action: z.string(),
+});
+export type PermissionDto = z.infer<typeof PermissionDtoSchema>;
+
+export const RoleWithPermissionsDtoSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  permissions: z.array(z.string()),
+});
+export type RoleWithPermissionsDto = z.infer<typeof RoleWithPermissionsDtoSchema>;
 
 export const PaginatedUsersDtoSchema = z.object({
   data: z.array(UserDtoSchema),

@@ -2,16 +2,22 @@ import { mapLocationDtoToLocation } from "@/entities/location/adapters";
 import { type SalarySettings } from "@/features/backoffice/modules/users/lib/salarySettingsSchema.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types";
 
-import type { MeDto, PaginatedUsersDto } from "../api/dto";
+import type {
+  MeDto,
+  PaginatedUsersDto,
+  PermissionDto,
+  RoleWithPermissionsDto,
+} from "../api/dto";
 import { type UserDto } from "../api/dto";
-import { type Me, type User } from "../types.ts";
+import { type Me, type Permission, type RoleWithPermissions, type User } from "../types.ts";
 
 export const mapUserDtoToUser = (dto: UserDto): User => {
   return {
     id: dto.id,
     name: dto.name,
     email: dto.email,
-    role: dto.role,
+    roles: dto.roles,
+    permissions: dto.permissions,
     status: dto.status,
     locale: dto.locale,
     theme: dto.theme,
@@ -25,6 +31,7 @@ export const mapUserDtoToUser = (dto: UserDto): User => {
 
 export const mapMeDtoToMe = (dto: MeDto): Me => ({
   ...mapUserDtoToUser(dto),
+  abilities: dto.abilities,
   balance: dto.balance,
   searchPresets: dto.search_presets.map((p) => ({
     id: p.id,
@@ -34,6 +41,19 @@ export const mapMeDtoToMe = (dto: MeDto): Me => ({
     createdAt: p.created_at,
     updatedAt: p.updated_at,
   })),
+});
+
+export const mapPermissionDtoToPermission = (dto: PermissionDto): Permission => ({
+  id: dto.id,
+  name: dto.name,
+  group: dto.group,
+  action: dto.action,
+});
+
+export const mapRoleWithPermissionsDtoToRole = (dto: RoleWithPermissionsDto): RoleWithPermissions => ({
+  id: dto.id,
+  name: dto.name,
+  permissions: dto.permissions,
 });
 
 export const mapSalarySettingsToDto = (data: SalarySettings) => ({

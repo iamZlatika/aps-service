@@ -12,4 +12,10 @@ export const USERS_API = {
   updateUserStatus: (id: number) => `${BASE}/${id}/status`,
   changeUserLocation: (id: number) => `${BASE}/${id}/location`,
   changeUserSalarySettings: (id: number) => `${BASE}/${id}/salary-setting`,
+  updateUserPermissions: (id: number) => `${BASE}/${id}/permissions`,
+
+  permissions: () => "/backoffice/permissions",
+
+  roles: () => "/backoffice/roles",
+  updateRolePermissions: (roleId: number) => `/backoffice/roles/${roleId}/permissions`,
 } as const;

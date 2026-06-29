@@ -4,7 +4,6 @@ import { type Location } from "@/features/backoffice/modules/dictionaries/types.
 import type { SearchPresetFiltersDto } from "@/features/backoffice/modules/users/api/dto.ts";
 import type { registerUserSchema } from "@/features/backoffice/modules/users/lib/registerUserSchema.ts";
 import {
-  type Role,
   type UserLanguage,
   type UserStatus,
   type UserTheme,
@@ -14,7 +13,8 @@ export type User = {
   id: number;
   name: string;
   email: string;
-  role: Role;
+  roles: string[];
+  permissions: string[];
   status: UserStatus;
   locale: UserLanguage;
   theme: UserTheme;
@@ -37,6 +37,20 @@ export type SearchPreset<TFilters = SearchPresetFiltersDto> = {
 };
 
 export type Me = User & {
+  abilities: string[];
   balance: string;
   searchPresets: SearchPreset[];
+};
+
+export type Permission = {
+  id: number;
+  name: string;
+  group: string;
+  action: string;
+};
+
+export type RoleWithPermissions = {
+  id: number;
+  name: string;
+  permissions: string[];
 };

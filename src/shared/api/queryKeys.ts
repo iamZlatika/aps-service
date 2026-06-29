@@ -56,6 +56,16 @@ export const queryKeys = {
     detail: (id: number) => ["users", "detail", id] as const,
   },
 
+  permissions: {
+    all: ["permissions"] as const,
+    list: () => ["permissions", "list"] as const,
+  },
+
+  roles: {
+    all: ["roles"] as const,
+    list: () => ["roles", "list"] as const,
+  },
+
   customers: {
     all: ["customers"] as const,
     list: makeEntityKey(["customers"], "list"),
