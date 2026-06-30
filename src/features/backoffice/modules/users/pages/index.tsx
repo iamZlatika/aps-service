@@ -36,12 +36,14 @@ const UsersPage = () => {
       sortable: false,
     },
     {
-      key: "role",
-      field: "role",
+      key: "roles",
+      field: "roles",
       labelKey: "users.table_fields.role",
-      sortable: true,
-      type: "select",
-      options: getUserRoleOptions(t),
+      sortable: false,
+      renderCell: (value) =>
+        (value as string[])
+          .map((r) => t(`users.roles.${r}`, { defaultValue: r }))
+          .join(", "),
     },
     {
       key: "location",
@@ -92,8 +94,6 @@ const UsersPage = () => {
   const { onSubmit: handleRegisterSubmit, isPending: isRegisterPending } =
     useRegisterUser(() => setIsAddOpen(false));
 
-  const roleOptions = getUserRoleOptions(t);
-
   const registerFields: FieldConfig[] = [
     {
       key: "email",
@@ -123,12 +123,12 @@ const UsersPage = () => {
       inputType: "password",
     },
     {
-      key: "role",
+      key: "roles",
       label: t("users.register_form.role"),
       placeholder: t("users.register_form.role_placeholder"),
       required: true,
       type: "select",
-      options: roleOptions,
+      options: getUserRoleOptions(t),
     },
   ];
 

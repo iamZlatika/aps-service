@@ -70,7 +70,7 @@ const ProfilePage = () => {
             onSubmitSuccess={() => setIsEditing(false)}
           />
         }
-        metaSlot={<RoleBadge role={user.role} />}
+        metaSlot={<RoleBadge roles={user.roles} />}
         rightAction={rightAction}
       >
         <CardTitle className="text-xl font-bold mb-4 text-center">

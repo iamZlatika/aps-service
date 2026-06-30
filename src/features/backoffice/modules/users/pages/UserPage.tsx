@@ -66,7 +66,7 @@ const UserPage = () => {
               </span>
             </div>
           }
-          metaSlot={<RoleBadge role={user.role} />}
+          metaSlot={<RoleBadge roles={user.roles} />}
           leftAction={leftAction}
         >
           <UserRateSection user={user} />
