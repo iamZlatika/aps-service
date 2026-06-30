@@ -8,6 +8,7 @@ import ChangePasswordForm from "@/features/backoffice/modules/profile/components
 import ChangeUserInfoForm from "@/features/backoffice/modules/profile/components/ChangeUserInfoForm.tsx";
 import { CHANGE_USER_INFO_FORM_ID } from "@/features/backoffice/modules/profile/components/constants.ts";
 import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
+import { UserAbilitiesSection } from "@/features/backoffice/modules/profile/components/UserAbilitiesSection.tsx";
 import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard.tsx";
 import { AcceptButton } from "@/shared/components/common/buttons/AcceptButton.tsx";
 import { CancelButton } from "@/shared/components/common/buttons/CancelButton.tsx";
@@ -105,6 +106,12 @@ const ProfilePage = () => {
             </p>
             <p className="text-lg font-semibold">{user.intakePercent}%</p>
           </div>
+        </div>
+        <CardTitle className="text-xl font-bold mb-4 text-center">
+          {t("profile.your_abilities")}
+        </CardTitle>
+        <div className="mb-6">
+          <UserAbilitiesSection abilities={user.abilities} />
         </div>
         <CardTitle className="text-xl font-bold mb-4 text-center">
           {t("profile.change_form.change_password")}
