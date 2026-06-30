@@ -142,6 +142,17 @@ export const customersApi = {
     const validatedData = parseDto(CustomerDtoSchema, response.data);
     return mapCustomerDtoToCustomer(validatedData);
   },
+  setSmsNotifications: async (
+    id: number,
+    enabled: boolean,
+  ): Promise<Customer> => {
+    const response = await put<{ enabled: boolean }, { data: CustomerDto }>(
+      CUSTOMERS_API.setSmsNotifications(id),
+      { enabled },
+    );
+    const validatedData = parseDto(CustomerDtoSchema, response.data);
+    return mapCustomerDtoToCustomer(validatedData);
+  },
   getTelegramLink: async (id: number): Promise<TelegramLink> => {
     const response = await post<void, { data: TelegramDtoLink }>(
       CUSTOMERS_API.getTelegramLink(id),

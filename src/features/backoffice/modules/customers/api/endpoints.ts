@@ -10,6 +10,7 @@ export const CUSTOMERS_API = {
     `${BASE}/${customerId}/phones/${phoneId}`,
   addSecondaryPhone: (customerId: number) => `${BASE}/${customerId}/phones`,
   changeRating: (id: number) => `${BASE}/${id}/rating`,
+  setSmsNotifications: (id: number) => `${BASE}/${id}/sms-notifications`,
   getTelegramLink: (id: number) => `${BASE}/${id}/telegram/generate-link`,
   revokeTelegramLink: (id: number) => `${BASE}/${id}/telegram/revoke-link`,
 } as const;

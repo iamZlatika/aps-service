@@ -21,6 +21,7 @@ export type Customer = {
   status: UserStatus;
   rating: RatingValue;
   comment: string | null;
+  smsNotificationsEnabled: boolean;
   lastOrderAt: string | null;
   createdAt: string;
   updatedAt: string;

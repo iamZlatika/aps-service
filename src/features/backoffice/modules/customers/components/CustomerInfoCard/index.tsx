@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { CustomerSmsSection } from "@/features/backoffice/modules/customers/components/CustomerSmsSection.tsx";
 import { CustomerTelegramSection } from "@/features/backoffice/modules/customers/components/CustomerTelegramSection.tsx";
 import { Rating } from "@/features/backoffice/modules/customers/components/RatingStars.tsx";
 import { useCustomerInfo } from "@/features/backoffice/modules/customers/hooks/useCustomerInfo.ts";
@@ -208,6 +209,8 @@ export const CustomerInfoCard = ({
         }
         rightAction={rightAction}
       >
+        <CustomerSmsSection customer={customer} />
+        <Separator className="my-2 h-px bg-border" />
         <CustomerPhonesSection
           customerId={customer.id}
           customer={customer}
