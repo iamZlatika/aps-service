@@ -56,7 +56,8 @@ export const SearchPresetDtoSchema = z.object({
 });
 export type SearchPresetDto = z.infer<typeof SearchPresetDtoSchema>;
 
-export const MeDtoSchema = UserDetailDtoSchema.extend({
+export const MeDtoSchema = UserDtoSchema.extend({
+  abilities: z.array(z.string()),
   balance: z.string(),
   search_presets: z.array(SearchPresetDtoSchema),
 });

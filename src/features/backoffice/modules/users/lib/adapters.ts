@@ -42,7 +42,8 @@ export const mapUserDetailDtoToUserDetail = (dto: UserDetailDto): UserDetail => 
 });
 
 export const mapMeDtoToMe = (dto: MeDto): Me => ({
-  ...mapUserDetailDtoToUserDetail(dto),
+  ...mapUserDtoToUser(dto),
+  abilities: dto.abilities,
   balance: dto.balance,
   searchPresets: dto.search_presets.map((p) => ({
     id: p.id,

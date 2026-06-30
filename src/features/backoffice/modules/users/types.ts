@@ -40,7 +40,8 @@ export type SearchPreset<TFilters = SearchPresetFiltersDto> = {
   updatedAt: string;
 };
 
-export type Me = UserDetail & {
+export type Me = User & {
+  abilities: string[];
   balance: string;
   searchPresets: SearchPreset[];
 };
