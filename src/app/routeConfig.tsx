@@ -8,6 +8,7 @@ import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
+
 import { ProtectedRoute } from "./ProtectedRoute";
 
 // Layouts

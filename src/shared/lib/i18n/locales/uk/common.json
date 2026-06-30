@@ -265,8 +265,6 @@
     "ok": "Ок"
   },
   "users": {
-    "head_manager": "Адміністратор",
-    "manager": "Менеджер",
     "table_fields": {
       "name": "Ім'я",
       "role": "Роль",
@@ -304,6 +302,12 @@
       "role_placeholder": "Оберіть роль",
       "cancel": "Скасувати",
       "submit": "Створити"
+    },
+    "roles_permissions": {
+      "title": "Ролі та права",
+      "roles": "Ролі",
+      "abilities": "Права доступу",
+      "individual_permissions": "Індивідуальні дозволи"
     }
   },
   "customers": {

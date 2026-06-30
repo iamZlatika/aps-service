@@ -3,11 +3,7 @@ import { z } from "zod";
 import { LocationDtoSchema } from "@/entities/location/dto";
 import { emailRegex } from "@/shared/lib/constants.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
-import {
-  USER_LANGUAGES,
-  USER_STATUSES,
-  USER_THEMES,
-} from "@/shared/types.ts";
+import { USER_LANGUAGES, USER_STATUSES, USER_THEMES } from "@/shared/types.ts";
 
 export const UserDtoSchema = z.object({
   id: z.number(),
@@ -76,7 +72,14 @@ export const RoleWithPermissionsDtoSchema = z.object({
   name: z.string(),
   permissions: z.array(z.string()),
 });
-export type RoleWithPermissionsDto = z.infer<typeof RoleWithPermissionsDtoSchema>;
+export type RoleWithPermissionsDto = z.infer<
+  typeof RoleWithPermissionsDtoSchema
+>;
+
+export const PermissionListDtoSchema = z.array(PermissionDtoSchema);
+export const RoleWithPermissionsListDtoSchema = z.array(
+  RoleWithPermissionsDtoSchema,
+);
 
 export const PaginatedUsersDtoSchema = z.object({
   data: z.array(UserDtoSchema),

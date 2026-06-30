@@ -2,10 +2,11 @@ import {
   type MeDto,
   MeDtoSchema,
   PaginatedUsersDtoSchema,
-  PermissionDtoSchema,
+  PermissionListDtoSchema,
   RoleWithPermissionsDtoSchema,
-  type UserDto,
+  RoleWithPermissionsListDtoSchema,
   UserDetailDtoSchema,
+  type UserDto,
   UserDtoSchema,
 } from "@/features/backoffice/modules/users/api/dto.ts";
 import { USERS_API } from "@/features/backoffice/modules/users/api/endpoints";
@@ -30,7 +31,6 @@ import {
 import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
 import { buildPaginatedParams, get, post, put } from "@/shared/api/api.ts";
-import { z } from "zod";
 import { parseDto } from "@/shared/api/parseDto";
 import {
   type UserLanguage,
@@ -65,7 +65,9 @@ export const usersApi = {
 
   getUser: async (id: number): Promise<UserDetail> => {
     const response = await get<{ data: unknown }>(USERS_API.user(id));
-    return mapUserDetailDtoToUserDetail(parseDto(UserDetailDtoSchema, response.data));
+    return mapUserDetailDtoToUserDetail(
+      parseDto(UserDetailDtoSchema, response.data),
+    );
   },
 
   updateSalarySettings: async (
@@ -108,14 +110,14 @@ export const usersApi = {
 
   getPermissions: async (): Promise<Permission[]> => {
     const response = await get<{ data: unknown[] }>(USERS_API.permissions());
-    return parseDto(z.array(PermissionDtoSchema), response.data).map(
+    return parseDto(PermissionListDtoSchema, response.data).map(
       mapPermissionDtoToPermission,
     );
   },
 
   getRoles: async (): Promise<RoleWithPermissions[]> => {
     const response = await get<{ data: unknown[] }>(USERS_API.roles());
-    return parseDto(z.array(RoleWithPermissionsDtoSchema), response.data).map(
+    return parseDto(RoleWithPermissionsListDtoSchema, response.data).map(
       mapRoleWithPermissionsDtoToRole,
     );
   },
@@ -124,10 +126,10 @@ export const usersApi = {
     roleId: number,
     permissions: string[],
   ): Promise<RoleWithPermissions> => {
-    const response = await put<
-      { permissions: string[] },
-      { data: unknown }
-    >(USERS_API.updateRolePermissions(roleId), { permissions });
+    const response = await put<{ permissions: string[] }, { data: unknown }>(
+      USERS_API.updateRolePermissions(roleId),
+      { permissions },
+    );
     return mapRoleWithPermissionsDtoToRole(
       parseDto(RoleWithPermissionsDtoSchema, response.data),
     );
@@ -141,6 +143,8 @@ export const usersApi = {
       USERS_API.updateUserPermissions(userId),
       data,
     );
-    return mapUserDetailDtoToUserDetail(parseDto(UserDetailDtoSchema, response.data));
+    return mapUserDetailDtoToUserDetail(
+      parseDto(UserDetailDtoSchema, response.data),
+    );
   },
 };

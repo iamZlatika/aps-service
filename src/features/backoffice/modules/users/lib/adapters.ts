@@ -18,7 +18,7 @@ import {
   type UserDetail,
 } from "../types.ts";
 
-export const mapUserDtoToUser = (dto: UserDto): User => {
+export function mapUserDtoToUser(dto: UserDto): User {
   return {
     id: dto.id,
     name: dto.name,
@@ -33,54 +33,68 @@ export const mapUserDtoToUser = (dto: UserDto): User => {
     productsPercent: dto.products_percent,
     intakePercent: dto.intake_percent,
   };
-};
+}
 
-export const mapUserDetailDtoToUserDetail = (dto: UserDetailDto): UserDetail => ({
-  ...mapUserDtoToUser(dto),
-  permissions: dto.permissions,
-  abilities: dto.abilities,
-});
+export function mapUserDetailDtoToUserDetail(dto: UserDetailDto): UserDetail {
+  return {
+    ...mapUserDtoToUser(dto),
+    permissions: dto.permissions,
+    abilities: dto.abilities,
+  };
+}
 
-export const mapMeDtoToMe = (dto: MeDto): Me => ({
-  ...mapUserDtoToUser(dto),
-  abilities: dto.abilities,
-  balance: dto.balance,
-  searchPresets: dto.search_presets.map((p) => ({
-    id: p.id,
-    entity: p.entity,
-    name: p.name,
-    filters: p.filters,
-    createdAt: p.created_at,
-    updatedAt: p.updated_at,
-  })),
-});
+export function mapMeDtoToMe(dto: MeDto): Me {
+  return {
+    ...mapUserDtoToUser(dto),
+    abilities: dto.abilities,
+    balance: dto.balance,
+    searchPresets: dto.search_presets.map((p) => ({
+      id: p.id,
+      entity: p.entity,
+      name: p.name,
+      filters: p.filters,
+      createdAt: p.created_at,
+      updatedAt: p.updated_at,
+    })),
+  };
+}
 
-export const mapPermissionDtoToPermission = (dto: PermissionDto): Permission => ({
-  id: dto.id,
-  name: dto.name,
-  group: dto.group,
-  action: dto.action,
-});
+export function mapPermissionDtoToPermission(dto: PermissionDto): Permission {
+  return {
+    id: dto.id,
+    name: dto.name,
+    group: dto.group,
+    action: dto.action,
+  };
+}
 
-export const mapRoleWithPermissionsDtoToRole = (dto: RoleWithPermissionsDto): RoleWithPermissions => ({
-  id: dto.id,
-  name: dto.name,
-  permissions: dto.permissions,
-});
+export function mapRoleWithPermissionsDtoToRole(
+  dto: RoleWithPermissionsDto,
+): RoleWithPermissions {
+  return {
+    id: dto.id,
+    name: dto.name,
+    permissions: dto.permissions,
+  };
+}
 
-export const mapSalarySettingsToDto = (data: SalarySettings) => ({
-  services_percent: data.servicesPercent,
-  products_percent: data.productsPercent,
-  intake_percent: data.intakePercent,
-});
+export function mapSalarySettingsToDto(data: SalarySettings) {
+  return {
+    services_percent: data.servicesPercent,
+    products_percent: data.productsPercent,
+    intake_percent: data.intakePercent,
+  };
+}
 
-export const mapPaginatedUsersDtoToResponse = (
+export function mapPaginatedUsersDtoToResponse(
   dto: PaginatedUsersDto,
-): PaginatedResponse<User> => ({
-  items: dto.data.map(mapUserDtoToUser),
-  meta: {
-    currentPage: dto.meta.current_page,
-    lastPage: dto.meta.last_page,
-    total: dto.meta.total,
-  },
-});
+): PaginatedResponse<User> {
+  return {
+    items: dto.data.map(mapUserDtoToUser),
+    meta: {
+      currentPage: dto.meta.current_page,
+      lastPage: dto.meta.last_page,
+      total: dto.meta.total,
+    },
+  };
+}

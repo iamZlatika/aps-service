@@ -17,5 +17,6 @@ export const USERS_API = {
   permissions: () => "/backoffice/permissions",
 
   roles: () => "/backoffice/roles",
-  updateRolePermissions: (roleId: number) => `/backoffice/roles/${roleId}/permissions`,
+  updateRolePermissions: (roleId: number) =>
+    `/backoffice/roles/${roleId}/permissions`,
 } as const;

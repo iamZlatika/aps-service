@@ -46,6 +46,7 @@ const ProfilePage = () => {
     </>
   ) : (
     <button
+      type="button"
       onClick={() => setIsEditing(true)}
       className="p-2 text-muted-foreground hover:text-foreground transition-colors"
     >
@@ -54,7 +55,7 @@ const ProfilePage = () => {
   );
 
   return (
-    <div className="p-2 sm:p-6 max-w-3xl mx-auto w-full">
+    <div className="p-2 sm:p-6 max-w-5xl mx-auto w-full">
       <h1 className="mb-6 text-2xl font-bold">{t("profile.settings")}</h1>
       <PersonCard
         avatarSlot={

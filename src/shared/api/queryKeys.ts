@@ -52,33 +52,33 @@ export const queryKeys = {
   users: {
     all: ["users"] as const,
     list: makeEntityKey(["users"], "list"),
-    me: () => ["users", "me"] as const,
-    detail: (id: number) => ["users", "detail", id] as const,
+    me: () => [...queryKeys.users.all, "me"] as const,
+    detail: (id: number) => [...queryKeys.users.all, "detail", id] as const,
   },
 
   permissions: {
     all: ["permissions"] as const,
-    list: () => ["permissions", "list"] as const,
+    list: () => [...queryKeys.permissions.all, "list"] as const,
   },
 
   roles: {
     all: ["roles"] as const,
-    list: () => ["roles", "list"] as const,
+    list: () => [...queryKeys.roles.all, "list"] as const,
   },
 
   customers: {
     all: ["customers"] as const,
     list: makeEntityKey(["customers"], "list"),
-    detail: (id: number) => ["customers", "detail", id] as const,
+    detail: (id: number) => [...queryKeys.customers.all, "detail", id] as const,
   },
 
   orders: {
     all: ["orders"] as const,
     list: makeEntityKey(["orders"], "list"),
-    detail: (id: number) => ["orders", "detail", id] as const,
+    detail: (id: number) => [...queryKeys.orders.all, "detail", id] as const,
     byCustomer: (customerId: number, page?: number) =>
       [
-        "orders",
+        ...queryKeys.orders.all,
         "byCustomer",
         customerId,
         ...(page !== undefined ? [page] : []),
@@ -87,13 +87,14 @@ export const queryKeys = {
 
   tracking: {
     all: ["tracking"] as const,
-    detail: (token: string) => ["tracking", "detail", token] as const,
+    detail: (token: string) =>
+      [...queryKeys.tracking.all, "detail", token] as const,
   },
 
   works: {
     all: ["works"] as const,
     list: makeEntityKey(["works"], "list"),
-    detail: (id: number) => ["works", "detail", id] as const,
+    detail: (id: number) => [...queryKeys.works.all, "detail", id] as const,
   },
 
   website: {

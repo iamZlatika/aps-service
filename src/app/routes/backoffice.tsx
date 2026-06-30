@@ -9,7 +9,6 @@ import { PROFILE_ROUTES } from "@/features/backoffice/modules/profile/routes.ts"
 import { USERS_ROUTES } from "@/features/backoffice/modules/users/routes";
 import { WORKS_ROUTES } from "@/features/backoffice/modules/works/routes";
 
-
 const OrdersPage = lazy(
   () => import("@/features/backoffice/modules/orders/pages"),
 );
@@ -18,12 +17,11 @@ const OrderPage = lazy(
     import("@/features/backoffice/modules/orders/pages/order-page/OrderPage.tsx"),
 );
 const CreateOrderPage = lazy(
-  () =>
-    import("../../features/backoffice/modules/orders/pages/create-order-page"),
+  () => import("@/features/backoffice/modules/orders/pages/create-order-page"),
 );
 const FiltersSettingsPage = lazy(
   () =>
-    import("../../features/backoffice/modules/orders/pages/filters-settings-page"),
+    import("@/features/backoffice/modules/orders/pages/filters-settings-page"),
 );
 const CustomersPage = lazy(
   () => import("@/features/backoffice/modules/customers/pages"),
@@ -32,7 +30,7 @@ const CustomerPage = lazy(
   () => import("@/features/backoffice/modules/customers/pages/CustomerPage"),
 );
 const UsersPage = lazy(
-  () => import("../../features/backoffice/modules/users/pages"),
+  () => import("@/features/backoffice/modules/users/pages"),
 );
 const UserPage = lazy(
   () => import("@/features/backoffice/modules/users/pages/UserPage"),

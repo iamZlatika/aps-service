@@ -30,9 +30,9 @@ export const USER_THEMES = {
 
 export type UserTheme = (typeof USER_THEMES)[keyof typeof USER_THEMES];
 
-export interface SuccessResponse {
+export type SuccessResponse = {
   message: string;
-}
+};
 
 export const STATUS_COLORS = {
   Red: "red",
@@ -62,7 +62,7 @@ export const PAYMENT_METHODS = {
 export const TRANSACTION_STATUSES = {
   COMPLETED: "completed",
   PENDING: "pending",
-};
+} as const;
 
 export type TransactionStatus =
   (typeof TRANSACTION_STATUSES)[keyof typeof TRANSACTION_STATUSES];

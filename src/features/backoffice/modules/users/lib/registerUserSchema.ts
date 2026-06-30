@@ -14,7 +14,9 @@ export const registerUserSchema = z
       .string()
       .min(1, i18next.t("validation.field_required")),
     roles: z
-      .string({ error: () => ({ message: i18next.t("validation.field_required") }) })
+      .string({
+        error: () => ({ message: i18next.t("validation.field_required") }),
+      })
       .min(1, i18next.t("validation.field_required"))
       .transform((val) => [val]),
   })

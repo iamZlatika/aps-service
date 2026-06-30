@@ -7,9 +7,9 @@ import { SharedRoutes } from "@/shared/api/routes.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { destroyEcho } from "@/shared/lib/echo.ts";
 
-type ProtectedRouteProps = {
+interface ProtectedRouteProps {
   requiredAbility?: string;
-};
+}
 
 export const ProtectedRoute = ({ requiredAbility }: ProtectedRouteProps) => {
   const { isAuthenticated, can, isLoading } = useAuth();

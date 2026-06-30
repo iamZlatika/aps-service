@@ -268,8 +268,6 @@
     "ok": "Ок"
   },
   "users": {
-    "head_manager": "Администратор",
-    "manager": "Менеджер",
     "table_fields": {
       "name": "Имя",
       "role": "Роль",
@@ -278,10 +276,10 @@
     },
     "roles": {
       "manager": "Менеджер",
-      "head_manager": "Адміністратор",
-      "receptionist": "Приймальник",
+      "head_manager": "Администратор",
+      "receptionist": "Ресепшионист",
       "accountant": "Бухгалтер",
-      "support": "Підтримка"
+      "support": "Поддержка"
     },
     "actions": {
       "block": "Заблокировать",
@@ -307,6 +305,12 @@
       "role_placeholder": "Выберите роль",
       "cancel": "Отмена",
       "submit": "Создать"
+    },
+    "roles_permissions": {
+      "title": "Роли и права",
+      "roles": "Роли",
+      "abilities": "Права доступа",
+      "individual_permissions": "Индивидуальные разрешения"
     }
   },
   "customers": {

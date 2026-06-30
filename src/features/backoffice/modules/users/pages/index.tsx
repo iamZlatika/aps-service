@@ -22,7 +22,7 @@ import type {
 } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { UserStatusButton } from "@/shared/components/common/UserStatusButton.tsx";
-import { type UserStatus } from "@/shared/types.ts";
+import { USER_STATUSES, type UserStatus } from "@/shared/types.ts";
 
 const UsersPage = () => {
   const { t } = useTranslation();
@@ -72,8 +72,10 @@ const UsersPage = () => {
   ];
 
   const [targetUser, setTargetUser] = useState<User | null>(null);
-  const isActive = targetUser?.status === "active";
-  const newStatus: UserStatus = isActive ? "blocked" : "active";
+  const isActive = targetUser?.status === USER_STATUSES.ACTIVE;
+  const newStatus: UserStatus = isActive
+    ? USER_STATUSES.BLOCKED
+    : USER_STATUSES.ACTIVE;
 
   const { updateStatus, isPending: isStatusPending } = useUpdateUserStatus(() =>
     setTargetUser(null),
