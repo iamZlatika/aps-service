@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard";
 import { CustomerOrdersSection } from "@/features/backoffice/modules/customers/components/CustomerOrdersSection.tsx";
 import { useCustomer } from "@/features/backoffice/modules/customers/hooks/useCustomer.ts";
@@ -15,6 +16,8 @@ const CustomerPage = () => {
 
   const { selectedCustomer, isLoading } = useCustomer(customerId);
   const { createOrderForCustomer } = useCreateOrderForCustomer();
+  const { can } = useAuth();
+  const canManageOrders = can("orders_manage");
 
   if (isLoading) return <Loader />;
   if (!selectedCustomer || !customerId) return null;
@@ -23,9 +26,11 @@ const CustomerPage = () => {
     <div className="p-2 sm:p-6 max-w-5xl mx-auto w-full">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">{t("customers.page_title")}</h1>
-        <CreateOrderForCustomerButton
-          onClick={() => createOrderForCustomer(selectedCustomer)}
-        />
+        {canManageOrders && (
+          <CreateOrderForCustomerButton
+            onClick={() => createOrderForCustomer(selectedCustomer)}
+          />
+        )}
       </div>
       <CustomerInfoCard customer={selectedCustomer} />
       <CustomerOrdersSection customerId={customerId} />

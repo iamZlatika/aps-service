@@ -9,16 +9,20 @@ import ChangeUserInfoForm from "@/features/backoffice/modules/profile/components
 import { CHANGE_USER_INFO_FORM_ID } from "@/features/backoffice/modules/profile/components/constants.ts";
 import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
 import { UserAbilitiesSection } from "@/features/backoffice/modules/profile/components/UserAbilitiesSection.tsx";
+import { usePermissions } from "@/features/backoffice/modules/roles-permissions/hooks/usePermissions.ts";
 import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard.tsx";
 import { AcceptButton } from "@/shared/components/common/buttons/AcceptButton.tsx";
 import { CancelButton } from "@/shared/components/common/buttons/CancelButton.tsx";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { CardTitle } from "@/shared/components/ui/card.tsx";
 import { USER_LANGUAGES } from "@/shared/types.ts";
+import { groupPermissionsByCategory } from "@/widgets/ability-badge/abilityGroups";
 
 const ProfilePage = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const { permissions } = usePermissions();
+  const abilityGroups = groupPermissionsByCategory(permissions);
   const [imageReady, setImageReady] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -116,7 +120,10 @@ const ProfilePage = () => {
           {t("profile.your_abilities")}
         </CardTitle>
         <div className="mb-6">
-          <UserAbilitiesSection abilities={user.abilities} />
+          <UserAbilitiesSection
+            abilities={user.abilities}
+            abilityGroups={abilityGroups}
+          />
         </div>
         <CardTitle className="text-xl font-bold mb-4 text-center">
           {t("profile.change_form.change_password")}

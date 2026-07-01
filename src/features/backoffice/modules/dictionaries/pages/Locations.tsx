@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { type Location } from "@/entities/location/types";
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { PhoneDropdown } from "@/features/backoffice/components/PhoneDropdown";
 import { locationApi } from "@/features/backoffice/modules/dictionaries/api";
@@ -17,6 +18,8 @@ import { queryKeys } from "@/shared/api/queryKeys.ts";
 const LocationsPage = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const { can } = useAuth();
+  const canManage = can("dictionaries_locations_manage");
 
   const [formState, setFormState] = useState<{
     isOpen: boolean;
@@ -75,17 +78,23 @@ const LocationsPage = () => {
         columns={columns}
         searchPlaceholder="search_placeholders.dictionaries_name"
         headerActions={
-          <AddButton
-            onClick={() => setFormState({ isOpen: true, item: null })}
-          />
+          canManage ? (
+            <AddButton
+              onClick={() => setFormState({ isOpen: true, item: null })}
+            />
+          ) : undefined
         }
-        renderRowActions={(item) => (
-          <RowActions
-            item={item}
-            onEdit={(loc) => setFormState({ isOpen: true, item: loc })}
-            onDelete={(loc) => setDeleteItem(loc)}
-          />
-        )}
+        renderRowActions={
+          canManage
+            ? (item) => (
+                <RowActions
+                  item={item}
+                  onEdit={(loc) => setFormState({ isOpen: true, item: loc })}
+                  onDelete={(loc) => setDeleteItem(loc)}
+                />
+              )
+            : undefined
+        }
       />
 
       <LocationFormDialog

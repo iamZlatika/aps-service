@@ -19,12 +19,14 @@ interface CustomerTelegramSectionProps {
   customerId: number;
   telegram: Telegram | null;
   onSuccess?: () => void;
+  canManage: boolean;
 }
 
 export const CustomerTelegramSection = ({
   customerId,
   telegram,
   onSuccess,
+  canManage,
 }: CustomerTelegramSectionProps) => {
   const { t } = useTranslation();
   const { isPending, generateLink, revokeLink, isRevokePending } =
@@ -46,12 +48,12 @@ export const CustomerTelegramSection = ({
           <CardTitle className="text-xl font-bold">
             {t("customers.profile.telegram")}
           </CardTitle>
-          {isLinked && (
+          {canManage && isLinked && (
             <Button variant="destructive" onClick={() => setIsRevokeOpen(true)}>
               {t("customers.actions.revoke_telegram")}
             </Button>
           )}
-          {telegram === null && (
+          {canManage && telegram === null && (
             <Button onClick={generateLink} disabled={isPending}>
               {isPending && <Loader2 className="h-4 w-4 animate-spin" />}
               {t("customers.actions.subscribe_telegram")}

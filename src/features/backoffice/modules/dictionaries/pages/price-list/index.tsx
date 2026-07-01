@@ -130,6 +130,7 @@ const PriceListPage = () => {
       extraFilterKeys={["categories[]", "name"]}
       tableClassName="max-w-[2560px] lg:max-w-[2560px]"
       getItemName={(item) => localize(item.nameRu, item.nameUk)}
+      manageAbility="dictionaries_price_list_manage"
     />
   );
 };

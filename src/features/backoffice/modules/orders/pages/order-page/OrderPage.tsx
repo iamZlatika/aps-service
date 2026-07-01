@@ -12,6 +12,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard";
 import { CustomerOrdersSection } from "@/features/backoffice/modules/customers/components/CustomerOrdersSection";
 import { StatusSelect } from "@/features/backoffice/modules/orders/components/StatusSelect.tsx";
@@ -59,6 +60,9 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   const { selectedOrder, isLoading, isError, error, refetch } =
     useOrder(orderId);
   useOrderSocket(orderId);
+
+  const { can } = useAuth();
+  const canManageOrders = can("orders_manage");
 
   const { createOrderForCustomer } = useCreateOrderForCustomer();
 
@@ -130,11 +134,13 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                         {t("orders.order")} {selectedOrder.orderNumber}
                       </h1>
                       <div className="flex items-center gap-2 shrink-0">
-                        <CreateOrderForCustomerButton
-                          onClick={() =>
-                            createOrderForCustomer(selectedOrder.customer)
-                          }
-                        />
+                        {canManageOrders && (
+                          <CreateOrderForCustomerButton
+                            onClick={() =>
+                              createOrderForCustomer(selectedOrder.customer)
+                            }
+                          />
+                        )}
                         <button
                           type="button"
                           className="h-9 w-9 sm:h-12 sm:w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"
@@ -209,10 +215,12 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                       <ProductsAndServicesCard
                         orderId={orderId}
                         selectedOrder={selectedOrder}
+                        canManage={canManageOrders}
                       />
                       <PaymentsCard
                         orderId={orderId}
                         selectedOrder={selectedOrder}
+                        canManage={canManageOrders}
                       />
                       <div className="flex flex-col sm:flex-row gap-6 items-start">
                         <div className="flex-1 min-w-0 w-full">
@@ -222,6 +230,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                             onStartEditing={() => handleStartEditing(orderId)}
                             onStopEditing={() => handleStopEditing(orderId)}
                             formValuesStorage={formValuesStorage}
+                            canManage={canManageOrders}
                           />
                         </div>
                         <div className="flex-1 min-w-0 w-full">

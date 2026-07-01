@@ -14,12 +14,12 @@ import {
   getRoleClassName,
   REMOVED_ABILITY_CLASS,
 } from "@/widgets/ability-badge/abilityColors";
-import { ABILITY_GROUPS } from "@/widgets/ability-badge/abilityGroups";
 
 const RolePermissionsCard = () => {
   const { t } = useTranslation();
   const {
     roles,
+    abilityGroups,
     isLoading,
     selectedRole,
     selectRole,
@@ -80,10 +80,12 @@ const RolePermissionsCard = () => {
         )}
 
         <div className="space-y-3">
-          {ABILITY_GROUPS.map((group) => (
+          {abilityGroups.map((group) => (
             <div key={group.key} className="flex items-start gap-4">
               <span className="text-sm text-muted-foreground w-32 shrink-0 pt-0.5">
-                {t(`profile.abilities.groups.${group.key}`)}
+                {t(`profile.abilities.groups.${group.key}`, {
+                  defaultValue: group.key,
+                })}
               </span>
               <div className="flex flex-wrap gap-2">
                 {group.abilities.map((ability) => {
@@ -94,7 +96,9 @@ const RolePermissionsCard = () => {
                   return (
                     <AbilityBadge
                       key={ability}
-                      label={t(`profile.abilities.${ability}`)}
+                      label={t(`profile.abilities.${ability}`, {
+                        defaultValue: ability,
+                      })}
                       colorClass={
                         isRemoved
                           ? REMOVED_ABILITY_CLASS

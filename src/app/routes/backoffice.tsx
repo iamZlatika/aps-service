@@ -128,90 +128,80 @@ export const backofficeRoutes: RouteObject = {
       ],
     },
     {
-      element: <ProtectedRoute requiredAbility="dictionaries_view" />,
-      children: [
-        {
-          path: DICTIONARIES_ROUTES.root,
-          element: <DictionariesPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.accessories,
-          element: <AccessoriesPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.deviceConditions,
-          element: <DeviceConditionsPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.issueTypes,
-          element: <IssueTypesPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.deviceModels,
-          element: <DeviceModelsPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.deviceTypes,
-          element: <DeviceTypesPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.intakeNotes,
-          element: <IntakeNotesPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.manufacturers,
-          element: <ManufacturersPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.services,
-          element: <ServicesPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.orderStatuses,
-          element: <OrderStatusesPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.suppliers,
-          element: <SuppliersPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.outsourcers,
-          element: <OutsourcersPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.products,
-          element: <ProductsPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.locations,
-          element: <LocationsPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.bankCards,
-          element: <BankCardsPage />,
-        },
-        {
-          path: DICTIONARIES_ROUTES.priceList,
-          element: <PriceListPage />,
-        },
-      ],
+      path: DICTIONARIES_ROUTES.root,
+      element: <DictionariesPage />,
     },
     {
-      element: <ProtectedRoute requiredAbility="landing_works_view" />,
-      children: [
-        {
-          path: WORKS_ROUTES.root,
-          element: <WorksPage />,
-        },
-        {
-          path: WORKS_ROUTES.create,
-          element: <WorkCreatePage />,
-        },
-        {
-          path: WORKS_ROUTES.edit,
-          element: <WorkEditPage />,
-        },
-      ],
+      path: DICTIONARIES_ROUTES.accessories,
+      element: <AccessoriesPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.deviceConditions,
+      element: <DeviceConditionsPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.issueTypes,
+      element: <IssueTypesPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.deviceModels,
+      element: <DeviceModelsPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.deviceTypes,
+      element: <DeviceTypesPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.intakeNotes,
+      element: <IntakeNotesPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.manufacturers,
+      element: <ManufacturersPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.services,
+      element: <ServicesPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.orderStatuses,
+      element: <OrderStatusesPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.suppliers,
+      element: <SuppliersPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.outsourcers,
+      element: <OutsourcersPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.products,
+      element: <ProductsPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.locations,
+      element: <LocationsPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.bankCards,
+      element: <BankCardsPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.priceList,
+      element: <PriceListPage />,
+    },
+    {
+      path: WORKS_ROUTES.root,
+      element: <WorksPage />,
+    },
+    {
+      path: WORKS_ROUTES.create,
+      element: <WorkCreatePage />,
+    },
+    {
+      path: WORKS_ROUTES.edit,
+      element: <WorkEditPage />,
     },
   ],
 };

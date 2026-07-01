@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { CustomerTelegramSection } from "@/features/backoffice/modules/customers/components/CustomerTelegramSection.tsx";
 import { Rating } from "@/features/backoffice/modules/customers/components/RatingStars.tsx";
 import { useCustomerInfo } from "@/features/backoffice/modules/customers/hooks/useCustomerInfo.ts";
@@ -38,6 +39,8 @@ export const CustomerInfoCard = ({
   onSuccess,
 }: CustomerInfoCardProps) => {
   const { t } = useTranslation();
+  const { can } = useAuth();
+  const canManage = can("customers_manage");
   const [isInfoEditing, setIsInfoEditing] = useState(false);
 
   const { handleChangeInfo } = useCustomerInfo(customer.id, onSuccess);
@@ -133,7 +136,7 @@ export const CustomerInfoCard = ({
     <p>{customer.comment}</p>
   ) : null;
 
-  const rightAction = isInfoEditing ? (
+  const rightAction = !canManage ? undefined : isInfoEditing ? (
     <>
       <AcceptButton type="submit" />
       <CancelButton onClick={() => setIsInfoEditing(false)} />
@@ -198,12 +201,15 @@ export const CustomerInfoCard = ({
         }
         infoSlot={infoSlot}
         metaSlot={
-          <Rating value={customer.rating} onChange={handleRatingChange} />
+          <Rating
+            value={customer.rating}
+            onChange={canManage ? handleRatingChange : undefined}
+          />
         }
         commentSlot={commentSlot}
         leftAction={
           showStatusToggle ? (
-            <CustomerStatusToggle customer={customer} />
+            <CustomerStatusToggle customer={customer} disabled={!canManage} />
           ) : undefined
         }
         rightAction={rightAction}
@@ -212,12 +218,14 @@ export const CustomerInfoCard = ({
           customerId={customer.id}
           customer={customer}
           onSuccess={onSuccess}
+          canManage={canManage}
         />
         <Separator className="my-2 h-px bg-border" />
         <CustomerTelegramSection
           customerId={customer.id}
           telegram={customer.telegram}
           onSuccess={onSuccess}
+          canManage={canManage}
         />
       </PersonCard>
     </form>

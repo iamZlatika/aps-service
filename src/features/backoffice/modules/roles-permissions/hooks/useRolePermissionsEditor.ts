@@ -5,9 +5,14 @@ import { toast } from "sonner";
 
 import type { RoleWithPermissions } from "@/entities/role/types";
 import { rolesPermissionsApi } from "@/features/backoffice/modules/roles-permissions/api";
+import { usePermissions } from "@/features/backoffice/modules/roles-permissions/hooks/usePermissions.ts";
 import { useRoles } from "@/features/backoffice/modules/roles-permissions/hooks/useRoles.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { ROLES } from "@/shared/types.ts";
+import {
+  type AbilityGroup,
+  groupPermissionsByCategory,
+} from "@/widgets/ability-badge/abilityGroups";
 
 function findRoleByName(
   roles: RoleWithPermissions[],
@@ -18,6 +23,7 @@ function findRoleByName(
 
 type UseRolePermissionsEditorReturn = {
   roles: RoleWithPermissions[];
+  abilityGroups: AbilityGroup[];
   isLoading: boolean;
   selectedRole: RoleWithPermissions | null;
   selectRole: (roleName: string) => void;
@@ -32,7 +38,10 @@ type UseRolePermissionsEditorReturn = {
 
 export const useRolePermissionsEditor = (): UseRolePermissionsEditorReturn => {
   const queryClient = useQueryClient();
-  const { roles, isLoading } = useRoles();
+  const { roles, isLoading: isRolesLoading } = useRoles();
+  const { permissions, isLoading: isPermissionsLoading } = usePermissions();
+  const abilityGroups = groupPermissionsByCategory(permissions);
+  const isLoading = isRolesLoading || isPermissionsLoading;
   const [selectedRoleName, setSelectedRoleName] = useState<string | null>(null);
   const [localPermissions, setLocalPermissions] = useState<string[]>([]);
 
@@ -87,6 +96,7 @@ export const useRolePermissionsEditor = (): UseRolePermissionsEditorReturn => {
 
   return {
     roles,
+    abilityGroups,
     isLoading,
     selectedRole,
     selectRole,

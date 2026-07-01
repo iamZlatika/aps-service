@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { useAddCustomer } from "@/features/backoffice/modules/customers/hooks/useAddCustomer.ts";
 import { newCustomerSchema } from "@/features/backoffice/modules/customers/lib/schemas.ts";
@@ -23,6 +24,8 @@ import { CUSTOMERS_LINKS } from "../navigation";
 const CustomersPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { can } = useAuth();
+  const canManage = can("customers_manage");
   const [isAddOpen, setIsAddOpen] = useState(false);
 
   const { onSubmit: handleAddCustomerSubmit, isPending } = useAddCustomer(() =>
@@ -105,7 +108,11 @@ const CustomersPage = () => {
         searchField="any_match"
         searchInputClassName="mb-0 flex-none w-full sm:w-[30rem]"
         columns={columns}
-        headerActions={<AddButton onClick={() => setIsAddOpen(true)} />}
+        headerActions={
+          canManage ? (
+            <AddButton onClick={() => setIsAddOpen(true)} />
+          ) : undefined
+        }
         onRowClick={onRowClick}
       />
       <ItemFormDialog

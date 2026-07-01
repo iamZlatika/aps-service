@@ -123,7 +123,7 @@ export function buildOrderColumns(locale: string): {
         if (!isCustomer(value)) return null;
         const primaryPhone = value.phones.find((p) => p.isPrimary);
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col" onClick={(e) => e.stopPropagation()}>
             <span>{value.name}</span>
             {primaryPhone && (
               <PhoneDropdown phoneNumber={primaryPhone.phoneNumber} />

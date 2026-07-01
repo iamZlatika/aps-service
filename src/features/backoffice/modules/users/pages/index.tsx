@@ -46,11 +46,14 @@ const UsersPage = () => {
       field: "location",
       labelKey: "users.table_fields.location",
       sortable: false,
-      renderCell: (_, item) => (
-        <div onClick={(e) => e.stopPropagation()}>
-          <UserLocationSelect user={item} />
-        </div>
-      ),
+      renderCell: (_, item) =>
+        canManageUsers ? (
+          <div onClick={(e) => e.stopPropagation()}>
+            <UserLocationSelect user={item} />
+          </div>
+        ) : (
+          <span>{item.location?.name ?? "—"}</span>
+        ),
     },
     {
       key: "status",
@@ -58,12 +61,21 @@ const UsersPage = () => {
       labelKey: "users.table_fields.status",
       sortable: true,
       className: "text-right [&>*]:ml-auto [&>div]:justify-end",
-      renderCell: (value, item) => (
-        <UserStatusButton
-          status={String(value)}
-          onClick={() => handleStatusClick(item)}
-        />
-      ),
+      renderCell: (value, item) =>
+        canManageUsers ? (
+          <div onClick={(e) => e.stopPropagation()}>
+            <UserStatusButton
+              status={String(value)}
+              onClick={() => handleStatusClick(item)}
+            />
+          </div>
+        ) : (
+          <UserStatusButton
+            status={String(value)}
+            onClick={() => handleStatusClick(item)}
+            disabled
+          />
+        ),
     },
   ];
 

@@ -19,17 +19,20 @@ import {
 interface ProductsAndServicesCardProps {
   orderId: number;
   selectedOrder: OrderInfo;
+  canManage: boolean;
 }
 
 export const ProductsAndServicesCard = ({
   orderId,
   selectedOrder,
+  canManage,
 }: ProductsAndServicesCardProps) => {
   const { onDelete, isPending: isDeleting } = useDeleteOrderItem(orderId);
   const [modalState, setModalState] = useState<ModalState>(null);
   const { t } = useTranslation();
 
   useEffect(() => {
+    if (!canManage) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Insert" || e.shiftKey) return;
       const tag = (e.target as HTMLElement).tagName;
@@ -38,7 +41,7 @@ export const ProductsAndServicesCard = ({
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [canManage]);
 
   const modalType =
     modalState?.mode === "edit"
@@ -116,16 +119,18 @@ export const ProductsAndServicesCard = ({
     },
   ];
 
-  const buttons = [
-    {
-      label: t("orders.orderTable.addProduct"),
-      onClick: () => setModalState({ mode: "add", type: "product" }),
-    },
-    {
-      label: t("orders.orderTable.addService"),
-      onClick: () => setModalState({ mode: "add", type: "service" }),
-    },
-  ];
+  const buttons = canManage
+    ? [
+        {
+          label: t("orders.orderTable.addProduct"),
+          onClick: () => setModalState({ mode: "add", type: "product" }),
+        },
+        {
+          label: t("orders.orderTable.addService"),
+          onClick: () => setModalState({ mode: "add", type: "service" }),
+        },
+      ]
+    : [];
 
   return (
     <>
@@ -133,11 +138,15 @@ export const ProductsAndServicesCard = ({
         buttons={buttons}
         columns={columns}
         data={orderItems}
-        onDelete={onDelete}
+        onDelete={canManage ? onDelete : undefined}
         isDeleting={isDeleting}
         isUnchangeable={(item) => !!item.completedAt}
         onRowClick={(item) =>
-          setModalState({ mode: "edit", item, readOnly: !!item.completedAt })
+          setModalState({
+            mode: "edit",
+            item,
+            readOnly: !canManage || !!item.completedAt,
+          })
         }
         getRowKey={(row) => `${row.type}-${row.id}`}
         footer={

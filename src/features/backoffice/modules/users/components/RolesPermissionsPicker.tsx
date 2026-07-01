@@ -14,7 +14,7 @@ import {
   getHighlightClass,
   getRoleClassName,
 } from "@/widgets/ability-badge/abilityColors";
-import { ABILITY_GROUPS } from "@/widgets/ability-badge/abilityGroups";
+import type { AbilityGroup } from "@/widgets/ability-badge/abilityGroups";
 
 interface RolesPermissionsPickerProps {
   localRoles: string[];
@@ -24,6 +24,7 @@ interface RolesPermissionsPickerProps {
   togglePermission: (permission: string) => void;
   isPending: boolean;
   rolesData: RoleWithPermissions[];
+  abilityGroups: AbilityGroup[];
 }
 
 export const RolesPermissionsPicker = ({
@@ -34,6 +35,7 @@ export const RolesPermissionsPicker = ({
   togglePermission,
   isPending,
   rolesData,
+  abilityGroups,
 }: RolesPermissionsPickerProps) => {
   const { t } = useTranslation();
   const [hoveredRole, setHoveredRole] = useState<string | null>(null);
@@ -91,10 +93,12 @@ export const RolesPermissionsPicker = ({
             {t("users.roles_permissions.abilities")}
           </p>
           <div className="space-y-3">
-            {ABILITY_GROUPS.map((group) => (
+            {abilityGroups.map((group) => (
               <div key={group.key} className="flex items-start gap-4">
                 <span className="text-sm text-muted-foreground w-32 shrink-0 pt-0.5">
-                  {t(`profile.abilities.groups.${group.key}`)}
+                  {t(`profile.abilities.groups.${group.key}`, {
+                    defaultValue: group.key,
+                  })}
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {group.abilities.map((ability) => {
@@ -105,7 +109,9 @@ export const RolesPermissionsPicker = ({
                     return (
                       <AbilityBadge
                         key={ability}
-                        label={t(`profile.abilities.${ability}`)}
+                        label={t(`profile.abilities.${ability}`, {
+                          defaultValue: ability,
+                        })}
                         colorClass={getAbilityClassName(
                           ability,
                           localAbilities,

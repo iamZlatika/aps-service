@@ -1,6 +1,7 @@
 import type { UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { usePermissions } from "@/features/backoffice/modules/roles-permissions/hooks/usePermissions.ts";
 import { useRoles } from "@/features/backoffice/modules/roles-permissions/hooks/useRoles.ts";
 import RegisterUserTextField from "@/features/backoffice/modules/users/components/RegisterUserTextField.tsx";
 import { RolesPermissionsPicker } from "@/features/backoffice/modules/users/components/RolesPermissionsPicker.tsx";
@@ -13,6 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/shared/components/ui/dialog.tsx";
+import { groupPermissionsByCategory } from "@/widgets/ability-badge/abilityGroups";
 
 interface RegisterUserDialogProps {
   isOpen: boolean;
@@ -32,6 +34,8 @@ export const RegisterUserDialog = ({
 }: RegisterUserDialogProps) => {
   const { t } = useTranslation();
   const { roles: rolesData } = useRoles(isOpen);
+  const { permissions } = usePermissions(isOpen);
+  const abilityGroups = groupPermissionsByCategory(permissions);
   const {
     register,
     errors,
@@ -95,6 +99,7 @@ export const RegisterUserDialog = ({
             togglePermission={togglePermission}
             isPending={false}
             rolesData={rolesData}
+            abilityGroups={abilityGroups}
           />
           {rolesError && (
             <span className="text-xs text-red-500">{rolesError}</span>

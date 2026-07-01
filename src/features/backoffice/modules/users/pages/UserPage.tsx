@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
+import { usePermissions } from "@/features/backoffice/modules/roles-permissions/hooks/usePermissions.ts";
 import { useRoles } from "@/features/backoffice/modules/roles-permissions/hooks/useRoles.ts";
 import { UserLocationSection } from "@/features/backoffice/modules/users/components/UserLocationSection.tsx";
 import { UserRateSection } from "@/features/backoffice/modules/users/components/UserRateSection.tsx";
@@ -18,6 +19,7 @@ import { Avatar, AvatarImage } from "@/shared/components/ui/avatar";
 import { CardTitle } from "@/shared/components/ui/card.tsx";
 import { Separator } from "@/shared/components/ui/separator.tsx";
 import { USER_STATUSES, type UserStatus } from "@/shared/types.ts";
+import { groupPermissionsByCategory } from "@/widgets/ability-badge/abilityGroups";
 
 const UserPage = () => {
   const { t } = useTranslation();
@@ -26,9 +28,12 @@ const UserPage = () => {
 
   const { can } = useAuth();
   const canManageRoles = can("users_roles_permissions_manage");
+  const canManageUsers = can("users_manage");
 
   const { user, isLoading } = useUser(userId);
   const { roles: rolesData } = useRoles(canManageRoles);
+  const { permissions } = usePermissions(canManageRoles);
+  const abilityGroups = groupPermissionsByCategory(permissions);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const isActive = user?.status === USER_STATUSES.ACTIVE;
@@ -43,7 +48,13 @@ const UserPage = () => {
   if (isLoading) return <Loader />;
   if (!user) return null;
 
-  const leftAction = (
+  const statusIcon = isActive ? (
+    <Unlock className="h-4 w-4" />
+  ) : (
+    <Lock className="h-4 w-4" />
+  );
+
+  const leftAction = canManageUsers ? (
     <button
       type="button"
       onClick={() => setIsConfirmOpen(true)}
@@ -53,8 +64,12 @@ const UserPage = () => {
           : "p-2 text-red-600 hover:text-red-700 transition-colors"
       }
     >
-      {isActive ? <Unlock className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
+      {statusIcon}
     </button>
+  ) : (
+    <span className={isActive ? "p-2 text-green-600" : "p-2 text-red-600"}>
+      {statusIcon}
+    </span>
   );
 
   return (
@@ -79,9 +94,9 @@ const UserPage = () => {
           metaSlot={<RoleBadge roles={user.roles} />}
           leftAction={leftAction}
         >
-          <UserRateSection user={user} />
+          <UserRateSection user={user} canManage={canManageUsers} />
           <Separator className="my-4 h-px bg-border" />
-          <UserLocationSection user={user} />
+          <UserLocationSection user={user} canManage={canManageUsers} />
           {canManageRoles && (
             <>
               <Separator className="my-4 h-px bg-border" />
@@ -93,6 +108,7 @@ const UserPage = () => {
                 initialRoles={user.roles}
                 initialPermissions={user.permissions}
                 rolesData={rolesData}
+                abilityGroups={abilityGroups}
               />
             </>
           )}

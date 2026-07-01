@@ -199,7 +199,7 @@ const AddOrderItemModal = ({
             <Button type="button" variant="outline" onClick={onClose}>
               {t("common.cancel")}
             </Button>
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending || readOnly}>
               {editItem ? t("common.save") : t("common.add")}
             </Button>
           </DialogFooter>

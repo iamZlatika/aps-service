@@ -12,9 +12,10 @@ import { Input } from "@/shared/components/ui/input.tsx";
 
 interface UserRateSectionProps {
   user: User;
+  canManage: boolean;
 }
 
-export const UserRateSection = ({ user }: UserRateSectionProps) => {
+export const UserRateSection = ({ user, canManage }: UserRateSectionProps) => {
   const { t } = useTranslation();
   const { isEditing, isPending, register, onSubmit, handleEdit, handleCancel } =
     useUserRate(user);
@@ -31,7 +32,7 @@ export const UserRateSection = ({ user }: UserRateSectionProps) => {
             <CancelButton onClick={handleCancel} disabled={isPending} />
           </div>
         ) : (
-          <EditButton onClick={handleEdit} />
+          canManage && <EditButton onClick={handleEdit} />
         )}
       </div>
 

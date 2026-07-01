@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { orderStatusesApi } from "@/features/backoffice/modules/dictionaries/api";
 import type { OrderStatusDto } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
@@ -60,6 +61,8 @@ const columns: ColumnConfig<OrderStatusDto>[] = [
 
 const OrderStatusesPage = () => {
   const { t } = useTranslation();
+  const { can } = useAuth();
+  const canManage = can("dictionaries_manage");
 
   const { addModal, deleteModal, editModal } = useTableActions<OrderStatusDto>(
     queryKeys.dictionaries.orderStatuses,
@@ -134,15 +137,23 @@ const OrderStatusesPage = () => {
         queryKeyFn={queryKeys.dictionaries.orderStatuses}
         searchPlaceholder="search_placeholders.dictionaries_name"
         columns={columns}
-        headerActions={<AddButton onClick={() => addModal.setOpen(true)} />}
-        renderRowActions={(item) => (
-          <RowActions
-            item={item}
-            onEdit={editModal.start}
-            onDelete={deleteModal.requestDelete}
-            deleteDisabled={item.is_system}
-          />
-        )}
+        headerActions={
+          canManage ? (
+            <AddButton onClick={() => addModal.setOpen(true)} />
+          ) : undefined
+        }
+        renderRowActions={
+          canManage
+            ? (item) => (
+                <RowActions
+                  item={item}
+                  onEdit={editModal.start}
+                  onDelete={deleteModal.requestDelete}
+                  deleteDisabled={item.is_system}
+                />
+              )
+            : undefined
+        }
       />
 
       <ItemFormDialog

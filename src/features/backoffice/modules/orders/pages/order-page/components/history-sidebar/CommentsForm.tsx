@@ -1,5 +1,6 @@
 import { ImagePlus, SendHorizonal, X } from "lucide-react";
 
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { useCommentForm } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/hooks/useCommentForm.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Progress } from "@/shared/components/ui/progress.tsx";
@@ -10,6 +11,8 @@ interface CommentsFormProps {
 }
 
 export const CommentsForm = ({ orderId }: CommentsFormProps) => {
+  const { can } = useAuth();
+  const canManage = can("orders_manage");
   const {
     comment,
     pendingImage,
@@ -22,6 +25,8 @@ export const CommentsForm = ({ orderId }: CommentsFormProps) => {
     handleFile,
     handleSend,
   } = useCommentForm(orderId);
+
+  if (!canManage) return null;
 
   return (
     <div className="border-t px-4 py-3 space-y-3">

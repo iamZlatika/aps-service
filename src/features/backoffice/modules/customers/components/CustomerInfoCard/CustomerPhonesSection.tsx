@@ -18,12 +18,14 @@ interface CustomerPhonesSectionProps {
   customerId: number;
   customer: CustomerInfo;
   onSuccess?: () => void;
+  canManage: boolean;
 }
 
 export const CustomerPhonesSection = ({
   customerId,
   customer,
   onSuccess,
+  canManage,
 }: CustomerPhonesSectionProps) => {
   const { t } = useTranslation();
   const {
@@ -57,10 +59,12 @@ export const CustomerPhonesSection = ({
         <CardTitle className="text-xl font-bold">
           {t("customers.profile.phones")}
         </CardTitle>
-        <Button onClick={() => setIsAddOpened(true)}>
-          {t("customers.actions.add_phone")}
-          <Plus />
-        </Button>
+        {canManage && (
+          <Button onClick={() => setIsAddOpened(true)}>
+            {t("customers.actions.add_phone")}
+            <Plus />
+          </Button>
+        )}
       </div>
 
       <div className="flex flex-col gap-1">
@@ -68,22 +72,28 @@ export const CustomerPhonesSection = ({
           <div key={phone.id} className="flex items-center gap-2">
             <IsPrimaryButton
               isPrimary={phone.isPrimary}
-              onClick={() =>
-                changeIsPrimaryMutation.mutate({
-                  customerId,
-                  phoneId: phone.id,
-                })
+              disabled={!canManage}
+              onClick={
+                canManage
+                  ? () =>
+                      changeIsPrimaryMutation.mutate({
+                        customerId,
+                        phoneId: phone.id,
+                      })
+                  : undefined
               }
             />
             <PhoneDropdown phoneNumber={phone.phoneNumber} size="md" />
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => openDeleteDialog(phone.id)}
-              disabled={phone.isPrimary}
-            >
-              <X />
-            </Button>
+            {canManage && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => openDeleteDialog(phone.id)}
+                disabled={phone.isPrimary}
+              >
+                <X />
+              </Button>
+            )}
             {phone.phoneVerifiedAt && (
               <div className="flex items-center gap-1 text-green-600">
                 <CircleCheck className="h-4 w-4 shrink-0" />

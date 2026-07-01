@@ -76,44 +76,35 @@ export const Sidebar = memo(() => {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {can("users_view") && (
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild tooltip={t("sidebar.masters")}>
-                    <Link to={USERS_LINKS.root()} onClick={closeMobileSidebar}>
-                      <Wrench className="h-4 w-4" />
-                      <span>{t("sidebar.masters")}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild tooltip={t("sidebar.masters")}>
+                  <Link to={USERS_LINKS.root()} onClick={closeMobileSidebar}>
+                    <Wrench className="h-4 w-4" />
+                    <span>{t("sidebar.masters")}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
 
-              {can("dictionaries_view") && (
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    asChild
-                    tooltip={t("sidebar.dictionaries")}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild tooltip={t("sidebar.dictionaries")}>
+                  <Link
+                    to={DICTIONARIES_LINKS.root()}
+                    onClick={closeMobileSidebar}
                   >
-                    <Link
-                      to={DICTIONARIES_LINKS.root()}
-                      onClick={closeMobileSidebar}
-                    >
-                      <BookOpenText className="h-4 w-4" />
-                      <span>{t("sidebar.dictionaries")}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
+                    <BookOpenText className="h-4 w-4" />
+                    <span>{t("sidebar.dictionaries")}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
 
-              {can("landing_works_view") && (
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild tooltip={t("sidebar.works")}>
-                    <Link to={WORKS_LINKS.root()} onClick={closeMobileSidebar}>
-                      <Images className="h-4 w-4" />
-                      <span>{t("sidebar.works")}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild tooltip={t("sidebar.works")}>
+                  <Link to={WORKS_LINKS.root()} onClick={closeMobileSidebar}>
+                    <Images className="h-4 w-4" />
+                    <span>{t("sidebar.works")}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
 
               {can("billing_view") && (
                 <SidebarMenuItem>
