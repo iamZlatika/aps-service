@@ -2,7 +2,6 @@ import { Frown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation";
 import { Button } from "@/shared/components/ui/button.tsx";
 
 const ForbiddenPage = () => {
@@ -23,11 +22,7 @@ const ForbiddenPage = () => {
           </p>
         </div>
 
-        <Button
-          onClick={() => navigate(ORDERS_LINKS.root(), { replace: true })}
-        >
-          {t("errors.go_to_orders")}
-        </Button>
+        <Button onClick={() => navigate(-1)}>{t("errors.go_back")}</Button>
       </div>
     </div>
   );

@@ -113,7 +113,7 @@
     "retry": "Повторити",
     "forbidden_title": "Немає доступу",
     "forbidden_description": "У вас немає прав для перегляду цієї сторінки.",
-    "go_to_orders": "Перейти до замовлень",
+    "go_back": "Назад",
     "forbidden_action": "Недостатньо прав для виконання операції",
     "name_taken": "Така назва вже зайнята",
     "email_taken": "Цей email вже зареєстровано",
@@ -231,9 +231,9 @@
       "users_roles_permissions_manage": "Ролі та права",
       "dictionaries_view": "Перегляд",
       "dictionaries_manage": "Управління",
-      "dictionaries_bank_cards_manage": "Банківські картки",
-      "dictionaries_locations_manage": "Локації",
-      "dictionaries_price_list_manage": "Прайс-лист"
+      "dictionaries_bank_cards_manage": "Банківські картки (ред.)",
+      "dictionaries_locations_manage": "Локації (ред.)",
+      "dictionaries_price_list_manage": "Прайс-лист (ред.)"
     },
     "master_rate": "Ставка майстра",
     "services_percent": "Відсоток за послуги",
@@ -307,7 +307,9 @@
       "title": "Ролі та права",
       "roles": "Ролі",
       "abilities": "Права доступу",
-      "individual_permissions": "Індивідуальні дозволи"
+      "individual_permissions": "Індивідуальні дозволи",
+      "custom_hint": "Рожевий — пермішен поза роллю",
+      "custom_tooltip": "Додано вручну, поза роллями"
     }
   },
   "customers": {

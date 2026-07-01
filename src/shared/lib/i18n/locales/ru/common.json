@@ -116,7 +116,7 @@
     "retry": "Повторить",
     "forbidden_title": "Нет доступа",
     "forbidden_description": "У вас нет прав для просмотра этой страницы.",
-    "go_to_orders": "Перейти к заказам",
+    "go_back": "Назад",
     "forbidden_action": "Недостаточно прав для выполнения операции",
     "name_taken": "Это название уже занято",
     "email_taken": "Этот email уже зарегистрирован",
@@ -234,9 +234,9 @@
       "users_roles_permissions_manage": "Роли и права",
       "dictionaries_view": "Просмотр",
       "dictionaries_manage": "Управление",
-      "dictionaries_bank_cards_manage": "Банковские карты",
-      "dictionaries_locations_manage": "Локации",
-      "dictionaries_price_list_manage": "Прайс-лист"
+      "dictionaries_bank_cards_manage": "Банковские карты (ред.)",
+      "dictionaries_locations_manage": "Локации (ред.)",
+      "dictionaries_price_list_manage": "Прайс-лист (ред.)"
     },
     "master_rate": "Ставка мастера",
     "services_percent": "Процент за услуги",
@@ -310,7 +310,9 @@
       "title": "Роли и права",
       "roles": "Роли",
       "abilities": "Права доступа",
-      "individual_permissions": "Индивидуальные разрешения"
+      "individual_permissions": "Индивидуальные разрешения",
+      "custom_hint": "Розовый — пользовательский пермишен",
+      "custom_tooltip": "Добавлен вручную, вне ролей"
     }
   },
   "customers": {

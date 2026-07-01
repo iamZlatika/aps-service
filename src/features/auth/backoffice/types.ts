@@ -1,5 +1,9 @@
 import { type ResetPasswordFormValues } from "@/features/auth/backoffice/pages/forgot/forgot.schema.ts";
-import { type SuccessResponse, type UserStatus } from "@/shared/types.ts";
+import {
+  type Role,
+  type SuccessResponse,
+  type UserStatus,
+} from "@/shared/types.ts";
 
 export type LoginResponse = {
   token: string;
@@ -7,8 +11,7 @@ export type LoginResponse = {
     id: number;
     email: string;
     name: string;
-    roles: string[];
-    permissions: string[];
+    roles: Role[];
     status: UserStatus;
   };
 };

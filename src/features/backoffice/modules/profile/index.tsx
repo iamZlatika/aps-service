@@ -14,6 +14,7 @@ import { AcceptButton } from "@/shared/components/common/buttons/AcceptButton.ts
 import { CancelButton } from "@/shared/components/common/buttons/CancelButton.tsx";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { CardTitle } from "@/shared/components/ui/card.tsx";
+import { USER_LANGUAGES } from "@/shared/types.ts";
 
 const ProfilePage = () => {
   const { t } = useTranslation();
@@ -79,10 +80,13 @@ const ProfilePage = () => {
           {t("profile.your_balance")}
         </CardTitle>
         <div className="h-11 rounded-md border border-input bg-muted px-3 text-base flex items-center justify-center mb-6">
-          {new Intl.NumberFormat("uk-UA", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          }).format(parseFloat(user.balance))}{" "}
+          {new Intl.NumberFormat(
+            user.locale === USER_LANGUAGES.UK ? "uk-UA" : "ru-RU",
+            {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            },
+          ).format(parseFloat(user.balance))}{" "}
           ₴
         </div>
         <CardTitle className="text-xl font-bold mb-4 text-center">

@@ -3,13 +3,18 @@ import { z } from "zod";
 import { LocationDtoSchema } from "@/entities/location/dto";
 import { emailRegex } from "@/shared/lib/constants.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
-import { USER_LANGUAGES, USER_STATUSES, USER_THEMES } from "@/shared/types.ts";
+import {
+  ROLES,
+  USER_LANGUAGES,
+  USER_STATUSES,
+  USER_THEMES,
+} from "@/shared/types.ts";
 
 export const UserDtoSchema = z.object({
   id: z.number(),
   name: z.string(),
   email: z.string().regex(emailRegex),
-  roles: z.array(z.string()),
+  roles: z.array(zodEnumFromConst(ROLES)),
   status: zodEnumFromConst(USER_STATUSES),
   locale: zodEnumFromConst(USER_LANGUAGES),
   theme: zodEnumFromConst(USER_THEMES),

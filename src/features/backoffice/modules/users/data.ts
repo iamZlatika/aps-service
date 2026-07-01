@@ -37,10 +37,9 @@ export const ABILITY_GROUPS: AbilityGroup[] = [
   },
 ];
 
-export const getUserRoleOptions = (
-  t: (key: string) => string,
-): SelectOption[] =>
-  Object.values(ROLES).map((key) => ({
+export function getUserRoleOptions(t: (key: string) => string): SelectOption[] {
+  return Object.values(ROLES).map((key) => ({
     value: key,
     label: t(`users.roles.${key}`),
   }));
+}
