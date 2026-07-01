@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
-import { ABILITY_GROUPS } from "@/features/backoffice/modules/users/data.ts";
 import { Badge } from "@/shared/components/ui/badge.tsx";
+import { ABILITY_GROUPS } from "@/widgets/ability-badge/abilityGroups";
 
 interface UserAbilitiesSectionProps {
   abilities: string[];

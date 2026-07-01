@@ -1,6 +1,7 @@
-import type { Role } from "@/shared/types.ts";
+import type { RoleWithPermissions } from "@/entities/role/types";
+import { type Role, ROLES } from "@/shared/types.ts";
 
-import type { RoleWithPermissions } from "../types.ts";
+export const ALL_ROLES = Object.values(ROLES);
 
 type RoleColorConfig = {
   bold: string;
@@ -61,6 +62,8 @@ export const CUSTOM_ABILITY_STATIC =
   "bg-rose-100 text-rose-800 dark:bg-rose-900 dark:text-rose-200";
 export const INACTIVE_CLASS =
   "bg-muted text-muted-foreground opacity-40 hover:bg-muted";
+export const REMOVED_ABILITY_CLASS =
+  "bg-red-100 text-red-600 line-through opacity-70 hover:bg-red-100 dark:bg-red-950 dark:text-red-400";
 
 export function getRoleBoldClassName(role: string): string {
   return ROLE_COLORS[role as Role]?.bold ?? "bg-gray-400 text-white";

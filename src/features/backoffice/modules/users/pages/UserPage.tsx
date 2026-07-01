@@ -5,10 +5,10 @@ import { useParams } from "react-router-dom";
 
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
+import { useRoles } from "@/features/backoffice/modules/roles-permissions/hooks/useRoles.ts";
 import { UserLocationSection } from "@/features/backoffice/modules/users/components/UserLocationSection.tsx";
 import { UserRateSection } from "@/features/backoffice/modules/users/components/UserRateSection.tsx";
 import { UserRolesPermissionsSection } from "@/features/backoffice/modules/users/components/UserRolesPermissionsSection.tsx";
-import { useRoles } from "@/features/backoffice/modules/users/hooks/useRoles.ts";
 import { useUpdateUserStatus } from "@/features/backoffice/modules/users/hooks/useUpdateUserStatus.ts";
 import { useUser } from "@/features/backoffice/modules/users/hooks/useUser.ts";
 import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard.tsx";

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import type { RoleWithPermissions } from "@/features/backoffice/modules/users/types.ts";
+import type { RoleWithPermissions } from "@/entities/role/types";
 
 type PermissionsSelectionState = {
   localRoles: string[];

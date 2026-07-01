@@ -204,7 +204,8 @@
     "manufacturers": "Бренды",
     "services": "Услуги",
     "orderStatuses": "Статусы заказов",
-    "bankCards": "Банковские карты"
+    "bankCards": "Банковские карты",
+    "rolesPermissions": "Роли и доступы"
   },
   "profile": {
     "settings": "Настройки профиля",
@@ -277,7 +278,7 @@
     "roles": {
       "manager": "Менеджер",
       "head_manager": "Администратор",
-      "receptionist": "Ресепшионист",
+      "receptionist": "Приёмщик",
       "accountant": "Бухгалтер",
       "support": "Поддержка"
     },
@@ -310,7 +311,10 @@
       "abilities": "Права доступа",
       "individual_permissions": "Индивидуальные разрешения",
       "custom_hint": "Розовый — пользовательский пермишен",
-      "custom_tooltip": "Добавлен вручную, вне ролей"
+      "custom_tooltip": "Добавлен вручную, вне ролей",
+      "head_manager_readonly": "У этой роли полный доступ ко всем правам. Редактирование недоступно.",
+      "save_success": "Права роли обновлены",
+      "removed_hint": "снято"
     }
   },
   "customers": {

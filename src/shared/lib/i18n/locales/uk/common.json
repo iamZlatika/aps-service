@@ -201,7 +201,8 @@
     "manufacturers": "Бренди",
     "services": "Послуги",
     "orderStatuses": "Статуси замовлень",
-    "bankCards": "Банківські картки"
+    "bankCards": "Банківські картки",
+    "rolesPermissions": "Ролі та доступи"
   },
   "profile": {
     "settings": "Налаштування профілю",
@@ -307,7 +308,10 @@
       "abilities": "Права доступу",
       "individual_permissions": "Індивідуальні дозволи",
       "custom_hint": "Рожевий — пермішен поза роллю",
-      "custom_tooltip": "Додано вручну, поза роллями"
+      "custom_tooltip": "Додано вручну, поза роллями",
+      "head_manager_readonly": "Ця роль має повний доступ до всіх прав. Редагування недоступне.",
+      "save_success": "Права ролі оновлено",
+      "removed_hint": "знято"
     }
   },
   "customers": {

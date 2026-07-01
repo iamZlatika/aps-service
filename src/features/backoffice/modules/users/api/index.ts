@@ -2,9 +2,6 @@ import {
   type MeDto,
   MeDtoSchema,
   PaginatedUsersDtoSchema,
-  PermissionListDtoSchema,
-  RoleWithPermissionsDtoSchema,
-  RoleWithPermissionsListDtoSchema,
   UserDetailDtoSchema,
   type UserDto,
   UserDtoSchema,
@@ -13,8 +10,6 @@ import { USERS_API } from "@/features/backoffice/modules/users/api/endpoints";
 import {
   mapMeDtoToMe,
   mapPaginatedUsersDtoToResponse,
-  mapPermissionDtoToPermission,
-  mapRoleWithPermissionsDtoToRole,
   mapSalarySettingsToDto,
   mapUserDetailDtoToUserDetail,
   mapUserDtoToUser,
@@ -23,8 +18,6 @@ import { type SalarySettings } from "@/features/backoffice/modules/users/lib/sal
 import {
   type Me,
   type NewUser,
-  type Permission,
-  type RoleWithPermissions,
   type User,
   type UserDetail,
 } from "@/features/backoffice/modules/users/types.ts";
@@ -106,33 +99,6 @@ export const usersApi = {
     userId: number,
   ): Promise<void> => {
     await put(USERS_API.changeUserLocation(userId), { location_id });
-  },
-
-  getPermissions: async (): Promise<Permission[]> => {
-    const response = await get<{ data: unknown[] }>(USERS_API.permissions());
-    return parseDto(PermissionListDtoSchema, response.data).map(
-      mapPermissionDtoToPermission,
-    );
-  },
-
-  getRoles: async (): Promise<RoleWithPermissions[]> => {
-    const response = await get<{ data: unknown[] }>(USERS_API.roles());
-    return parseDto(RoleWithPermissionsListDtoSchema, response.data).map(
-      mapRoleWithPermissionsDtoToRole,
-    );
-  },
-
-  updateRolePermissions: async (
-    roleId: number,
-    permissions: string[],
-  ): Promise<RoleWithPermissions> => {
-    const response = await put<{ permissions: string[] }, { data: unknown }>(
-      USERS_API.updateRolePermissions(roleId),
-      { permissions },
-    );
-    return mapRoleWithPermissionsDtoToRole(
-      parseDto(RoleWithPermissionsDtoSchema, response.data),
-    );
   },
 
   updateUserPermissions: async (

@@ -1,10 +1,10 @@
 import type { UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { useRoles } from "@/features/backoffice/modules/roles-permissions/hooks/useRoles.ts";
 import RegisterUserTextField from "@/features/backoffice/modules/users/components/RegisterUserTextField.tsx";
 import { RolesPermissionsPicker } from "@/features/backoffice/modules/users/components/RolesPermissionsPicker.tsx";
 import { useRegisterUserForm } from "@/features/backoffice/modules/users/hooks/useRegisterUserForm.ts";
-import { useRoles } from "@/features/backoffice/modules/users/hooks/useRoles.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
   Dialog,

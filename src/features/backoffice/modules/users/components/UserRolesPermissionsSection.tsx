@@ -1,6 +1,6 @@
+import type { RoleWithPermissions } from "@/entities/role/types";
 import { RolesPermissionsPicker } from "@/features/backoffice/modules/users/components/RolesPermissionsPicker.tsx";
 import { useUserPermissionsEditor } from "@/features/backoffice/modules/users/hooks/useUserPermissionsEditor.ts";
-import type { RoleWithPermissions } from "@/features/backoffice/modules/users/types.ts";
 
 interface UserRolesPermissionsSectionProps {
   userId: number;

@@ -20,6 +20,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   customers: "breadcrumbs.customers",
   customer: "breadcrumbs.customer",
   users: "breadcrumbs.users",
+  "roles-permissions": "breadcrumbs.rolesPermissions",
   dictionaries: "breadcrumbs.dictionaries",
   accessories: "breadcrumbs.accessories",
   "device-conditions": "breadcrumbs.deviceConditions",

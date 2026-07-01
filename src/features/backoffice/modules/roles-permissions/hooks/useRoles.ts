@@ -1,16 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { usersApi } from "@/features/backoffice/modules/users/api";
+import type { RoleWithPermissions } from "@/entities/role/types";
+import { rolesPermissionsApi } from "@/features/backoffice/modules/roles-permissions/api";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-
-import type { RoleWithPermissions } from "../types.ts";
 
 export const useRoles = (
   enabled = true,
 ): { roles: RoleWithPermissions[]; isLoading: boolean } => {
   const { data: roles = [], isLoading } = useQuery({
     queryKey: queryKeys.roles.list(),
-    queryFn: usersApi.getRoles,
+    queryFn: rolesPermissionsApi.getRoles,
     enabled,
   });
 

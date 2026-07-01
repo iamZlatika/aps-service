@@ -2,21 +2,9 @@ import { mapLocationDtoToLocation } from "@/entities/location/adapters";
 import { type SalarySettings } from "@/features/backoffice/modules/users/lib/salarySettingsSchema.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types";
 
-import type {
-  MeDto,
-  PaginatedUsersDto,
-  PermissionDto,
-  RoleWithPermissionsDto,
-  UserDetailDto,
-} from "../api/dto";
+import type { MeDto, PaginatedUsersDto, UserDetailDto } from "../api/dto";
 import { type UserDto } from "../api/dto";
-import {
-  type Me,
-  type Permission,
-  type RoleWithPermissions,
-  type User,
-  type UserDetail,
-} from "../types.ts";
+import { type Me, type User, type UserDetail } from "../types.ts";
 
 export function mapUserDtoToUser(dto: UserDto): User {
   return {
@@ -56,25 +44,6 @@ export function mapMeDtoToMe(dto: MeDto): Me {
       createdAt: p.created_at,
       updatedAt: p.updated_at,
     })),
-  };
-}
-
-export function mapPermissionDtoToPermission(dto: PermissionDto): Permission {
-  return {
-    id: dto.id,
-    name: dto.name,
-    group: dto.group,
-    action: dto.action,
-  };
-}
-
-export function mapRoleWithPermissionsDtoToRole(
-  dto: RoleWithPermissionsDto,
-): RoleWithPermissions {
-  return {
-    id: dto.id,
-    name: dto.name,
-    permissions: dto.permissions,
   };
 }
 

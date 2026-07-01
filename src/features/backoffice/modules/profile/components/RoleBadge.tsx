@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
-import { getRoleBoldClassName } from "@/features/backoffice/modules/users/lib/abilityColors.ts";
 import { Badge } from "@/shared/components/ui/badge.tsx";
+import { getRoleBoldClassName } from "@/widgets/ability-badge/abilityColors";
 
 interface RoleBadgeProps {
   roles: string[];

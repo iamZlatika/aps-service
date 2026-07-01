@@ -2,19 +2,19 @@ import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { AbilityBadge } from "@/features/backoffice/modules/users/components/AbilityBadge.tsx";
-import { ABILITY_GROUPS } from "@/features/backoffice/modules/users/data.ts";
+import type { RoleWithPermissions } from "@/entities/role/types";
+import { Badge } from "@/shared/components/ui/badge.tsx";
+import { TooltipProvider } from "@/shared/components/ui/tooltip.tsx";
+import { cn } from "@/shared/lib/utils.ts";
+import { AbilityBadge } from "@/widgets/ability-badge";
 import {
+  ALL_ROLES,
   doesRoleGrantAbility,
   getAbilityClassName,
   getHighlightClass,
   getRoleClassName,
-} from "@/features/backoffice/modules/users/lib/abilityColors.ts";
-import type { RoleWithPermissions } from "@/features/backoffice/modules/users/types.ts";
-import { Badge } from "@/shared/components/ui/badge.tsx";
-import { TooltipProvider } from "@/shared/components/ui/tooltip.tsx";
-import { cn } from "@/shared/lib/utils.ts";
-import { ROLES } from "@/shared/types.ts";
+} from "@/widgets/ability-badge/abilityColors";
+import { ABILITY_GROUPS } from "@/widgets/ability-badge/abilityGroups";
 
 interface RolesPermissionsPickerProps {
   localRoles: string[];
@@ -25,8 +25,6 @@ interface RolesPermissionsPickerProps {
   isPending: boolean;
   rolesData: RoleWithPermissions[];
 }
-
-const ALL_ROLES = Object.values(ROLES);
 
 export const RolesPermissionsPicker = ({
   localRoles,

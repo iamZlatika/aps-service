@@ -1,11 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 
+import type { RoleWithPermissions } from "@/entities/role/types";
 import { usersApi } from "@/features/backoffice/modules/users/api";
 import { usePermissionsSelection } from "@/features/backoffice/modules/users/hooks/usePermissionsSelection.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-
-import type { RoleWithPermissions } from "../types.ts";
 
 const SAVE_DEBOUNCE_MS = 400;
 

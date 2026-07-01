@@ -9,9 +9,9 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import type { RoleWithPermissions } from "@/entities/role/types";
 import { usePermissionsSelection } from "@/features/backoffice/modules/users/hooks/usePermissionsSelection.ts";
 import { registerUserFieldsSchema } from "@/features/backoffice/modules/users/lib/registerUserSchema.ts";
-import type { RoleWithPermissions } from "@/features/backoffice/modules/users/types.ts";
 
 export type RegisterUserFormValues = {
   email: string;

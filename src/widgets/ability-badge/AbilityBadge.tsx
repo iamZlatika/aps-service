@@ -14,6 +14,7 @@ interface AbilityBadgeProps {
   highlightClass: string;
   isActive: boolean;
   isCustom: boolean;
+  isRemoved?: boolean;
   isPending: boolean;
   fromRole: boolean;
   onToggle?: () => void;
@@ -25,6 +26,7 @@ export const AbilityBadge = ({
   highlightClass,
   isActive,
   isCustom,
+  isRemoved = false,
   isPending,
   fromRole,
   onToggle,
@@ -37,6 +39,11 @@ export const AbilityBadge = ({
       role={onToggle ? "button" : undefined}
       tabIndex={onToggle ? 0 : undefined}
       aria-pressed={onToggle ? isActive : undefined}
+      aria-label={
+        isRemoved
+          ? `${label} (${t("users.roles_permissions.removed_hint")})`
+          : undefined
+      }
       onKeyDown={
         onToggle
           ? (e) => {

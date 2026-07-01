@@ -6,6 +6,7 @@ import { CUSTOMERS_ROUTES } from "@/features/backoffice/modules/customers/routes
 import { DICTIONARIES_ROUTES } from "@/features/backoffice/modules/dictionaries/routes";
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
 import { PROFILE_ROUTES } from "@/features/backoffice/modules/profile/routes.ts";
+import { ROLES_PERMISSIONS_ROUTES } from "@/features/backoffice/modules/roles-permissions/routes.ts";
 import { USERS_ROUTES } from "@/features/backoffice/modules/users/routes";
 import { WORKS_ROUTES } from "@/features/backoffice/modules/works/routes";
 
@@ -36,6 +37,9 @@ const UserPage = lazy(
   () => import("@/features/backoffice/modules/users/pages/UserPage"),
 );
 const ProfilePage = lazy(() => import("@/features/backoffice/modules/profile"));
+const RolesPermissionsPage = lazy(
+  () => import("@/features/backoffice/modules/roles-permissions/pages"),
+);
 const DictionariesPage = lazy(
   () => import("@/features/backoffice/modules/dictionaries"),
 );
@@ -112,6 +116,17 @@ export const backofficeRoutes: RouteObject = {
     { path: USERS_ROUTES.user, element: <UserPage /> },
     { path: PROFILE_ROUTES.root, element: <ProfilePage /> },
 
+    {
+      element: (
+        <ProtectedRoute requiredAbility="users_roles_permissions_manage" />
+      ),
+      children: [
+        {
+          path: ROLES_PERMISSIONS_ROUTES.root,
+          element: <RolesPermissionsPage />,
+        },
+      ],
+    },
     {
       element: <ProtectedRoute requiredAbility="dictionaries_view" />,
       children: [
