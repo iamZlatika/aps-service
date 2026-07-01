@@ -301,8 +301,6 @@
       "password_placeholder": "Введите пароль",
       "password_confirmation": "Подтверждение пароля",
       "password_confirmation_placeholder": "Повторите пароль",
-      "role": "Роль",
-      "role_placeholder": "Выберите роль",
       "cancel": "Отмена",
       "submit": "Создать"
     },

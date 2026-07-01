@@ -1,6 +1,3 @@
-import type { SelectOption } from "@/features/backoffice/widgets/table/models/types.ts";
-import { ROLES } from "@/shared/types.ts";
-
 type AbilityGroup = {
   key: string;
   abilities: readonly string[];
@@ -36,10 +33,3 @@ export const ABILITY_GROUPS: AbilityGroup[] = [
     ],
   },
 ];
-
-export function getUserRoleOptions(t: (key: string) => string): SelectOption[] {
-  return Object.values(ROLES).map((key) => ({
-    value: key,
-    label: t(`users.roles.${key}`),
-  }));
-}

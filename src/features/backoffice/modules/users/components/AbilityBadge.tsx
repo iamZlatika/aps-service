@@ -12,6 +12,7 @@ interface AbilityBadgeProps {
   label: string;
   colorClass: string;
   highlightClass: string;
+  isActive: boolean;
   isCustom: boolean;
   isPending: boolean;
   fromRole: boolean;
@@ -22,6 +23,7 @@ export const AbilityBadge = ({
   label,
   colorClass,
   highlightClass,
+  isActive,
   isCustom,
   isPending,
   fromRole,
@@ -32,6 +34,19 @@ export const AbilityBadge = ({
   const badge = (
     <Badge
       onClick={onToggle}
+      role={onToggle ? "button" : undefined}
+      tabIndex={onToggle ? 0 : undefined}
+      aria-pressed={onToggle ? isActive : undefined}
+      onKeyDown={
+        onToggle
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onToggle();
+              }
+            }
+          : undefined
+      }
       className={cn(
         "text-sm font-medium px-3 py-1 select-none transition-all",
         isPending

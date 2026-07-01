@@ -298,8 +298,6 @@
       "password_placeholder": "Введіть пароль",
       "password_confirmation": "Підтвердження пароля",
       "password_confirmation_placeholder": "Повторіть пароль",
-      "role": "Роль",
-      "role_placeholder": "Оберіть роль",
       "cancel": "Скасувати",
       "submit": "Створити"
     },
