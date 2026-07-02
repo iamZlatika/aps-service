@@ -1,0 +1,160 @@
+import i18next from "i18next";
+import { Link } from "react-router-dom";
+
+import { TRANSACTION_STATUS_COLORS } from "@/features/backoffice/modules/billing/lib/constants.ts";
+import {
+  type Balance,
+  type Transaction,
+} from "@/features/backoffice/modules/billing/types.ts";
+import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation.ts";
+import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
+import { type User } from "@/features/backoffice/modules/users/types.ts";
+import { type ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
+import { MoneyAmount } from "@/shared/components/common/MoneyAmount.tsx";
+import { StatusBadge } from "@/shared/components/common/StatusBadge.tsx";
+import { Avatar, AvatarImage } from "@/shared/components/ui/avatar.tsx";
+import { formatDateTime } from "@/shared/lib/utils.ts";
+import { type TransactionStatus } from "@/shared/types.ts";
+
+const isUser = (value: unknown): value is User =>
+  typeof value === "object" && value !== null && "email" in value;
+
+export function buildBalanceColumns(): ColumnConfig<Balance>[] {
+  return [
+    {
+      key: "employee",
+      field: "user",
+      labelKey: "billing.balances.employee",
+      sortable: true,
+      sortKey: "user_id",
+      renderCell: (value) => {
+        if (!isUser(value)) return null;
+        return (
+          <div className="flex items-center gap-3">
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={value.avatarUrl} alt={value.name} />
+            </Avatar>
+            <span>{value.name}</span>
+          </div>
+        );
+      },
+    },
+    {
+      key: "roles",
+      field: "user",
+      labelKey: "billing.balances.roles",
+      sortable: false,
+      renderCell: (value) =>
+        isUser(value) ? <RoleBadge roles={value.roles} /> : null,
+    },
+    {
+      key: "amount",
+      field: "amount",
+      labelKey: "billing.balances.balance",
+      sortable: true,
+      renderCell: (value) => <MoneyAmount value={value as string} />,
+    },
+    {
+      key: "updatedAt",
+      field: "updatedAt",
+      labelKey: "billing.balances.updated",
+      sortable: true,
+      sortKey: "created_at",
+      renderCell: (value) => formatDateTime(value as string),
+    },
+  ];
+}
+
+export function buildTransactionColumns({
+  showEmployeeColumn,
+}: {
+  showEmployeeColumn: boolean;
+}): ColumnConfig<Transaction>[] {
+  const columns: ColumnConfig<Transaction>[] = [
+    {
+      key: "createdAt",
+      field: "createdAt",
+      labelKey: "billing.transactions.table.date",
+      sortable: true,
+      sortKey: "created_at",
+      renderCell: (value) => formatDateTime(value as string),
+    },
+    {
+      key: "type",
+      field: "type",
+      labelKey: "billing.transactions.table.type",
+      sortable: true,
+      renderCell: (value) =>
+        i18next.t(`billing.transaction_types.${value as string}`),
+    },
+    {
+      key: "label",
+      field: "label",
+      labelKey: "billing.transactions.table.label",
+      sortable: false,
+    },
+    {
+      key: "amount",
+      field: "amount",
+      labelKey: "billing.transactions.table.amount",
+      sortable: true,
+      renderCell: (value) => <MoneyAmount value={value as string} />,
+    },
+    {
+      key: "status",
+      field: "status",
+      labelKey: "billing.transactions.table.status",
+      sortable: true,
+      renderCell: (value) => {
+        const status = value as TransactionStatus;
+        return (
+          <StatusBadge
+            name={i18next.t(`billing.transaction_statuses.${status}`)}
+            color={TRANSACTION_STATUS_COLORS[status]}
+          />
+        );
+      },
+    },
+    {
+      key: "order",
+      field: "orderNumber",
+      labelKey: "billing.transactions.table.order",
+      sortable: false,
+      renderCell: (value, item) =>
+        item.orderId ? (
+          <Link
+            to={ORDERS_LINKS.detail(item.orderId)}
+            className="text-primary hover:underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {value as string}
+          </Link>
+        ) : (
+          "—"
+        ),
+    },
+    {
+      key: "createdBy",
+      field: "createdBy",
+      labelKey: "billing.transactions.table.created_by",
+      sortable: false,
+      renderCell: (value) =>
+        isUser(value)
+          ? value.name
+          : i18next.t("billing.transactions.system_auto"),
+    },
+  ];
+
+  if (showEmployeeColumn) {
+    columns.splice(1, 0, {
+      key: "employee",
+      field: "user",
+      labelKey: "billing.transactions.table.employee",
+      sortable: false,
+      renderCell: (value) =>
+        isUser(value) ? value.name : i18next.t("billing.transactions.system"),
+    });
+  }
+
+  return columns;
+}

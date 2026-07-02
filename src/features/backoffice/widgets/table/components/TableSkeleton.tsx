@@ -16,12 +16,12 @@ export const TableSkeleton = ({
     {[...Array(rowCount)].map((_, i) => (
       <TableRow key={i}>
         {[...Array(colCount)].map((_, j) => (
-          <TableCell key={j}>
+          <TableCell key={j} className="first:pl-4 last:pr-4">
             <Skeleton className="h-5 w-[200px]" />
           </TableCell>
         ))}
         {hasActions && (
-          <TableCell className="text-right">
+          <TableCell className="text-right last:pr-4">
             <div className="flex justify-end gap-2">
               <Skeleton className="h-8 w-8 rounded-md" />
               <Skeleton className="h-8 w-8 rounded-md" />

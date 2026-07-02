@@ -84,7 +84,6 @@
     "dictionaries": "Справочники",
     "works": "Работы",
     "billing": "Биллинг",
-    "my_finances": "Мои финансы",
     "roles_permissions": "Роли и доступы",
     "dictionaries_list": {
       "title": "Справочники",
@@ -175,7 +174,9 @@
     "time_end_before_start": "Время окончания должно быть позже времени начала",
     "image_type": "Допустимые форматы: JPEG, PNG, WebP",
     "image_max_size": "Файл не должен превышать 2 МБ",
-    "percent_range": "Значение должно быть от 0 до 100"
+    "percent_range": "Значение должно быть от 0 до 100",
+    "positive_amount": "Введите сумму больше нуля (напр. 250.50)",
+    "description_max": "Максимум {{count}} символов"
   },
   "search_placeholders": {
     "dictionaries_name": "Поиск по названию",
@@ -207,7 +208,10 @@
     "services": "Услуги",
     "orderStatuses": "Статусы заказов",
     "bankCards": "Банковские карты",
-    "rolesPermissions": "Роли и доступы"
+    "rolesPermissions": "Роли и доступы",
+    "billing": "Биллинг",
+    "balances": "Балансы",
+    "transactions": "Транзакции"
   },
   "profile": {
     "settings": "Настройки профиля",
@@ -230,8 +234,7 @@
       "landing_works_view": "Просмотр",
       "landing_works_manage": "Управление",
       "billing_view": "Просмотр",
-      "billing_manage": "Управление",
-      "billing_system_balance_view": "Системный баланс",
+      "billing_balance_adjust": "Начисление/списание",
       "users_view": "Просмотр",
       "users_manage": "Управление",
       "users_roles_permissions_manage": "Роли и права",
@@ -766,6 +769,66 @@
       "back": "Назад",
       "darkTheme": "Тёмная тема",
       "lightTheme": "Светлая тема"
+    }
+  },
+  "billing": {
+    "balances": {
+      "title": "Балансы",
+      "search_placeholder": "Поиск по имени",
+      "employee": "Сотрудник",
+      "roles": "Роль",
+      "balance": "Баланс",
+      "updated": "Обновлено",
+      "adjust": "Начислить / Списать"
+    },
+    "system_balance": {
+      "title": "Баланс сервиса"
+    },
+    "all_transactions": {
+      "title": "Все транзакции"
+    },
+    "transactions": {
+      "table": {
+        "date": "Дата",
+        "type": "Тип",
+        "label": "Описание",
+        "amount": "Сумма",
+        "status": "Статус",
+        "order": "Заказ",
+        "created_by": "Кто начислил",
+        "employee": "Сотрудник"
+      },
+      "system_auto": "Система/Авто",
+      "system": "Сервис"
+    },
+    "transaction_types": {
+      "intake_order_income": "Выплата приёмщику за приём заказа",
+      "service_income": "Выплата мастеру за работу",
+      "products_income": "Выплата мастеру за запчасть",
+      "system_order_income": "Зачисление на баланс сервиса",
+      "manual_adjustment": "Ручная корректировка баланса"
+    },
+    "transaction_statuses": {
+      "pending": "Ожидает",
+      "completed": "Проведено"
+    },
+    "filters": {
+      "type": "Тип",
+      "status": "Статус",
+      "date_range": "Период",
+      "apply": "ОК",
+      "employee": "Сотрудник",
+      "order_id": "№ заказа",
+      "clear": "Сбросить фильтр",
+      "reset_all": "Сбросить все фильтры"
+    },
+    "adjust_modal": {
+      "title_for": "Начислить / Списать — {{name}}",
+      "accrue": "Начислить (+)",
+      "deduct": "Списать (−)",
+      "amount": "Сумма",
+      "description": "Описание",
+      "submit": "Сохранить"
     }
   }
 }

@@ -40,6 +40,7 @@ export const SortableTableHeader = ({
           <TableHead
             key={col.key}
             className={cn(
+              "first:pl-4 last:pr-4",
               col.sortable && "cursor-pointer select-none",
               col.className,
             )}
@@ -65,7 +66,7 @@ export const SortableTableHeader = ({
           </TableHead>
         ))}
         {hasActions && (
-          <TableHead className="w-[80px] sm:w-[100px] text-right" />
+          <TableHead className="w-[80px] sm:w-[100px] text-right last:pr-4" />
         )}
       </TableRow>
     </TableHeader>

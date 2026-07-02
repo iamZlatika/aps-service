@@ -1,7 +1,6 @@
 const BASE = "/backoffice/billing";
 
 export const BILLING_LINKS = {
-  myFinances: () => `${BASE}/my`,
   root: () => BASE,
   balances: () => `${BASE}/balances`,
   transactions: () => `${BASE}/transactions`,

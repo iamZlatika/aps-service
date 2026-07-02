@@ -5,7 +5,6 @@ import {
   Package,
   ShieldCheck,
   Users,
-  Wallet,
   Wrench,
 } from "lucide-react";
 import { memo } from "react";
@@ -103,18 +102,6 @@ export const Sidebar = memo(() => {
                   <Link to={WORKS_LINKS.root()} onClick={closeMobileSidebar}>
                     <Images className="h-4 w-4" />
                     <span>{t("sidebar.works")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip={t("sidebar.my_finances")}>
-                  <Link
-                    to={BILLING_LINKS.myFinances()}
-                    onClick={closeMobileSidebar}
-                  >
-                    <Wallet className="h-4 w-4" />
-                    <span>{t("sidebar.my_finances")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

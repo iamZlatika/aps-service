@@ -102,9 +102,6 @@ const WorkEditPage = lazy(
 const OutsourcersPage = lazy(
   () => import("@/features/backoffice/modules/dictionaries/pages/Outsourcers"),
 );
-const MyFinancesPage = lazy(
-  () => import("@/features/backoffice/modules/billing/pages/my-finances"),
-);
 const BalancesPage = lazy(
   () => import("@/features/backoffice/modules/billing/pages/balances"),
 );
@@ -126,7 +123,6 @@ export const backofficeRoutes: RouteObject = {
     { path: USERS_ROUTES.root, element: <UsersPage /> },
     { path: USERS_ROUTES.user, element: <UserPage /> },
     { path: PROFILE_ROUTES.root, element: <ProfilePage /> },
-    { path: BILLING_ROUTES.myFinances, element: <MyFinancesPage /> },
 
     {
       element: (

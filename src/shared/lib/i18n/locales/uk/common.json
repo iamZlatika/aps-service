@@ -84,7 +84,6 @@
     "dictionaries": "Довідники",
     "works": "Роботи",
     "billing": "Білінг",
-    "my_finances": "Мої фінанси",
     "roles_permissions": "Ролі та доступи",
     "dictionaries_list": {
       "title": "Довідники",
@@ -172,7 +171,9 @@
     "time_end_before_start": "Час закінчення має бути пізніше часу початку",
     "image_type": "Допустимі формати: JPEG, PNG, WebP",
     "image_max_size": "Файл не повинен перевищувати 2 МБ",
-    "percent_range": "Значення має бути від 0 до 100"
+    "percent_range": "Значення має бути від 0 до 100",
+    "positive_amount": "Введіть суму більшу за нуль (напр. 250.50)",
+    "description_max": "Максимум {{count}} символів"
   },
   "search_placeholders": {
     "dictionaries_name": "Пошук по назві",
@@ -204,7 +205,10 @@
     "services": "Послуги",
     "orderStatuses": "Статуси замовлень",
     "bankCards": "Банківські картки",
-    "rolesPermissions": "Ролі та доступи"
+    "rolesPermissions": "Ролі та доступи",
+    "billing": "Білінг",
+    "balances": "Баланси",
+    "transactions": "Транзакції"
   },
   "profile": {
     "settings": "Налаштування профілю",
@@ -227,8 +231,7 @@
       "landing_works_view": "Перегляд",
       "landing_works_manage": "Управління",
       "billing_view": "Перегляд",
-      "billing_manage": "Управління",
-      "billing_system_balance_view": "Системний баланс",
+      "billing_balance_adjust": "Нарахування/списання",
       "users_view": "Перегляд",
       "users_manage": "Управління",
       "users_roles_permissions_manage": "Ролі та права",
@@ -763,6 +766,66 @@
       "back": "Назад",
       "darkTheme": "Темна тема",
       "lightTheme": "Світла тема"
+    }
+  },
+  "billing": {
+    "balances": {
+      "title": "Баланси",
+      "search_placeholder": "Пошук за іменем",
+      "employee": "Співробітник",
+      "roles": "Роль",
+      "balance": "Баланс",
+      "updated": "Оновлено",
+      "adjust": "Нарахувати / Списати"
+    },
+    "system_balance": {
+      "title": "Баланс сервісу"
+    },
+    "all_transactions": {
+      "title": "Усі транзакції"
+    },
+    "transactions": {
+      "table": {
+        "date": "Дата",
+        "type": "Тип",
+        "label": "Опис",
+        "amount": "Сума",
+        "status": "Статус",
+        "order": "Замовлення",
+        "created_by": "Хто нарахував",
+        "employee": "Співробітник"
+      },
+      "system_auto": "Система/Авто",
+      "system": "Сервіс"
+    },
+    "transaction_types": {
+      "intake_order_income": "Виплата приймальнику за прийом замовлення",
+      "service_income": "Виплата майстру за роботу",
+      "products_income": "Виплата майстру за запчастину",
+      "system_order_income": "Зарахування на баланс сервісу",
+      "manual_adjustment": "Ручне коригування балансу"
+    },
+    "transaction_statuses": {
+      "pending": "Очікує",
+      "completed": "Проведено"
+    },
+    "filters": {
+      "type": "Тип",
+      "status": "Статус",
+      "date_range": "Період",
+      "apply": "ОК",
+      "employee": "Співробітник",
+      "order_id": "№ замовлення",
+      "clear": "Скинути фільтр",
+      "reset_all": "Скинути всі фільтри"
+    },
+    "adjust_modal": {
+      "title_for": "Нарахувати / Списати — {{name}}",
+      "accrue": "Нарахувати (+)",
+      "deduct": "Списати (−)",
+      "amount": "Сума",
+      "description": "Опис",
+      "submit": "Зберегти"
     }
   }
 }

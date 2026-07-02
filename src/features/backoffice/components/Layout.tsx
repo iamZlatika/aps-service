@@ -32,7 +32,7 @@ const Layout = () => {
           <Breadcrumbs />
           <main
             ref={mainRef}
-            className="relative flex-1 overflow-y-auto overflow-x-hidden bg-muted"
+            className="relative flex-1 overflow-y-auto overflow-x-hidden bg-muted [scrollbar-gutter:stable]"
           >
             <PullToRefreshIndicator
               status={status}
