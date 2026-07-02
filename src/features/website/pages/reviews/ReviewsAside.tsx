@@ -85,7 +85,7 @@ export const ReviewsAside = ({ reviews }: ReviewsAsideProps) => {
           href={reviewUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-ws-ember-bright to-ws-ember px-5 py-3.5 text-sm font-semibold text-[#2a1a0d] no-underline shadow-[0_12px_30px_-12px_rgba(238,122,58,0.5)] transition-transform hover:-translate-y-px"
+          className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-ws-ember-bright to-ws-ember px-5 py-3.5 text-sm font-semibold text-ws-ember-text no-underline shadow-[0_12px_30px_-12px_rgba(238,122,58,0.5)] transition-transform hover:-translate-y-px"
         >
           <svg
             className="h-[15px] w-[15px]"

@@ -7,8 +7,9 @@ import {
   CancelButton,
   EditButton,
 } from "@/shared/components/common/buttons";
+import { FormField } from "@/shared/components/common/FormField.tsx";
 import { CardTitle } from "@/shared/components/ui/card.tsx";
-import { Input } from "@/shared/components/ui/input.tsx";
+import { Label } from "@/shared/components/ui/label.tsx";
 
 interface UserRateSectionProps {
   user: User;
@@ -17,8 +18,15 @@ interface UserRateSectionProps {
 
 export const UserRateSection = ({ user, canManage }: UserRateSectionProps) => {
   const { t } = useTranslation();
-  const { isEditing, isPending, register, onSubmit, handleEdit, handleCancel } =
-    useUserRate(user);
+  const {
+    isEditing,
+    isPending,
+    register,
+    errors,
+    onSubmit,
+    handleEdit,
+    handleCancel,
+  } = useUserRate(user);
 
   return (
     <form onSubmit={onSubmit}>
@@ -38,54 +46,83 @@ export const UserRateSection = ({ user, canManage }: UserRateSectionProps) => {
 
       <div className="grid grid-cols-3 divide-x divide-border">
         <div className="pr-6 text-center">
-          <p className="text-sm text-muted-foreground mb-1">
+          <Label
+            htmlFor="servicesPercent"
+            className="block text-sm font-normal text-muted-foreground mb-1"
+          >
             {t("profile.services_percent")}
-          </p>
+          </Label>
           {isEditing ? (
-            <Input
+            <FormField
               {...register("servicesPercent", { valueAsNumber: true })}
+              id="servicesPercent"
               type="number"
               min={0}
               max={100}
               className="text-center"
+              error={errors.servicesPercent}
             />
           ) : (
-            <p className="text-lg font-semibold">{user.servicesPercent}%</p>
+            <p className="text-lg font-semibold">
+              {user.servicesPercent ?? "—"}
+              {user.servicesPercent !== null && "%"}
+            </p>
           )}
         </div>
         <div className="px-6 text-center">
-          <p className="text-sm text-muted-foreground mb-1">
+          <Label
+            htmlFor="productsPercent"
+            className="block text-sm font-normal text-muted-foreground mb-1"
+          >
             {t("profile.products_percent")}
-          </p>
+          </Label>
           {isEditing ? (
-            <Input
+            <FormField
               {...register("productsPercent", { valueAsNumber: true })}
+              id="productsPercent"
               type="number"
               min={0}
               max={100}
               className="text-center"
+              error={errors.productsPercent}
             />
           ) : (
-            <p className="text-lg font-semibold">{user.productsPercent}%</p>
+            <p className="text-lg font-semibold">
+              {user.productsPercent ?? "—"}
+              {user.productsPercent !== null && "%"}
+            </p>
           )}
         </div>
         <div className="pl-6 text-center">
-          <p className="text-sm text-muted-foreground mb-1">
+          <Label
+            htmlFor="intakePercent"
+            className="block text-sm font-normal text-muted-foreground mb-1"
+          >
             {t("profile.intake_percent")}
-          </p>
+          </Label>
           {isEditing ? (
-            <Input
+            <FormField
               {...register("intakePercent", { valueAsNumber: true })}
+              id="intakePercent"
               type="number"
               min={0}
               max={100}
               className="text-center"
+              error={errors.intakePercent}
             />
           ) : (
-            <p className="text-lg font-semibold">{user.intakePercent}%</p>
+            <p className="text-lg font-semibold">
+              {user.intakePercent ?? "—"}
+              {user.intakePercent !== null && "%"}
+            </p>
           )}
         </div>
       </div>
+      {canManage && (
+        <p className="text-xs text-muted-foreground mt-2">
+          {t("profile.rate_help")}
+        </p>
+      )}
     </form>
   );
 };

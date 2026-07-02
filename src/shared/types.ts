@@ -67,6 +67,17 @@ export const TRANSACTION_STATUSES = {
 export type TransactionStatus =
   (typeof TRANSACTION_STATUSES)[keyof typeof TRANSACTION_STATUSES];
 
+export const TRANSACTION_TYPES = {
+  INTAKE_ORDER_INCOME: "intake_order_income",
+  SERVICE_INCOME: "service_income",
+  PRODUCTS_INCOME: "products_income",
+  SYSTEM_ORDER_INCOME: "system_order_income",
+  MANUAL_ADJUSTMENT: "manual_adjustment",
+} as const;
+
+export type TransactionType =
+  (typeof TRANSACTION_TYPES)[keyof typeof TRANSACTION_TYPES];
+
 export type PaymentType = (typeof PAYMENTS)[keyof typeof PAYMENTS];
 export type PaymentMethodType =
   (typeof PAYMENT_METHODS)[keyof typeof PAYMENT_METHODS];

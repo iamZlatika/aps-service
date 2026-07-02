@@ -20,9 +20,9 @@ export type User = {
   theme: UserTheme;
   avatarUrl: string;
   location: Location | null;
-  servicesPercent: number;
-  productsPercent: number;
-  intakePercent: number;
+  servicesPercent: number | null;
+  productsPercent: number | null;
+  intakePercent: number | null;
 };
 
 export type UserDetail = User & {

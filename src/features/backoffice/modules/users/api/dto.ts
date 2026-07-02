@@ -20,9 +20,9 @@ export const UserDtoSchema = z.object({
   theme: zodEnumFromConst(USER_THEMES),
   avatar_url: z.string(),
   location: LocationDtoSchema.nullable(),
-  services_percent: z.number(),
-  products_percent: z.number(),
-  intake_percent: z.number(),
+  services_percent: z.number().nullable(),
+  products_percent: z.number().nullable(),
+  intake_percent: z.number().nullable(),
 });
 export type UserDto = z.infer<typeof UserDtoSchema>;
 

@@ -117,6 +117,15 @@ export const ProductsAndServicesCard = ({
           ? (row.purchasePrice ?? "—")
           : (row.costPrice ?? "—"),
     },
+    {
+      key: "contractor",
+      label: t("orders.orderTable.contractor"),
+      collapsible: true,
+      render: (row) =>
+        row.type === "product"
+          ? (row.supplier?.name ?? "—")
+          : (row.outsourcer?.name ?? "—"),
+    },
   ];
 
   const buttons = canManage

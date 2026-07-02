@@ -9,13 +9,13 @@ type DocRef = { orderId: number; documentId: number };
 type DownloadRef = DocRef & { filename: string };
 
 type UseDocumentActionsReturn = {
-  print: (docs: DocRef[]) => void;
-  printAsync: (docs: DocRef[]) => Promise<void>;
+  print: (docs: DocRef[], title: string) => void;
+  printAsync: (docs: DocRef[], title: string) => Promise<void>;
   download: (docs: DownloadRef[]) => void;
   isPending: boolean;
 };
 
-async function mergeAndPrint(blobs: Blob[]): Promise<void> {
+async function mergeAndPrint(blobs: Blob[], title: string): Promise<void> {
   const merged = await PDFDocument.create();
   for (const blob of blobs) {
     const bytes = await blob.arrayBuffer();
@@ -33,6 +33,8 @@ async function mergeAndPrint(blobs: Blob[]): Promise<void> {
     iframe.style.cssText = "position:fixed;width:0;height:0;border:0";
     iframe.src = url;
     document.body.appendChild(iframe);
+
+    const originalTitle = document.title;
 
     iframe.onerror = () => {
       document.body.removeChild(iframe);
@@ -52,9 +54,11 @@ async function mergeAndPrint(blobs: Blob[]): Promise<void> {
         () => {
           document.body.removeChild(iframe);
           URL.revokeObjectURL(url);
+          document.title = originalTitle;
         },
         { once: true },
       );
+      document.title = title;
       iframe.contentWindow.focus();
       iframe.contentWindow.print();
       resolve();
@@ -64,13 +68,13 @@ async function mergeAndPrint(blobs: Blob[]): Promise<void> {
 
 export function useDocumentActions(): UseDocumentActionsReturn {
   const printMutation = useMutation({
-    mutationFn: async (docs: DocRef[]) => {
+    mutationFn: async ({ docs, title }: { docs: DocRef[]; title: string }) => {
       const blobs = await Promise.all(
         docs.map(({ orderId, documentId }) =>
           ordersApi.fetchDocumentBlob(orderId, documentId),
         ),
       );
-      await mergeAndPrint(blobs);
+      await mergeAndPrint(blobs, title);
     },
     onError: () => {
       toast.error(i18next.t("orders.print.print_error"));
@@ -87,8 +91,8 @@ export function useDocumentActions(): UseDocumentActionsReturn {
   });
 
   return {
-    print: (docs) => printMutation.mutate(docs),
-    printAsync: (docs) => printMutation.mutateAsync(docs),
+    print: (docs, title) => printMutation.mutate({ docs, title }),
+    printAsync: (docs, title) => printMutation.mutateAsync({ docs, title }),
     download: (docs) => downloadMutation.mutate(docs),
     isPending: printMutation.isPending || downloadMutation.isPending,
   };

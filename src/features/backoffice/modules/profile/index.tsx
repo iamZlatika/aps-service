@@ -14,8 +14,8 @@ import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard
 import { AcceptButton } from "@/shared/components/common/buttons/AcceptButton.tsx";
 import { CancelButton } from "@/shared/components/common/buttons/CancelButton.tsx";
 import { Loader } from "@/shared/components/common/Loader.tsx";
+import { MoneyAmount } from "@/shared/components/common/MoneyAmount.tsx";
 import { CardTitle } from "@/shared/components/ui/card.tsx";
-import { USER_LANGUAGES } from "@/shared/types.ts";
 import { groupPermissionsByCategory } from "@/widgets/ability-badge/abilityGroups";
 
 const ProfilePage = () => {
@@ -84,14 +84,7 @@ const ProfilePage = () => {
           {t("profile.your_balance")}
         </CardTitle>
         <div className="h-11 rounded-md border border-input bg-muted px-3 text-base flex items-center justify-center mb-6">
-          {new Intl.NumberFormat(
-            user.locale === USER_LANGUAGES.UK ? "uk-UA" : "ru-RU",
-            {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            },
-          ).format(parseFloat(user.balance))}{" "}
-          ₴
+          <MoneyAmount value={user.balance} />
         </div>
         <CardTitle className="text-xl font-bold mb-4 text-center">
           {t("profile.your_rate")}
@@ -101,19 +94,28 @@ const ProfilePage = () => {
             <p className="text-sm text-muted-foreground mb-1">
               {t("profile.services_percent")}
             </p>
-            <p className="text-lg font-semibold">{user.servicesPercent}%</p>
+            <p className="text-lg font-semibold">
+              {user.servicesPercent ?? "—"}
+              {user.servicesPercent !== null && "%"}
+            </p>
           </div>
           <div className="px-6 text-center">
             <p className="text-sm text-muted-foreground mb-1">
               {t("profile.products_percent")}
             </p>
-            <p className="text-lg font-semibold">{user.productsPercent}%</p>
+            <p className="text-lg font-semibold">
+              {user.productsPercent ?? "—"}
+              {user.productsPercent !== null && "%"}
+            </p>
           </div>
           <div className="pl-6 text-center">
             <p className="text-sm text-muted-foreground mb-1">
               {t("profile.intake_percent")}
             </p>
-            <p className="text-lg font-semibold">{user.intakePercent}%</p>
+            <p className="text-lg font-semibold">
+              {user.intakePercent ?? "—"}
+              {user.intakePercent !== null && "%"}
+            </p>
           </div>
         </div>
         <CardTitle className="text-xl font-bold mb-4 text-center">

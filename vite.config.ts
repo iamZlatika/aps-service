@@ -14,7 +14,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          "vendor-react": ["react", "react-dom", "react-router-dom"],
+          "vendor-react": [
+            "react",
+            "react-dom",
+            "react-dom/client",
+            "react-router-dom",
+          ],
           "vendor-query": ["@tanstack/react-query"],
           "vendor-ui": [
             "@radix-ui/react-avatar",

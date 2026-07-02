@@ -1,7 +1,9 @@
 import { lazy } from "react";
-import { type RouteObject } from "react-router-dom";
+import { Navigate, type RouteObject } from "react-router-dom";
 
 import { ProtectedRoute } from "@/app/ProtectedRoute";
+import { BILLING_LINKS } from "@/features/backoffice/modules/billing/navigation.ts";
+import { BILLING_ROUTES } from "@/features/backoffice/modules/billing/routes.ts";
 import { CUSTOMERS_ROUTES } from "@/features/backoffice/modules/customers/routes";
 import { DICTIONARIES_ROUTES } from "@/features/backoffice/modules/dictionaries/routes";
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
@@ -100,6 +102,15 @@ const WorkEditPage = lazy(
 const OutsourcersPage = lazy(
   () => import("@/features/backoffice/modules/dictionaries/pages/Outsourcers"),
 );
+const MyFinancesPage = lazy(
+  () => import("@/features/backoffice/modules/billing/pages/my-finances"),
+);
+const BalancesPage = lazy(
+  () => import("@/features/backoffice/modules/billing/pages/balances"),
+);
+const AllTransactionsPage = lazy(
+  () => import("@/features/backoffice/modules/billing/pages/all-transactions"),
+);
 
 export const backofficeRoutes: RouteObject = {
   children: [
@@ -115,6 +126,7 @@ export const backofficeRoutes: RouteObject = {
     { path: USERS_ROUTES.root, element: <UsersPage /> },
     { path: USERS_ROUTES.user, element: <UserPage /> },
     { path: PROFILE_ROUTES.root, element: <ProfilePage /> },
+    { path: BILLING_ROUTES.myFinances, element: <MyFinancesPage /> },
 
     {
       element: (
@@ -124,6 +136,20 @@ export const backofficeRoutes: RouteObject = {
         {
           path: ROLES_PERMISSIONS_ROUTES.root,
           element: <RolesPermissionsPage />,
+        },
+      ],
+    },
+    {
+      element: <ProtectedRoute requiredAbility="billing_view" />,
+      children: [
+        {
+          path: BILLING_ROUTES.root,
+          element: <Navigate to={BILLING_LINKS.balances()} replace />,
+        },
+        { path: BILLING_ROUTES.balances, element: <BalancesPage /> },
+        {
+          path: BILLING_ROUTES.transactions,
+          element: <AllTransactionsPage />,
         },
       ],
     },
