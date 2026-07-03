@@ -10,4 +10,5 @@ export type BillingDirection =
 export const TRANSACTION_STATUS_COLORS: Record<TransactionStatus, string> = {
   completed: "green",
   pending: "gray",
+  rejected: "gray",
 };

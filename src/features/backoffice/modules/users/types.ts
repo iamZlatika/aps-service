@@ -44,5 +44,7 @@ export type SearchPreset<TFilters = SearchPresetFiltersDto> = {
 export type Me = User & {
   abilities: string[];
   balance: string;
+  pendingWithdrawals: string;
+  available: string;
   searchPresets: SearchPreset[];
 };

@@ -8,6 +8,8 @@ import type {
 import type {
   Balance,
   NewBillingTransaction,
+  NewSystemBalanceTransaction,
+  NewWithdrawalRequest,
   SystemBalance,
   Transaction,
 } from "@/features/backoffice/modules/billing/types.ts";
@@ -90,6 +92,24 @@ export function mapSystemBalanceDtoToSystemBalance(
 export function mapNewTransactionToDto(data: NewBillingTransaction) {
   return {
     user_id: data.userId,
+    amount: data.amount,
+    description: data.description,
+  };
+}
+
+export function mapNewWithdrawalRequestToDto(data: NewWithdrawalRequest) {
+  return {
+    amount: data.amount,
+    description: data.description || undefined,
+  };
+}
+
+// No user_id key at all — that's what tells the backend this is a system-balance
+// transaction rather than an employee adjustment (compare mapNewTransactionToDto).
+export function mapNewSystemBalanceTransactionToDto(
+  data: NewSystemBalanceTransaction,
+) {
+  return {
     amount: data.amount,
     description: data.description,
   };

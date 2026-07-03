@@ -113,6 +113,10 @@ const BalancesPage = lazy(
 const AllTransactionsPage = lazy(
   () => import("@/features/backoffice/modules/billing/pages/all-transactions"),
 );
+const WithdrawalRequestsPage = lazy(
+  () =>
+    import("@/features/backoffice/modules/billing/pages/withdrawal-requests"),
+);
 
 export const backofficeRoutes: RouteObject = {
   children: [
@@ -152,6 +156,10 @@ export const backofficeRoutes: RouteObject = {
         {
           path: BILLING_ROUTES.transactions,
           element: <AllTransactionsPage />,
+        },
+        {
+          path: BILLING_ROUTES.withdrawalRequests,
+          element: <WithdrawalRequestsPage />,
         },
       ],
     },

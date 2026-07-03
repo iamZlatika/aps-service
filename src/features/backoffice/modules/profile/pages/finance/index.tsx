@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { billingApi } from "@/features/backoffice/modules/billing/api";
+import { MyTransactionsFilterBar } from "@/features/backoffice/modules/billing/components/MyTransactionsFilterBar.tsx";
+import { RequestWithdrawalModal } from "@/features/backoffice/modules/billing/components/RequestWithdrawalModal.tsx";
 import { buildMyTransactionColumns } from "@/features/backoffice/modules/billing/pages/columns.tsx";
 import { MyBalanceCard } from "@/features/backoffice/modules/profile/components/MyBalanceCard.tsx";
 import { ProfileTabs } from "@/features/backoffice/modules/profile/components/ProfileTabs.tsx";
@@ -13,6 +16,7 @@ import { Card, CardContent, CardTitle } from "@/shared/components/ui/card.tsx";
 const ProfileFinancePage = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const [isRequestingWithdrawal, setIsRequestingWithdrawal] = useState(false);
 
   if (!user) return <Loader />;
 
@@ -21,7 +25,11 @@ const ProfileFinancePage = () => {
       <div className="p-2 sm:p-6 pb-0 max-w-5xl mx-auto w-full">
         <h1 className="mb-6 text-2xl font-bold">{t("profile.my_finances")}</h1>
         <ProfileTabs />
-        <MyBalanceCard balance={user.balance} />
+        <MyBalanceCard
+          balance={user.balance}
+          available={user.available}
+          onRequestWithdrawal={() => setIsRequestingWithdrawal(true)}
+        />
         <Card className="p-2 sm:p-6 mb-6">
           <CardContent className="p-0">
             <CardTitle className="text-xl font-bold mb-4 text-center">
@@ -66,7 +74,22 @@ const ProfileFinancePage = () => {
         queryKeyFn={queryKeys.billing.myTransactions}
         searchPlaceholder="billing.my_transactions.title"
         columns={buildMyTransactionColumns()}
+        filterBar={<MyTransactionsFilterBar />}
+        extraFilterKeys={[
+          "status",
+          "type",
+          "order_id",
+          "created_at[0]",
+          "created_at[1]",
+        ]}
       />
+      {isRequestingWithdrawal && (
+        <RequestWithdrawalModal
+          open
+          onClose={() => setIsRequestingWithdrawal(false)}
+          available={user.available}
+        />
+      )}
     </>
   );
 };

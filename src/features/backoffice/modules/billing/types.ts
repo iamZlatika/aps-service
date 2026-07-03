@@ -33,3 +33,13 @@ export type NewBillingTransaction = {
   amount: string;
   description: string;
 };
+
+export type NewWithdrawalRequest = {
+  amount: string;
+  description?: string;
+};
+
+export type NewSystemBalanceTransaction = {
+  amount: string;
+  description: string;
+};

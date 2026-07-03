@@ -5,4 +5,7 @@ export const BILLING_API = {
   allTransactions: () => `${BASE}/transactions/all`,
   balances: () => `${BASE}/balances`,
   systemBalance: () => `${BASE}/balance/system`,
+  withdrawals: () => `${BASE}/withdrawals`,
+  withdrawalApprove: (id: number) => `${BASE}/withdrawals/${id}/approve`,
+  withdrawalReject: (id: number) => `${BASE}/withdrawals/${id}/reject`,
 } as const;

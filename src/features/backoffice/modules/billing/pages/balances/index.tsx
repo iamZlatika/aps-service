@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { billingApi } from "@/features/backoffice/modules/billing/api";
 import { AdjustBalanceModal } from "@/features/backoffice/modules/billing/components/AdjustBalanceModal.tsx";
+import { AdjustSystemBalanceModal } from "@/features/backoffice/modules/billing/components/AdjustSystemBalanceModal.tsx";
 import { BillingTabs } from "@/features/backoffice/modules/billing/components/BillingTabs.tsx";
 import { SystemBalanceCard } from "@/features/backoffice/modules/billing/components/SystemBalanceCard.tsx";
 import { BILLING_LINKS } from "@/features/backoffice/modules/billing/navigation.ts";
@@ -22,12 +23,14 @@ const BalancesPage = () => {
   const [adjustingBalance, setAdjustingBalance] = useState<Balance | null>(
     null,
   );
+  const [isAdjustingSystemBalance, setIsAdjustingSystemBalance] =
+    useState(false);
 
   return (
     <>
       <div className="p-2 sm:p-4 pb-0 max-w-3xl lg:max-w-7xl mx-auto w-full">
         <BillingTabs />
-        <SystemBalanceCard />
+        <SystemBalanceCard onAdjust={() => setIsAdjustingSystemBalance(true)} />
       </div>
       <SmartTable
         titleKey="billing.balances.title"
@@ -62,6 +65,12 @@ const BalancesPage = () => {
           onClose={() => setAdjustingBalance(null)}
           userId={adjustingBalance.user.id}
           userName={adjustingBalance.user.name}
+        />
+      )}
+      {isAdjustingSystemBalance && (
+        <AdjustSystemBalanceModal
+          open
+          onClose={() => setIsAdjustingSystemBalance(false)}
         />
       )}
     </>

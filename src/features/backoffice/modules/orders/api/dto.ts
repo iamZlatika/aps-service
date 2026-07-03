@@ -63,6 +63,7 @@ export const OrderDtoSchema = z.object({
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),
   closed_at: z.iso.datetime().nullable(),
+  ready_sms_sent_at: z.iso.datetime().nullable(),
   documents: z.array(DocumentsDtoSchema),
 });
 export type OrderDto = z.infer<typeof OrderDtoSchema>;
@@ -154,8 +155,8 @@ export const OrderTransactionDtoSchema = z.object({
   user: UserDtoSchema.nullable(),
   order_id: z.number(),
   order_number: z.string(),
-  order_service_id: z.number().nullable(),
-  order_product_id: z.number().nullable(),
+  order_service_id: z.number().nullable().optional(),
+  order_product_id: z.number().nullable().optional(),
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),
 });

@@ -79,6 +79,7 @@ export type Order = {
   createdAt: string;
   updatedAt: string;
   closedAt: string | null;
+  readySmsSentAt: string | null;
   documents: OrderDocument[];
 };
 

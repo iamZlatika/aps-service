@@ -173,7 +173,8 @@
     "image_max_size": "Файл не повинен перевищувати 2 МБ",
     "percent_range": "Значення має бути від 0 до 100",
     "positive_amount": "Введіть суму більшу за нуль (напр. 250.50)",
-    "description_max": "Максимум {{count}} символів"
+    "description_max": "Максимум {{count}} символів",
+    "amount_exceeds_available": "Сума перевищує доступний до виплати баланс"
   },
   "search_placeholders": {
     "dictionaries_name": "Пошук по назві",
@@ -209,7 +210,8 @@
     "billing": "Білінг",
     "balances": "Баланси",
     "transactions": "Транзакції",
-    "finance": "Фінанси"
+    "finance": "Фінанси",
+    "withdrawalRequests": "Запити на виплату"
   },
   "profile": {
     "settings": "Налаштування профілю",
@@ -543,6 +545,9 @@
         "called": "прозвонив клієнта",
         "cancelled": "скасував поле «Прозвонив»",
         "system_cancelled": "Поле «Прозвонив» скасовано системою"
+      },
+      "sms": {
+        "ready_sent": "Відправлено SMS про готовність"
       }
     },
     "paymentMethods": {
@@ -785,11 +790,16 @@
       "adjust": "Нарахувати / Списати"
     },
     "system_balance": {
-      "title": "Баланс сервісу"
+      "title": "Баланс сервісу",
+      "adjust_button": "Списати з балансу сервісу"
     },
     "all_transactions": {
       "title": "Усі транзакції"
     },
+    "withdrawal_requests": {
+      "title": "Запити на виплату"
+    },
+    "withdrawal_requests_count": "{{count}} запитів на виплату",
     "my_transactions": {
       "title": "Ваші транзакції"
     },
@@ -813,11 +823,13 @@
       "service_income": "Виплата майстру за роботу",
       "products_income": "Виплата майстру за запчастину",
       "system_order_income": "Зарахування на баланс сервісу",
-      "manual_adjustment": "Ручне коригування балансу"
+      "manual_adjustment": "Ручне коригування балансу",
+      "withdrawal_request": "Виплата коштів співробітнику"
     },
     "transaction_statuses": {
       "pending": "Очікує",
-      "completed": "Проведено"
+      "completed": "Проведено",
+      "rejected": "Відхилено"
     },
     "filters": {
       "type": "Тип",
@@ -827,7 +839,8 @@
       "employee": "Співробітник",
       "order_id": "№ замовлення",
       "clear": "Скинути фільтр",
-      "reset_all": "Скинути всі фільтри"
+      "reset_all": "Скинути всі фільтри",
+      "withdrawal_preset": "Запити на виплату"
     },
     "adjust_modal": {
       "title_for": "Нарахувати / Списати — {{name}}",
@@ -836,6 +849,27 @@
       "amount": "Сума",
       "description": "Опис",
       "submit": "Зберегти"
+    },
+    "withdrawal_modal": {
+      "title": "Запит на виплату коштів",
+      "amount": "Сума",
+      "available_hint": "Доступно до виплати: {{available}}",
+      "description": "Опис",
+      "submit": "Надіслати запит"
+    },
+    "system_balance_modal": {
+      "title": "Списати з балансу сервісу",
+      "amount": "Сума",
+      "description": "Опис",
+      "submit": "Списати"
+    },
+    "withdrawal": {
+      "available": "Доступно до виплати: {{available}}",
+      "request_button": "Запросити виплату",
+      "approve": "Провести",
+      "reject": "Відхилити",
+      "approve_success": "Заявку на виплату проведено",
+      "reject_success": "Заявку на виплату відхилено"
     }
   }
 }

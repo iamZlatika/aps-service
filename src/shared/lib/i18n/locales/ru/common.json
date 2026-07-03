@@ -176,7 +176,8 @@
     "image_max_size": "Файл не должен превышать 2 МБ",
     "percent_range": "Значение должно быть от 0 до 100",
     "positive_amount": "Введите сумму больше нуля (напр. 250.50)",
-    "description_max": "Максимум {{count}} символов"
+    "description_max": "Максимум {{count}} символов",
+    "amount_exceeds_available": "Сумма превышает доступный для выплаты баланс"
   },
   "search_placeholders": {
     "dictionaries_name": "Поиск по названию",
@@ -212,7 +213,8 @@
     "billing": "Биллинг",
     "balances": "Балансы",
     "transactions": "Транзакции",
-    "finance": "Финансы"
+    "finance": "Финансы",
+    "withdrawalRequests": "Запросы на выплату"
   },
   "profile": {
     "settings": "Настройки профиля",
@@ -546,6 +548,9 @@
         "called": "прозвонил клиента",
         "cancelled": "отменил поле «Прозвонил»",
         "system_cancelled": "Поле «Прозвонил» отменено системой"
+      },
+      "sms": {
+        "ready_sent": "Отправлена SMS о готовности"
       }
     },
     "paymentMethods": {
@@ -788,11 +793,16 @@
       "adjust": "Начислить / Списать"
     },
     "system_balance": {
-      "title": "Баланс сервиса"
+      "title": "Баланс сервиса",
+      "adjust_button": "Списать с баланса сервиса"
     },
     "all_transactions": {
       "title": "Все транзакции"
     },
+    "withdrawal_requests": {
+      "title": "Запросы на выплату"
+    },
+    "withdrawal_requests_count": "{{count}} запросов на выплату",
     "my_transactions": {
       "title": "Ваши транзакции"
     },
@@ -816,11 +826,13 @@
       "service_income": "Выплата мастеру за работу",
       "products_income": "Выплата мастеру за запчасть",
       "system_order_income": "Зачисление на баланс сервиса",
-      "manual_adjustment": "Ручная корректировка баланса"
+      "manual_adjustment": "Ручная корректировка баланса",
+      "withdrawal_request": "Выплата средств сотруднику"
     },
     "transaction_statuses": {
       "pending": "Ожидает",
-      "completed": "Проведено"
+      "completed": "Проведено",
+      "rejected": "Отклонено"
     },
     "filters": {
       "type": "Тип",
@@ -830,7 +842,8 @@
       "employee": "Сотрудник",
       "order_id": "№ заказа",
       "clear": "Сбросить фильтр",
-      "reset_all": "Сбросить все фильтры"
+      "reset_all": "Сбросить все фильтры",
+      "withdrawal_preset": "Запросы на выплату"
     },
     "adjust_modal": {
       "title_for": "Начислить / Списать — {{name}}",
@@ -839,6 +852,27 @@
       "amount": "Сумма",
       "description": "Описание",
       "submit": "Сохранить"
+    },
+    "withdrawal_modal": {
+      "title": "Запрос на выплату средств",
+      "amount": "Сумма",
+      "available_hint": "Доступно к выплате: {{available}}",
+      "description": "Описание",
+      "submit": "Отправить запрос"
+    },
+    "system_balance_modal": {
+      "title": "Списать с баланса сервиса",
+      "amount": "Сумма",
+      "description": "Описание",
+      "submit": "Списать"
+    },
+    "withdrawal": {
+      "available": "Доступно к выплате: {{available}}",
+      "request_button": "Запросить выплату",
+      "approve": "Провести",
+      "reject": "Отклонить",
+      "approve_success": "Заявка на выплату проведена",
+      "reject_success": "Заявка на выплату отклонена"
     }
   }
 }

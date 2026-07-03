@@ -1,11 +1,18 @@
 import { useTranslation } from "react-i18next";
 
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { useSystemBalance } from "@/features/backoffice/modules/billing/hooks/useSystemBalance.ts";
 import { MoneyAmount } from "@/shared/components/common/MoneyAmount.tsx";
+import { Button } from "@/shared/components/ui/button.tsx";
 import { Card, CardContent, CardTitle } from "@/shared/components/ui/card.tsx";
 
-export const SystemBalanceCard = () => {
+interface SystemBalanceCardProps {
+  onAdjust?: () => void;
+}
+
+export const SystemBalanceCard = ({ onAdjust }: SystemBalanceCardProps) => {
   const { t } = useTranslation();
+  const { can } = useAuth();
   const { systemBalance, isLoading } = useSystemBalance();
 
   if (isLoading || !systemBalance) return null;
@@ -16,10 +23,17 @@ export const SystemBalanceCard = () => {
         <CardTitle className="text-base font-medium">
           {t("billing.system_balance.title")}
         </CardTitle>
-        <MoneyAmount
-          value={systemBalance.amount}
-          className="text-2xl font-bold"
-        />
+        <div className="flex items-center gap-4">
+          <MoneyAmount
+            value={systemBalance.amount}
+            className="text-2xl font-bold"
+          />
+          {onAdjust && can("billing_balance_adjust") && (
+            <Button size="sm" onClick={onAdjust}>
+              {t("billing.system_balance.adjust_button")}
+            </Button>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

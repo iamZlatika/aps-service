@@ -3,16 +3,14 @@ import { useState } from "react";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { billingApi } from "@/features/backoffice/modules/billing/api";
 import { AdjustSystemBalanceModal } from "@/features/backoffice/modules/billing/components/AdjustSystemBalanceModal.tsx";
-import { AllTransactionsFilterBar } from "@/features/backoffice/modules/billing/components/AllTransactionsFilterBar.tsx";
 import { BillingTabs } from "@/features/backoffice/modules/billing/components/BillingTabs.tsx";
 import { SystemBalanceCard } from "@/features/backoffice/modules/billing/components/SystemBalanceCard.tsx";
 import { WithdrawalDecisionButtons } from "@/features/backoffice/modules/billing/components/WithdrawalDecisionButtons.tsx";
 import { buildTransactionColumns } from "@/features/backoffice/modules/billing/pages/columns.tsx";
 import { SmartTable } from "@/features/backoffice/widgets/table";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { TRANSACTION_STATUSES, TRANSACTION_TYPES } from "@/shared/types.ts";
 
-const AllTransactionsPage = () => {
+const WithdrawalRequestsPage = () => {
   const { can } = useAuth();
   const canDecideWithdrawals = can("billing_balance_adjust");
   const [isAdjustingSystemBalance, setIsAdjustingSystemBalance] =
@@ -26,27 +24,16 @@ const AllTransactionsPage = () => {
       </div>
       <SmartTable
         className="max-w-[2560px] lg:max-w-[2560px]"
-        titleKey="billing.all_transactions.title"
-        api={billingApi.allTransactions}
-        queryKeyFn={queryKeys.billing.allTransactions}
-        searchPlaceholder="billing.all_transactions.title"
+        titleKey="billing.withdrawal_requests.title"
+        api={billingApi.withdrawalRequests}
+        queryKeyFn={queryKeys.billing.withdrawalRequests}
+        searchPlaceholder="billing.withdrawal_requests.title"
         columns={buildTransactionColumns({ showEmployeeColumn: true })}
-        filterBar={<AllTransactionsFilterBar />}
-        extraFilterKeys={[
-          "user_id",
-          "status",
-          "type",
-          "order_id",
-          "created_at[0]",
-          "created_at[1]",
-        ]}
         renderRowActions={
           canDecideWithdrawals
-            ? (transaction) =>
-                transaction.type === TRANSACTION_TYPES.WITHDRAWAL_REQUEST &&
-                transaction.status === TRANSACTION_STATUSES.PENDING ? (
-                  <WithdrawalDecisionButtons transactionId={transaction.id} />
-                ) : undefined
+            ? (transaction) => (
+                <WithdrawalDecisionButtons transactionId={transaction.id} />
+              )
             : undefined
         }
       />
@@ -60,4 +47,4 @@ const AllTransactionsPage = () => {
   );
 };
 
-export default AllTransactionsPage;
+export default WithdrawalRequestsPage;

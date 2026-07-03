@@ -88,6 +88,7 @@ export function mapOrderDtoToOrder(dto: OrderDto): Order {
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
     closedAt: dto.closed_at,
+    readySmsSentAt: dto.ready_sms_sent_at,
     documents: dto.documents.map(mapDocumentDtoToOrderDocument),
   };
 }
@@ -186,8 +187,8 @@ export function mapOrderTransactionDtoToOrderTransaction(
     user: dto.user ? mapUserDtoToUser(dto.user) : null,
     orderId: dto.order_id,
     orderNumber: dto.order_number,
-    orderServiceId: dto.order_service_id,
-    orderProductId: dto.order_product_id,
+    orderServiceId: dto.order_service_id ?? null,
+    orderProductId: dto.order_product_id ?? null,
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
   };

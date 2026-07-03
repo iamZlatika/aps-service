@@ -19,6 +19,80 @@ import { TRANSACTION_TYPES, type TransactionStatus } from "@/shared/types.ts";
 const isUser = (value: unknown): value is User =>
   typeof value === "object" && value !== null && "email" in value;
 
+// Shared by buildTransactionColumns and buildMyTransactionColumns — both render
+// the same order/amount/date/type/status columns, just with a different mix of
+// extra columns around them.
+function buildOrderColumn(): ColumnConfig<Transaction> {
+  return {
+    key: "order",
+    field: "orderNumber",
+    labelKey: "billing.transactions.table.order",
+    sortable: false,
+    renderCell: (value, item) =>
+      item.orderId ? (
+        <Link
+          to={ORDERS_LINKS.detail(item.orderId)}
+          className="text-primary hover:underline"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {value as string}
+        </Link>
+      ) : (
+        "—"
+      ),
+  };
+}
+
+function buildAmountColumn(): ColumnConfig<Transaction> {
+  return {
+    key: "amount",
+    field: "amount",
+    labelKey: "billing.transactions.table.amount",
+    sortable: true,
+    renderCell: (value) => <MoneyAmount value={value as string} />,
+  };
+}
+
+function buildCreatedAtColumn(): ColumnConfig<Transaction> {
+  return {
+    key: "createdAt",
+    field: "createdAt",
+    labelKey: "billing.transactions.table.date",
+    sortable: true,
+    sortKey: "created_at",
+    renderCell: (value) => formatDateTime(value as string),
+  };
+}
+
+function buildTypeColumn(): ColumnConfig<Transaction> {
+  return {
+    key: "type",
+    field: "type",
+    labelKey: "billing.transactions.table.type",
+    sortable: true,
+    renderCell: (value) =>
+      i18next.t(`billing.transaction_types.${value as string}`),
+  };
+}
+
+function buildStatusColumn(): ColumnConfig<Transaction> {
+  return {
+    key: "status",
+    field: "status",
+    labelKey: "billing.transactions.table.status",
+    sortable: true,
+    renderCell: (value) => {
+      const status = value as TransactionStatus;
+      return (
+        <StatusBadge
+          name={i18next.t(`billing.transaction_statuses.${status}`)}
+          color={TRANSACTION_STATUS_COLORS[status]}
+        />
+      );
+    },
+  };
+}
+
 export function buildBalanceColumns(): ColumnConfig<Balance>[] {
   return [
     {
@@ -71,68 +145,17 @@ export function buildTransactionColumns({
   showEmployeeColumn: boolean;
 }): ColumnConfig<Transaction>[] {
   const columns: ColumnConfig<Transaction>[] = [
-    {
-      key: "createdAt",
-      field: "createdAt",
-      labelKey: "billing.transactions.table.date",
-      sortable: true,
-      sortKey: "created_at",
-      renderCell: (value) => formatDateTime(value as string),
-    },
-    {
-      key: "type",
-      field: "type",
-      labelKey: "billing.transactions.table.type",
-      sortable: true,
-      renderCell: (value) =>
-        i18next.t(`billing.transaction_types.${value as string}`),
-    },
+    buildCreatedAtColumn(),
+    buildTypeColumn(),
     {
       key: "label",
       field: "label",
       labelKey: "billing.transactions.table.label",
       sortable: false,
     },
-    {
-      key: "amount",
-      field: "amount",
-      labelKey: "billing.transactions.table.amount",
-      sortable: true,
-      renderCell: (value) => <MoneyAmount value={value as string} />,
-    },
-    {
-      key: "status",
-      field: "status",
-      labelKey: "billing.transactions.table.status",
-      sortable: true,
-      renderCell: (value) => {
-        const status = value as TransactionStatus;
-        return (
-          <StatusBadge
-            name={i18next.t(`billing.transaction_statuses.${status}`)}
-            color={TRANSACTION_STATUS_COLORS[status]}
-          />
-        );
-      },
-    },
-    {
-      key: "order",
-      field: "orderNumber",
-      labelKey: "billing.transactions.table.order",
-      sortable: false,
-      renderCell: (value, item) =>
-        item.orderId ? (
-          <Link
-            to={ORDERS_LINKS.detail(item.orderId)}
-            className="text-primary hover:underline"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {value as string}
-          </Link>
-        ) : (
-          "—"
-        ),
-    },
+    buildAmountColumn(),
+    buildStatusColumn(),
+    buildOrderColumn(),
     {
       key: "createdBy",
       field: "createdBy",
@@ -161,24 +184,7 @@ export function buildTransactionColumns({
 
 export function buildMyTransactionColumns(): ColumnConfig<Transaction>[] {
   return [
-    {
-      key: "order",
-      field: "orderNumber",
-      labelKey: "billing.transactions.table.order",
-      sortable: false,
-      renderCell: (value, item) =>
-        item.orderId ? (
-          <Link
-            to={ORDERS_LINKS.detail(item.orderId)}
-            className="text-primary hover:underline"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {value as string}
-          </Link>
-        ) : (
-          "—"
-        ),
-    },
+    buildOrderColumn(),
     {
       key: "item",
       field: "orderService",
@@ -187,45 +193,14 @@ export function buildMyTransactionColumns(): ColumnConfig<Transaction>[] {
       renderCell: (_value, item) =>
         item.orderService?.name ??
         item.orderProduct?.name ??
-        (item.type === TRANSACTION_TYPES.MANUAL_ADJUSTMENT ? item.label : "—"),
+        (item.type === TRANSACTION_TYPES.MANUAL_ADJUSTMENT ||
+        item.type === TRANSACTION_TYPES.WITHDRAWAL_REQUEST
+          ? item.label
+          : "—"),
     },
-    {
-      key: "amount",
-      field: "amount",
-      labelKey: "billing.transactions.table.amount",
-      sortable: true,
-      renderCell: (value) => <MoneyAmount value={value as string} />,
-    },
-    {
-      key: "createdAt",
-      field: "createdAt",
-      labelKey: "billing.transactions.table.date",
-      sortable: true,
-      sortKey: "created_at",
-      renderCell: (value) => formatDateTime(value as string),
-    },
-    {
-      key: "type",
-      field: "type",
-      labelKey: "billing.transactions.table.type",
-      sortable: true,
-      renderCell: (value) =>
-        i18next.t(`billing.transaction_types.${value as string}`),
-    },
-    {
-      key: "status",
-      field: "status",
-      labelKey: "billing.transactions.table.status",
-      sortable: true,
-      renderCell: (value) => {
-        const status = value as TransactionStatus;
-        return (
-          <StatusBadge
-            name={i18next.t(`billing.transaction_statuses.${status}`)}
-            color={TRANSACTION_STATUS_COLORS[status]}
-          />
-        );
-      },
-    },
+    buildAmountColumn(),
+    buildCreatedAtColumn(),
+    buildTypeColumn(),
+    buildStatusColumn(),
   ];
 }

@@ -60,6 +60,8 @@ export type SearchPresetDto = z.infer<typeof SearchPresetDtoSchema>;
 export const MeDtoSchema = UserDtoSchema.extend({
   abilities: z.array(z.string()),
   balance: z.string(),
+  pending_withdrawals: z.string(),
+  available: z.string(),
   search_presets: z.array(SearchPresetDtoSchema),
 });
 export type MeDto = z.infer<typeof MeDtoSchema>;

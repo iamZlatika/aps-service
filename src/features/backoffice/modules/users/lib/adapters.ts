@@ -36,6 +36,8 @@ export function mapMeDtoToMe(dto: MeDto): Me {
     ...mapUserDtoToUser(dto),
     abilities: dto.abilities,
     balance: dto.balance,
+    pendingWithdrawals: dto.pending_withdrawals,
+    available: dto.available,
     searchPresets: dto.search_presets.map((p) => ({
       id: p.id,
       entity: p.entity,

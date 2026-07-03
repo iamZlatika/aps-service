@@ -62,6 +62,7 @@ export const PAYMENT_METHODS = {
 export const TRANSACTION_STATUSES = {
   COMPLETED: "completed",
   PENDING: "pending",
+  REJECTED: "rejected",
 } as const;
 
 export type TransactionStatus =
@@ -73,6 +74,7 @@ export const TRANSACTION_TYPES = {
   PRODUCTS_INCOME: "products_income",
   SYSTEM_ORDER_INCOME: "system_order_income",
   MANUAL_ADJUSTMENT: "manual_adjustment",
+  WITHDRAWAL_REQUEST: "withdrawal_request",
 } as const;
 
 export type TransactionType =
