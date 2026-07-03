@@ -9,6 +9,7 @@ import { DICTIONARIES_ROUTES } from "@/features/backoffice/modules/dictionaries/
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
 import { PROFILE_ROUTES } from "@/features/backoffice/modules/profile/routes.ts";
 import { ROLES_PERMISSIONS_ROUTES } from "@/features/backoffice/modules/roles-permissions/routes.ts";
+import { SMS_INTEGRATION_ROUTES } from "@/features/backoffice/modules/sms-integration/routes.ts";
 import { USERS_ROUTES } from "@/features/backoffice/modules/users/routes";
 import { WORKS_ROUTES } from "@/features/backoffice/modules/works/routes";
 
@@ -117,6 +118,9 @@ const WithdrawalRequestsPage = lazy(
   () =>
     import("@/features/backoffice/modules/billing/pages/withdrawal-requests"),
 );
+const SmsIntegrationPage = lazy(
+  () => import("@/features/backoffice/modules/sms-integration/pages"),
+);
 
 export const backofficeRoutes: RouteObject = {
   children: [
@@ -160,6 +164,15 @@ export const backofficeRoutes: RouteObject = {
         {
           path: BILLING_ROUTES.withdrawalRequests,
           element: <WithdrawalRequestsPage />,
+        },
+      ],
+    },
+    {
+      element: <ProtectedRoute requiredAbility="integrations_sms_view" />,
+      children: [
+        {
+          path: SMS_INTEGRATION_ROUTES.root,
+          element: <SmsIntegrationPage />,
         },
       ],
     },

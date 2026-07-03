@@ -36,7 +36,7 @@ const AllTransactionsPage = () => {
           "user_id",
           "status",
           "type",
-          "order_id",
+          "order_number",
           "created_at[0]",
           "created_at[1]",
         ]}

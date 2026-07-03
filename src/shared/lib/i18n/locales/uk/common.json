@@ -84,6 +84,7 @@
     "dictionaries": "Довідники",
     "works": "Роботи",
     "billing": "Білінг",
+    "sms_integration": "SMS-інтеграція",
     "roles_permissions": "Ролі та доступи",
     "dictionaries_list": {
       "title": "Довідники",
@@ -211,7 +212,8 @@
     "balances": "Баланси",
     "transactions": "Транзакції",
     "finance": "Фінанси",
-    "withdrawalRequests": "Запити на виплату"
+    "withdrawalRequests": "Запити на виплату",
+    "integrations": "Інтеграції"
   },
   "profile": {
     "settings": "Налаштування профілю",
@@ -230,7 +232,8 @@
         "landing_works": "Роботи",
         "billing": "Білінг",
         "users": "Співробітники",
-        "dictionaries": "Довідники"
+        "dictionaries": "Довідники",
+        "integrations_sms": "SMS-інтеграція"
       },
       "orders_view": "Перегляд",
       "orders_manage": "Управління",
@@ -240,6 +243,7 @@
       "landing_works_manage": "Управління",
       "billing_view": "Перегляд",
       "billing_balance_adjust": "Нарахування/списання",
+      "integrations_sms_view": "Перегляд",
       "users_view": "Перегляд",
       "users_manage": "Управління",
       "users_roles_permissions_manage": "Ролі та права",
@@ -837,7 +841,7 @@
       "date_range": "Період",
       "apply": "ОК",
       "employee": "Співробітник",
-      "order_id": "№ замовлення",
+      "order_number": "№ замовлення",
       "clear": "Скинути фільтр",
       "reset_all": "Скинути всі фільтри",
       "withdrawal_preset": "Запити на виплату"
@@ -870,6 +874,46 @@
       "reject": "Відхилити",
       "approve_success": "Заявку на виплату проведено",
       "reject_success": "Заявку на виплату відхилено"
+    }
+  },
+  "smsIntegration": {
+    "balance": {
+      "title": "Баланс SMS",
+      "low": "Низький баланс",
+      "unavailable": "Сервіс тимчасово недоступний, спробуйте пізніше"
+    },
+    "messages": {
+      "title": "Журнал SMS",
+      "search_placeholder": "Пошук за номером телефону",
+      "table": {
+        "date": "Дата",
+        "phone": "Телефон",
+        "customer": "Клієнт",
+        "text": "Текст",
+        "status": "Статус",
+        "provider": "Провайдер",
+        "delivered_at": "Доставлено"
+      },
+      "statuses": {
+        "pending": "Створено",
+        "sent": "Відправлено",
+        "delivered": "Доставлено",
+        "read": "Прочитано",
+        "rejected": "Відхилено",
+        "undelivered": "Не доставлено",
+        "expired": "Термін минув",
+        "failed": "Помилка",
+        "unknown": "Невідомо"
+      },
+      "providers": {
+        "turbosms": "TurboSMS",
+        "telegram": "Telegram",
+        "log": "Лог"
+      },
+      "filters": {
+        "status": "Статус",
+        "clear": "Скинути фільтр"
+      }
     }
   }
 }

@@ -84,13 +84,13 @@ export const TransactionCommonFilters = () => {
       </FilterSlot>
 
       <FilterSlot
-        active={!!filters.order_id}
-        onClear={() => setFilter("order_id", "")}
+        active={!!filters.order_number}
+        onClear={() => setFilter("order_number", "")}
       >
         <Input
-          value={filters.order_id ?? ""}
-          onChange={(e) => setFilter("order_id", e.target.value)}
-          placeholder={t("billing.filters.order_id")}
+          value={filters.order_number ?? ""}
+          onChange={(e) => setFilter("order_number", e.target.value)}
+          placeholder={t("billing.filters.order_number")}
           className="h-9 text-sm w-32"
         />
       </FilterSlot>

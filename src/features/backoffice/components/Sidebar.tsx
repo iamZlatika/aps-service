@@ -2,6 +2,7 @@ import {
   BookOpenText,
   CreditCard,
   Images,
+  MessageSquare,
   Package,
   ShieldCheck,
   Users,
@@ -17,6 +18,7 @@ import { CUSTOMERS_LINKS } from "@/features/backoffice/modules/customers/navigat
 import { DICTIONARIES_LINKS } from "@/features/backoffice/modules/dictionaries/navigation";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation";
 import { ROLES_PERMISSIONS_LINKS } from "@/features/backoffice/modules/roles-permissions/navigation.ts";
+import { SMS_INTEGRATION_LINKS } from "@/features/backoffice/modules/sms-integration/navigation.ts";
 import { USERS_LINKS } from "@/features/backoffice/modules/users/navigation";
 import { WORKS_LINKS } from "@/features/backoffice/modules/works/navigation";
 import {
@@ -115,6 +117,23 @@ export const Sidebar = memo(() => {
                     >
                       <CreditCard className="h-4 w-4" />
                       <span>{t("sidebar.billing")}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
+
+              {can("integrations_sms_view") && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    tooltip={t("sidebar.sms_integration")}
+                  >
+                    <Link
+                      to={SMS_INTEGRATION_LINKS.root()}
+                      onClick={closeMobileSidebar}
+                    >
+                      <MessageSquare className="h-4 w-4" />
+                      <span>{t("sidebar.sms_integration")}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

@@ -87,6 +87,29 @@ export type PaymentMethodType =
 export const DOCUMENTS_TYPES = ["intake_receipt", "closing_receipt"] as const;
 export type DocumentType = (typeof DOCUMENTS_TYPES)[number];
 
+export const SMS_MESSAGE_STATUSES = {
+  PENDING: "pending",
+  SENT: "sent",
+  DELIVERED: "delivered",
+  READ: "read",
+  REJECTED: "rejected",
+  UNDELIVERED: "undelivered",
+  EXPIRED: "expired",
+  FAILED: "failed",
+  UNKNOWN: "unknown",
+} as const;
+
+export type SmsMessageStatus =
+  (typeof SMS_MESSAGE_STATUSES)[keyof typeof SMS_MESSAGE_STATUSES];
+
+export const SMS_PROVIDERS = {
+  TURBOSMS: "turbosms",
+  TELEGRAM: "telegram",
+  LOG: "log",
+} as const;
+
+export type SmsProvider = (typeof SMS_PROVIDERS)[keyof typeof SMS_PROVIDERS];
+
 export const WEEK_DAYS = [
   "mon",
   "tue",

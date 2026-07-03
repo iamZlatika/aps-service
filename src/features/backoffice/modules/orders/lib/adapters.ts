@@ -88,7 +88,7 @@ export function mapOrderDtoToOrder(dto: OrderDto): Order {
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
     closedAt: dto.closed_at,
-    readySmsSentAt: dto.ready_sms_sent_at,
+    readySmsSentAt: dto.ready_sms_sent_at ?? null,
     documents: dto.documents.map(mapDocumentDtoToOrderDocument),
   };
 }

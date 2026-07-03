@@ -1,4 +1,4 @@
-import { format, parse } from "date-fns";
+import { format, isBefore, parse } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { DateRange } from "react-day-picker";
@@ -32,6 +32,14 @@ export const TransactionDateRangeFilter = ({
   const [pendingRange, setPendingRange] = useState<DateRange | undefined>(() =>
     toRange(from, to),
   );
+  // Tracked ourselves rather than derived from pendingRange.from/to: react-day-picker's
+  // own range algorithm treats a range as "complete" the moment from === to (which
+  // happens after the very first click), and once complete it edits whichever end is
+  // closer to the new click instead of always starting a fresh range. That makes it
+  // impossible to move the start date later without clearing the filter first. This
+  // flag instead reflects "the user has picked two distinct ends", so the next click
+  // always starts a brand new range.
+  const [isRangeComplete, setIsRangeComplete] = useState(!!(from && to));
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,7 +57,25 @@ export const TransactionDateRangeFilter = ({
 
   const openPicker = () => {
     setPendingRange(toRange(from, to));
+    setIsRangeComplete(!!(from && to));
     setIsOpen(true);
+  };
+
+  const handleSelect = (_range: DateRange | undefined, triggerDate: Date) => {
+    if (!pendingRange?.from || isRangeComplete) {
+      // no selection yet, or the previous range was already complete — this click
+      // always starts a new range instead of adjusting the existing one.
+      setPendingRange({ from: triggerDate, to: undefined });
+      setIsRangeComplete(false);
+      return;
+    }
+
+    setPendingRange(
+      isBefore(triggerDate, pendingRange.from)
+        ? { from: triggerDate, to: pendingRange.from }
+        : { from: pendingRange.from, to: triggerDate },
+    );
+    setIsRangeComplete(true);
   };
 
   const handleApply = () => {
@@ -62,6 +88,7 @@ export const TransactionDateRangeFilter = ({
 
   const handleCancel = () => {
     setPendingRange(toRange(from, to));
+    setIsRangeComplete(!!(from && to));
     setIsOpen(false);
   };
 
@@ -90,7 +117,7 @@ export const TransactionDateRangeFilter = ({
           <Calendar
             mode="range"
             selected={pendingRange}
-            onSelect={setPendingRange}
+            onSelect={handleSelect}
             defaultMonth={pendingRange?.from}
           />
           <div className="flex justify-end gap-2 border-t p-2">
