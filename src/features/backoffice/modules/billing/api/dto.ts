@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { OrderTransactionDtoSchema } from "@/features/backoffice/modules/orders/api/dto.ts";
+import {
+  OrderProductSchema,
+  OrderServiceSchema,
+  OrderTransactionDtoSchema,
+} from "@/features/backoffice/modules/orders/api/dto.ts";
 import { UserDtoSchema } from "@/features/backoffice/modules/users/api/dto.ts";
 
 export const TransactionDtoSchema = OrderTransactionDtoSchema.extend({
@@ -12,8 +16,8 @@ export const TransactionDtoSchema = OrderTransactionDtoSchema.extend({
   // (or null) instead of the *_id variants used on order-embedded transactions.
   order_service_id: z.number().nullable().optional(),
   order_product_id: z.number().nullable().optional(),
-  order_service: z.unknown().nullable(),
-  order_product: z.unknown().nullable(),
+  order_service: OrderServiceSchema.nullable(),
+  order_product: OrderProductSchema.nullable(),
   created_by: UserDtoSchema.nullable(),
 });
 export type TransactionDto = z.infer<typeof TransactionDtoSchema>;

@@ -7,6 +7,8 @@ import UserAvatar from "@/features/backoffice/modules/profile/components/avatar/
 import ChangePasswordForm from "@/features/backoffice/modules/profile/components/ChangePasswordForm.tsx";
 import ChangeUserInfoForm from "@/features/backoffice/modules/profile/components/ChangeUserInfoForm.tsx";
 import { CHANGE_USER_INFO_FORM_ID } from "@/features/backoffice/modules/profile/components/constants.ts";
+import { MyBalanceCard } from "@/features/backoffice/modules/profile/components/MyBalanceCard.tsx";
+import { ProfileTabs } from "@/features/backoffice/modules/profile/components/ProfileTabs.tsx";
 import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
 import { UserAbilitiesSection } from "@/features/backoffice/modules/profile/components/UserAbilitiesSection.tsx";
 import { usePermissions } from "@/features/backoffice/modules/roles-permissions/hooks/usePermissions.ts";
@@ -14,7 +16,6 @@ import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard
 import { AcceptButton } from "@/shared/components/common/buttons/AcceptButton.tsx";
 import { CancelButton } from "@/shared/components/common/buttons/CancelButton.tsx";
 import { Loader } from "@/shared/components/common/Loader.tsx";
-import { MoneyAmount } from "@/shared/components/common/MoneyAmount.tsx";
 import { CardTitle } from "@/shared/components/ui/card.tsx";
 import { groupPermissionsByCategory } from "@/widgets/ability-badge/abilityGroups";
 
@@ -62,6 +63,8 @@ const ProfilePage = () => {
   return (
     <div className="p-2 sm:p-6 max-w-5xl mx-auto w-full">
       <h1 className="mb-6 text-2xl font-bold">{t("profile.settings")}</h1>
+      <ProfileTabs />
+      <MyBalanceCard balance={user.balance} />
       <PersonCard
         avatarSlot={
           <UserAvatar
@@ -80,44 +83,6 @@ const ProfilePage = () => {
         metaSlot={<RoleBadge roles={user.roles} />}
         rightAction={rightAction}
       >
-        <CardTitle className="text-xl font-bold mb-4 text-center">
-          {t("profile.your_balance")}
-        </CardTitle>
-        <div className="h-11 rounded-md border border-input bg-muted px-3 text-base flex items-center justify-center mb-6">
-          <MoneyAmount value={user.balance} />
-        </div>
-        <CardTitle className="text-xl font-bold mb-4 text-center">
-          {t("profile.your_rate")}
-        </CardTitle>
-        <div className="grid grid-cols-3 divide-x divide-border mb-6">
-          <div className="pr-6 text-center">
-            <p className="text-sm text-muted-foreground mb-1">
-              {t("profile.services_percent")}
-            </p>
-            <p className="text-lg font-semibold">
-              {user.servicesPercent ?? "—"}
-              {user.servicesPercent !== null && "%"}
-            </p>
-          </div>
-          <div className="px-6 text-center">
-            <p className="text-sm text-muted-foreground mb-1">
-              {t("profile.products_percent")}
-            </p>
-            <p className="text-lg font-semibold">
-              {user.productsPercent ?? "—"}
-              {user.productsPercent !== null && "%"}
-            </p>
-          </div>
-          <div className="pl-6 text-center">
-            <p className="text-sm text-muted-foreground mb-1">
-              {t("profile.intake_percent")}
-            </p>
-            <p className="text-lg font-semibold">
-              {user.intakePercent ?? "—"}
-              {user.intakePercent !== null && "%"}
-            </p>
-          </div>
-        </div>
         <CardTitle className="text-xl font-bold mb-4 text-center">
           {t("profile.your_abilities")}
         </CardTitle>

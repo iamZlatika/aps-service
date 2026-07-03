@@ -11,6 +11,10 @@ import type {
   SystemBalance,
   Transaction,
 } from "@/features/backoffice/modules/billing/types.ts";
+import {
+  mapOrderProductDtoToOrderProduct,
+  mapOrderServiceDtoToOrderService,
+} from "@/features/backoffice/modules/orders/lib/adapters.ts";
 import { mapUserDtoToUser } from "@/features/backoffice/modules/users/lib/adapters.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
 
@@ -29,8 +33,12 @@ export function mapTransactionDtoToTransaction(
     user: dto.user ? mapUserDtoToUser(dto.user) : null,
     orderId: dto.order_id,
     orderNumber: dto.order_number,
-    orderService: dto.order_service,
-    orderProduct: dto.order_product,
+    orderService: dto.order_service
+      ? mapOrderServiceDtoToOrderService(dto.order_service)
+      : null,
+    orderProduct: dto.order_product
+      ? mapOrderProductDtoToOrderProduct(dto.order_product)
+      : null,
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
     createdBy: dto.created_by ? mapUserDtoToUser(dto.created_by) : null,

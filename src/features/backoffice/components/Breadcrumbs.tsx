@@ -14,6 +14,7 @@ import {
 const SEGMENT_LABELS: Record<string, string> = {
   backoffice: "breadcrumbs.home",
   profile: "breadcrumbs.profile",
+  finance: "breadcrumbs.finance",
   orders: "breadcrumbs.orders",
   order: "breadcrumbs.order",
   "order-new": "breadcrumbs.newOrder",

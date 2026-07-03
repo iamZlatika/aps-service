@@ -1,4 +1,8 @@
-import type { OrderTransaction } from "@/features/backoffice/modules/orders/types.ts";
+import type {
+  OrderProduct,
+  OrderService,
+  OrderTransaction,
+} from "@/features/backoffice/modules/orders/types.ts";
 import type { User } from "@/features/backoffice/modules/users/types.ts";
 
 export type Transaction = Omit<
@@ -7,8 +11,8 @@ export type Transaction = Omit<
 > & {
   orderId: number | null;
   orderNumber: string | null;
-  orderService: unknown;
-  orderProduct: unknown;
+  orderService: OrderService | null;
+  orderProduct: OrderProduct | null;
   createdBy: User | null;
 };
 

@@ -208,10 +208,16 @@
     "rolesPermissions": "Ролі та доступи",
     "billing": "Білінг",
     "balances": "Баланси",
-    "transactions": "Транзакції"
+    "transactions": "Транзакції",
+    "finance": "Фінанси"
   },
   "profile": {
     "settings": "Налаштування профілю",
+    "my_finances": "Мої фінанси",
+    "tabs": {
+      "profile": "Профіль",
+      "finance": "Фінанси"
+    },
     "your_balance": "Ваш баланс",
     "your_rate": "Ваша ставка",
     "your_abilities": "Ваші права доступу",
@@ -784,11 +790,15 @@
     "all_transactions": {
       "title": "Усі транзакції"
     },
+    "my_transactions": {
+      "title": "Ваші транзакції"
+    },
     "transactions": {
       "table": {
         "date": "Дата",
         "type": "Тип",
         "label": "Опис",
+        "item": "Послуга/товар",
         "amount": "Сума",
         "status": "Статус",
         "order": "Замовлення",

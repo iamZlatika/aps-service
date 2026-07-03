@@ -14,7 +14,7 @@ import { MoneyAmount } from "@/shared/components/common/MoneyAmount.tsx";
 import { StatusBadge } from "@/shared/components/common/StatusBadge.tsx";
 import { Avatar, AvatarImage } from "@/shared/components/ui/avatar.tsx";
 import { formatDateTime } from "@/shared/lib/utils.ts";
-import { type TransactionStatus } from "@/shared/types.ts";
+import { TRANSACTION_TYPES, type TransactionStatus } from "@/shared/types.ts";
 
 const isUser = (value: unknown): value is User =>
   typeof value === "object" && value !== null && "email" in value;
@@ -157,4 +157,75 @@ export function buildTransactionColumns({
   }
 
   return columns;
+}
+
+export function buildMyTransactionColumns(): ColumnConfig<Transaction>[] {
+  return [
+    {
+      key: "order",
+      field: "orderNumber",
+      labelKey: "billing.transactions.table.order",
+      sortable: false,
+      renderCell: (value, item) =>
+        item.orderId ? (
+          <Link
+            to={ORDERS_LINKS.detail(item.orderId)}
+            className="text-primary hover:underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {value as string}
+          </Link>
+        ) : (
+          "—"
+        ),
+    },
+    {
+      key: "item",
+      field: "orderService",
+      labelKey: "billing.transactions.table.item",
+      sortable: false,
+      renderCell: (_value, item) =>
+        item.orderService?.name ??
+        item.orderProduct?.name ??
+        (item.type === TRANSACTION_TYPES.MANUAL_ADJUSTMENT ? item.label : "—"),
+    },
+    {
+      key: "amount",
+      field: "amount",
+      labelKey: "billing.transactions.table.amount",
+      sortable: true,
+      renderCell: (value) => <MoneyAmount value={value as string} />,
+    },
+    {
+      key: "createdAt",
+      field: "createdAt",
+      labelKey: "billing.transactions.table.date",
+      sortable: true,
+      sortKey: "created_at",
+      renderCell: (value) => formatDateTime(value as string),
+    },
+    {
+      key: "type",
+      field: "type",
+      labelKey: "billing.transactions.table.type",
+      sortable: true,
+      renderCell: (value) =>
+        i18next.t(`billing.transaction_types.${value as string}`),
+    },
+    {
+      key: "status",
+      field: "status",
+      labelKey: "billing.transactions.table.status",
+      sortable: true,
+      renderCell: (value) => {
+        const status = value as TransactionStatus;
+        return (
+          <StatusBadge
+            name={i18next.t(`billing.transaction_statuses.${status}`)}
+            color={TRANSACTION_STATUS_COLORS[status]}
+          />
+        );
+      },
+    },
+  ];
 }

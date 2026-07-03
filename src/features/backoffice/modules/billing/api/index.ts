@@ -23,6 +23,27 @@ import type { PaginatedResponse } from "@/features/backoffice/widgets/table/mode
 import { buildPaginatedParams, get, post } from "@/shared/api/api.ts";
 import { parseDto } from "@/shared/api/parseDto.ts";
 
+async function fetchPaginatedTransactions(
+  endpoint: string,
+  page = 1,
+  perPage = 20,
+  sortColumn?: string | null,
+  sortType?: SortType,
+  filters?: Record<string, string>,
+): Promise<PaginatedResponse<Transaction>> {
+  const params = buildPaginatedParams(
+    page,
+    perPage,
+    sortColumn,
+    sortType,
+    filters,
+  );
+  const response = await get(`${endpoint}?${params.toString()}`);
+  return mapPaginatedTransactionsDtoToResponse(
+    parseDto(PaginatedTransactionsDtoSchema, response),
+  );
+}
+
 export const billingApi = {
   balances: {
     getAll: async (
@@ -49,27 +70,39 @@ export const billingApi = {
   },
 
   allTransactions: {
-    getAll: async (
-      page = 1,
-      perPage = 20,
+    getAll: (
+      page?: number,
+      perPage?: number,
       sortColumn?: string | null,
       sortType?: SortType,
       filters?: Record<string, string>,
-    ): Promise<PaginatedResponse<Transaction>> => {
-      const params = buildPaginatedParams(
+    ): Promise<PaginatedResponse<Transaction>> =>
+      fetchPaginatedTransactions(
+        BILLING_API.allTransactions(),
         page,
         perPage,
         sortColumn,
         sortType,
         filters,
-      );
-      const response = await get(
-        `${BILLING_API.allTransactions()}?${params.toString()}`,
-      );
-      return mapPaginatedTransactionsDtoToResponse(
-        parseDto(PaginatedTransactionsDtoSchema, response),
-      );
-    },
+      ),
+  },
+
+  myTransactions: {
+    getAll: (
+      page?: number,
+      perPage?: number,
+      sortColumn?: string | null,
+      sortType?: SortType,
+      filters?: Record<string, string>,
+    ): Promise<PaginatedResponse<Transaction>> =>
+      fetchPaginatedTransactions(
+        BILLING_API.transactions(),
+        page,
+        perPage,
+        sortColumn,
+        sortType,
+        filters,
+      ),
   },
 
   getSystemBalance: async (): Promise<SystemBalance> => {

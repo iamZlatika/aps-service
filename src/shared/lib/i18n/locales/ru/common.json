@@ -211,10 +211,16 @@
     "rolesPermissions": "Роли и доступы",
     "billing": "Биллинг",
     "balances": "Балансы",
-    "transactions": "Транзакции"
+    "transactions": "Транзакции",
+    "finance": "Финансы"
   },
   "profile": {
     "settings": "Настройки профиля",
+    "my_finances": "Мои финансы",
+    "tabs": {
+      "profile": "Профиль",
+      "finance": "Финансы"
+    },
     "your_balance": "Ваш баланс",
     "your_rate": "Ваша ставка",
     "your_abilities": "Ваши права доступа",
@@ -787,11 +793,15 @@
     "all_transactions": {
       "title": "Все транзакции"
     },
+    "my_transactions": {
+      "title": "Ваши транзакции"
+    },
     "transactions": {
       "table": {
         "date": "Дата",
         "type": "Тип",
         "label": "Описание",
+        "item": "Услуга/товар",
         "amount": "Сумма",
         "status": "Статус",
         "order": "Заказ",

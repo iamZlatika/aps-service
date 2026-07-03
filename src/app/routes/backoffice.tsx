@@ -38,7 +38,12 @@ const UsersPage = lazy(
 const UserPage = lazy(
   () => import("@/features/backoffice/modules/users/pages/UserPage"),
 );
-const ProfilePage = lazy(() => import("@/features/backoffice/modules/profile"));
+const ProfilePage = lazy(
+  () => import("@/features/backoffice/modules/profile/pages/profile"),
+);
+const ProfileFinancePage = lazy(
+  () => import("@/features/backoffice/modules/profile/pages/finance"),
+);
 const RolesPermissionsPage = lazy(
   () => import("@/features/backoffice/modules/roles-permissions/pages"),
 );
@@ -123,6 +128,7 @@ export const backofficeRoutes: RouteObject = {
     { path: USERS_ROUTES.root, element: <UsersPage /> },
     { path: USERS_ROUTES.user, element: <UserPage /> },
     { path: PROFILE_ROUTES.root, element: <ProfilePage /> },
+    { path: PROFILE_ROUTES.finance, element: <ProfileFinancePage /> },
 
     {
       element: (

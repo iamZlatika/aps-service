@@ -131,6 +131,7 @@ export const queryKeys = {
     all: ["billing"] as const,
     balances: makeEntityKey(["billing"], "balances"),
     allTransactions: makeEntityKey(["billing"], "allTransactions"),
+    myTransactions: makeEntityKey(["billing"], "myTransactions"),
     systemBalance: () => [...queryKeys.billing.all, "systemBalance"] as const,
   },
 } as const;
