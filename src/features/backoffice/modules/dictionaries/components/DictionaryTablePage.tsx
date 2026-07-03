@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { RowActions } from "@/features/backoffice/modules/dictionaries/components/RowActions.tsx";
 import { SmartTable } from "@/features/backoffice/widgets/table";
@@ -43,6 +44,7 @@ interface DictionaryTablePageProps<T extends BaseItem> {
   extraFilterKeys?: string[];
   formFields?: FieldConfig[];
   tableClassName?: string;
+  manageAbility?: string;
 }
 
 export const DictionaryTablePage = <T extends BaseItem>({
@@ -59,8 +61,11 @@ export const DictionaryTablePage = <T extends BaseItem>({
   extraFilterKeys,
   formFields,
   tableClassName,
+  manageAbility = "dictionaries_manage",
 }: DictionaryTablePageProps<T>) => {
   const { t } = useTranslation();
+  const { can } = useAuth();
+  const canManage = can(manageAbility);
 
   const { addModal, deleteModal, editModal } = useTableActions<T>(
     queryKeyFn,
@@ -84,14 +89,22 @@ export const DictionaryTablePage = <T extends BaseItem>({
         filterBar={filterBar}
         extraFilterKeys={extraFilterKeys}
         className={tableClassName}
-        headerActions={<AddButton onClick={() => addModal.setOpen(true)} />}
-        renderRowActions={(item) => (
-          <RowActions
-            item={item}
-            onEdit={editModal.start}
-            onDelete={deleteModal.requestDelete}
-          />
-        )}
+        headerActions={
+          canManage ? (
+            <AddButton onClick={() => addModal.setOpen(true)} />
+          ) : undefined
+        }
+        renderRowActions={
+          canManage
+            ? (item) => (
+                <RowActions
+                  item={item}
+                  onEdit={editModal.start}
+                  onDelete={deleteModal.requestDelete}
+                />
+              )
+            : undefined
+        }
       />
 
       <ItemFormDialog

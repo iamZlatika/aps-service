@@ -7,6 +7,7 @@ import { CallItem } from "@/features/backoffice/modules/orders/pages/order-page/
 import { CommentItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/CommentItem.tsx";
 import { PaymentItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/PaymentItem.tsx";
 import { ProductServiceItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/ProductServiceItem.tsx";
+import { SmsItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/SmsItem.tsx";
 import { StatusItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/StatusItem.tsx";
 import type { OrderHistoryItem } from "@/features/backoffice/modules/orders/pages/order-page/types.ts";
 import { useVisualViewportBottom } from "@/shared/hooks/useVisualViewportBottom.ts";
@@ -89,6 +90,8 @@ export const MobileHistoryDrawer = ({
             return <CommentItem key={`comment-${item.id}`} item={item} />;
           if (item.type === "call")
             return <CallItem key={`call-${item.id}`} item={item} />;
+          if (item.type === "sms")
+            return <SmsItem key="sms-ready-sent" item={item} />;
           return assertNever(item);
         })}
       </div>

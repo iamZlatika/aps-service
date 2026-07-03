@@ -1,7 +1,9 @@
 export const ROLES = {
-  CLIENT: "client",
   MANAGER: "manager",
   HEAD_MANAGER: "head_manager",
+  RECEPTIONIST: "receptionist",
+  ACCOUNTANT: "accountant",
+  SUPPORT: "support",
 } as const;
 
 export type Role = (typeof ROLES)[keyof typeof ROLES];
@@ -28,9 +30,9 @@ export const USER_THEMES = {
 
 export type UserTheme = (typeof USER_THEMES)[keyof typeof USER_THEMES];
 
-export interface SuccessResponse {
+export type SuccessResponse = {
   message: string;
-}
+};
 
 export const STATUS_COLORS = {
   Red: "red",
@@ -60,10 +62,23 @@ export const PAYMENT_METHODS = {
 export const TRANSACTION_STATUSES = {
   COMPLETED: "completed",
   PENDING: "pending",
-};
+  REJECTED: "rejected",
+} as const;
 
 export type TransactionStatus =
   (typeof TRANSACTION_STATUSES)[keyof typeof TRANSACTION_STATUSES];
+
+export const TRANSACTION_TYPES = {
+  INTAKE_ORDER_INCOME: "intake_order_income",
+  SERVICE_INCOME: "service_income",
+  PRODUCTS_INCOME: "products_income",
+  SYSTEM_ORDER_INCOME: "system_order_income",
+  MANUAL_ADJUSTMENT: "manual_adjustment",
+  WITHDRAWAL_REQUEST: "withdrawal_request",
+} as const;
+
+export type TransactionType =
+  (typeof TRANSACTION_TYPES)[keyof typeof TRANSACTION_TYPES];
 
 export type PaymentType = (typeof PAYMENTS)[keyof typeof PAYMENTS];
 export type PaymentMethodType =
@@ -71,6 +86,29 @@ export type PaymentMethodType =
 
 export const DOCUMENTS_TYPES = ["intake_receipt", "closing_receipt"] as const;
 export type DocumentType = (typeof DOCUMENTS_TYPES)[number];
+
+export const SMS_MESSAGE_STATUSES = {
+  PENDING: "pending",
+  SENT: "sent",
+  DELIVERED: "delivered",
+  READ: "read",
+  REJECTED: "rejected",
+  UNDELIVERED: "undelivered",
+  EXPIRED: "expired",
+  FAILED: "failed",
+  UNKNOWN: "unknown",
+} as const;
+
+export type SmsMessageStatus =
+  (typeof SMS_MESSAGE_STATUSES)[keyof typeof SMS_MESSAGE_STATUSES];
+
+export const SMS_PROVIDERS = {
+  TURBOSMS: "turbosms",
+  TELEGRAM: "telegram",
+  LOG: "log",
+} as const;
+
+export type SmsProvider = (typeof SMS_PROVIDERS)[keyof typeof SMS_PROVIDERS];
 
 export const WEEK_DAYS = [
   "mon",

@@ -14,15 +14,20 @@ export type User = {
   id: number;
   name: string;
   email: string;
-  role: Role;
+  roles: Role[];
   status: UserStatus;
   locale: UserLanguage;
   theme: UserTheme;
   avatarUrl: string;
   location: Location | null;
-  servicesPercent: number;
-  productsPercent: number;
-  intakePercent: number;
+  servicesPercent: number | null;
+  productsPercent: number | null;
+  intakePercent: number | null;
+};
+
+export type UserDetail = User & {
+  permissions: string[];
+  abilities: string[];
 };
 
 export type NewUser = z.infer<typeof registerUserSchema>;
@@ -37,6 +42,9 @@ export type SearchPreset<TFilters = SearchPresetFiltersDto> = {
 };
 
 export type Me = User & {
+  abilities: string[];
   balance: string;
+  pendingWithdrawals: string;
+  available: string;
   searchPresets: SearchPreset[];
 };

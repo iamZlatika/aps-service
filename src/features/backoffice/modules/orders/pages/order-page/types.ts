@@ -68,10 +68,16 @@ export type HistoryCall = {
   isCalled: boolean;
 };
 
+export type HistorySms = {
+  type: "sms";
+  date: string;
+};
+
 export type OrderHistoryItem =
   | HistoryStatus
   | HistoryService
   | HistoryProduct
   | HistoryComment
   | HistoryPayment
-  | HistoryCall;
+  | HistoryCall
+  | HistorySms;

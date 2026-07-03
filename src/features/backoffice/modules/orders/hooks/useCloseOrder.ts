@@ -103,7 +103,10 @@ export function useCloseOrder({
       if (withPrint) {
         const closingDoc = await waitForClosingReceipt();
         if (closingDoc) {
-          await printAsync([{ orderId, documentId: closingDoc.id }]);
+          await printAsync(
+            [{ orderId, documentId: closingDoc.id }],
+            closingDoc.name,
+          );
         } else {
           toast.error(t("orders.print.print_document_timeout"));
         }

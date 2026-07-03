@@ -1,23 +1,22 @@
 import { useTranslation } from "react-i18next";
 
 import { Badge } from "@/shared/components/ui/badge.tsx";
+import { getRoleBoldClassName } from "@/widgets/ability-badge/abilityColors";
 
-type RoleBadgeProps = {
-  role: string;
-};
+interface RoleBadgeProps {
+  roles: string[];
+}
 
-export const RoleBadge = ({ role }: RoleBadgeProps) => {
+export const RoleBadge = ({ roles }: RoleBadgeProps) => {
   const { t } = useTranslation();
 
-  const roleStyles: Record<string, string> = {
-    head_manager:
-      "bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 text-black font-semibold", // золотой
-    manager: "bg-blue-500 text-white font-semibold", // синий для обычного мастера
-  };
-
   return (
-    <Badge className={`mt-4 ${roleStyles[role] || "bg-gray-400 text-white"}`}>
-      {t(`users.${role}`)}
-    </Badge>
+    <div className="flex flex-wrap gap-1 mt-4">
+      {roles.map((role) => (
+        <Badge key={role} className={getRoleBoldClassName(role)}>
+          {t(`users.roles.${role}`, { defaultValue: role })}
+        </Badge>
+      ))}
+    </div>
   );
 };

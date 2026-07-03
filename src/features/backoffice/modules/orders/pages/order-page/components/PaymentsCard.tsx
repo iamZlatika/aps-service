@@ -24,14 +24,20 @@ const PAYMENT_TYPE_ORDER = [
 interface PaymentsCardProps {
   orderId: number;
   selectedOrder: OrderInfo;
+  canManage: boolean;
 }
 
-export const PaymentsCard = ({ orderId, selectedOrder }: PaymentsCardProps) => {
+export const PaymentsCard = ({
+  orderId,
+  selectedOrder,
+  canManage,
+}: PaymentsCardProps) => {
   const { t } = useTranslation();
   const [modalType, setModalType] = useState<PaymentType | null>(null);
   const { onDelete, isPending: isDeleting } = useDeletePayment(orderId);
 
   useEffect(() => {
+    if (!canManage) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Insert" || !e.shiftKey) return;
       const tag = (e.target as HTMLElement).tagName;
@@ -40,7 +46,7 @@ export const PaymentsCard = ({ orderId, selectedOrder }: PaymentsCardProps) => {
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [canManage]);
 
   const activePayments = selectedOrder.payments
     .filter((p) => !p.deletedAt)
@@ -81,10 +87,12 @@ export const PaymentsCard = ({ orderId, selectedOrder }: PaymentsCardProps) => {
     },
   ];
 
-  const buttons = PAYMENT_TYPE_ORDER.map((type) => ({
-    label: t(`orders.payments.types.${type}`),
-    onClick: () => setModalType(type),
-  }));
+  const buttons = canManage
+    ? PAYMENT_TYPE_ORDER.map((type) => ({
+        label: t(`orders.payments.types.${type}`),
+        onClick: () => setModalType(type),
+      }))
+    : [];
 
   return (
     <>
@@ -92,7 +100,7 @@ export const PaymentsCard = ({ orderId, selectedOrder }: PaymentsCardProps) => {
         buttons={buttons}
         columns={columns}
         data={activePayments}
-        onDelete={onDelete}
+        onDelete={canManage ? onDelete : undefined}
         isDeleting={isDeleting}
         footer={
           <span className="text-sm text-muted-foreground">

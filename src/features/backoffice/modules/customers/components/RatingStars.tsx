@@ -21,8 +21,12 @@ export const Rating = ({ value, onChange, className }: RatingProps) => {
           <button
             key={star}
             type="button"
+            disabled={!onChange}
             onClick={() => onChange?.(star)}
-            className="transition hover:scale-110"
+            className={cn(
+              "transition",
+              onChange ? "hover:scale-110" : "cursor-default",
+            )}
           >
             <Star
               className={`h-5 w-5 ${

@@ -12,4 +12,5 @@ export const USERS_API = {
   updateUserStatus: (id: number) => `${BASE}/${id}/status`,
   changeUserLocation: (id: number) => `${BASE}/${id}/location`,
   changeUserSalarySettings: (id: number) => `${BASE}/${id}/salary-setting`,
+  updateUserPermissions: (id: number) => `${BASE}/${id}/permissions`,
 } as const;

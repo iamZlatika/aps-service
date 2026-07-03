@@ -8,7 +8,6 @@ import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
-import { ROLES } from "@/shared/types.ts";
 
 import { ProtectedRoute } from "./ProtectedRoute";
 
@@ -39,9 +38,7 @@ export const routeConfig: RouteObject[] = [
 
       // admin panel
       {
-        element: (
-          <ProtectedRoute allowedRoles={[ROLES.MANAGER, ROLES.HEAD_MANAGER]} />
-        ),
+        element: <ProtectedRoute />,
         children: [
           {
             element: (

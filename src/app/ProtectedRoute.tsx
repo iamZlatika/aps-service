@@ -6,14 +6,13 @@ import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { destroyEcho } from "@/shared/lib/echo.ts";
-import type { Role } from "@/shared/types.ts";
 
-type ProtectedRouteProps = {
-  allowedRoles?: Role[];
-};
+interface ProtectedRouteProps {
+  requiredAbility?: string;
+}
 
-export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
-  const { isAuthenticated, role, isLoading } = useAuth();
+export const ProtectedRoute = ({ requiredAbility }: ProtectedRouteProps) => {
+  const { isAuthenticated, can, isLoading } = useAuth();
 
   // Disconnects the socket when leaving the backoffice area entirely (e.g. to the
   // public website), even if the auth token stays valid. Lives here because this
@@ -32,7 +31,7 @@ export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     return <Navigate to={AuthRoutes.linkToLogin()} replace />;
   }
 
-  if (allowedRoles && (!role || !allowedRoles.includes(role))) {
+  if (requiredAbility && !can(requiredAbility)) {
     return <Navigate to={SharedRoutes.forbidden()} replace />;
   }
 

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
 import { OrdersFilterBar } from "@/features/backoffice/modules/orders/components/OrdersFilterBar.tsx";
@@ -21,6 +22,8 @@ const OrdersPage = () => {
   const isUk = useIsUkLocale();
   const locale = isUk ? "uk-UA" : "ru-RU";
   const isMobile = useIsMobile();
+  const { can } = useAuth();
+  const canManage = can("orders_manage");
 
   useOrdersSocket();
 
@@ -58,7 +61,9 @@ const OrdersPage = () => {
       searchField="search"
       columns={isMobile ? mobileColumns : columns}
       headerActions={
-        <AddButton onClick={() => navigate(ORDERS_LINKS.newOrder())} />
+        canManage ? (
+          <AddButton onClick={() => navigate(ORDERS_LINKS.newOrder())} />
+        ) : undefined
       }
       onRowClick={onRowClick}
       extraFilterKeys={[

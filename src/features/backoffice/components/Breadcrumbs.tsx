@@ -14,12 +14,14 @@ import {
 const SEGMENT_LABELS: Record<string, string> = {
   backoffice: "breadcrumbs.home",
   profile: "breadcrumbs.profile",
+  finance: "breadcrumbs.finance",
   orders: "breadcrumbs.orders",
   order: "breadcrumbs.order",
   "order-new": "breadcrumbs.newOrder",
   customers: "breadcrumbs.customers",
   customer: "breadcrumbs.customer",
   users: "breadcrumbs.users",
+  "roles-permissions": "breadcrumbs.rolesPermissions",
   dictionaries: "breadcrumbs.dictionaries",
   accessories: "breadcrumbs.accessories",
   "device-conditions": "breadcrumbs.deviceConditions",
@@ -30,6 +32,11 @@ const SEGMENT_LABELS: Record<string, string> = {
   manufacturers: "breadcrumbs.manufacturers",
   services: "breadcrumbs.services",
   "bank-cards": "breadcrumbs.bankCards",
+  billing: "breadcrumbs.billing",
+  balances: "breadcrumbs.balances",
+  transactions: "breadcrumbs.transactions",
+  "withdrawal-requests": "breadcrumbs.withdrawalRequests",
+  integrations: "breadcrumbs.integrations",
 };
 
 export const Breadcrumbs = () => {

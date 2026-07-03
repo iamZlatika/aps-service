@@ -8,6 +8,7 @@ const RESERVED_PARAMS = ["page", "sort_column", "sort_type", "id"];
 type UseFilterParamsResult = {
   filters: Filters;
   setFilter: (fieldName: string, value: string) => void;
+  setFilters: (entries: Record<string, string>) => void;
   resetFilters: () => void;
 };
 
@@ -40,6 +41,28 @@ export const useFilterParams = (): UseFilterParamsResult => {
     [setSearchParams],
   );
 
+  // Setting two related keys via two separate setFilter calls in the same handler
+  // doesn't compose — the second call's `prev` snapshot doesn't see the first
+  // call's update yet, so it wins and silently drops the first key. Use this for
+  // any filter that writes multiple params at once (e.g. a date range).
+  const setFilters = useCallback(
+    (entries: Record<string, string>) => {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        Object.entries(entries).forEach(([fieldName, value]) => {
+          if (value) {
+            next.set(fieldName, value);
+          } else {
+            next.delete(fieldName);
+          }
+        });
+        next.delete("page");
+        return next;
+      });
+    },
+    [setSearchParams],
+  );
+
   const resetFilters = useCallback(() => {
     setSearchParams((prev) => {
       const next = new URLSearchParams();
@@ -52,5 +75,5 @@ export const useFilterParams = (): UseFilterParamsResult => {
     });
   }, [setSearchParams]);
 
-  return { filters, setFilter, resetFilters };
+  return { filters, setFilter, setFilters, resetFilters };
 };

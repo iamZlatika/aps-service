@@ -7,6 +7,7 @@ const CloseOrderModal = lazy(() =>
 );
 import { useQueryClient } from "@tanstack/react-query";
 
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { useChangeOrderStatus } from "@/features/backoffice/modules/orders/hooks/useChangeOrderStatus.ts";
 import type { OrderStatus } from "@/features/backoffice/modules/orders/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
@@ -36,6 +37,8 @@ export const StatusSelect = ({
 }: StatusSelectProps) => {
   const getLocalizedName = useLocalizedName();
   const queryClient = useQueryClient();
+  const { can } = useAuth();
+  const canManage = can("orders_manage");
   const [closedStatusId, setClosedStatusId] = useState<number | null>(null);
 
   const { statuses, changeStatus, isPending } = useChangeOrderStatus(
@@ -44,6 +47,10 @@ export const StatusSelect = ({
   );
 
   const displayName = getLocalizedName(status);
+
+  if (!canManage) {
+    return <StatusBadge name={displayName} color={status.color} />;
+  }
 
   return (
     <>

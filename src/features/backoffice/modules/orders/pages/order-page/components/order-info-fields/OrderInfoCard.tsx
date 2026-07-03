@@ -20,6 +20,7 @@ interface OrderInfoCardProps {
   onStartEditing: () => void;
   onStopEditing: () => void;
   formValuesStorage: FormValuesStorage;
+  canManage: boolean;
 }
 
 export const OrderInfoCard = ({
@@ -28,6 +29,7 @@ export const OrderInfoCard = ({
   onStartEditing,
   onStopEditing,
   formValuesStorage,
+  canManage,
 }: OrderInfoCardProps) => {
   const { t } = useTranslation();
 
@@ -63,13 +65,15 @@ export const OrderInfoCard = ({
               <CancelButton onClick={handleCancel} />
             </>
           ) : (
-            <button
-              type="button"
-              onClick={onStartEditing}
-              className="h-9 w-9 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Pencil className="h-4 w-4" />
-            </button>
+            canManage && (
+              <button
+                type="button"
+                onClick={onStartEditing}
+                className="h-9 w-9 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Pencil className="h-4 w-4" />
+              </button>
+            )
           )}
         </div>
       </div>
@@ -81,7 +85,7 @@ export const OrderInfoCard = ({
               id="isCalled"
               checked={order.isCalled}
               onCheckedChange={(checked) => toggleCalled(checked === true)}
-              disabled={calledPending}
+              disabled={calledPending || !canManage}
             />
             <Label htmlFor="isCalled">{t("orders.form.isCalled")}</Label>
           </div>
@@ -90,7 +94,7 @@ export const OrderInfoCard = ({
               id="isUrgent"
               checked={order.isUrgent}
               onCheckedChange={(checked) => toggleUrgent(checked === true)}
-              disabled={urgentPending}
+              disabled={urgentPending || !canManage}
             />
             <Label htmlFor="isUrgent">{t("orders.form.isUrgent")}</Label>
           </div>

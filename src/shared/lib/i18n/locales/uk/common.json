@@ -83,6 +83,9 @@
     "masters": "Майстри",
     "dictionaries": "Довідники",
     "works": "Роботи",
+    "billing": "Білінг",
+    "sms_integration": "SMS-інтеграція",
+    "roles_permissions": "Ролі та доступи",
     "dictionaries_list": {
       "title": "Довідники",
       "accessories": "Комплектації",
@@ -111,7 +114,7 @@
     "retry": "Повторити",
     "forbidden_title": "Немає доступу",
     "forbidden_description": "У вас немає прав для перегляду цієї сторінки.",
-    "go_to_orders": "Перейти до замовлень",
+    "go_back": "Назад",
     "forbidden_action": "Недостатньо прав для виконання операції",
     "name_taken": "Така назва вже зайнята",
     "email_taken": "Цей email вже зареєстровано",
@@ -168,7 +171,11 @@
     "colorRequired": "Виберіть колір",
     "time_end_before_start": "Час закінчення має бути пізніше часу початку",
     "image_type": "Допустимі формати: JPEG, PNG, WebP",
-    "image_max_size": "Файл не повинен перевищувати 2 МБ"
+    "image_max_size": "Файл не повинен перевищувати 2 МБ",
+    "percent_range": "Значення має бути від 0 до 100",
+    "positive_amount": "Введіть суму більшу за нуль (напр. 250.50)",
+    "description_max": "Максимум {{count}} символів",
+    "amount_exceeds_available": "Сума перевищує доступний до виплати баланс"
   },
   "search_placeholders": {
     "dictionaries_name": "Пошук по назві",
@@ -199,16 +206,58 @@
     "manufacturers": "Бренди",
     "services": "Послуги",
     "orderStatuses": "Статуси замовлень",
-    "bankCards": "Банківські картки"
+    "bankCards": "Банківські картки",
+    "rolesPermissions": "Ролі та доступи",
+    "billing": "Білінг",
+    "balances": "Баланси",
+    "transactions": "Транзакції",
+    "finance": "Фінанси",
+    "withdrawalRequests": "Запити на виплату",
+    "integrations": "Інтеграції"
   },
   "profile": {
     "settings": "Налаштування профілю",
+    "my_finances": "Мої фінанси",
+    "tabs": {
+      "profile": "Профіль",
+      "finance": "Фінанси"
+    },
     "your_balance": "Ваш баланс",
     "your_rate": "Ваша ставка",
+    "your_abilities": "Ваші права доступу",
+    "abilities": {
+      "groups": {
+        "orders": "Замовлення",
+        "customers": "Клієнти",
+        "landing_works": "Роботи",
+        "billing": "Білінг",
+        "users": "Співробітники",
+        "dictionaries": "Довідники",
+        "integrations_sms": "SMS-інтеграція"
+      },
+      "orders_view": "Перегляд",
+      "orders_manage": "Управління",
+      "customers_view": "Перегляд",
+      "customers_manage": "Управління",
+      "landing_works_view": "Перегляд",
+      "landing_works_manage": "Управління",
+      "billing_view": "Перегляд",
+      "billing_balance_adjust": "Нарахування/списання",
+      "integrations_sms_view": "Перегляд",
+      "users_view": "Перегляд",
+      "users_manage": "Управління",
+      "users_roles_permissions_manage": "Ролі та права",
+      "dictionaries_view": "Перегляд",
+      "dictionaries_manage": "Управління",
+      "dictionaries_bank_cards_manage": "Банківські картки (ред.)",
+      "dictionaries_locations_manage": "Локації (ред.)",
+      "dictionaries_price_list_manage": "Прайс-лист (ред.)"
+    },
     "master_rate": "Ставка майстра",
     "services_percent": "Відсоток за послуги",
     "products_percent": "Відсоток за товари",
     "intake_percent": "Відсоток за приймання",
+    "rate_help": "Прибуток позиції = (ціна − собівартість) × кількість. Частка приймальника = прибуток × його відсоток за приймання. Частка майстра = (прибуток − частка приймальника) × його відсоток за послуги або товари. Нарахування «зависає» до закриття замовлення.",
     "user_info": {
       "name_too_short": "Ім’я повинно містити щонайменше 3 символи",
       "invalid_email": "Некоректний email",
@@ -235,8 +284,6 @@
     "ok": "Ок"
   },
   "users": {
-    "head_manager": "Адміністратор",
-    "manager": "Менеджер",
     "table_fields": {
       "name": "Ім'я",
       "role": "Роль",
@@ -245,7 +292,10 @@
     },
     "roles": {
       "manager": "Менеджер",
-      "head_manager": "Адміністратор"
+      "head_manager": "Адміністратор",
+      "receptionist": "Приймальник",
+      "accountant": "Бухгалтер",
+      "support": "Підтримка"
     },
     "actions": {
       "block": "Заблокувати",
@@ -267,10 +317,19 @@
       "password_placeholder": "Введіть пароль",
       "password_confirmation": "Підтвердження пароля",
       "password_confirmation_placeholder": "Повторіть пароль",
-      "role": "Роль",
-      "role_placeholder": "Оберіть роль",
       "cancel": "Скасувати",
       "submit": "Створити"
+    },
+    "roles_permissions": {
+      "title": "Ролі та права",
+      "roles": "Ролі",
+      "abilities": "Права доступу",
+      "individual_permissions": "Індивідуальні дозволи",
+      "custom_hint": "Рожевий — пермішен поза роллю",
+      "custom_tooltip": "Додано вручну, поза роллями",
+      "head_manager_readonly": "Ця роль має повний доступ до всіх прав. Редагування недоступне.",
+      "save_success": "Права ролі оновлено",
+      "removed_hint": "знято"
     }
   },
   "customers": {
@@ -493,6 +552,9 @@
         "called": "прозвонив клієнта",
         "cancelled": "скасував поле «Прозвонив»",
         "system_cancelled": "Поле «Прозвонив» скасовано системою"
+      },
+      "sms": {
+        "ready_sent": "Відправлено SMS про готовність"
       }
     },
     "paymentMethods": {
@@ -580,6 +642,7 @@
       "price": "Ціна за од.",
       "totalPrice": "Вартість",
       "purchasePrice": "Собівартість",
+      "contractor": "Постачальник/Аутсорсер",
       "addProduct": "Додати товар",
       "addService": "Додати послугу",
       "editProduct": "Редагувати товар",
@@ -721,6 +784,139 @@
       "back": "Назад",
       "darkTheme": "Темна тема",
       "lightTheme": "Світла тема"
+    }
+  },
+  "billing": {
+    "balances": {
+      "title": "Баланси",
+      "search_placeholder": "Пошук за іменем",
+      "employee": "Співробітник",
+      "roles": "Роль",
+      "balance": "Баланс",
+      "updated": "Оновлено",
+      "adjust": "Нарахувати / Списати"
+    },
+    "system_balance": {
+      "title": "Баланс сервісу",
+      "adjust_button": "Списати з балансу сервісу"
+    },
+    "all_transactions": {
+      "title": "Усі транзакції"
+    },
+    "withdrawal_requests": {
+      "title": "Запити на виплату"
+    },
+    "withdrawal_requests_count": "{{count}} запитів на виплату",
+    "my_transactions": {
+      "title": "Ваші транзакції"
+    },
+    "transactions": {
+      "table": {
+        "date": "Дата",
+        "type": "Тип",
+        "label": "Опис",
+        "item": "Послуга/товар",
+        "amount": "Сума",
+        "status": "Статус",
+        "order": "Замовлення",
+        "created_by": "Хто нарахував",
+        "employee": "Співробітник"
+      },
+      "system_auto": "Система/Авто",
+      "system": "Сервіс"
+    },
+    "transaction_types": {
+      "intake_order_income": "Виплата приймальнику за прийом замовлення",
+      "service_income": "Виплата майстру за роботу",
+      "products_income": "Виплата майстру за запчастину",
+      "system_order_income": "Зарахування на баланс сервісу",
+      "manual_adjustment": "Ручне коригування балансу",
+      "withdrawal_request": "Виплата коштів співробітнику"
+    },
+    "transaction_statuses": {
+      "pending": "Очікує",
+      "completed": "Проведено",
+      "rejected": "Відхилено"
+    },
+    "filters": {
+      "type": "Тип",
+      "status": "Статус",
+      "date_range": "Період",
+      "apply": "ОК",
+      "employee": "Співробітник",
+      "order_number": "№ замовлення",
+      "clear": "Скинути фільтр",
+      "reset_all": "Скинути всі фільтри",
+      "withdrawal_preset": "Запити на виплату"
+    },
+    "adjust_modal": {
+      "title_for": "Нарахувати / Списати — {{name}}",
+      "accrue": "Нарахувати (+)",
+      "deduct": "Списати (−)",
+      "amount": "Сума",
+      "description": "Опис",
+      "submit": "Зберегти"
+    },
+    "withdrawal_modal": {
+      "title": "Запит на виплату коштів",
+      "amount": "Сума",
+      "available_hint": "Доступно до виплати: {{available}}",
+      "description": "Опис",
+      "submit": "Надіслати запит"
+    },
+    "system_balance_modal": {
+      "title": "Списати з балансу сервісу",
+      "amount": "Сума",
+      "description": "Опис",
+      "submit": "Списати"
+    },
+    "withdrawal": {
+      "available": "Доступно до виплати: {{available}}",
+      "request_button": "Запросити виплату",
+      "approve": "Провести",
+      "reject": "Відхилити",
+      "approve_success": "Заявку на виплату проведено",
+      "reject_success": "Заявку на виплату відхилено"
+    }
+  },
+  "smsIntegration": {
+    "balance": {
+      "title": "Баланс SMS",
+      "low": "Низький баланс",
+      "unavailable": "Сервіс тимчасово недоступний, спробуйте пізніше"
+    },
+    "messages": {
+      "title": "Журнал SMS",
+      "search_placeholder": "Пошук за номером телефону",
+      "table": {
+        "date": "Дата",
+        "phone": "Телефон",
+        "customer": "Клієнт",
+        "text": "Текст",
+        "status": "Статус",
+        "provider": "Провайдер",
+        "delivered_at": "Доставлено"
+      },
+      "statuses": {
+        "pending": "Створено",
+        "sent": "Відправлено",
+        "delivered": "Доставлено",
+        "read": "Прочитано",
+        "rejected": "Відхилено",
+        "undelivered": "Не доставлено",
+        "expired": "Термін минув",
+        "failed": "Помилка",
+        "unknown": "Невідомо"
+      },
+      "providers": {
+        "turbosms": "TurboSMS",
+        "telegram": "Telegram",
+        "log": "Лог"
+      },
+      "filters": {
+        "status": "Статус",
+        "clear": "Скинути фільтр"
+      }
     }
   }
 }

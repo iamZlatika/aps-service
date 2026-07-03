@@ -14,17 +14,23 @@ export const UserDtoSchema = z.object({
   id: z.number(),
   name: z.string(),
   email: z.string().regex(emailRegex),
-  role: zodEnumFromConst(ROLES),
+  roles: z.array(zodEnumFromConst(ROLES)),
   status: zodEnumFromConst(USER_STATUSES),
   locale: zodEnumFromConst(USER_LANGUAGES),
   theme: zodEnumFromConst(USER_THEMES),
   avatar_url: z.string(),
   location: LocationDtoSchema.nullable(),
-  services_percent: z.number(),
-  products_percent: z.number(),
-  intake_percent: z.number(),
+  services_percent: z.number().nullable(),
+  products_percent: z.number().nullable(),
+  intake_percent: z.number().nullable(),
 });
 export type UserDto = z.infer<typeof UserDtoSchema>;
+
+export const UserDetailDtoSchema = UserDtoSchema.extend({
+  permissions: z.array(z.string()),
+  abilities: z.array(z.string()),
+});
+export type UserDetailDto = z.infer<typeof UserDetailDtoSchema>;
 
 export const SearchPresetFiltersDtoSchema = z.object({
   page: z.number(),
@@ -52,7 +58,10 @@ export const SearchPresetDtoSchema = z.object({
 export type SearchPresetDto = z.infer<typeof SearchPresetDtoSchema>;
 
 export const MeDtoSchema = UserDtoSchema.extend({
+  abilities: z.array(z.string()),
   balance: z.string(),
+  pending_withdrawals: z.string(),
+  available: z.string(),
   search_presets: z.array(SearchPresetDtoSchema),
 });
 export type MeDto = z.infer<typeof MeDtoSchema>;

@@ -6,15 +6,17 @@ import { cn } from "@/shared/lib/utils.ts";
 interface IsPrimaryButtonProps {
   isPrimary: boolean;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 export const IsPrimaryButton = ({
   isPrimary,
   onClick,
+  disabled,
 }: IsPrimaryButtonProps) => {
   return (
     <Button
-      disabled={isPrimary}
+      disabled={isPrimary || disabled}
       size="sm"
       variant="ghost"
       className={cn(

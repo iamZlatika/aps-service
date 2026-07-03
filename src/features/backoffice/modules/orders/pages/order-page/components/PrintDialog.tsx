@@ -53,7 +53,11 @@ export const PrintDialog = ({
   const canAct = selectedDocs.length > 0 && !isPending;
 
   const handlePrint = () => {
-    print(selectedDocs.map((doc) => ({ orderId, documentId: doc.id })));
+    const title = selectedDocs.map((doc) => doc.name).join(", ");
+    print(
+      selectedDocs.map((doc) => ({ orderId, documentId: doc.id })),
+      title,
+    );
   };
 
   const handleDownload = () => {

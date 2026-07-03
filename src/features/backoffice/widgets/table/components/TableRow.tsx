@@ -3,6 +3,7 @@ import {
   TableCell,
   TableRow as ShadCNTableRow,
 } from "@/shared/components/ui/table.tsx";
+import { cn } from "@/shared/lib/utils.ts";
 
 import type {
   BaseItem,
@@ -28,7 +29,10 @@ export const TableRow = <T extends BaseItem>({
       className={onRowClick ? "cursor-pointer" : undefined}
     >
       {columns.map((col) => (
-        <TableCell key={col.key} className={col.className}>
+        <TableCell
+          key={col.key}
+          className={cn("first:pl-4 last:pr-4", col.className)}
+        >
           <span className="inline-block truncate max-w-[21ch] sm:max-w-none">
             {col.renderCell
               ? col.renderCell(item[col.field], item)
@@ -37,7 +41,7 @@ export const TableRow = <T extends BaseItem>({
         </TableCell>
       ))}
       {renderActions && (
-        <TableCell className="">
+        <TableCell className="last:pr-4">
           <div className="inline-flex justify-start gap-1">
             {renderActions(item)}
           </div>

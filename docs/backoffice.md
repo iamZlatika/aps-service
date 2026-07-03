@@ -8,6 +8,7 @@ The backoffice is the internal panel for employees. It lives under `/backoffice`
 - [Customers](#customers)
 - [Users](#users)
 - [Dictionaries](#dictionaries)
+- [Billing](#billing)
 - [Profile](#profile)
 
 ---
@@ -185,6 +186,8 @@ Manages employee accounts. Only `head_manager` can access this module.
 
 **`Me`** — extends `User` with:
 - `balance` — current balance string
+- `pendingWithdrawals` — sum of own not-yet-decided withdrawal requests (see [Billing](#billing))
+- `available` — `balance − pendingWithdrawals`, the ceiling for a new withdrawal request
 - `searchPresets` — the current user's saved filter presets
 
 **`SearchPreset<TFilters>`** — a saved search/filter configuration. Generic over the filter shape.
@@ -323,12 +326,98 @@ For non-standard dictionaries (custom fields, special create form), use `createT
 
 ---
 
+## Billing
+
+**Path:** `/backoffice/billing`
+**Source:** `src/features/backoffice/modules/billing/`
+
+Employee balances, financial transactions, the shared service balance, and self-service payout requests. Every employee's own balance/transactions are also surfaced on the [Profile](#profile) page's Finance tab, but the underlying components, API, and types all live in this module.
+
+### Pages
+
+| Page | Path | Required ability | Description |
+|------|------|-------------------|-------------|
+| Balances | `/backoffice/billing/balances` | `billing_view` | All employees' balances; row action to accrue/deduct |
+| All Transactions | `/backoffice/billing/transactions` | `billing_view` | Full transaction log across all employees, with filters |
+| Withdrawal Requests | `/backoffice/billing/withdrawal-requests` | `billing_view` | Same transaction table, hard-filtered to `type=withdrawal_request&status=pending` |
+
+`/backoffice/billing` itself redirects to Balances. All three pages share `BillingTabs` (the third tab shows a pending-request count badge and is disabled when there are none) and `SystemBalanceCard`.
+
+### Permissions
+
+| Action | Required ability |
+|--------|-------------------|
+| View balances / all transactions / withdrawal requests | `billing_view` |
+| Accrue/deduct an employee's balance, adjust the system balance, approve/reject a withdrawal request | `billing_balance_adjust` |
+| Request a withdrawal from your own balance | — (any authenticated employee) |
+
+### Key types
+
+**`Transaction`** — a single balance movement. Fields: `amount` (signed string), `type`, `label`, `status`, `user` (nullable — `null` for system-level transactions), `createdBy`, `orderId`/`orderNumber` (nullable — `null` for manual/system/withdrawal entries), `orderService`/`orderProduct` (nullable — the order line item the transaction is for, when there is one).
+
+`type` values: `intake_order_income`, `service_income`, `products_income`, `system_order_income`, `manual_adjustment`, `withdrawal_request`.
+`status` values: `pending`, `completed`, `rejected` (rejected only applies to withdrawal requests).
+
+**`Balance`** — an employee's current balance: `{ id, amount, user, createdAt, updatedAt }`.
+
+**`SystemBalance`** — the shared service balance: `{ amount }`.
+
+**`NewBillingTransaction`** — payload for a manual employee accrual/deduction: `{ userId, amount, description }`. `amount` is signed (`-` = deduct) by the caller before submitting.
+
+**`NewWithdrawalRequest`** — payload for a self-service withdrawal request: `{ amount, description? }`. `amount` is always positive; the backend negates it.
+
+**`NewSystemBalanceTransaction`** — payload for a system-balance deduction: `{ amount, description }`. Posts to the same endpoint as `NewBillingTransaction` but omits `userId` entirely — that's what tells the backend it's a system-level entry.
+
+### API
+
+All transaction-list endpoints (`allTransactions`, `myTransactions`, `withdrawalRequests`) share one `fetchPaginatedTransactions` helper in `api/index.ts` — they differ only in the endpoint URL and, for `withdrawalRequests`, a hardcoded `type`/`status` filter merged in server-side (not user-editable, unlike the other filters).
+
+| Method | Description |
+|--------|-------------|
+| `billingApi.balances.getAll` | Paginated employee balances |
+| `billingApi.allTransactions.getAll` | Paginated transactions, all employees |
+| `billingApi.myTransactions.getAll` | Paginated transactions, current user only |
+| `billingApi.withdrawalRequests.getAll` | Paginated transactions, forced to pending withdrawal requests |
+| `billingApi.getSystemBalance` | Current service balance |
+| `billingApi.createTransaction` | Manual accrual/deduction for an employee |
+| `billingApi.requestWithdrawal` | Self-service withdrawal request |
+| `billingApi.approveWithdrawal` / `rejectWithdrawal` | Approve or reject a pending withdrawal request |
+| `billingApi.adjustSystemBalance` | Deduct from the service balance |
+
+### Hooks
+
+| Hook | Description |
+|------|-------------|
+| `useSystemBalance()` | Fetches the service balance |
+| `usePendingWithdrawalsCount()` | Total pending withdrawal requests — drives the tab badge/disabled state and the "Withdrawal Requests" preset button in All Transactions |
+| `useAdjustBalanceSubmit(onSuccess)` | Form submit logic for accruing/deducting an employee's balance |
+| `useRequestWithdrawalSubmit(onSuccess)` | Form submit logic for requesting a withdrawal |
+| `useAdjustSystemBalanceSubmit(onSuccess)` | Form submit logic for deducting from the system balance |
+| `useWithdrawalActions()` | `approve(id)` / `reject(id)` mutations, used by both All Transactions and Withdrawal Requests row actions |
+
+### Withdrawal request workflow
+
+1. Any employee can request a payout up to `available` (`balance − pendingWithdrawals`, both returned on `GET /users/me`) via the "request withdrawal" button on the Profile Finance tab. This creates a `pending` `withdrawal_request` transaction — the balance is untouched until it's decided.
+2. A manager with `billing_balance_adjust` sees pending requests via the badge on the "Withdrawal Requests" tab, or the same-named preset button in All Transactions (disabled when the count is 0). Both surfaces render the same hard-filtered table.
+3. Approving debits the employee's balance and marks the transaction `completed`; rejecting marks it `rejected` and leaves the balance untouched. Both actions invalidate balances, all/my/withdrawal transaction lists, and (if the approver is also the requester) the current user query.
+
+### Shared modal shell
+
+`AdjustBalanceModal`, `RequestWithdrawalModal`, and `AdjustSystemBalanceModal` all wrap the same `AmountDescriptionModal` (Dialog + form + error + footer boilerplate) and only supply the title, submit handler, and their own amount/description fields — the first adds an accrue/deduct toggle, the second an "available" hint line, the third is the plainest of the three.
+
+---
+
 ## Profile
 
 **Path:** `/backoffice/profile`
 **Source:** `src/features/backoffice/modules/profile/`
 
-The current user's own profile page. Available to all authenticated backoffice users.
+The current user's own profile page. Available to all authenticated backoffice users. Split into two tabs (`ProfileTabs`):
+
+| Tab | Path | Contents |
+|-----|------|----------|
+| Profile | `/backoffice/profile` | Avatar/name/email/roles header, permissions summary, change password |
+| Finance | `/backoffice/profile/finance` | Own balance + available-to-withdraw (`MyBalanceCard`), commission rates, own transaction history with filters — see [Billing](#billing) |
 
 ### Features
 
@@ -336,6 +425,7 @@ The current user's own profile page. Available to all authenticated backoffice u
 - Change password
 - Switch interface language (`ru` / `uk`)
 - Switch theme (`light` / `dark` / `system`)
-- View own role and assigned location
+- View own role, assigned location, and commission rates
+- Request a balance withdrawal (Finance tab)
 
-Profile data is fetched via `queryKeys.users.me()` — the same query used throughout the app to identify the current user.
+Profile data is fetched via `queryKeys.users.me()` — the same query used throughout the app to identify the current user. The `Me` type includes `balance`, `pendingWithdrawals`, and `available` (see [Billing](#billing)).

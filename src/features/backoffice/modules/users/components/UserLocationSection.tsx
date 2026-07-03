@@ -5,12 +5,17 @@ import { type User } from "@/features/backoffice/modules/users/types.ts";
 import { DeleteConfirmDialog } from "@/features/backoffice/widgets/table/components/dialogs";
 import { CardTitle } from "@/shared/components/ui/card.tsx";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
+import { cn } from "@/shared/lib/utils.ts";
 
 interface UserLocationSectionProps {
   user: User;
+  canManage: boolean;
 }
 
-export const UserLocationSection = ({ user }: UserLocationSectionProps) => {
+export const UserLocationSection = ({
+  user,
+  canManage,
+}: UserLocationSectionProps) => {
   const { t } = useTranslation();
   const {
     locations,
@@ -32,15 +37,18 @@ export const UserLocationSection = ({ user }: UserLocationSectionProps) => {
             <label
               key={location.id}
               htmlFor={`location-${location.id}`}
-              className="flex cursor-pointer select-none items-center gap-2"
+              className={cn(
+                "flex select-none items-center gap-2",
+                canManage ? "cursor-pointer" : "cursor-default",
+              )}
             >
               <Checkbox
                 id={`location-${location.id}`}
                 checked={user.location?.id === location.id}
                 onCheckedChange={(checked) => {
-                  if (checked) setPendingLocationId(location.id);
+                  if (checked && canManage) setPendingLocationId(location.id);
                 }}
-                disabled={isPending}
+                disabled={isPending || !canManage}
                 className="h-5 w-5"
               />
               <span className="text-base">{location.name}</span>

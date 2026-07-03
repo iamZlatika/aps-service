@@ -70,7 +70,7 @@ apiClient.interceptors.response.use(
 
     const apiError = new ApiError(message, status, data);
 
-    if (status !== 401 && status !== 422) {
+    if (status !== 401 && status !== 403 && status !== 422) {
       captureError(apiError, {
         url: error.config?.url,
         method: error.config?.method,

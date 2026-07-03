@@ -1,9 +1,13 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { usersApi } from "@/features/backoffice/modules/users/api";
-import { type SalarySettings } from "@/features/backoffice/modules/users/lib/salarySettingsSchema.ts";
+import {
+  type SalarySettings,
+  salarySettingsSchema,
+} from "@/features/backoffice/modules/users/lib/salarySettingsSchema.ts";
 import { type User } from "@/features/backoffice/modules/users/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
@@ -11,11 +15,17 @@ export const useUserRate = (user: User) => {
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
 
-  const { register, handleSubmit, reset } = useForm<SalarySettings>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<SalarySettings>({
+    resolver: zodResolver(salarySettingsSchema()),
     defaultValues: {
-      servicesPercent: user.servicesPercent,
-      productsPercent: user.productsPercent,
-      intakePercent: user.intakePercent,
+      servicesPercent: user.servicesPercent ?? 0,
+      productsPercent: user.productsPercent ?? 0,
+      intakePercent: user.intakePercent ?? 0,
     },
   });
 
@@ -32,9 +42,9 @@ export const useUserRate = (user: User) => {
 
   const handleEdit = () => {
     reset({
-      servicesPercent: user.servicesPercent,
-      productsPercent: user.productsPercent,
-      intakePercent: user.intakePercent,
+      servicesPercent: user.servicesPercent ?? 0,
+      productsPercent: user.productsPercent ?? 0,
+      intakePercent: user.intakePercent ?? 0,
     });
     setIsEditing(true);
   };
@@ -49,6 +59,7 @@ export const useUserRate = (user: User) => {
     isEditing,
     isPending: mutation.isPending,
     register,
+    errors,
     onSubmit,
     handleEdit,
     handleCancel,

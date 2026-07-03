@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { type WorkTypeInfo } from "@/entities/work/types";
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { worksApi } from "@/features/backoffice/modules/works/api";
 import { WorkPreviewModal } from "@/features/backoffice/modules/works/components/WorkPreviewModal";
@@ -24,6 +25,8 @@ const WorksPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const localize = useLocalize();
+  const { can } = useAuth();
+  const canManage = can("landing_works_manage");
 
   const [workToDelete, setWorkToDelete] = useState<BackofficeWork | null>(null);
   const [workToToggle, setWorkToToggle] = useState<BackofficeWork | null>(null);
@@ -86,12 +89,13 @@ const WorksPage = () => {
             <WorkPublishButton
               isPublished={Boolean(value)}
               onClick={() => setWorkToToggle(item)}
+              disabled={!canManage}
             />
           </div>
         ),
       },
     ],
-    [localize],
+    [localize, canManage],
   );
 
   const handleDeleteConfirm = useCallback(() => {
@@ -112,7 +116,9 @@ const WorksPage = () => {
         searchPlaceholder="search_placeholders.works_name"
         columns={columns}
         headerActions={
-          <AddButton onClick={() => navigate(WORKS_LINKS.create())} />
+          canManage ? (
+            <AddButton onClick={() => navigate(WORKS_LINKS.create())} />
+          ) : undefined
         }
         renderRowActions={(item) => (
           <div className="flex gap-1">
@@ -123,20 +129,24 @@ const WorksPage = () => {
             >
               <Eye className="h-4 w-4" />
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate(WORKS_LINKS.edit(item.id))}
-            >
-              <Pencil className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setWorkToDelete(item)}
-            >
-              <Trash2 className="h-4 w-4 text-destructive" />
-            </Button>
+            {canManage && (
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => navigate(WORKS_LINKS.edit(item.id))}
+                >
+                  <Pencil className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setWorkToDelete(item)}
+                >
+                  <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
+              </>
+            )}
           </div>
         )}
       />

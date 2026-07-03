@@ -1,5 +1,6 @@
 import { Check, Copy, Lock, Unlock } from "lucide-react";
 
+import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { bankCardsApi } from "@/features/backoffice/modules/dictionaries/api";
 import type { BankCardDto } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { DictionaryTablePage } from "@/features/backoffice/modules/dictionaries/components/DictionaryTablePage.tsx";
@@ -32,10 +33,30 @@ const CopyCardNumber = ({ prettyNumber }: { prettyNumber: string }) => {
 
 interface BankCardStatusToggleProps {
   card: BankCardDto;
+  canManage: boolean;
 }
 
-const BankCardStatusToggle = ({ card }: BankCardStatusToggleProps) => {
+const BankCardStatusToggle = ({
+  card,
+  canManage,
+}: BankCardStatusToggleProps) => {
   const { toggle, isPending } = useToggleBankCardStatus(card);
+
+  const icon = card.is_active ? (
+    <Unlock className="h-4 w-4" />
+  ) : (
+    <Lock className="h-4 w-4" />
+  );
+
+  if (!canManage) {
+    return (
+      <span
+        className={card.is_active ? "p-2 text-green-600" : "p-2 text-red-600"}
+      >
+        {icon}
+      </span>
+    );
+  }
 
   return (
     <Button
@@ -52,16 +73,15 @@ const BankCardStatusToggle = ({ card }: BankCardStatusToggleProps) => {
       }}
       disabled={isPending}
     >
-      {card.is_active ? (
-        <Unlock className="h-4 w-4" />
-      ) : (
-        <Lock className="h-4 w-4" />
-      )}
+      {icon}
     </Button>
   );
 };
 
 const BankCardsPage = () => {
+  const { can } = useAuth();
+  const canManage = can("dictionaries_bank_cards_manage");
+
   const columns: ColumnConfig<BankCardDto>[] = [
     {
       key: "owner_name",
@@ -85,7 +105,9 @@ const BankCardsPage = () => {
       labelKey: "dictionaries.table_fields.isActive",
       sortable: false,
       formField: false,
-      renderCell: (_, item) => <BankCardStatusToggle card={item} />,
+      renderCell: (_, item) => (
+        <BankCardStatusToggle card={item} canManage={canManage} />
+      ),
     },
   ];
 
@@ -99,6 +121,7 @@ const BankCardsPage = () => {
       searchNumbersOnly
       searchPlaceholder="search_placeholders.card_number"
       getItemName={(item) => item.owner_name}
+      manageAbility="dictionaries_bank_cards_manage"
     />
   );
 };

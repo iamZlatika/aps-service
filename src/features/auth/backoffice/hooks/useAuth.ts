@@ -81,9 +81,13 @@ export const useAuth = () => {
     },
   });
 
+  const abilities = user?.abilities ?? [];
+
   return {
     user,
-    role: user?.role,
+    roles: user?.roles ?? [],
+    abilities,
+    can: (ability: string) => abilities.includes(ability),
     isAuthenticated: !!token && !isError,
     isLoading: isLoading || (!!token && !user && !isError),
     login: loginMutation.mutate,

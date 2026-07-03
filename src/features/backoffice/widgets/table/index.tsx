@@ -20,10 +20,10 @@ import { cn } from "@/shared/lib/utils.ts";
 
 import { useSmartTable } from "./hooks/useSmartTable.ts";
 
-type RowInteraction<T extends BaseItem> =
-  | { onRowClick: (item: T) => void; renderRowActions?: never }
-  | { renderRowActions: RenderRowActions<T>; onRowClick?: never }
-  | { onRowClick?: never; renderRowActions?: never };
+type RowInteraction<T extends BaseItem> = {
+  onRowClick?: (item: T) => void;
+  renderRowActions?: RenderRowActions<T>;
+};
 
 type SmartTableProps<T extends BaseItem = BaseItem> = {
   titleKey: string;

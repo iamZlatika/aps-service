@@ -83,6 +83,9 @@
     "masters": "Мастера",
     "dictionaries": "Справочники",
     "works": "Работы",
+    "billing": "Биллинг",
+    "sms_integration": "SMS-интеграция",
+    "roles_permissions": "Роли и доступы",
     "dictionaries_list": {
       "title": "Справочники",
       "accessories": "Комплектации",
@@ -114,7 +117,7 @@
     "retry": "Повторить",
     "forbidden_title": "Нет доступа",
     "forbidden_description": "У вас нет прав для просмотра этой страницы.",
-    "go_to_orders": "Перейти к заказам",
+    "go_back": "Назад",
     "forbidden_action": "Недостаточно прав для выполнения операции",
     "name_taken": "Это название уже занято",
     "email_taken": "Этот email уже зарегистрирован",
@@ -171,7 +174,11 @@
     "colorRequired": "Выберите цвет",
     "time_end_before_start": "Время окончания должно быть позже времени начала",
     "image_type": "Допустимые форматы: JPEG, PNG, WebP",
-    "image_max_size": "Файл не должен превышать 2 МБ"
+    "image_max_size": "Файл не должен превышать 2 МБ",
+    "percent_range": "Значение должно быть от 0 до 100",
+    "positive_amount": "Введите сумму больше нуля (напр. 250.50)",
+    "description_max": "Максимум {{count}} символов",
+    "amount_exceeds_available": "Сумма превышает доступный для выплаты баланс"
   },
   "search_placeholders": {
     "dictionaries_name": "Поиск по названию",
@@ -202,16 +209,58 @@
     "manufacturers": "Бренды",
     "services": "Услуги",
     "orderStatuses": "Статусы заказов",
-    "bankCards": "Банковские карты"
+    "bankCards": "Банковские карты",
+    "rolesPermissions": "Роли и доступы",
+    "billing": "Биллинг",
+    "balances": "Балансы",
+    "transactions": "Транзакции",
+    "finance": "Финансы",
+    "withdrawalRequests": "Запросы на выплату",
+    "integrations": "Интеграции"
   },
   "profile": {
     "settings": "Настройки профиля",
+    "my_finances": "Мои финансы",
+    "tabs": {
+      "profile": "Профиль",
+      "finance": "Финансы"
+    },
     "your_balance": "Ваш баланс",
     "your_rate": "Ваша ставка",
+    "your_abilities": "Ваши права доступа",
+    "abilities": {
+      "groups": {
+        "orders": "Заказы",
+        "customers": "Клиенты",
+        "landing_works": "Работы",
+        "billing": "Биллинг",
+        "users": "Сотрудники",
+        "dictionaries": "Справочники",
+        "integrations_sms": "SMS-интеграция"
+      },
+      "orders_view": "Просмотр",
+      "orders_manage": "Управление",
+      "customers_view": "Просмотр",
+      "customers_manage": "Управление",
+      "landing_works_view": "Просмотр",
+      "landing_works_manage": "Управление",
+      "billing_view": "Просмотр",
+      "billing_balance_adjust": "Начисление/списание",
+      "integrations_sms_view": "Просмотр",
+      "users_view": "Просмотр",
+      "users_manage": "Управление",
+      "users_roles_permissions_manage": "Роли и права",
+      "dictionaries_view": "Просмотр",
+      "dictionaries_manage": "Управление",
+      "dictionaries_bank_cards_manage": "Банковские карты (ред.)",
+      "dictionaries_locations_manage": "Локации (ред.)",
+      "dictionaries_price_list_manage": "Прайс-лист (ред.)"
+    },
     "master_rate": "Ставка мастера",
     "services_percent": "Процент за услуги",
     "products_percent": "Процент за товары",
     "intake_percent": "Процент за приёмку",
+    "rate_help": "Прибыль позиции = (цена − себестоимость) × количество. Доля приёмщика = прибыль × его процент за приёмку. Доля мастера = (прибыль − доля приёмщика) × его процент за услуги или товары. Начисление «зависает» до закрытия заказа.",
     "user_info": {
       "name_too_short": "Имя должно содержать минимум 3 символа",
       "invalid_email": "Некорректный email",
@@ -238,8 +287,6 @@
     "ok": "Ок"
   },
   "users": {
-    "head_manager": "Администратор",
-    "manager": "Менеджер",
     "table_fields": {
       "name": "Имя",
       "role": "Роль",
@@ -248,7 +295,10 @@
     },
     "roles": {
       "manager": "Менеджер",
-      "head_manager": "Адміністратор"
+      "head_manager": "Администратор",
+      "receptionist": "Приёмщик",
+      "accountant": "Бухгалтер",
+      "support": "Поддержка"
     },
     "actions": {
       "block": "Заблокировать",
@@ -270,10 +320,19 @@
       "password_placeholder": "Введите пароль",
       "password_confirmation": "Подтверждение пароля",
       "password_confirmation_placeholder": "Повторите пароль",
-      "role": "Роль",
-      "role_placeholder": "Выберите роль",
       "cancel": "Отмена",
       "submit": "Создать"
+    },
+    "roles_permissions": {
+      "title": "Роли и права",
+      "roles": "Роли",
+      "abilities": "Права доступа",
+      "individual_permissions": "Индивидуальные разрешения",
+      "custom_hint": "Розовый — пользовательский пермишен",
+      "custom_tooltip": "Добавлен вручную, вне ролей",
+      "head_manager_readonly": "У этой роли полный доступ ко всем правам. Редактирование недоступно.",
+      "save_success": "Права роли обновлены",
+      "removed_hint": "снято"
     }
   },
   "customers": {
@@ -496,6 +555,9 @@
         "called": "прозвонил клиента",
         "cancelled": "отменил поле «Прозвонил»",
         "system_cancelled": "Поле «Прозвонил» отменено системой"
+      },
+      "sms": {
+        "ready_sent": "Отправлена SMS о готовности"
       }
     },
     "paymentMethods": {
@@ -582,6 +644,7 @@
       "price": "Цена за ед",
       "totalPrice": "Стоимость",
       "purchasePrice": "Себестоимость",
+      "contractor": "Поставщик/Аутсорсер",
       "addProduct": "Добавить товар",
       "addService": "Добавить услугу",
       "editProduct": "Редактировать товар",
@@ -724,6 +787,139 @@
       "back": "Назад",
       "darkTheme": "Тёмная тема",
       "lightTheme": "Светлая тема"
+    }
+  },
+  "billing": {
+    "balances": {
+      "title": "Балансы",
+      "search_placeholder": "Поиск по имени",
+      "employee": "Сотрудник",
+      "roles": "Роль",
+      "balance": "Баланс",
+      "updated": "Обновлено",
+      "adjust": "Начислить / Списать"
+    },
+    "system_balance": {
+      "title": "Баланс сервиса",
+      "adjust_button": "Списать с баланса сервиса"
+    },
+    "all_transactions": {
+      "title": "Все транзакции"
+    },
+    "withdrawal_requests": {
+      "title": "Запросы на выплату"
+    },
+    "withdrawal_requests_count": "{{count}} запросов на выплату",
+    "my_transactions": {
+      "title": "Ваши транзакции"
+    },
+    "transactions": {
+      "table": {
+        "date": "Дата",
+        "type": "Тип",
+        "label": "Описание",
+        "item": "Услуга/товар",
+        "amount": "Сумма",
+        "status": "Статус",
+        "order": "Заказ",
+        "created_by": "Кто начислил",
+        "employee": "Сотрудник"
+      },
+      "system_auto": "Система/Авто",
+      "system": "Сервис"
+    },
+    "transaction_types": {
+      "intake_order_income": "Выплата приёмщику за приём заказа",
+      "service_income": "Выплата мастеру за работу",
+      "products_income": "Выплата мастеру за запчасть",
+      "system_order_income": "Зачисление на баланс сервиса",
+      "manual_adjustment": "Ручная корректировка баланса",
+      "withdrawal_request": "Выплата средств сотруднику"
+    },
+    "transaction_statuses": {
+      "pending": "Ожидает",
+      "completed": "Проведено",
+      "rejected": "Отклонено"
+    },
+    "filters": {
+      "type": "Тип",
+      "status": "Статус",
+      "date_range": "Период",
+      "apply": "ОК",
+      "employee": "Сотрудник",
+      "order_number": "№ заказа",
+      "clear": "Сбросить фильтр",
+      "reset_all": "Сбросить все фильтры",
+      "withdrawal_preset": "Запросы на выплату"
+    },
+    "adjust_modal": {
+      "title_for": "Начислить / Списать — {{name}}",
+      "accrue": "Начислить (+)",
+      "deduct": "Списать (−)",
+      "amount": "Сумма",
+      "description": "Описание",
+      "submit": "Сохранить"
+    },
+    "withdrawal_modal": {
+      "title": "Запрос на выплату средств",
+      "amount": "Сумма",
+      "available_hint": "Доступно к выплате: {{available}}",
+      "description": "Описание",
+      "submit": "Отправить запрос"
+    },
+    "system_balance_modal": {
+      "title": "Списать с баланса сервиса",
+      "amount": "Сумма",
+      "description": "Описание",
+      "submit": "Списать"
+    },
+    "withdrawal": {
+      "available": "Доступно к выплате: {{available}}",
+      "request_button": "Запросить выплату",
+      "approve": "Провести",
+      "reject": "Отклонить",
+      "approve_success": "Заявка на выплату проведена",
+      "reject_success": "Заявка на выплату отклонена"
+    }
+  },
+  "smsIntegration": {
+    "balance": {
+      "title": "Баланс SMS",
+      "low": "Низкий баланс",
+      "unavailable": "Сервис временно недоступен, попробуйте позже"
+    },
+    "messages": {
+      "title": "Журнал SMS",
+      "search_placeholder": "Поиск по номеру телефона",
+      "table": {
+        "date": "Дата",
+        "phone": "Телефон",
+        "customer": "Клиент",
+        "text": "Текст",
+        "status": "Статус",
+        "provider": "Провайдер",
+        "delivered_at": "Доставлено"
+      },
+      "statuses": {
+        "pending": "Создано",
+        "sent": "Отправлено",
+        "delivered": "Доставлено",
+        "read": "Прочитано",
+        "rejected": "Отклонено",
+        "undelivered": "Не доставлено",
+        "expired": "Срок истёк",
+        "failed": "Ошибка",
+        "unknown": "Неизвестно"
+      },
+      "providers": {
+        "turbosms": "TurboSMS",
+        "telegram": "Telegram",
+        "log": "Лог"
+      },
+      "filters": {
+        "status": "Статус",
+        "clear": "Сбросить фильтр"
+      }
     }
   }
 }

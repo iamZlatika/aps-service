@@ -4,6 +4,7 @@ import type {
   HistoryPayment,
   HistoryProduct,
   HistoryService,
+  HistorySms,
   HistoryStatus,
   OrderHistoryItem,
 } from "@/features/backoffice/modules/orders/pages/order-page/types.ts";
@@ -146,6 +147,10 @@ export function mapCallHistory(items: CallHistoryItem[]): HistoryCall[] {
   }));
 }
 
+export function mapReadySms(readySmsSentAt: string | null): HistorySms[] {
+  return readySmsSentAt ? [{ type: "sms" as const, date: readySmsSentAt }] : [];
+}
+
 export function buildOrderHistory(
   order: Pick<
     OrderInfo,
@@ -155,6 +160,7 @@ export function buildOrderHistory(
     | "comments"
     | "payments"
     | "callHistory"
+    | "readySmsSentAt"
   >,
 ): OrderHistoryItem[] {
   return [
@@ -164,5 +170,6 @@ export function buildOrderHistory(
     ...mapComments(order.comments),
     ...mapPayments(order.payments),
     ...mapCallHistory(order.callHistory),
+    ...mapReadySms(order.readySmsSentAt),
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }

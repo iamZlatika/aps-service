@@ -7,16 +7,23 @@ import UserAvatar from "@/features/backoffice/modules/profile/components/avatar/
 import ChangePasswordForm from "@/features/backoffice/modules/profile/components/ChangePasswordForm.tsx";
 import ChangeUserInfoForm from "@/features/backoffice/modules/profile/components/ChangeUserInfoForm.tsx";
 import { CHANGE_USER_INFO_FORM_ID } from "@/features/backoffice/modules/profile/components/constants.ts";
+import { MyBalanceCard } from "@/features/backoffice/modules/profile/components/MyBalanceCard.tsx";
+import { ProfileTabs } from "@/features/backoffice/modules/profile/components/ProfileTabs.tsx";
 import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
+import { UserAbilitiesSection } from "@/features/backoffice/modules/profile/components/UserAbilitiesSection.tsx";
+import { usePermissions } from "@/features/backoffice/modules/roles-permissions/hooks/usePermissions.ts";
 import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard.tsx";
 import { AcceptButton } from "@/shared/components/common/buttons/AcceptButton.tsx";
 import { CancelButton } from "@/shared/components/common/buttons/CancelButton.tsx";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { CardTitle } from "@/shared/components/ui/card.tsx";
+import { groupPermissionsByCategory } from "@/widgets/ability-badge/abilityGroups";
 
 const ProfilePage = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const { permissions } = usePermissions();
+  const abilityGroups = groupPermissionsByCategory(permissions);
   const [imageReady, setImageReady] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -45,6 +52,7 @@ const ProfilePage = () => {
     </>
   ) : (
     <button
+      type="button"
       onClick={() => setIsEditing(true)}
       className="p-2 text-muted-foreground hover:text-foreground transition-colors"
     >
@@ -53,8 +61,10 @@ const ProfilePage = () => {
   );
 
   return (
-    <div className="p-2 sm:p-6 max-w-3xl mx-auto w-full">
+    <div className="p-2 sm:p-6 max-w-5xl mx-auto w-full">
       <h1 className="mb-6 text-2xl font-bold">{t("profile.settings")}</h1>
+      <ProfileTabs />
+      <MyBalanceCard balance={user.balance} />
       <PersonCard
         avatarSlot={
           <UserAvatar
@@ -70,41 +80,17 @@ const ProfilePage = () => {
             onSubmitSuccess={() => setIsEditing(false)}
           />
         }
-        metaSlot={<RoleBadge role={user.role} />}
+        metaSlot={<RoleBadge roles={user.roles} />}
         rightAction={rightAction}
       >
         <CardTitle className="text-xl font-bold mb-4 text-center">
-          {t("profile.your_balance")}
+          {t("profile.your_abilities")}
         </CardTitle>
-        <div className="h-11 rounded-md border border-input bg-muted px-3 text-base flex items-center justify-center mb-6">
-          {new Intl.NumberFormat("uk-UA", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          }).format(parseFloat(user.balance))}{" "}
-          ₴
-        </div>
-        <CardTitle className="text-xl font-bold mb-4 text-center">
-          {t("profile.your_rate")}
-        </CardTitle>
-        <div className="grid grid-cols-3 divide-x divide-border mb-6">
-          <div className="pr-6 text-center">
-            <p className="text-sm text-muted-foreground mb-1">
-              {t("profile.services_percent")}
-            </p>
-            <p className="text-lg font-semibold">{user.servicesPercent}%</p>
-          </div>
-          <div className="px-6 text-center">
-            <p className="text-sm text-muted-foreground mb-1">
-              {t("profile.products_percent")}
-            </p>
-            <p className="text-lg font-semibold">{user.productsPercent}%</p>
-          </div>
-          <div className="pl-6 text-center">
-            <p className="text-sm text-muted-foreground mb-1">
-              {t("profile.intake_percent")}
-            </p>
-            <p className="text-lg font-semibold">{user.intakePercent}%</p>
-          </div>
+        <div className="mb-6">
+          <UserAbilitiesSection
+            abilities={user.abilities}
+            abilityGroups={abilityGroups}
+          />
         </div>
         <CardTitle className="text-xl font-bold mb-4 text-center">
           {t("profile.change_form.change_password")}

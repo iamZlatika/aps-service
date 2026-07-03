@@ -7,10 +7,12 @@ import { DeleteConfirmDialog } from "@/features/backoffice/widgets/table/compone
 
 interface CustomerStatusToggleProps {
   customer: CustomerInfo;
+  disabled?: boolean;
 }
 
 export const CustomerStatusToggle = ({
   customer,
+  disabled,
 }: CustomerStatusToggleProps) => {
   const { t } = useTranslation();
   const {
@@ -19,6 +21,27 @@ export const CustomerStatusToggle = ({
     handleConfirm,
     isStatusPending,
   } = useCustomerStatus(customer.id, customer);
+
+  const icon =
+    customer.status === "active" ? (
+      <Unlock className="h-4 w-4" />
+    ) : (
+      <Lock className="h-4 w-4" />
+    );
+
+  if (disabled) {
+    return (
+      <span
+        className={
+          customer.status === "active"
+            ? "p-2 text-green-600"
+            : "p-2 text-red-600"
+        }
+      >
+        {icon}
+      </span>
+    );
+  }
 
   return (
     <>
@@ -30,11 +53,7 @@ export const CustomerStatusToggle = ({
             : "p-2 text-red-600 hover:text-red-700 transition-colors"
         }
       >
-        {customer.status === "active" ? (
-          <Unlock className="h-4 w-4" />
-        ) : (
-          <Lock className="h-4 w-4" />
-        )}
+        {icon}
       </button>
 
       <DeleteConfirmDialog

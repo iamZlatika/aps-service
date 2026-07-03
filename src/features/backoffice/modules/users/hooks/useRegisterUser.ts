@@ -35,7 +35,9 @@ export const useRegisterUser = (
     try {
       await mutation.mutateAsync(registerUserSchema.parse(values));
     } catch (error) {
-      handleFormError(error, setError);
+      handleFormError(error, setError, {
+        fieldMap: { "roles.0": "roles", "permissions.0": "permissions" },
+      });
     }
   };
 
