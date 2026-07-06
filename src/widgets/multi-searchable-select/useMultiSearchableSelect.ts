@@ -132,6 +132,14 @@ export const useMultiSearchableSelect = ({
     [onChange, value],
   );
 
+  const commitInputValue = useCallback(() => {
+    const trimmed = inputValue.trim();
+    if (!trimmed) return;
+    onChange([...value, trimmed]);
+    setInputValue("");
+    setActiveIndex(-1);
+  }, [inputValue, onChange, value]);
+
   const { mutate: createItem, isPending: isSaving } = useMutation({
     mutationFn: (name: string) => {
       if (!onCreateItem) return Promise.resolve();
@@ -197,9 +205,7 @@ export const useMultiSearchableSelect = ({
         }
       } else if (e.key === "," && inputValue.trim()) {
         e.preventDefault();
-        onChange([...value, inputValue.trim()]);
-        setInputValue("");
-        setActiveIndex(-1);
+        commitInputValue();
       } else if (
         e.key === "Backspace" &&
         inputValue === "" &&
@@ -208,8 +214,21 @@ export const useMultiSearchableSelect = ({
         onChange(value.slice(0, -1));
       }
     },
-    [activeIndex, handleSelect, inputValue, isOpen, onChange, options, value],
+    [
+      activeIndex,
+      commitInputValue,
+      handleSelect,
+      inputValue,
+      isOpen,
+      onChange,
+      options,
+      value,
+    ],
   );
+
+  const handleInputBlur = useCallback(() => {
+    commitInputValue();
+  }, [commitInputValue]);
 
   return {
     inputValue,
@@ -229,6 +248,7 @@ export const useMultiSearchableSelect = ({
     handleQuickSelectToggle,
     handleInputChange,
     handleInputFocus,
+    handleInputBlur,
     handleSelect,
     handleCreateItem,
     handleKeyDown,
