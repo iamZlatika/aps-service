@@ -43,3 +43,7 @@ export type NewSystemBalanceTransaction = {
   amount: string;
   description: string;
 };
+
+export const SERVICE_VALUE = "service";
+
+export type EmployeeSelectValue = number | typeof SERVICE_VALUE | undefined;

@@ -6,13 +6,14 @@ import { FilterSlot } from "@/features/backoffice/modules/billing/components/Fil
 import { TransactionCommonFilters } from "@/features/backoffice/modules/billing/components/TransactionCommonFilters.tsx";
 import { usePendingWithdrawalsCount } from "@/features/backoffice/modules/billing/hooks/usePendingWithdrawalsCount.ts";
 import { BILLING_LINKS } from "@/features/backoffice/modules/billing/navigation.ts";
+import { SERVICE_VALUE } from "@/features/backoffice/modules/billing/types.ts";
 import { useFilterParams } from "@/features/backoffice/widgets/table/hooks/useFilterParams.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 
 export const AllTransactionsFilterBar = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { filters, setFilter, resetFilters } = useFilterParams();
+  const { filters, setFilters, resetFilters } = useFilterParams();
   const { count: pendingWithdrawalsCount } = usePendingWithdrawalsCount();
 
   const hasActiveFilters = Object.keys(filters).length > 0;
@@ -22,13 +23,22 @@ export const AllTransactionsFilterBar = () => {
       <TransactionCommonFilters />
 
       <FilterSlot
-        active={!!filters.user_id}
-        onClear={() => setFilter("user_id", "")}
+        active={!!filters.user_id || !!filters.only_system}
+        onClear={() => setFilters({ user_id: "", only_system: "" })}
       >
         <EmployeeSelect
-          value={filters.user_id ? Number(filters.user_id) : undefined}
-          onChange={(userId) =>
-            setFilter("user_id", userId ? String(userId) : "")
+          value={
+            filters.only_system
+              ? SERVICE_VALUE
+              : filters.user_id
+                ? Number(filters.user_id)
+                : undefined
+          }
+          onChange={(val) =>
+            setFilters({
+              user_id: typeof val === "number" ? String(val) : "",
+              only_system: val === SERVICE_VALUE ? "1" : "",
+            })
           }
         />
       </FilterSlot>

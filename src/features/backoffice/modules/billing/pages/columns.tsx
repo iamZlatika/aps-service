@@ -6,6 +6,7 @@ import {
   type Balance,
   type Transaction,
 } from "@/features/backoffice/modules/billing/types.ts";
+import { renderWrappedText } from "@/features/backoffice/modules/orders/lib/cellFormatters.tsx";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation.ts";
 import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
 import { type User } from "@/features/backoffice/modules/users/types.ts";
@@ -182,6 +183,9 @@ export function buildTransactionColumns({
   return columns;
 }
 
+const ITEM_COLUMN_WRAP_AT = 45;
+const ITEM_COLUMN_MAX_CHARS = 90;
+
 export function buildMyTransactionColumns(): ColumnConfig<Transaction>[] {
   return [
     buildOrderColumn(),
@@ -190,13 +194,19 @@ export function buildMyTransactionColumns(): ColumnConfig<Transaction>[] {
       field: "orderService",
       labelKey: "billing.transactions.table.item",
       sortable: false,
-      renderCell: (_value, item) =>
-        item.orderService?.name ??
-        item.orderProduct?.name ??
-        (item.type === TRANSACTION_TYPES.MANUAL_ADJUSTMENT ||
-        item.type === TRANSACTION_TYPES.WITHDRAWAL_REQUEST
-          ? item.label
-          : "—"),
+      renderCell: (_value, item) => {
+        const text =
+          item.orderService?.name ??
+          item.orderProduct?.name ??
+          (item.type === TRANSACTION_TYPES.MANUAL_ADJUSTMENT ||
+          item.type === TRANSACTION_TYPES.WITHDRAWAL_REQUEST
+            ? item.label
+            : "—");
+        return renderWrappedText(text, {
+          wrapAt: ITEM_COLUMN_WRAP_AT,
+          maxChars: ITEM_COLUMN_MAX_CHARS,
+        });
+      },
     },
     buildAmountColumn(),
     buildCreatedAtColumn(),

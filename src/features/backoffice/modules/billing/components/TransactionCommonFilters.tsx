@@ -11,11 +11,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select.tsx";
-import { TRANSACTION_STATUSES, TRANSACTION_TYPES } from "@/shared/types.ts";
+import {
+  TRANSACTION_STATUSES,
+  TRANSACTION_TYPES,
+  type TransactionType,
+} from "@/shared/types.ts";
 
 const ALL_VALUE = "__all__";
 
-export const TransactionCommonFilters = () => {
+interface TransactionCommonFiltersProps {
+  readonly excludedTypes?: TransactionType[];
+}
+
+export const TransactionCommonFilters = ({
+  excludedTypes = [],
+}: TransactionCommonFiltersProps) => {
   const { t } = useTranslation();
   const { filters, setFilter, setFilters } = useFilterParams();
 
@@ -35,11 +45,13 @@ export const TransactionCommonFilters = () => {
             <SelectItem value={ALL_VALUE}>
               {t("billing.filters.type")}
             </SelectItem>
-            {Object.values(TRANSACTION_TYPES).map((type) => (
-              <SelectItem key={type} value={type}>
-                {t(`billing.transaction_types.${type}`)}
-              </SelectItem>
-            ))}
+            {Object.values(TRANSACTION_TYPES)
+              .filter((type) => !excludedTypes.includes(type))
+              .map((type) => (
+                <SelectItem key={type} value={type}>
+                  {t(`billing.transaction_types.${type}`)}
+                </SelectItem>
+              ))}
           </SelectContent>
         </Select>
       </FilterSlot>

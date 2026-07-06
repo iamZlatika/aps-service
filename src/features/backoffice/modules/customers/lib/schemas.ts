@@ -36,5 +36,5 @@ export const newCustomerSchema = z.object({
 });
 
 export const addPhoneSchema = z.object({
-  phone: phoneField(),
+  phone: phoneField(i18next.t("validation.phone_incomplete")),
 });

@@ -68,7 +68,7 @@ const ProfileFinancePage = () => {
         </Card>
       </div>
       <SmartTable
-        className="max-w-5xl"
+        className="max-w-[2560px] lg:max-w-[2560px]"
         titleKey="billing.my_transactions.title"
         api={billingApi.myTransactions}
         queryKeyFn={queryKeys.billing.myTransactions}

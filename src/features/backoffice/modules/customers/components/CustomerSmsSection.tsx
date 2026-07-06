@@ -7,9 +7,13 @@ import { Switch } from "@/shared/components/ui/switch.tsx";
 
 interface CustomerSmsSectionProps {
   customer: CustomerInfo;
+  canManage: boolean;
 }
 
-export const CustomerSmsSection = ({ customer }: CustomerSmsSectionProps) => {
+export const CustomerSmsSection = ({
+  customer,
+  canManage,
+}: CustomerSmsSectionProps) => {
   const { t } = useTranslation();
   const { toggleSms, isSmsPending } = useCustomerSms(customer.id);
 
@@ -24,7 +28,7 @@ export const CustomerSmsSection = ({ customer }: CustomerSmsSectionProps) => {
         <Switch
           checked={customer.smsNotificationsEnabled}
           onCheckedChange={toggleSms}
-          disabled={isSmsPending}
+          disabled={isSmsPending || !canManage}
           className="data-[state=checked]:bg-blue-500"
         />
         <p className="text-sm text-muted-foreground">

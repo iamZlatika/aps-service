@@ -28,7 +28,10 @@ export const newOrderSchema = () =>
       }),
     customerComment: z.string().optional(),
     managerId: z.number().int().positive(),
-    locationId: z.number().int().positive(),
+    locationId: z
+      .number({ error: i18next.t("validation.locationRequired") })
+      .int()
+      .positive(),
     prepayment: z.string().optional(),
     prepaymentMethod: zodEnumFromConst(PAYMENT_METHODS),
     isUrgent: z.boolean().optional(),
