@@ -55,7 +55,6 @@ export const OrderDetailDtoSchema = OrderListItemDtoSchema.extend({
   issue_type: z.string(),
   device_condition: z.string().nullable(),
   accessory: z.string().nullable(),
-  intake_note: z.string().nullable(),
   location: LocationDtoSchema,
   payments: z.array(TrackPaymentDtoSchema),
   services: z.array(OrderLineItemDtoSchema),

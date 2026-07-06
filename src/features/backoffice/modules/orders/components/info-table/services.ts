@@ -19,7 +19,7 @@ export function getOrderItemInitialValues(
       formValues: {
         ...base,
         purchasePrice: editItem.purchasePrice ?? "",
-        supplierId: editItem.supplier?.id ?? null,
+        supplierName: editItem.supplier?.name ?? "",
       },
       supplierDisplay: editItem.supplier?.name ?? "",
       outsourcerDisplay: "",
@@ -30,7 +30,7 @@ export function getOrderItemInitialValues(
     formValues: {
       ...base,
       costPrice: editItem.costPrice ?? "",
-      outsourcerId: editItem.outsourcer?.id ?? null,
+      outsourcerName: editItem.outsourcer?.name ?? "",
     },
     supplierDisplay: "",
     outsourcerDisplay: editItem.outsourcer?.name ?? "",

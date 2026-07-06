@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Controller, type FieldError, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -26,6 +27,7 @@ const fetchAccessoryQuickSelect = createQuickSelectFetcher(
 export const DeviceSection = () => {
   const { fetchers, createItemFns } = useDictionarySection();
   const { t } = useTranslation();
+  const [isNoPassword, setIsNoPassword] = useState(false);
   const {
     control,
     register,
@@ -129,6 +131,7 @@ export const DeviceSection = () => {
           autoComplete="new-password"
           autoCapitalize="none"
           autoCorrect="off"
+          readOnly={isNoPassword}
           {...register("devicePassword")}
         />
         {errors.devicePassword && (
@@ -136,6 +139,23 @@ export const DeviceSection = () => {
             {errors.devicePassword.message}
           </p>
         )}
+        <div className="mt-1 flex items-center gap-1.5">
+          <Checkbox
+            id="noPassword"
+            checked={isNoPassword}
+            onCheckedChange={(checked) => {
+              const nextChecked = checked === true;
+              setIsNoPassword(nextChecked);
+              setValue(
+                "devicePassword",
+                nextChecked ? t("orders.form.noPasswordValue") : "",
+              );
+            }}
+          />
+          <label htmlFor="noPassword" className="cursor-pointer text-sm">
+            {t("orders.form.noPassword")}
+          </label>
+        </div>
       </div>
 
       <div className="flex flex-col gap-1">

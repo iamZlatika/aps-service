@@ -1,6 +1,7 @@
 import i18next from "i18next";
 import { toast } from "sonner";
 
+import { getSharedServerMessageMap } from "@/shared/lib/errors/serverMessageMap.ts";
 import { captureError } from "@/shared/lib/sentry.ts";
 
 export class ApiError<T = unknown> extends Error {
@@ -42,14 +43,8 @@ export function notifyError(
   }
 
   const SERVER_MESSAGE_MAP: Record<string, string> = {
+    ...getSharedServerMessageMap(),
     "The image failed to upload.": i18next.t("errors.image_upload_failed"),
-    "The name has already been taken.": i18next.t("errors.name_taken"),
-    "The verification code is incorrect or has expired.": i18next.t(
-      "errors.code_invalid_or_expired",
-    ),
-    "Too Many Attempts.": i18next.t("errors.too_many_attempts"),
-    "This phone number is already registered. Please log in instead.":
-      i18next.t("errors.phone_already_registered"),
   };
 
   const message =

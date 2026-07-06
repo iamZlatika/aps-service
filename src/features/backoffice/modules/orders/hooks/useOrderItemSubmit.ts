@@ -43,7 +43,7 @@ export const useOrderItemSubmit = ({
           name: data.name,
           price: data.price,
           purchasePrice: data.purchasePrice ?? "",
-          supplierId: data.supplierId ?? null,
+          supplierName: data.supplierName ?? "",
           quantity: data.quantity,
           managerId: data.managerId ?? null,
         };
@@ -55,7 +55,7 @@ export const useOrderItemSubmit = ({
         name: data.name,
         price: data.price,
         costPrice: data.costPrice ?? "",
-        outsourcerId: data.outsourcerId ?? null,
+        outsourcerName: data.outsourcerName ?? "",
         quantity: data.quantity,
         managerId: data.managerId ?? null,
       };

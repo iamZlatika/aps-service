@@ -42,6 +42,7 @@ export const useUserPermissionsEditor = (
       usersApi.updateUserPermissions(userId, data),
     onSuccess: (updatedUser) => {
       queryClient.setQueryData(queryKeys.users.detail(userId), updatedUser);
+      queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
     },
   });
 

@@ -1,24 +1,35 @@
 export const calcOrderItemTotal = (price: string, quantity: number): string =>
   (parseFloat(price) * quantity).toFixed();
 
-const WRAP_AT = 20;
-const MAX_CHARS = 40;
+const DEFAULT_WRAP_AT = 20;
+const DEFAULT_MAX_CHARS = 40;
 
-export const renderWrappedText = (value: unknown) => {
+type WrapTextOptions = {
+  wrapAt?: number;
+  maxChars?: number;
+};
+
+export const renderWrappedText = (
+  value: unknown,
+  {
+    wrapAt = DEFAULT_WRAP_AT,
+    maxChars = DEFAULT_MAX_CHARS,
+  }: WrapTextOptions = {},
+) => {
   const text = (value as string) ?? "";
 
-  if (text.length <= WRAP_AT) {
+  if (text.length <= wrapAt) {
     return <span>{text}</span>;
   }
 
-  const breakIndex = text.lastIndexOf(" ", WRAP_AT);
-  const splitAt = breakIndex > 0 ? breakIndex : WRAP_AT;
+  const breakIndex = text.lastIndexOf(" ", wrapAt);
+  const splitAt = breakIndex > 0 ? breakIndex : wrapAt;
 
   const line1 = text.slice(0, splitAt);
   const remainder = text.slice(splitAt + (breakIndex > 0 ? 1 : 0));
   const line2 =
-    splitAt + remainder.length > MAX_CHARS
-      ? text.slice(splitAt + (breakIndex > 0 ? 1 : 0), MAX_CHARS) + "…"
+    splitAt + remainder.length > maxChars
+      ? text.slice(splitAt + (breakIndex > 0 ? 1 : 0), maxChars) + "…"
       : remainder;
 
   return (

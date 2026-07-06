@@ -15,7 +15,7 @@ const isCustomer = (value: unknown): value is Customer =>
   typeof value === "object" && value !== null && "phones" in value;
 
 const isUser = (value: unknown): value is User =>
-  typeof value === "object" && value !== null && "role" in value;
+  typeof value === "object" && value !== null && "roles" in value;
 
 const isOrderStatus = (value: unknown): value is OrderStatus =>
   typeof value === "object" &&
@@ -158,7 +158,7 @@ export function buildOrderColumns(locale: string): {
       field: "deviceType",
       labelKey: "orders.table_fields.deviceType",
       sortable: false,
-      renderCell: renderWrappedText,
+      renderCell: (value) => renderWrappedText(value),
     },
     {
       key: "manufacturer",
@@ -171,28 +171,28 @@ export function buildOrderColumns(locale: string): {
       field: "deviceModel",
       labelKey: "orders.table_fields.deviceModel",
       sortable: false,
-      renderCell: renderWrappedText,
+      renderCell: (value) => renderWrappedText(value),
     },
     {
       key: "accessory",
       field: "accessory",
       labelKey: "orders.table_fields.accessory",
       sortable: false,
-      renderCell: renderWrappedText,
+      renderCell: (value) => renderWrappedText(value),
     },
     {
       key: "issueType",
       field: "issueType",
       labelKey: "orders.table_fields.issueType",
       sortable: false,
-      renderCell: renderWrappedText,
+      renderCell: (value) => renderWrappedText(value),
     },
     {
       key: "intakeNote",
       field: "intakeNote",
       labelKey: "orders.table_fields.intakeNote",
       sortable: false,
-      renderCell: renderWrappedText,
+      renderCell: (value) => renderWrappedText(value),
     },
     {
       key: "estimatedCost",

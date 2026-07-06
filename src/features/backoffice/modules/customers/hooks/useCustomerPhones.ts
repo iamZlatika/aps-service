@@ -64,7 +64,9 @@ export const useCustomerPhones = (
           phoneNumber: values.phone as string,
         });
       } catch (error) {
-        handleFormError(error, setError);
+        handleFormError(error, setError, {
+          fieldMap: { phone_number: "phone" },
+        });
       }
     },
     [addNewPhoneMutation],

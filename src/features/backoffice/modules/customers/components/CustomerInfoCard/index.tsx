@@ -215,7 +215,7 @@ export const CustomerInfoCard = ({
         }
         rightAction={rightAction}
       >
-        <CustomerSmsSection customer={customer} />
+        <CustomerSmsSection customer={customer} canManage={canManage} />
         <Separator className="my-2 h-px bg-border" />
         <CustomerPhonesSection
           customerId={customer.id}

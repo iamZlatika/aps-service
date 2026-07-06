@@ -53,12 +53,12 @@ type UseAddOrderItemFormReturn = {
   nameQueryKey: readonly unknown[];
   onCreateNameItem: (name: string) => Promise<void>;
   fetchSuppliers: (search: string) => Promise<SearchableSelectOption[]>;
-  onCreateSupplier: (name: string) => Promise<void>;
+  onCreateSupplier: (name: string) => Promise<SearchableSelectOption>;
   supplierDisplay: string;
   onSupplierChange: (value: string) => void;
   onSupplierSelect: (option: SearchableSelectOption) => void;
   fetchOutsourcers: (search: string) => Promise<SearchableSelectOption[]>;
-  onCreateOutsourcer: (name: string) => Promise<void>;
+  onCreateOutsourcer: (name: string) => Promise<SearchableSelectOption>;
   outsourcerDisplay: string;
   onOutsourcerChange: (value: string) => void;
   onOutsourcerSelect: (option: SearchableSelectOption) => void;
@@ -113,34 +113,36 @@ export const useAddOrderItemForm = ({
           toast.success(i18next.t("orders.orderTable.successAddProductToDict"));
         });
 
-  const onCreateSupplier = (name: string): Promise<void> =>
-    suppliersApi.create({ name }).then(() => {
+  const onCreateSupplier = (name: string): Promise<SearchableSelectOption> =>
+    suppliersApi.create({ name }).then((supplier) => {
       toast.success(i18next.t("orders.orderTable.successAddSupplier"));
+      return { id: supplier.id, name: supplier.name };
     });
 
   const onSupplierChange = (value: string) => {
     setSupplierDisplay(value);
-    if (!value) setValue("supplierId", null);
+    setValue("supplierName", value);
   };
 
   const onSupplierSelect = (option: SearchableSelectOption) => {
     setSupplierDisplay(option.name);
-    setValue("supplierId", option.id);
+    setValue("supplierName", option.name);
   };
 
-  const onCreateOutsourcer = (name: string): Promise<void> =>
-    outsourcersApi.create({ name }).then(() => {
+  const onCreateOutsourcer = (name: string): Promise<SearchableSelectOption> =>
+    outsourcersApi.create({ name }).then((outsourcer) => {
       toast.success(i18next.t("orders.orderTable.successAddOutsourcer"));
+      return { id: outsourcer.id, name: outsourcer.name };
     });
 
   const onOutsourcerChange = (value: string) => {
     setOutsourcerDisplay(value);
-    if (!value) setValue("outsourcerId", null);
+    setValue("outsourcerName", value);
   };
 
   const onOutsourcerSelect = (option: SearchableSelectOption) => {
     setOutsourcerDisplay(option.name);
-    setValue("outsourcerId", option.id);
+    setValue("outsourcerName", option.name);
   };
 
   return {

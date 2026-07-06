@@ -34,6 +34,7 @@ const AllTransactionsPage = () => {
         filterBar={<AllTransactionsFilterBar />}
         extraFilterKeys={[
           "user_id",
+          "only_system",
           "status",
           "type",
           "order_number",

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Controller, useForm, type UseFormSetError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -85,10 +85,13 @@ export const ItemFormDialog = ({
     defaultValues,
   });
 
+  const wasOpenRef = useRef(false);
+
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !wasOpenRef.current) {
       reset(defaultValues);
     }
+    wasOpenRef.current = isOpen;
   }, [isOpen, defaultValues, reset]);
 
   const onSubmit = (data: unknown) => {

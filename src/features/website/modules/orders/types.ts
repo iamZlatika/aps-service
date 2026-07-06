@@ -39,7 +39,6 @@ export type OrderDetail = OrderListItem & {
   issueType: string;
   deviceCondition: string | null;
   accessory: string | null;
-  intakeNote: string | null;
   location: Location;
   payments: TrackPayment[];
   services: OrderLineItem[];

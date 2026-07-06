@@ -67,6 +67,7 @@ export const MultiSearchableSelect = ({
     handleQuickSelectToggle,
     handleInputChange,
     handleInputFocus,
+    handleInputBlur,
     handleSelect,
     handleCreateItem,
     handleKeyDown,
@@ -82,27 +83,6 @@ export const MultiSearchableSelect = ({
 
   return (
     <div ref={containerRef} className="relative">
-      {quickSelectOptions.length > 0 && (
-        <div className="mb-2 flex flex-wrap gap-x-4 gap-y-1.5">
-          {quickSelectOptions.map((item) => (
-            <div key={item.id} className="flex items-center gap-1.5">
-              <Checkbox
-                id={`qs-${item.id}`}
-                checked={valueSet.has(item.name)}
-                onCheckedChange={(checked) =>
-                  handleQuickSelectToggle(item.name, !!checked)
-                }
-              />
-              <label
-                htmlFor={`qs-${item.id}`}
-                className="cursor-pointer text-sm"
-              >
-                {item.name}
-              </label>
-            </div>
-          ))}
-        </div>
-      )}
       <div
         className={cn(
           "flex min-h-11 w-full flex-wrap items-center gap-1 rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm",
@@ -140,11 +120,33 @@ export const MultiSearchableSelect = ({
           value={inputValue}
           onChange={handleInputChange}
           onFocus={handleInputFocus}
+          onBlur={handleInputBlur}
           onKeyDown={handleKeyDown}
           placeholder={value.length === 0 ? placeholder : ""}
           className="min-w-[120px] flex-1 bg-transparent outline-none placeholder:text-muted-foreground"
         />
       </div>
+      {quickSelectOptions.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
+          {quickSelectOptions.map((item) => (
+            <div key={item.id} className="flex items-center gap-1.5">
+              <Checkbox
+                id={`qs-${item.id}`}
+                checked={valueSet.has(item.name)}
+                onCheckedChange={(checked) =>
+                  handleQuickSelectToggle(item.name, !!checked)
+                }
+              />
+              <label
+                htmlFor={`qs-${item.id}`}
+                className="cursor-pointer text-sm"
+              >
+                {item.name}
+              </label>
+            </div>
+          ))}
+        </div>
+      )}
       {isOpen && (
         <div
           className={cn(

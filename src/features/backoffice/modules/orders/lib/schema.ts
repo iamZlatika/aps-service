@@ -1,8 +1,12 @@
 import i18next from "i18next";
 import { z } from "zod";
 
-import { emailRegex, phoneRegex } from "@/shared/lib/constants.ts";
-import { phoneField, zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
+import { emailRegex } from "@/shared/lib/constants.ts";
+import {
+  optionalPhoneField,
+  phoneField,
+  zodEnumFromConst,
+} from "@/shared/lib/zod-helpers.ts";
 import { PAYMENT_METHODS, PAYMENTS } from "@/shared/types.ts";
 
 export const newOrderSchema = () =>
@@ -12,14 +16,7 @@ export const newOrderSchema = () =>
       .trim()
       .min(1, i18next.t("validation.field_required")),
     customerPrimaryPhone: phoneField(),
-    customerSecondaryPhone: z
-      .string()
-      .transform((val) => (val === "" ? undefined : val))
-      .optional()
-      .refine(
-        (val) => !val || phoneRegex.test(val),
-        i18next.t("validation.phone_invalid"),
-      ),
+    customerSecondaryPhone: optionalPhoneField(),
     customerEmail: z
       .string()
       .optional()
@@ -28,7 +25,10 @@ export const newOrderSchema = () =>
       }),
     customerComment: z.string().optional(),
     managerId: z.number().int().positive(),
-    locationId: z.number().int().positive(),
+    locationId: z
+      .number({ error: i18next.t("validation.locationRequired") })
+      .int()
+      .positive(),
     prepayment: z.string().optional(),
     prepaymentMethod: zodEnumFromConst(PAYMENT_METHODS),
     isUrgent: z.boolean().optional(),
@@ -64,9 +64,9 @@ export const newOrderItemSchema = () =>
       .int()
       .min(1, i18next.t("validation.minQuantity")),
     purchasePrice: z.string().optional().default(""),
-    supplierId: z.number().nullable().optional(),
+    supplierName: z.string().optional().default(""),
     costPrice: z.string().optional().default(""),
-    outsourcerId: z.number().nullable().optional(),
+    outsourcerName: z.string().optional().default(""),
     managerId: z.number().int().positive().optional(),
   });
 
