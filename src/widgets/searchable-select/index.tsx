@@ -31,7 +31,9 @@ interface SearchableSelectProps<TMeta = undefined> {
   error?: FieldError;
   clearOnSelect?: boolean;
   onClear?: () => void;
-  onCreateItem?: (name: string) => Promise<void>;
+  onCreateItem?: (
+    name: string,
+  ) => Promise<SearchableSelectOption<TMeta> | void>;
   dropUp?: boolean;
   maxVisible?: number;
 }

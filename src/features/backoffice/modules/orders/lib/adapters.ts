@@ -110,6 +110,9 @@ export function mapOrderServiceDtoToOrderService(
   return {
     id: dto.id,
     manager: mapUserDtoToUser(dto.manager),
+    createdByUser: dto.created_by_user
+      ? mapUserDtoToUser(dto.created_by_user)
+      : null,
     repairOperationId: dto.repair_operation_id ?? null,
     name: dto.name,
     price: dto.price,
@@ -134,6 +137,9 @@ export function mapOrderProductDtoToOrderProduct(
   return {
     id: dto.id,
     manager: mapUserDtoToUser(dto.manager),
+    createdByUser: dto.created_by_user
+      ? mapUserDtoToUser(dto.created_by_user)
+      : null,
     supplier: dto.supplier ? mapSupplierDtoToSupplier(dto.supplier) : null,
     name: dto.name,
     price: dto.price,
@@ -293,7 +299,7 @@ export function mapNewProductToDto(product: NewOrderProduct) {
     price: product.price,
     purchase_price: product.purchasePrice || null,
     quantity: product.quantity,
-    supplier_id: product.supplierId,
+    supplier_name: product.supplierName || null,
     manager_id: product.managerId ?? null,
   };
 }
@@ -303,7 +309,7 @@ export function mapNewServiceToDto(service: NewOrderService) {
     name: service.name,
     price: service.price,
     cost_price: service.costPrice || null,
-    outsourcer_id: service.outsourcerId,
+    outsourcer_name: service.outsourcerName || null,
     quantity: service.quantity,
     manager_id: service.managerId ?? null,
   };

@@ -95,6 +95,7 @@ export type OrderComment = {
 export type OrderProduct = {
   id: number;
   manager: User;
+  createdByUser: User | null;
   supplier: Supplier | null;
   name: string;
   price: string;
@@ -110,16 +111,18 @@ export type NewOrderProduct = Omit<
   OrderProduct,
   | "id"
   | "manager"
+  | "createdByUser"
   | "createdAt"
   | "updatedAt"
   | "deletedAt"
   | "completedAt"
   | "deletedByUser"
   | "supplier"
-> & { managerId: number | null; supplierId: number | null };
+> & { managerId: number | null; supplierName: string };
 export type OrderService = {
   id: number;
   manager: User;
+  createdByUser: User | null;
   repairOperationId: number | null;
   name: string;
   price: string;
@@ -136,6 +139,7 @@ export type NewOrderService = Omit<
   OrderService,
   | "id"
   | "manager"
+  | "createdByUser"
   | "createdAt"
   | "updatedAt"
   | "deletedAt"
@@ -143,7 +147,7 @@ export type NewOrderService = Omit<
   | "completedAt"
   | "deletedByUser"
   | "outsourcer"
-> & { managerId: number | null; outsourcerId: number | null };
+> & { managerId: number | null; outsourcerName: string };
 
 export type OrderItemType = "product" | "service";
 

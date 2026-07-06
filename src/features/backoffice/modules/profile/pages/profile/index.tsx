@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import UserAvatar from "@/features/backoffice/modules/profile/components/avatar/components/UserAvatar.tsx";
-import ChangePasswordForm from "@/features/backoffice/modules/profile/components/ChangePasswordForm.tsx";
+import ChangePasswordModal from "@/features/backoffice/modules/profile/components/ChangePasswordModal.tsx";
 import ChangeUserInfoForm from "@/features/backoffice/modules/profile/components/ChangeUserInfoForm.tsx";
 import { CHANGE_USER_INFO_FORM_ID } from "@/features/backoffice/modules/profile/components/constants.ts";
 import { MyBalanceCard } from "@/features/backoffice/modules/profile/components/MyBalanceCard.tsx";
@@ -16,6 +16,7 @@ import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard
 import { AcceptButton } from "@/shared/components/common/buttons/AcceptButton.tsx";
 import { CancelButton } from "@/shared/components/common/buttons/CancelButton.tsx";
 import { Loader } from "@/shared/components/common/Loader.tsx";
+import { Button } from "@/shared/components/ui/button.tsx";
 import { CardTitle } from "@/shared/components/ui/card.tsx";
 import { groupPermissionsByCategory } from "@/widgets/ability-badge/abilityGroups";
 
@@ -26,6 +27,7 @@ const ProfilePage = () => {
   const abilityGroups = groupPermissionsByCategory(permissions);
   const [imageReady, setImageReady] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   useEffect(() => {
     const avatarUrl = user?.avatarUrl;
@@ -92,11 +94,20 @@ const ProfilePage = () => {
             abilityGroups={abilityGroups}
           />
         </div>
-        <CardTitle className="text-xl font-bold mb-4 text-center">
-          {t("profile.change_form.change_password")}
-        </CardTitle>
-        <ChangePasswordForm />
+        <div className="flex justify-center">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setIsPasswordModalOpen(true)}
+          >
+            {t("profile.change_form.change_password")}
+          </Button>
+        </div>
       </PersonCard>
+      <ChangePasswordModal
+        open={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+      />
     </div>
   );
 };

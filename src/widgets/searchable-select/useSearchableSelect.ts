@@ -21,7 +21,9 @@ type UseSearchableSelectParams<TMeta> = {
   fetchItems: (search: string) => Promise<SearchableSelectOption<TMeta>[]>;
   queryKey: readonly unknown[];
   clearOnSelect?: boolean;
-  onCreateItem?: (name: string) => Promise<void>;
+  onCreateItem?: (
+    name: string,
+  ) => Promise<SearchableSelectOption<TMeta> | void>;
 };
 
 type UseSearchableSelectReturn<TMeta> = {
@@ -95,10 +97,16 @@ export function useSearchableSelect<TMeta = undefined>({
 
   const { mutate: createItemMutate, isPending: isSaving } = useMutation({
     mutationFn: (name: string) => onCreateItem!(name),
-    onSuccess: async (_data, name) => {
+    onSuccess: async (createdOption, name) => {
       await queryClient.invalidateQueries({ queryKey: [...queryKey] });
-      onChange(name);
-      setInputValue(name);
+      if (createdOption) {
+        onChange(createdOption.name);
+        setInputValue(createdOption.name);
+        onSelect?.(createdOption);
+      } else {
+        onChange(name);
+        setInputValue(name);
+      }
       setIsOpen(false);
     },
     onError: (error) => notifyError(error),

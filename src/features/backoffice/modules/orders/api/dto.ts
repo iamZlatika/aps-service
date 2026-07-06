@@ -95,6 +95,7 @@ export type OrderCommentDto = z.infer<typeof OrderCommentDtoSchema>;
 export const OrderProductSchema = z.object({
   id: z.number(),
   manager: UserDtoSchema,
+  created_by_user: UserDtoSchema.nullable(),
   supplier: SupplierDtoSchema.nullable().optional(),
   name: z.string(),
   price: z.string(),
@@ -111,6 +112,7 @@ export type OrderProductDto = z.infer<typeof OrderProductSchema>;
 export const OrderServiceSchema = z.object({
   id: z.number(),
   manager: UserDtoSchema,
+  created_by_user: UserDtoSchema.nullable(),
   repair_operation_id: z.number().nullable().optional(),
   name: z.string(),
   price: z.string(),

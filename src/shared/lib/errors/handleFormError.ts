@@ -2,6 +2,7 @@ import i18next from "i18next";
 import type { FieldValues, Path, UseFormSetError } from "react-hook-form";
 
 import { type ValidationError } from "@/shared/api/types.ts";
+import { getSharedServerMessageMap } from "@/shared/lib/errors/serverMessageMap.ts";
 import { isApiError } from "@/shared/lib/errors/services.ts";
 
 type HandleFormErrorOptions<TFieldValues extends FieldValues> = {
@@ -11,18 +12,12 @@ type HandleFormErrorOptions<TFieldValues extends FieldValues> = {
 
 function getBuiltInMessageMap(): Record<string, string> {
   return {
-    "The name has already been taken.": i18next.t("errors.name_taken"),
+    ...getSharedServerMessageMap(),
     "The email has already been taken.": i18next.t("errors.email_taken"),
     "The new email has already been taken.": i18next.t("errors.email_taken"),
-    "The verification code is incorrect or has expired.": i18next.t(
-      "errors.code_invalid_or_expired",
-    ),
-    "Too Many Attempts.": i18next.t("errors.too_many_attempts"),
     "These credentials do not match our records.": i18next.t(
       "errors.invalid_credentials",
     ),
-    "This phone number is already registered. Please log in instead.":
-      i18next.t("errors.phone_already_registered"),
   };
 }
 

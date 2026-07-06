@@ -96,6 +96,12 @@ export const ProductsAndServicesCard = ({
       render: (row) => row.manager.name,
     },
     {
+      key: "created_by",
+      label: t("orders.orderTable.createdBy"),
+      collapsible: true,
+      render: (row) => row.createdByUser?.name ?? "—",
+    },
+    {
       key: "quantity",
       label: t("orders.orderTable.quantity"),
     },
