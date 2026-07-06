@@ -118,11 +118,6 @@ export const UserRateSection = ({ user, canManage }: UserRateSectionProps) => {
           )}
         </div>
       </div>
-      {canManage && (
-        <p className="text-xs text-muted-foreground mt-2">
-          {t("profile.rate_help")}
-        </p>
-      )}
     </form>
   );
 };
