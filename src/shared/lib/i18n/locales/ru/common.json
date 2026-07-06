@@ -231,6 +231,7 @@
     "your_balance": "Ваш баланс",
     "your_rate": "Ваша ставка",
     "your_abilities": "Ваши права доступа",
+    "security_title": "Безопасность",
     "abilities": {
       "groups": {
         "orders": "Заказы",

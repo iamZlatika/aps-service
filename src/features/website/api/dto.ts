@@ -66,7 +66,6 @@ export const TrackDtoSchema = z.object({
   device_condition: z.string().nullable(),
   accessory: z.string().nullable(),
   issue_type: z.string(),
-  intake_note: z.string().nullable(),
   estimated_cost: z.string().nullable(),
   total_paid: z.string(),
   due_date: z.string(),

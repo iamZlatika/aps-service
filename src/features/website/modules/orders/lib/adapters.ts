@@ -68,7 +68,6 @@ export function mapOrderDetailDtoToOrderDetail(
     issueType: dto.issue_type,
     deviceCondition: dto.device_condition,
     accessory: dto.accessory,
-    intakeNote: dto.intake_note,
     location: mapLocationDtoToLocation(dto.location),
     payments: dto.payments.map(mapTrackPaymentDtoToTrackPayment),
     services: dto.services.map(mapOrderLineItemDtoToOrderLineItem),

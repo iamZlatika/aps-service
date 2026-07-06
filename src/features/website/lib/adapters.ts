@@ -69,7 +69,6 @@ export function mapTrackDtoToTrack(dto: TrackDto): Track {
     deviceCondition: dto.device_condition,
     accessory: dto.accessory,
     issueType: dto.issue_type,
-    intakeNote: dto.intake_note,
     estimatedCost: dto.estimated_cost,
     totalPaid: dto.total_paid,
     dueDate: dto.due_date,

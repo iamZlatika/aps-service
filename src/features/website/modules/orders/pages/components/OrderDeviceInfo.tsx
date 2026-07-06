@@ -21,7 +21,6 @@ export const OrderDeviceInfo = ({ order }: OrderDeviceInfoProps) => {
     { label: t("cabinet.specIssue"), value: order.issueType },
     { label: t("cabinet.specCondition"), value: order.deviceCondition },
     { label: t("cabinet.specAccessory"), value: order.accessory },
-    { label: t("cabinet.specIntakeNote"), value: order.intakeNote },
     {
       label: t("cabinet.specLocation"),
       value: localize(order.location.addressRu, order.location.addressUa),

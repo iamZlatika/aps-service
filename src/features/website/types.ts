@@ -49,7 +49,6 @@ export type Track = {
   deviceCondition: string | null;
   accessory: string | null;
   issueType: string;
-  intakeNote: string | null;
   estimatedCost: string | null;
   totalPaid: string;
   dueDate: string;

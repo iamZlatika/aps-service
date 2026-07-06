@@ -228,6 +228,7 @@
     "your_balance": "Ваш баланс",
     "your_rate": "Ваша ставка",
     "your_abilities": "Ваші права доступу",
+    "security_title": "Безпека",
     "abilities": {
       "groups": {
         "orders": "Замовлення",

@@ -18,6 +18,7 @@ import { CancelButton } from "@/shared/components/common/buttons/CancelButton.ts
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { CardTitle } from "@/shared/components/ui/card.tsx";
+import { Separator } from "@/shared/components/ui/separator.tsx";
 import { groupPermissionsByCategory } from "@/widgets/ability-badge/abilityGroups";
 
 const ProfilePage = () => {
@@ -94,6 +95,10 @@ const ProfilePage = () => {
             abilityGroups={abilityGroups}
           />
         </div>
+        <Separator className="my-6 h-px bg-border" />
+        <CardTitle className="text-xl font-bold mb-4 text-center">
+          {t("profile.security_title")}
+        </CardTitle>
         <div className="flex justify-center">
           <Button
             type="button"
