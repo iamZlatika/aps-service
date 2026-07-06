@@ -10,6 +10,7 @@ import { WebsiteErrorFallback } from "@/features/website/components/ErrorFallbac
 import { Footer } from "@/features/website/components/Footer";
 import { Header } from "@/features/website/components/Header";
 import { WebsiteLoader } from "@/features/website/components/Loader";
+import WebsitePageSeo from "@/features/website/components/WebsitePageSeo";
 import { useMobileNav } from "@/features/website/hooks/useMobileNav";
 import { useWebsiteThemeManager } from "@/features/website/hooks/useWebsiteThemeManager";
 import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
@@ -98,6 +99,7 @@ export const WebsiteLayout = () => {
 
   return (
     <WebsiteThemeContext.Provider value={themeValue}>
+      <WebsitePageSeo />
       <div
         ref={rootRef}
         className={cn(

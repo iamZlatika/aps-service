@@ -3,6 +3,7 @@ import "@/shared/lib/i18n/index";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Suspense } from "react";
+import { HelmetProvider } from "react-helmet-async";
 import { RouterProvider } from "react-router-dom";
 
 import { queryClient } from "@/shared/api/queryClient.ts";
@@ -12,11 +13,13 @@ import { router } from "./router";
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<Loader />}>
-        <RouterProvider router={router} />
-      </Suspense>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <Suspense fallback={<Loader />}>
+          <RouterProvider router={router} />
+        </Suspense>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 }
 
