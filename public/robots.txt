@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /account
+Disallow: /track
+Disallow: /backoffice
+Disallow: /auth
+
+Sitemap: https://aps.zp.ua/sitemap.xml
