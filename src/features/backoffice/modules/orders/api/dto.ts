@@ -24,7 +24,7 @@ export const StatusHistoryItemDtoSchema = z.object({
   id: z.number(),
   status: StatusDtoSchema,
   changed_by_user: UserDtoSchema,
-  created_at: z.string(),
+  created_at: z.iso.datetime(),
 });
 export type StatusHistoryItemDto = z.infer<typeof StatusHistoryItemDtoSchema>;
 
