@@ -5,9 +5,10 @@ import { useLocalize } from "@/shared/hooks/useLocalize";
 
 interface WorkInfoProps {
   work: Work;
+  onImageClick: (url: string) => void;
 }
 
-export const WorkInfo = ({ work }: WorkInfoProps) => {
+export const WorkInfo = ({ work, onImageClick }: WorkInfoProps) => {
   const { t } = useTranslation("website");
   const localize = useLocalize();
 
@@ -72,9 +73,12 @@ export const WorkInfo = ({ work }: WorkInfoProps) => {
       {additionalPhotos.length > 0 && (
         <div className="flex gap-1.5">
           {additionalPhotos.map((photo, i) => (
-            <div
+            <button
               key={i}
-              className="aspect-square flex-1 overflow-hidden rounded-[8px]"
+              type="button"
+              onClick={() => onImageClick(photo.url)}
+              aria-label={`${t("works.eyebrow")} ${i + 1}`}
+              className="aspect-square flex-1 cursor-zoom-in overflow-hidden rounded-[8px]"
             >
               <img
                 src={photo.url}
@@ -82,7 +86,7 @@ export const WorkInfo = ({ work }: WorkInfoProps) => {
                 loading="lazy"
                 className="size-full object-cover"
               />
-            </div>
+            </button>
           ))}
         </div>
       )}
