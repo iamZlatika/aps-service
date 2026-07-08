@@ -1,3 +1,4 @@
+import { Mail } from "lucide-react";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -13,7 +14,8 @@ export const SmsItem = memo(({ item }: SmsItemProps) => {
 
   return (
     <HistoryItemWrapper date={item.date}>
-      <span className="text-muted-foreground">
+      <span className="flex items-center gap-1 text-teal-600">
+        <Mail className="h-3.5 w-3.5" />
         {t("orders.history.sms.ready_sent")}
       </span>
     </HistoryItemWrapper>

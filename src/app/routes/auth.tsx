@@ -19,17 +19,29 @@ const ResetPasswordPage = lazy(
 
 export const authRoutes: RouteObject = {
   path: AuthRoutes.auth(),
-  element: <GuestRoute />,
   children: [
-    { path: AuthRoutes.login(), element: <BackofficeLoginPage /> },
     {
-      path: AuthRoutes.forgotPassword(),
-      element: <ForgotPasswordPage />,
+      // The login page manages its own freeze + loader through both the
+      // login request and the profile fetch, so it opts out of GuestRoute's
+      // loader to avoid showing a second, competing one.
+      element: <GuestRoute showLoader={false} />,
+      children: [
+        { path: AuthRoutes.login(), element: <BackofficeLoginPage /> },
+      ],
     },
-    { path: AuthRoutes.emailSent(), element: <EmailSentPage /> },
     {
-      path: AuthRoutes.resetPassword(),
-      element: <ResetPasswordPage />,
+      element: <GuestRoute />,
+      children: [
+        {
+          path: AuthRoutes.forgotPassword(),
+          element: <ForgotPasswordPage />,
+        },
+        { path: AuthRoutes.emailSent(), element: <EmailSentPage /> },
+        {
+          path: AuthRoutes.resetPassword(),
+          element: <ResetPasswordPage />,
+        },
+      ],
     },
   ],
 };

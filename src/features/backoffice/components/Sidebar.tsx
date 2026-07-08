@@ -48,9 +48,13 @@ export const Sidebar = memo(() => {
   return (
     <SidebarRoot>
       <SidebarHeader className="p-4">
-        <div className="font-bold text-xl uppercase tracking-wider text-primary">
+        <Link
+          to={ORDERS_LINKS.root()}
+          onClick={closeMobileSidebar}
+          className="font-bold text-xl uppercase tracking-wider text-primary"
+        >
           APS Service
-        </div>
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

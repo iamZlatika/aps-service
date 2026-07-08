@@ -126,7 +126,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
         {selectedOrder && (
           <>
             <>
-              <div className="flex h-full">
+              <div className="absolute inset-0 flex overflow-hidden">
                 <div className="flex-1 overflow-y-auto p-2 pb-14 sm:p-6 [scrollbar-gutter:stable]">
                   <div className="flex flex-col gap-1.5">
                     <div className="flex items-center justify-between gap-2">
