@@ -5,6 +5,7 @@ import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard";
 import { CustomerOrdersSection } from "@/features/backoffice/modules/customers/components/CustomerOrdersSection.tsx";
 import { useCustomer } from "@/features/backoffice/modules/customers/hooks/useCustomer.ts";
+import { useCustomerTelegramSocket } from "@/features/backoffice/modules/customers/hooks/useCustomerTelegramSocket.ts";
 import { useCreateOrderForCustomer } from "@/features/backoffice/modules/orders/hooks/useCreateOrderForCustomer.ts";
 import { CreateOrderForCustomerButton } from "@/shared/components/common/buttons/index.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
@@ -15,6 +16,7 @@ const CustomerPage = () => {
   const { t } = useTranslation();
 
   const { selectedCustomer, isLoading } = useCustomer(customerId);
+  useCustomerTelegramSocket(customerId);
   const { createOrderForCustomer } = useCreateOrderForCustomer();
   const { can } = useAuth();
   const canManageOrders = can("orders_manage");
