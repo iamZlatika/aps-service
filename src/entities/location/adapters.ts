@@ -15,6 +15,7 @@ export function mapLocationDtoToLocation(dto: LocationDto): Location {
     addressRu: dto.address_ru,
     addressUa: dto.address_ua,
     phone: dto.phone,
+    reviewUrl: dto.review_url,
     schedule: dto.schedule,
     scheduleDisplay: dto.schedule_display,
   };

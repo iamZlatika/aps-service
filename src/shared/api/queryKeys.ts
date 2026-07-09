@@ -105,7 +105,8 @@ export const queryKeys = {
       ["website", "price-list", categories] as const,
     priceListAll: () => ["website", "price-list", "all"] as const,
     works: () => ["website", "works"] as const,
-    reviews: () => ["website", "reviews"] as const,
+    reviews: (locationId: number) =>
+      ["website", "reviews", locationId] as const,
   },
 
   dictionaries: {

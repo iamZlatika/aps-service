@@ -31,6 +31,7 @@ export const OfficeCard = ({ location, isReverse }: OfficeCardProps) => {
         city={city}
         building={location.building}
         phone={location.phone}
+        reviewUrl={location.reviewUrl}
         scheduleLines={scheduleLines}
       />
       <OfficeCardMap

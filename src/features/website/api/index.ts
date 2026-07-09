@@ -93,8 +93,8 @@ export const websiteApi = {
       lastPage: validated.meta.last_page,
     };
   },
-  getReviews: async (): Promise<Review[]> => {
-    const response = await get<unknown>(WEBSITE_API.reviews());
+  getReviews: async (locationId: number): Promise<Review[]> => {
+    const response = await get<unknown>(WEBSITE_API.reviews(locationId));
     const validated = parseDto(ReviewsResponseDtoSchema, response);
     return validated.data.map(mapReviewDtoToReview);
   },

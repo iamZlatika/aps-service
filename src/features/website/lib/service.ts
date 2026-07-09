@@ -37,12 +37,6 @@ export function getAvatarColor(name: string): string {
   return AVATAR_COLORS[code % AVATAR_COLORS.length];
 }
 
-export function getGoogleReviewUrl(reviewId: string): string {
-  const match = reviewId.match(/^places\/([^/]+)\//);
-  if (!match) return "https://www.google.com/maps";
-  return `https://search.google.com/local/writereview?placeid=${match[1]}`;
-}
-
 export type ReviewStats = {
   avg: number;
   dist: Array<{ star: number; pct: number }>;

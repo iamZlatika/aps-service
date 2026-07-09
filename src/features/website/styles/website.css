@@ -653,7 +653,7 @@
 
 .ws-rv3 {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 340px 1fr;
   gap: 48px;
   align-items: start;
 }
@@ -678,7 +678,7 @@
 
 .ws-rv3-aside h1 {
   font-weight: 300;
-  font-size: clamp(26px, 2.8vw, 38px);
+  font-size: clamp(28px, 3.2vw, 42px);
   line-height: 1.08;
   letter-spacing: -0.02em;
   color: var(--ws-ink-soft);
@@ -700,4 +700,21 @@
   .ws-rv3-wall {
     columns: 1;
   }
+}
+
+.ws-reviews-cta {
+  color: var(--ws-ember-text);
+}
+
+/* White text on blue gradient — same fix as .ws-btn-primary */
+.website.light .ws-reviews-cta {
+  color: #fff;
+}
+
+.ws-review-tabs {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.website.light .ws-review-tabs {
+  background: rgba(0, 0, 0, 0.025);
 }

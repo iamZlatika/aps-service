@@ -1,7 +1,7 @@
 import { DesktopNav } from "./desktop/DesktopNav";
 import { HeaderInfo } from "./desktop/HeaderInfo";
 import { MobileBar } from "./mobile/MobileBar";
-import { MobileHeaderInfo } from "./mobile/MobileHeaderInfo";
+import { MobileHeaderAuthArea } from "./mobile/MobileHeaderAuthArea";
 import { MobileNav } from "./mobile/MobileNav";
 
 interface HeaderProps {
@@ -21,7 +21,7 @@ export const Header = ({ isNavOpen, openNav, closeNav }: HeaderProps) => {
         </div>
       </header>
       <div className="ws-wrap w-full">
-        <MobileHeaderInfo />
+        <MobileHeaderAuthArea />
       </div>
       <MobileNav isOpen={isNavOpen} close={closeNav} />
     </>

@@ -16,6 +16,7 @@ export type Location = {
   addressRu: string;
   addressUa: string;
   phone: string;
+  reviewUrl: string | null;
   schedule: Schedule;
   scheduleDisplay: string;
 };
