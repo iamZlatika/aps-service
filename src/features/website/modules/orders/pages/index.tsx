@@ -87,7 +87,7 @@ export const OrderDetailPage = () => {
 
                 <OrderPaymentsCard
                   payments={order.payments}
-                  estimatedCost={order.estimatedCost}
+                  totalCost={order.totalCost}
                   totalPaid={order.totalPaid}
                   remainingToPay={order.remainingToPay}
                 />

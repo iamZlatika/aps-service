@@ -75,6 +75,7 @@ export function mapOrderDetailDtoToOrderDetail(
     documents: dto.documents
       .map(mapOrderDocumentDtoToOrderDocument)
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+    totalCost: dto.total_cost,
   };
 }
 

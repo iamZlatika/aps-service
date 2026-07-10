@@ -7,14 +7,14 @@ import { formatDate } from "@/shared/lib/utils";
 
 interface OrderPaymentsCardProps {
   payments: TrackPayment[];
-  estimatedCost: string | null;
+  totalCost: string | null;
   totalPaid: string;
   remainingToPay: string;
 }
 
 export const OrderPaymentsCard = ({
   payments,
-  estimatedCost,
+  totalCost,
   totalPaid,
   remainingToPay,
 }: OrderPaymentsCardProps) => {
@@ -74,9 +74,9 @@ export const OrderPaymentsCard = ({
 
       <div className="mt-1 border-t border-ws-line-soft pt-1">
         <div className="flex items-center justify-between py-[9px] text-[13.5px] text-ws-ink-soft">
-          <span>{t("cabinet.estimatedCost")}</span>
+          <span>{t("cabinet.totalCost")}</span>
           <span className="font-semibold tabular-nums text-ws-ink">
-            {estimatedCost ? `${estimatedCost} ₴` : t("track.cost.pending")}
+            {totalCost ? `${totalCost} ₴` : t("track.cost.pending")}
           </span>
         </div>
         <div className="flex items-center justify-between py-[9px] text-[13.5px] text-ws-ink-soft">
