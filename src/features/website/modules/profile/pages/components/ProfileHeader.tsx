@@ -18,7 +18,7 @@ export const ProfileHeader = () => {
 
       <Link
         to={CUSTOMER_ACCOUNT_LINKS.root()}
-        className="inline-flex items-center gap-[9px] rounded-ws-sm border border-ws-line bg-transparent px-[18px] py-[11px] text-ws-base font-semibold text-ws-ink-soft no-underline transition-all duration-150 hover:border-ws-ink-mute hover:text-ws-ink"
+        className="inline-flex items-center gap-[9px] rounded-ws-sm border border-ws-ember bg-transparent px-[18px] py-[11px] text-ws-base font-semibold text-ws-ember no-underline transition-all duration-150 hover:border-ws-ember-bright hover:text-ws-ember-bright"
       >
         {t("cabinet.backToOrders")}
       </Link>

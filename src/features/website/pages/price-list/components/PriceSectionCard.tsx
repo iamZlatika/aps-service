@@ -27,7 +27,7 @@ export const PriceSectionCard = ({
       <div className="flex items-center gap-3.5 border-b border-ws-line-soft px-[26px] py-[22px] max-sm:px-[18px]">
         <div
           aria-hidden="true"
-          className="flex size-11 flex-shrink-0 items-center justify-center rounded-[12px] border border-[color-mix(in_oklab,var(--ws-ember)_24%,transparent)] bg-[color-mix(in_oklab,var(--ws-ember)_12%,transparent)] p-[11px] text-ws-ember-bright"
+          className="flex size-11 flex-shrink-0 items-center justify-center rounded-[12px] border border-[color-mix(in_oklab,var(--ws-ember)_24%,transparent)] bg-[color-mix(in_oklab,var(--ws-ember)_12%,transparent)] p-[11px] text-ws-ember-bright [&>svg]:size-full"
         >
           {DEVICE_ICONS[deviceId]}
         </div>

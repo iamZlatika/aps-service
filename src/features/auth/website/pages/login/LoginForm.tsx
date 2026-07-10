@@ -4,8 +4,6 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { type AuthResponse } from "@/features/auth/website/types";
-import { handleFormError } from "@/shared/lib/errors/handleFormError";
-import { isApiError } from "@/shared/lib/errors/services";
 import { cn } from "@/shared/lib/utils";
 
 import { createLoginSchema, type LoginFormValues } from "./login.schema";
@@ -41,19 +39,10 @@ export const LoginForm = ({ onSuccess, onForgotPassword }: LoginFormProps) => {
     defaultValues: { email: "", password: "" },
   });
 
-  const { submit, isPending } = useLogin();
+  const { submit, isPending } = useLogin(setError);
 
   const onSubmit = (values: LoginFormValues) => {
-    submit(values, {
-      onSuccess,
-      onError: (error) => {
-        if (isApiError(error) && error.status === 403) {
-          setError("root", { message: t("login.emailNotVerified") });
-        } else {
-          handleFormError<LoginFormValues>(error, setError);
-        }
-      },
-    });
+    submit(values, { onSuccess });
   };
 
   return (

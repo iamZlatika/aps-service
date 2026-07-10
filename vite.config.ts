@@ -1,9 +1,22 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePWA({
+      // Manifest and service worker registration are wired up manually
+      // (see useBackofficePwa) so install stays scoped to /backoffice
+      // and never appears on the public website.
+      injectRegister: null,
+      manifest: false,
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,svg,png,webp,woff2}"],
+      },
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

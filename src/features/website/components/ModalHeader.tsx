@@ -12,7 +12,7 @@ export const ModalHeader = ({ icon, eyebrow, title }: ModalHeaderProps) => {
     <div className="flex items-start gap-4 px-7 pb-0 pt-[26px] max-sm:px-5">
       <div
         aria-hidden="true"
-        className="flex size-[46px] flex-shrink-0 items-center justify-center rounded-[13px] border border-[color-mix(in_oklab,var(--ws-ember)_26%,transparent)] bg-[color-mix(in_oklab,var(--ws-ember)_14%,transparent)] p-[11px] text-ws-ember-bright"
+        className="flex size-[46px] flex-shrink-0 items-center justify-center rounded-[13px] border border-[color-mix(in_oklab,var(--ws-ember)_26%,transparent)] bg-[color-mix(in_oklab,var(--ws-ember)_14%,transparent)] p-[11px] text-ws-ember-bright [&>svg]:size-full"
       >
         {icon}
       </div>

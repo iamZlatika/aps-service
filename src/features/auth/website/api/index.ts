@@ -61,8 +61,10 @@ export const websiteAuthApi = {
     const validated = parseDto(AuthResponseDtoSchema, response);
     return mapAuthResponseDtoToAuthResponse(validated);
   },
-  logout: (): Promise<void> => {
-    return post(WEBSITE_AUTH_API.logout());
+  logout: (token: string): Promise<void> => {
+    return post(WEBSITE_AUTH_API.logout(), undefined, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   },
   forgotPassword: async (email: string): Promise<void> => {
     await post(WEBSITE_AUTH_API.passwordForgot(), { email });

@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 
 import { Breadcrumbs } from "@/features/backoffice/components/Breadcrumbs.tsx";
 import { ErrorFallback } from "@/features/backoffice/components/ErrorFallback.tsx";
+import { useBackofficePwa } from "@/features/backoffice/hooks/useBackofficePwa";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { PullToRefreshIndicator } from "@/shared/components/PullToRefreshIndicator";
 import { PullToRefreshLoaderFrame } from "@/shared/components/PullToRefreshLoaderFrame";
@@ -21,6 +22,7 @@ const Layout = () => {
   const { t } = useTranslation();
   const mainRef = useRef<HTMLElement>(null);
   const { progress, status } = usePullToRefresh(mainRef);
+  useBackofficePwa();
 
   return (
     <SidebarProvider>
