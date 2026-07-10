@@ -44,6 +44,7 @@ export type OrderDetail = OrderListItem & {
   services: OrderLineItem[];
   products: OrderLineItem[];
   documents: OrderDocument[];
+  totalCost: string | null;
 };
 
 export type OrdersListMeta = {

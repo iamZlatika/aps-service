@@ -60,5 +60,6 @@ export const OrderDetailDtoSchema = OrderListItemDtoSchema.extend({
   services: z.array(OrderLineItemDtoSchema),
   products: z.array(OrderLineItemDtoSchema),
   documents: z.array(OrderDocumentDtoSchema),
+  total_cost: z.string().nullable(),
 });
 export type OrderDetailDto = z.infer<typeof OrderDetailDtoSchema>;

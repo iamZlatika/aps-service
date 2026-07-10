@@ -26,6 +26,10 @@ export const OrderDeviceInfo = ({ order }: OrderDeviceInfoProps) => {
       value: localize(order.location.addressRu, order.location.addressUa),
     },
     { label: t("cabinet.specDueDate"), value: formatDate(order.dueDate) },
+    {
+      label: t("cabinet.specEstimatedCost"),
+      value: order.estimatedCost ? `${order.estimatedCost} ₴` : null,
+    },
   ];
 
   return (

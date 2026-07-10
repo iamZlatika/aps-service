@@ -20,7 +20,7 @@ export const HeaderInfo = () => {
   const localize = useLocalize();
 
   return (
-    <div className="hidden border-b border-ws-line-soft py-[14px] pb-4 md:flex md:flex-col md:gap-[14px] xl:flex-row xl:flex-wrap xl:items-stretch xl:gap-8">
+    <div className="hidden border-b border-ws-line-soft py-[14px] pb-4 md:flex md:flex-row md:flex-wrap md:items-stretch md:gap-8">
       {locations.map((location, index) => {
         const street = localize(location.streetRu, location.streetUa);
         const district = localize(location.districtRu, location.districtUa);
@@ -29,16 +29,16 @@ export const HeaderInfo = () => {
           <Fragment key={location.id}>
             {index > 0 && (
               <div
-                className="hidden w-px self-stretch bg-ws-line xl:mx-1 xl:block"
+                className="hidden w-px self-stretch bg-ws-line md:mx-1 md:block"
                 aria-hidden="true"
               />
             )}
-            <address className="flex flex-wrap items-center gap-x-[22px] gap-y-3 not-italic xl:flex-1 xl:flex-nowrap xl:min-w-0">
+            <address className="flex flex-wrap items-center gap-x-[22px] gap-y-3 not-italic md:flex-1 md:min-w-0">
               <a
                 href={getMapsUrl(address)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex min-w-0 flex-1 basis-full items-start gap-[11px] text-ws-ink no-underline transition-colors duration-200 xl:basis-auto"
+                className="group flex min-w-0 flex-1 basis-full items-start gap-[11px] text-ws-ink no-underline transition-colors duration-200 md:basis-auto"
               >
                 <PinIcon className="mt-[3px] size-4 shrink-0 text-ws-ember-bright" />
                 <div className="min-w-0">
