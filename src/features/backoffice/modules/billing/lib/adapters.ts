@@ -44,6 +44,8 @@ export function mapTransactionDtoToTransaction(
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
     createdBy: dto.created_by ? mapUserDtoToUser(dto.created_by) : null,
+    quickOrderId: dto.quick_order_id,
+    quickOrderNumber: dto.quick_order_number,
   };
 }
 

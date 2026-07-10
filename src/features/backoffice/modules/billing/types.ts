@@ -14,6 +14,8 @@ export type Transaction = Omit<
   orderService: OrderService | null;
   orderProduct: OrderProduct | null;
   createdBy: User | null;
+  quickOrderId: number | null;
+  quickOrderNumber: string | null;
 };
 
 export type Balance = {

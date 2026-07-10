@@ -86,6 +86,7 @@
     "billing": "Биллинг",
     "sms_integration": "SMS-интеграция",
     "roles_permissions": "Роли и доступы",
+    "quick_orders": "Продажи",
     "dictionaries_list": {
       "title": "Справочники",
       "accessories": "Комплектации",
@@ -173,6 +174,7 @@
     "onlyLat": "Только латиница, цифры и _",
     "minCharsIs": "Минимальное количество символов {{chars}}",
     "minQuantity": "Минимальное значение — 1",
+    "digitsOnly": "Только цифры, без букв и точки",
     "colorRequired": "Выберите цвет",
     "locationRequired": "Необходимо указать локацию",
     "time_end_before_start": "Время окончания должно быть позже времени начала",
@@ -191,7 +193,8 @@
     "orders_any_match": "Найти заказ, имя, тип устройства, бренд, модель или номер телефона",
     "orders_any_match_mobile": "Номер, имя, тип устройства, бренд, модель",
     "card_number": "Поиск по номеру карты",
-    "works_name": "Поиск по модели или бренду"
+    "works_name": "Поиск по модели или бренду",
+    "quick_orders_number": "Поиск по номеру продажи"
   },
   "breadcrumbs": {
     "home": "Главная",
@@ -219,7 +222,8 @@
     "transactions": "Транзакции",
     "finance": "Финансы",
     "withdrawalRequests": "Запросы на выплату",
-    "integrations": "Интеграции"
+    "integrations": "Интеграции",
+    "quickOrders": "Продажи"
   },
   "profile": {
     "settings": "Настройки профиля",
@@ -240,10 +244,12 @@
         "billing": "Биллинг",
         "users": "Сотрудники",
         "dictionaries": "Справочники",
-        "integrations": "Интеграции"
+        "integrations": "Интеграции",
+        "quick_orders": "Продажи"
       },
       "orders_view": "Просмотр",
       "orders_manage": "Управление",
+      "quick_orders_manage": "Управление",
       "customers_view": "Просмотр",
       "customers_manage": "Управление",
       "landing_works_view": "Просмотр",
@@ -840,7 +846,8 @@
       "products_income": "Выплата сотруднику за запчасть",
       "system_order_income": "Зачисление на баланс сервиса",
       "manual_adjustment": "Ручная корректировка баланса",
-      "withdrawal_request": "Выплата средств сотруднику"
+      "withdrawal_request": "Выплата средств сотруднику",
+      "reversal": "Аннулирование"
     },
     "transaction_statuses": {
       "pending": "Ожидает",
@@ -927,6 +934,71 @@
         "status": "Статус",
         "clear": "Сбросить фильтр"
       }
+    }
+  },
+  "quickOrders": {
+    "table_fields": {
+      "number": "Номер",
+      "manager": "Менеджер",
+      "location": "Локация",
+      "totalPrice": "Сумма",
+      "createdAt": "Дата создания"
+    },
+    "filters": {
+      "manager": "Менеджер",
+      "all_managers": "Все менеджеры",
+      "clear": "Сбросить фильтр"
+    },
+    "createNew": "Новая продажа",
+    "successCreate": "Продажа успешно создана",
+    "cancelledBanner": "Продажа аннулирована",
+    "errors": {
+      "noItems": "Добавьте хотя бы одну услугу или товар"
+    },
+    "actions": {
+      "create": "Создать",
+      "cancel": "Отменить продажу",
+      "cancelDialog": {
+        "title": "Отменить продажу?",
+        "description": "Продажа будет скрыта из списка, а начисления по ней (мастеру и сервису) — сторнированы. Действие необратимо."
+      }
+    },
+    "form": {
+      "manager": "Менеджер",
+      "location": "Локация",
+      "paymentMethod": "Способ оплаты",
+      "comment": "Комментарий",
+      "commentPlaceholder": "Введите комментарий",
+      "createdAt": "Дата создания"
+    },
+    "tabs": {
+      "sale": "Продажа",
+      "finance": "Финансы"
+    },
+    "finance": {
+      "totalPrice": "Сумма продажи",
+      "totalCost": "Себестоимость",
+      "totalIncome": "Прибыль"
+    },
+    "itemForm": {
+      "name": "Название",
+      "price": "Цена",
+      "purchasePrice": "Закупочная цена",
+      "costPrice": "Себестоимость",
+      "quantity": "Количество",
+      "addProduct": "Добавить товар",
+      "addService": "Добавить услугу",
+      "editProduct": "Редактировать товар",
+      "editService": "Редактировать услугу"
+    },
+    "orderTable": {
+      "name": "Название",
+      "quantity": "Кол-во",
+      "price": "Цена",
+      "totalPrice": "Сумма",
+      "costOrPurchasePrice": "Себестоимость/закупка",
+      "addService": "Добавить услугу",
+      "addProduct": "Добавить товар"
     }
   }
 }

@@ -75,6 +75,7 @@ export const TRANSACTION_TYPES = {
   SYSTEM_ORDER_INCOME: "system_order_income",
   MANUAL_ADJUSTMENT: "manual_adjustment",
   WITHDRAWAL_REQUEST: "withdrawal_request",
+  REVERSAL: "reversal",
 } as const;
 
 export type TransactionType =

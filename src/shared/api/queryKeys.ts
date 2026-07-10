@@ -85,6 +85,13 @@ export const queryKeys = {
       ] as const,
   },
 
+  quickOrders: {
+    all: ["quickOrders"] as const,
+    list: makeEntityKey(["quickOrders"], "list"),
+    detail: (id: number) =>
+      [...queryKeys.quickOrders.all, "detail", id] as const,
+  },
+
   tracking: {
     all: ["tracking"] as const,
     detail: (token: string) =>
