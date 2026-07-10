@@ -1,5 +1,6 @@
 import type { z } from "zod";
 
+import type { TelegramDto } from "@/features/backoffice/modules/customers/api/dto.ts";
 import type { newCustomerSchema } from "@/features/backoffice/modules/customers/lib/schemas.ts";
 import { type UserStatus } from "@/shared/types.ts";
 
@@ -51,4 +52,12 @@ export type EditedCustomer = {
 export type TelegramLink = {
   link: string;
   qrCode: string;
+};
+
+export type CustomerTelegramLinkedSocketEvent = {
+  data: { customer_id: number; telegram: TelegramDto };
+};
+
+export type CustomerTelegramUnlinkedSocketEvent = {
+  data: { customer_id: number; telegram: null };
 };

@@ -63,6 +63,10 @@ apiClient.interceptors.response.use(
       void router.navigate(SharedRoutes.blocked());
     }
 
+    if (status === 503) {
+      void router.navigate(SharedRoutes.maintenance());
+    }
+
     const isNetworkError = !error.response && error.code === "ERR_NETWORK";
     const message = isNetworkError
       ? i18next.t("errors.network")
@@ -70,7 +74,7 @@ apiClient.interceptors.response.use(
 
     const apiError = new ApiError(message, status, data);
 
-    if (status !== 401 && status !== 403 && status !== 422) {
+    if (status !== 401 && status !== 403 && status !== 422 && status !== 503) {
       captureError(apiError, {
         url: error.config?.url,
         method: error.config?.method,

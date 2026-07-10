@@ -130,27 +130,36 @@ export const ProfilePanel = ({ customer }: ProfilePanelProps) => {
         <h3 className="mb-[14px] text-[11px] font-semibold uppercase tracking-[.16em] text-ws-ink-mute">
           {t("cabinet.telegramNotificationsTitle")}
         </h3>
-        <TelegramRow telegram={customer.telegram} />
+        <TelegramRow
+          telegram={customer.telegram}
+          isPhoneVerified={isPhoneVerified}
+        />
 
-        <div className="my-[22px] h-px bg-ws-line-soft" />
+        {!customer.hasGoogle && (
+          <>
+            <div className="my-[22px] h-px bg-ws-line-soft" />
 
-        <h3 className="mb-[18px] text-[11px] font-semibold uppercase tracking-[.16em] text-ws-ink-mute">
-          {t("cabinet.security")}
-        </h3>
-        <button
-          type="button"
-          onClick={() => setIsPasswordModalOpen(true)}
-          className="ws-btn ws-btn-ghost"
-        >
-          <Lock className="size-[15px]" aria-hidden="true" />
-          {t("cabinet.changePassword")}
-        </button>
+            <h3 className="mb-[18px] text-[11px] font-semibold uppercase tracking-[.16em] text-ws-ink-mute">
+              {t("cabinet.security")}
+            </h3>
+            <button
+              type="button"
+              onClick={() => setIsPasswordModalOpen(true)}
+              className="ws-btn ws-btn-ghost"
+            >
+              <Lock className="size-[15px]" aria-hidden="true" />
+              {t("cabinet.changePassword")}
+            </button>
+          </>
+        )}
       </div>
 
-      <ChangePasswordModal
-        open={isPasswordModalOpen}
-        onClose={() => setIsPasswordModalOpen(false)}
-      />
+      {!customer.hasGoogle && (
+        <ChangePasswordModal
+          open={isPasswordModalOpen}
+          onClose={() => setIsPasswordModalOpen(false)}
+        />
+      )}
       <ChangePhoneModal
         key={phoneModalKey}
         open={isPhoneModalOpen}

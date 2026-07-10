@@ -1,21 +1,26 @@
 import { useTranslation } from "react-i18next";
 
-import {
-  computeReviewStats,
-  getGoogleReviewUrl,
-} from "@/features/website/lib/service";
+import { type Location } from "@/entities/location/types";
+import { ExternalLinkIcon } from "@/features/website/components/icons/ExternalLinkIcon";
+import { computeReviewStats } from "@/features/website/lib/service";
 import { GoogleSpinnerIcon } from "@/features/website/pages/reviews/GoogleSpinnerIcon";
 import { type Review } from "@/features/website/types";
+import { useLocalize } from "@/shared/hooks/useLocalize";
 
 interface ReviewsAsideProps {
+  activeLocation: Location;
   reviews: Review[];
 }
 
-export const ReviewsAside = ({ reviews }: ReviewsAsideProps) => {
+export const ReviewsAside = ({
+  activeLocation,
+  reviews,
+}: ReviewsAsideProps) => {
   const { t } = useTranslation("website");
+  const localize = useLocalize();
   const { avg, dist } = computeReviewStats(reviews.map((r) => r.rating));
-  const reviewUrl =
-    reviews.length > 0 ? getGoogleReviewUrl(reviews[0].id) : "#";
+  const reviewUrl = activeLocation.reviewUrl ?? "#";
+  const address = localize(activeLocation.addressRu, activeLocation.addressUa);
   const avgDisplay = avg.toFixed(1);
 
   return (
@@ -37,7 +42,7 @@ export const ReviewsAside = ({ reviews }: ReviewsAsideProps) => {
             <b className="mb-0.5 block text-[13.5px] font-semibold text-ws-ink">
               {t("reviews.scoreLabel")}
             </b>
-            {t("reviews.reviewsCount", { count: reviews.length })}
+            {address} · {t("reviews.reviewsCount", { count: reviews.length })}
           </div>
         </div>
 
@@ -85,21 +90,9 @@ export const ReviewsAside = ({ reviews }: ReviewsAsideProps) => {
           href={reviewUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-ws-ember-bright to-ws-ember px-5 py-3.5 text-sm font-semibold text-ws-ember-text no-underline shadow-[0_12px_30px_-12px_rgba(238,122,58,0.5)] transition-transform hover:-translate-y-px"
+          className="ws-reviews-cta flex transform-gpu items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-ws-ember-bright to-ws-ember px-5 py-3.5 text-sm font-semibold no-underline shadow-[0_12px_30px_-12px_rgba(238,122,58,0.5)] transition-transform hover:-translate-y-px"
         >
-          <svg
-            className="h-[15px] w-[15px]"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M14 3h7v7" />
-            <path d="M21 3l-9 9" />
-            <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" />
-          </svg>
+          <ExternalLinkIcon className="h-[15px] w-[15px] shrink-0" />
           {t("reviews.leaveReview")}
         </a>
       </div>

@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { CopyIcon } from "@/features/website/components/icons/CopyIcon";
+import { ExternalLinkIcon } from "@/features/website/components/icons/ExternalLinkIcon";
 import { PhoneIcon } from "@/features/website/components/icons/PhoneIcon";
 import { MessengerLabelButton } from "@/features/website/components/MessengerLabelButton";
 import { MESSENGER_ICONS, MESSENGERS } from "@/features/website/config";
@@ -15,6 +16,7 @@ interface OfficeCardInfoProps {
   city: string;
   building: string;
   phone: string;
+  reviewUrl: string | null;
   scheduleLines: string[];
 }
 
@@ -24,6 +26,7 @@ export const OfficeCardInfo = ({
   city,
   building,
   phone,
+  reviewUrl,
   scheduleLines,
 }: OfficeCardInfoProps) => {
   const { t } = useTranslation("website");
@@ -34,9 +37,22 @@ export const OfficeCardInfo = ({
 
   return (
     <div className="ws-contacts-info flex flex-col gap-[22px] min-w-0 relative">
-      <span className="text-ws-sm uppercase tracking-[0.14em] font-semibold text-ws-ember-bright">
-        {t("contacts.serviceCenter")} {street}
-      </span>
+      <div className="flex items-start justify-between gap-3">
+        <span className="text-ws-sm uppercase tracking-[0.14em] font-semibold text-ws-ember-bright">
+          {t("contacts.serviceCenter")} {street}
+        </span>
+        {reviewUrl && (
+          <a
+            href={reviewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex shrink-0 items-center gap-1 whitespace-nowrap rounded-ws-sm border border-ws-line bg-white/[0.015] px-2.5 py-1.5 text-ws-2xs font-semibold uppercase tracking-[0.06em] text-ws-ink-soft no-underline transition-colors hover:border-ws-ember hover:text-ws-ember-bright"
+          >
+            <ExternalLinkIcon className="size-3" />
+            {t("reviews.leaveReview")}
+          </a>
+        )}
+      </div>
       <div>
         <span className="block text-ws-sm font-medium text-ws-ink-soft lowercase mb-1.5 tracking-[0.005em]">
           {t("nav.streetLabel")}

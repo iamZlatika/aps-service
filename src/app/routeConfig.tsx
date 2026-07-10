@@ -24,6 +24,9 @@ const ForbiddenPage = lazy(
   () => import("@/shared/components/errors/Forbidden.tsx"),
 );
 const BlockedPage = lazy(() => import("@/features/website/pages/blocked"));
+const MaintenancePage = lazy(
+  () => import("@/features/website/pages/maintenance"),
+);
 
 export const routeConfig: RouteObject[] = [
   // public website
@@ -60,5 +63,6 @@ export const routeConfig: RouteObject[] = [
   },
   { path: SharedRoutes.forbidden(), element: <ForbiddenPage /> },
   { path: SharedRoutes.blocked(), element: <BlockedPage /> },
+  { path: SharedRoutes.maintenance(), element: <MaintenancePage /> },
   { path: "*", element: <NotFoundPage /> },
 ];

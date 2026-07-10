@@ -30,6 +30,7 @@ import { getEcho } from "@/shared/lib/echo";
 const ORDER_UPDATE_EVENTS = [
   ".order.updated",
   ".order.urgency_changed",
+  ".order.sms_sent",
 ] as const;
 
 const mergeOrderFields = (old: OrderInfo, orderDto: OrderDto): OrderInfo => {

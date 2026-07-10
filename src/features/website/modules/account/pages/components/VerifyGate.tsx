@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { IMaskInput } from "react-imask";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 import {
@@ -12,6 +13,7 @@ import {
 } from "@/features/website/modules/account/account.schema";
 import { useSendPhoneCode } from "@/features/website/modules/account/hooks/useSendPhoneCode";
 import { useVerifyPhoneCode } from "@/features/website/modules/account/hooks/useVerifyPhoneCode";
+import { CUSTOMER_PROFILE_LINKS } from "@/features/website/modules/profile/navigation";
 
 interface VerifyGateProps {
   readonly phoneNumber: string;
@@ -73,6 +75,16 @@ export const VerifyGate = ({ phoneNumber }: VerifyGateProps) => {
       </p>
       <p className="mt-[14px] text-ws-md font-bold tabular-nums text-ws-ink">
         {phoneNumber}
+      </p>
+      <p className="mt-[10px] max-w-[480px] text-[13px] leading-[1.6] text-ws-ink-mute text-pretty">
+        {t("cabinet.verifyGateWrongPhoneHint")}{" "}
+        <Link
+          to={CUSTOMER_PROFILE_LINKS.root()}
+          className="font-semibold text-ws-ember-bright hover:underline"
+        >
+          {t("cabinet.verifyGateWrongPhoneHintLink")}
+        </Link>
+        .
       </p>
 
       {!isCodeSent ? (

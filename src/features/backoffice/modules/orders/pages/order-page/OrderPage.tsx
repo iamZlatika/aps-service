@@ -18,6 +18,7 @@ import { CustomerOrdersSection } from "@/features/backoffice/modules/customers/c
 import { StatusSelect } from "@/features/backoffice/modules/orders/components/StatusSelect.tsx";
 import { useCreateOrderForCustomer } from "@/features/backoffice/modules/orders/hooks/useCreateOrderForCustomer.ts";
 import { useOrder } from "@/features/backoffice/modules/orders/hooks/useOrder.ts";
+import { useOrderCustomerTelegramSocket } from "@/features/backoffice/modules/orders/hooks/useOrderCustomerTelegramSocket.ts";
 import { useOrderEditingState } from "@/features/backoffice/modules/orders/hooks/useOrderEditingState.ts";
 import { useOrderSocket } from "@/features/backoffice/modules/orders/hooks/useOrderSocket.ts";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation.ts";
@@ -60,6 +61,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   const { selectedOrder, isLoading, isError, error, refetch } =
     useOrder(orderId);
   useOrderSocket(orderId);
+  useOrderCustomerTelegramSocket(orderId, selectedOrder?.customer.id ?? null);
 
   const { can } = useAuth();
   const canManageOrders = can("orders_manage");
@@ -126,7 +128,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
         {selectedOrder && (
           <>
             <>
-              <div className="flex h-full">
+              <div className="absolute inset-0 flex overflow-hidden">
                 <div className="flex-1 overflow-y-auto p-2 pb-14 sm:p-6 [scrollbar-gutter:stable]">
                   <div className="flex flex-col gap-1.5">
                     <div className="flex items-center justify-between gap-2">

@@ -9,12 +9,14 @@ import { Toaster } from "sonner";
 import { WebsiteErrorFallback } from "@/features/website/components/ErrorFallback";
 import { Footer } from "@/features/website/components/Footer";
 import { Header } from "@/features/website/components/Header";
+import { MobileLocationCards } from "@/features/website/components/Header/mobile/MobileLocationCards";
 import { WebsiteLoader } from "@/features/website/components/Loader";
 import WebsitePageSeo from "@/features/website/components/WebsitePageSeo";
 import { useMobileNav } from "@/features/website/hooks/useMobileNav";
 import { useWebsiteThemeManager } from "@/features/website/hooks/useWebsiteThemeManager";
 import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
 import { WebsiteThemeContext } from "@/features/website/websiteTheme";
+import { PullToRefreshBackdrop } from "@/shared/components/PullToRefreshBackdrop";
 import { PullToRefreshIndicator } from "@/shared/components/PullToRefreshIndicator";
 import { PullToRefreshLoaderFrame } from "@/shared/components/PullToRefreshLoaderFrame";
 import { usePullToRefresh } from "@/shared/hooks/usePullToRefresh";
@@ -135,6 +137,7 @@ export const WebsiteLayout = () => {
               closeNav={closeNav}
             />
             <div className="relative flex flex-1 flex-col">
+              <PullToRefreshBackdrop status={status} />
               <PullToRefreshIndicator
                 status={status}
                 progress={progress}
@@ -145,6 +148,9 @@ export const WebsiteLayout = () => {
                 </PullToRefreshLoaderFrame>
               </PullToRefreshIndicator>
               <div className="flex flex-1 flex-col translate-y-[var(--pull-distance)]">
+                <div className="ws-wrap w-full">
+                  <MobileLocationCards />
+                </div>
                 <main id="main-content" className="flex-1">
                   <Outlet />
                 </main>

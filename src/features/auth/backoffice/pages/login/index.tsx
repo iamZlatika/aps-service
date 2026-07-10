@@ -1,11 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
-import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
@@ -25,8 +24,7 @@ import { type LoginFormValues, loginSchema } from "./login.schema.ts";
 
 export default function BackofficeLoginPage() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { login, isLoggingIn } = useAuth();
+  const { login, isLoggingIn, isLoading } = useAuth();
   const {
     register,
     handleSubmit,
@@ -40,18 +38,23 @@ export default function BackofficeLoginPage() {
     },
   });
 
+  // Covers both the login request itself and the subsequent profile fetch
+  // GuestRoute waits on before redirecting — one continuous busy state.
+  const isBusy = isLoggingIn || isLoading;
+
   const onSubmit = (data: LoginFormValues) => {
+    // Warms the lazy chunks GuestRoute redirects into on success, in parallel
+    // with the login request itself — otherwise Suspense has to show its own
+    // fallback right after this page's loader, producing a double flash.
+    void import("@/features/backoffice/components/Layout");
+    void import("@/features/backoffice/modules/orders/pages");
     login(data, {
-      onSuccess: () => navigate(ORDERS_LINKS.root()),
       onError: (error) => handleFormError<LoginFormValues>(error, setError),
     });
   };
-  if (isLoggingIn) {
-    return <Loader />;
-  }
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background p-4">
+      {isBusy && <Loader className="min-h-0 w-auto p-0" />}
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">
@@ -71,6 +74,7 @@ export default function BackofficeLoginPage() {
                 autoComplete="email"
                 type="email"
                 placeholder="name@example.com"
+                disabled={isBusy}
                 {...register("email")}
                 className={cn(errors.email && "border-destructive")}
               />
@@ -86,6 +90,7 @@ export default function BackofficeLoginPage() {
                 id="password"
                 type="password"
                 autoComplete="current-password"
+                disabled={isBusy}
                 {...register("password")}
                 className={cn(errors.password && "border-destructive")}
               />
@@ -97,7 +102,7 @@ export default function BackofficeLoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-2">
-            <Button type="submit" className="w-full" disabled={isLoggingIn}>
+            <Button type="submit" className="w-full" disabled={isBusy}>
               {isLoggingIn
                 ? t("auth.login.submitting")
                 : t("auth.login.submit")}

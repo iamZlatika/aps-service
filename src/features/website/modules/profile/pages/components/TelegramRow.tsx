@@ -9,14 +9,40 @@ import { useProfileTelegram } from "@/features/website/modules/profile/hooks/use
 
 interface TelegramRowProps {
   telegram: CustomerTelegram | null;
+  isPhoneVerified: boolean;
 }
 
-export const TelegramRow = ({ telegram }: TelegramRowProps) => {
+export const TelegramRow = ({
+  telegram,
+  isPhoneVerified,
+}: TelegramRowProps) => {
   const { t } = useTranslation("website");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { revokeLink, isRevokePending } = useProfileTelegram();
 
   const isConnected = telegram?.isSubscribed ?? false;
+
+  if (!isPhoneVerified) {
+    return (
+      <div className="flex items-center gap-[14px] rounded-[14px] border border-ws-line bg-[rgba(255,255,255,.015)] px-4 py-[14px]">
+        <span
+          aria-hidden="true"
+          className="flex size-[38px] shrink-0 items-center justify-center rounded-[10px] bg-[#2aa3e3]/40 text-white"
+        >
+          <TelegramIcon className="size-5" />
+        </span>
+
+        <div className="flex min-w-0 flex-1 flex-col gap-[2px]">
+          <b className="text-[14.5px] font-semibold text-ws-ink-mute">
+            Telegram
+          </b>
+          <span className="text-[12px] leading-[1.5] text-ws-ink-mute">
+            {t("cabinet.telegramRowNeedsVerification")}
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

@@ -27,6 +27,7 @@ export const LocationDtoSchema = z.object({
   address_ru: z.string(),
   address_ua: z.string(),
   phone: z.string(),
+  review_url: z.string().nullable(),
   schedule: LocationScheduleDtoSchema,
   schedule_display: z.string(),
 });
