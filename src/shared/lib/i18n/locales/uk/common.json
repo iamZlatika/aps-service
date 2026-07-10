@@ -86,6 +86,7 @@
     "billing": "Білінг",
     "sms_integration": "SMS-інтеграція",
     "roles_permissions": "Ролі та доступи",
+    "quick_orders": "Продажі",
     "dictionaries_list": {
       "title": "Довідники",
       "accessories": "Комплектації",
@@ -170,6 +171,7 @@
     "onlyLat": "Тільки латиниця, цифри та _",
     "minCharsIs": "Мінімальна кількість символів {{chars}}",
     "minQuantity": "Мінімальне значення — 1",
+    "digitsOnly": "Тільки цифри, без букв і крапки",
     "colorRequired": "Виберіть колір",
     "locationRequired": "Необхідно вказати локацію",
     "time_end_before_start": "Час закінчення має бути пізніше часу початку",
@@ -188,7 +190,8 @@
     "orders_any_match": "Знайти замовлення, ім'я, тип пристрою, бренд, модель або номер телефону",
     "orders_any_match_mobile": "Номер, ім'я, тип пристрою, бренд, модель",
     "card_number": "Пошук за номером картки",
-    "works_name": "Пошук за моделлю або брендом"
+    "works_name": "Пошук за моделлю або брендом",
+    "quick_orders_number": "Пошук за номером продажу"
   },
   "breadcrumbs": {
     "home": "Головна",
@@ -216,7 +219,8 @@
     "transactions": "Транзакції",
     "finance": "Фінанси",
     "withdrawalRequests": "Запити на виплату",
-    "integrations": "Інтеграції"
+    "integrations": "Інтеграції",
+    "quickOrders": "Продажі"
   },
   "profile": {
     "settings": "Налаштування профілю",
@@ -237,10 +241,12 @@
         "billing": "Білінг",
         "users": "Співробітники",
         "dictionaries": "Довідники",
-        "integrations": "Інтеграції"
+        "integrations": "Інтеграції",
+        "quick_orders": "Продажі"
       },
       "orders_view": "Перегляд",
       "orders_manage": "Управління",
+      "quick_orders_manage": "Управління",
       "customers_view": "Перегляд",
       "customers_manage": "Управління",
       "landing_works_view": "Перегляд",
@@ -837,7 +843,8 @@
       "products_income": "Виплата співробітнику за запчастину",
       "system_order_income": "Зарахування на баланс сервісу",
       "manual_adjustment": "Ручне коригування балансу",
-      "withdrawal_request": "Виплата коштів співробітнику"
+      "withdrawal_request": "Виплата коштів співробітнику",
+      "reversal": "Анулювання"
     },
     "transaction_statuses": {
       "pending": "Очікує",
@@ -924,6 +931,71 @@
         "status": "Статус",
         "clear": "Скинути фільтр"
       }
+    }
+  },
+  "quickOrders": {
+    "table_fields": {
+      "number": "Номер",
+      "manager": "Менеджер",
+      "location": "Локація",
+      "totalPrice": "Сума",
+      "createdAt": "Дата створення"
+    },
+    "filters": {
+      "manager": "Менеджер",
+      "all_managers": "Усі менеджери",
+      "clear": "Скинути фільтр"
+    },
+    "createNew": "Новий продаж",
+    "successCreate": "Продаж успішно створено",
+    "cancelledBanner": "Продаж анульовано",
+    "errors": {
+      "noItems": "Додайте хоча б одну послугу або товар"
+    },
+    "actions": {
+      "create": "Створити",
+      "cancel": "Скасувати продаж",
+      "cancelDialog": {
+        "title": "Скасувати продаж?",
+        "description": "Продаж буде приховано зі списку, а нарахування по ньому (майстру та сервісу) — сторновано. Дію не можна скасувати."
+      }
+    },
+    "form": {
+      "manager": "Менеджер",
+      "location": "Локація",
+      "paymentMethod": "Спосіб оплати",
+      "comment": "Коментар",
+      "commentPlaceholder": "Введіть коментар",
+      "createdAt": "Дата створення"
+    },
+    "tabs": {
+      "sale": "Продаж",
+      "finance": "Фінанси"
+    },
+    "finance": {
+      "totalPrice": "Сума продажу",
+      "totalCost": "Собівартість",
+      "totalIncome": "Прибуток"
+    },
+    "itemForm": {
+      "name": "Назва",
+      "price": "Ціна",
+      "purchasePrice": "Закупівельна ціна",
+      "costPrice": "Собівартість",
+      "quantity": "Кількість",
+      "addProduct": "Додати товар",
+      "addService": "Додати послугу",
+      "editProduct": "Редагувати товар",
+      "editService": "Редагувати послугу"
+    },
+    "orderTable": {
+      "name": "Назва",
+      "quantity": "Кіл-ть",
+      "price": "Ціна",
+      "totalPrice": "Сума",
+      "costOrPurchasePrice": "Собівартість/закупівля",
+      "addService": "Додати послугу",
+      "addProduct": "Додати товар"
     }
   }
 }

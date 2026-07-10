@@ -5,6 +5,7 @@ import {
   MessageSquare,
   Package,
   ShieldCheck,
+  ShoppingCart,
   Users,
   Wrench,
 } from "lucide-react";
@@ -17,6 +18,7 @@ import { BILLING_LINKS } from "@/features/backoffice/modules/billing/navigation.
 import { CUSTOMERS_LINKS } from "@/features/backoffice/modules/customers/navigation";
 import { DICTIONARIES_LINKS } from "@/features/backoffice/modules/dictionaries/navigation";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation";
+import { QUICK_ORDERS_LINKS } from "@/features/backoffice/modules/quick-orders/navigation.ts";
 import { ROLES_PERMISSIONS_LINKS } from "@/features/backoffice/modules/roles-permissions/navigation.ts";
 import { SMS_INTEGRATION_LINKS } from "@/features/backoffice/modules/sms-integration/navigation.ts";
 import { USERS_LINKS } from "@/features/backoffice/modules/users/navigation";
@@ -69,6 +71,23 @@ export const Sidebar = memo(() => {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
+
+              {can("quick_orders_manage") && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    tooltip={t("sidebar.quick_orders")}
+                  >
+                    <Link
+                      to={QUICK_ORDERS_LINKS.root()}
+                      onClick={closeMobileSidebar}
+                    >
+                      <ShoppingCart className="h-4 w-4" />
+                      <span>{t("sidebar.quick_orders")}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
 
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip={t("sidebar.customers")}>

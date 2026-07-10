@@ -58,14 +58,30 @@ export type NewOrderSchema = z.infer<ReturnType<typeof newOrderSchema>>;
 export const newOrderItemSchema = () =>
   z.object({
     name: z.string().trim().min(1, i18next.t("validation.field_required")),
-    price: z.string().trim().min(1, i18next.t("validation.field_required")),
+    price: z
+      .string()
+      .trim()
+      .min(1, i18next.t("validation.field_required"))
+      .regex(/^\d+$/, i18next.t("validation.digitsOnly")),
     quantity: z.coerce
       .number({ error: i18next.t("validation.field_required") })
       .int()
       .min(1, i18next.t("validation.minQuantity")),
-    purchasePrice: z.string().optional().default(""),
+    purchasePrice: z
+      .string()
+      .optional()
+      .default("")
+      .refine((value) => !value || /^\d+$/.test(value), {
+        message: i18next.t("validation.digitsOnly"),
+      }),
     supplierName: z.string().optional().default(""),
-    costPrice: z.string().optional().default(""),
+    costPrice: z
+      .string()
+      .optional()
+      .default("")
+      .refine((value) => !value || /^\d+$/.test(value), {
+        message: i18next.t("validation.digitsOnly"),
+      }),
     outsourcerName: z.string().optional().default(""),
     managerId: z.number().int().positive().optional(),
   });

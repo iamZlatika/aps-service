@@ -9,6 +9,7 @@ import {
 import { renderWrappedText } from "@/features/backoffice/modules/orders/lib/cellFormatters.tsx";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation.ts";
 import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
+import { QUICK_ORDERS_LINKS } from "@/features/backoffice/modules/quick-orders/navigation.ts";
 import { type User } from "@/features/backoffice/modules/users/types.ts";
 import { type ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { MoneyAmount } from "@/shared/components/common/MoneyAmount.tsx";
@@ -29,18 +30,31 @@ function buildOrderColumn(): ColumnConfig<Transaction> {
     field: "orderNumber",
     labelKey: "billing.transactions.table.order",
     sortable: false,
-    renderCell: (value, item) =>
-      item.orderId ? (
-        <Link
-          to={ORDERS_LINKS.detail(item.orderId)}
-          className="text-primary hover:underline"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {value as string}
-        </Link>
-      ) : (
-        "—"
-      ),
+    renderCell: (_value, item) => {
+      if (item.orderId) {
+        return (
+          <Link
+            to={ORDERS_LINKS.detail(item.orderId)}
+            className="text-primary hover:underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {item.orderNumber}
+          </Link>
+        );
+      }
+      if (item.quickOrderId) {
+        return (
+          <Link
+            to={QUICK_ORDERS_LINKS.detail(item.quickOrderId)}
+            className="text-primary hover:underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {item.quickOrderNumber}
+          </Link>
+        );
+      }
+      return "—";
+    },
   };
 }
 

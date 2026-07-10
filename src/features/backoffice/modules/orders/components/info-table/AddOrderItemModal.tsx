@@ -24,6 +24,7 @@ import {
 } from "@/shared/components/ui/dialog.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
+import { stripNonDigits } from "@/shared/lib/utils.ts";
 import SearchableSelect from "@/widgets/searchable-select";
 
 interface AddOrderItemModalProps {
@@ -120,7 +121,13 @@ const AddOrderItemModal = ({
             </div>
             <div className="flex flex-col gap-1">
               <Label>{t("orders.orderTable.form.price")}</Label>
-              <Input {...register("price")} inputMode="decimal" />
+              <Input
+                inputMode="numeric"
+                onInput={(e) => {
+                  e.currentTarget.value = stripNonDigits(e.currentTarget.value);
+                }}
+                {...register("price")}
+              />
               {errors.price && (
                 <p className="text-sm text-destructive">
                   {errors.price.message}
@@ -130,13 +137,39 @@ const AddOrderItemModal = ({
             {type === "product" && (
               <div className="flex flex-col gap-1">
                 <Label>{t("orders.orderTable.form.purchasePrice")}</Label>
-                <Input {...register("purchasePrice")} inputMode="decimal" />
+                <Input
+                  inputMode="numeric"
+                  onInput={(e) => {
+                    e.currentTarget.value = stripNonDigits(
+                      e.currentTarget.value,
+                    );
+                  }}
+                  {...register("purchasePrice")}
+                />
+                {errors.purchasePrice && (
+                  <p className="text-sm text-destructive">
+                    {errors.purchasePrice.message}
+                  </p>
+                )}
               </div>
             )}
             {type === "service" && (
               <div className="flex flex-col gap-1">
                 <Label>{t("orders.orderTable.form.costPrice")}</Label>
-                <Input {...register("costPrice")} inputMode="decimal" />
+                <Input
+                  inputMode="numeric"
+                  onInput={(e) => {
+                    e.currentTarget.value = stripNonDigits(
+                      e.currentTarget.value,
+                    );
+                  }}
+                  {...register("costPrice")}
+                />
+                {errors.costPrice && (
+                  <p className="text-sm text-destructive">
+                    {errors.costPrice.message}
+                  </p>
+                )}
               </div>
             )}
             <div className="flex flex-col gap-1">

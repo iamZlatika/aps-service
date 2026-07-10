@@ -19,6 +19,10 @@ export const TransactionDtoSchema = OrderTransactionDtoSchema.extend({
   order_service: OrderServiceSchema.nullable(),
   order_product: OrderProductSchema.nullable(),
   created_by: UserDtoSchema.nullable(),
+  // Present instead of order_id/order_number when the transaction belongs to
+  // a quick sale (quick-orders module) rather than a repair order.
+  quick_order_id: z.number().nullable(),
+  quick_order_number: z.string().nullable(),
 });
 export type TransactionDto = z.infer<typeof TransactionDtoSchema>;
 

@@ -8,6 +8,7 @@ import { CUSTOMERS_ROUTES } from "@/features/backoffice/modules/customers/routes
 import { DICTIONARIES_ROUTES } from "@/features/backoffice/modules/dictionaries/routes";
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
 import { PROFILE_ROUTES } from "@/features/backoffice/modules/profile/routes.ts";
+import { QUICK_ORDERS_ROUTES } from "@/features/backoffice/modules/quick-orders/routes.ts";
 import { ROLES_PERMISSIONS_ROUTES } from "@/features/backoffice/modules/roles-permissions/routes.ts";
 import { SMS_INTEGRATION_ROUTES } from "@/features/backoffice/modules/sms-integration/routes.ts";
 import { USERS_ROUTES } from "@/features/backoffice/modules/users/routes";
@@ -121,6 +122,16 @@ const WithdrawalRequestsPage = lazy(
 const SmsIntegrationPage = lazy(
   () => import("@/features/backoffice/modules/sms-integration/pages"),
 );
+const QuickOrdersPage = lazy(
+  () => import("@/features/backoffice/modules/quick-orders/pages"),
+);
+const CreateQuickOrderPage = lazy(
+  () => import("@/features/backoffice/modules/quick-orders/pages/new"),
+);
+const QuickOrderPage = lazy(
+  () =>
+    import("@/features/backoffice/modules/quick-orders/pages/quick-order-page/QuickOrderPage.tsx"),
+);
 
 export const backofficeRoutes: RouteObject = {
   children: [
@@ -173,6 +184,23 @@ export const backofficeRoutes: RouteObject = {
         {
           path: SMS_INTEGRATION_ROUTES.root,
           element: <SmsIntegrationPage />,
+        },
+      ],
+    },
+    {
+      element: <ProtectedRoute requiredAbility="quick_orders_manage" />,
+      children: [
+        {
+          path: QUICK_ORDERS_ROUTES.root,
+          element: <QuickOrdersPage />,
+        },
+        {
+          path: QUICK_ORDERS_ROUTES.new,
+          element: <CreateQuickOrderPage />,
+        },
+        {
+          path: QUICK_ORDERS_ROUTES.quickOrder,
+          element: <QuickOrderPage />,
         },
       ],
     },
