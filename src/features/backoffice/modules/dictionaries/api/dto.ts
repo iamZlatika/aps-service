@@ -69,6 +69,13 @@ export type SupplierDto = z.infer<typeof SupplierDtoSchema>;
 export const OutsourcerDtoSchema = SupplierDtoSchema;
 export type OutsourcerDto = z.infer<typeof OutsourcerDtoSchema>;
 
+export type SupplierPayload = {
+  name: string;
+  manager_name: string | null;
+  phone: string | null;
+  website: string | null;
+};
+
 export const ProductDtoSchema = z.object({
   id: z.number(),
   name: z.string(),

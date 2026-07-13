@@ -1,6 +1,7 @@
 import { type KeyboardEvent } from "react";
 import { IMaskInput } from "react-imask";
 
+import { extractLocalPhoneDigits } from "@/shared/lib/phone";
 import { cn, stripNonDigits } from "@/shared/lib/utils";
 
 interface PhoneMaskInputProps {
@@ -47,6 +48,7 @@ export const PhoneMaskInput = ({
       <IMaskInput
         mask="000-000-00-00"
         value={displayValue}
+        prepare={extractLocalPhoneDigits}
         onAccept={(maskedValue: string) => {
           const digits = stripNonDigits(maskedValue);
           onChange(digits ? "+38" + digits : "");

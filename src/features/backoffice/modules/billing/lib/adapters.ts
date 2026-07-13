@@ -66,6 +66,7 @@ export function mapBalanceDtoToBalance(dto: BalanceDto): Balance {
   return {
     id: dto.id,
     amount: dto.amount,
+    pendingAmount: dto.pending_amount,
     user: mapUserDtoToUser(dto.user),
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,

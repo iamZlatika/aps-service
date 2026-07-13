@@ -7,6 +7,7 @@ The goal is to help new developers (and future-you) understand *why* the code is
 
 - [Project Structure](#project-structure)
 - [Data Flow: DTO → Adapter → Domain](#data-flow-dto--adapter--domain)
+- [Money / Amount Fields](#money--amount-fields)
 - [API Layer](#api-layer)
 - [Error Handling](#error-handling)
 - [Server State: React Query](#server-state-react-query)
@@ -178,6 +179,14 @@ export const ordersApi = {
 ```
 
 **Rule:** Never parse a DTO inside a component or hook. Never use raw server shapes in the UI.
+
+---
+
+## Money / Amount Fields
+
+Backend project rule: all money amounts are whole numbers — the backend never sends fractional values like `"0.00"`, always `"0"`, `"150"`, etc.
+
+This means exact string comparisons against amount fields (e.g. `amount === "0"`) are safe and do not need `Number.parseFloat(...) === 0` defensiveness. Use `formatMoney(value)` (`shared/lib/utils.ts`) to render amounts — see `MoneyAmount` component (`shared/components/common/MoneyAmount.tsx`) for the standard debt/positive styling and optional `prefix`.
 
 ---
 

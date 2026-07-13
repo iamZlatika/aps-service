@@ -144,6 +144,25 @@ export function buildBalanceColumns(): ColumnConfig<Balance>[] {
       renderCell: (value) => <MoneyAmount value={value as string} />,
     },
     {
+      key: "pendingAmount",
+      field: "pendingAmount",
+      labelKey: "billing.balances.pending_amount",
+      sortable: false,
+      renderCell: (value) => {
+        const raw = value as string;
+        if (raw === "0") {
+          return <span className="text-muted-foreground">—</span>;
+        }
+        return (
+          <MoneyAmount
+            value={raw}
+            className="text-muted-foreground"
+            prefix="+ "
+          />
+        );
+      },
+    },
+    {
       key: "updatedAt",
       field: "updatedAt",
       labelKey: "billing.balances.updated",

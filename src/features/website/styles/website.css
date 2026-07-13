@@ -239,7 +239,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 11px 18px;
+  padding: 11px 9px;
   border-radius: 11px;
   background: var(--ws-cream);
   color: var(--ws-bg);

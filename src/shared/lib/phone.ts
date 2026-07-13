@@ -20,3 +20,12 @@ export function isSupportedMobileOperator(phone: string): boolean {
   const code = phone.slice(4, 6);
   return (MOBILE_OPERATOR_CODES as readonly string[]).includes(code);
 }
+
+export function extractLocalPhoneDigits(chars: string): string {
+  if (chars.length <= 1) return chars;
+
+  const digits = chars.replace(/\D/g, "");
+  if (digits.startsWith("380")) return "0" + digits.slice(3);
+  if (digits.startsWith("38")) return "0" + digits.slice(2);
+  return digits;
+}

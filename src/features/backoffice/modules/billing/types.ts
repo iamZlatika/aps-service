@@ -21,6 +21,7 @@ export type Transaction = Omit<
 export type Balance = {
   id: number;
   amount: string;
+  pendingAmount: string;
   user: User;
   createdAt: string;
   updatedAt: string;
