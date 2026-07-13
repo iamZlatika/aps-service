@@ -22,6 +22,8 @@ export const useOrderSearchPresets = () => {
 
   const { mutate: reorderPresets } = useMutation({
     mutationFn: (ids: number[]) => ordersApi.reorderSearchPresets(ids),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: queryKeys.auth.user() }),
     onError: (error) => notifyError(error),
   });
 
