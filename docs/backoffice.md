@@ -29,6 +29,8 @@ The core module of the system. Manages the full lifecycle of a repair order — 
 | Order detail | `/backoffice/orders/:id` | Full order view with all related data |
 | Filter settings | `/backoffice/orders/order-filter-settings` | Manage saved search presets |
 
+The filter settings form's location filter uses `LocationCheckboxGroup` (`shared/components/common/`) with `clearable` — unlike its other usages, unchecking the selected location here clears the filter instead of requiring a different location to be picked.
+
 ### Key types
 
 **`Order`** — list item. Contains core fields: device info, customer, manager, status, financial summary, flags.
@@ -230,11 +232,13 @@ Reference data used across all modules. All dictionary pages are built from the 
 | Intake Notes | `/dictionaries/intake-notes` | Standard intake remarks |
 | Services | `/dictionaries/services` | Repair operations available to add to orders |
 | Products | `/dictionaries/products` | Spare parts available to add to orders |
-| Suppliers | `/dictionaries/suppliers` | Suppliers for spare parts |
+| Suppliers | `/dictionaries/suppliers` | Suppliers for spare parts (products) |
+| Outsourcers | `/dictionaries/outsourcers` | Outsourced contractors performing services |
 | Accessories | `/dictionaries/accessories` | Accessories accepted with device (case, remote…) |
 | Order Statuses | `/dictionaries/order-statuses` | Custom statuses with color and system flag |
 | Locations | `/dictionaries/locations` | Service center branches with address and schedule |
 | Bank Cards | `/dictionaries/bank-cards` | Bank cards used for card payments |
+| Price List | `/dictionaries/price-list` | Public repair price list shown on the website |
 
 ### Factory pattern
 
@@ -279,6 +283,8 @@ export const locationApi = {
   update: async (id, data: LocationPayload) => { ... },
 };
 ```
+
+`suppliersApi` and `outsourcersApi` follow the same override pattern — both send a `SupplierPayload` (`name`, `manager_name`, `phone`, `website`) built by the shared `mapSupplierFormDataToPayload` adapter, since `Outsourcer` is structurally identical to `Supplier` (`OutsourcerDtoSchema = SupplierDtoSchema`).
 
 #### `DictionaryTablePage` — `components/DictionaryTablePage.tsx`
 
@@ -358,7 +364,7 @@ Employee balances, financial transactions, the shared service balance, and self-
 `type` values: `intake_order_income`, `service_income`, `products_income`, `system_order_income`, `manual_adjustment`, `withdrawal_request`.
 `status` values: `pending`, `completed`, `rejected` (rejected only applies to withdrawal requests).
 
-**`Balance`** — an employee's current balance: `{ id, amount, user, createdAt, updatedAt }`.
+**`Balance`** — an employee's current balance: `{ id, amount, pendingAmount, user, createdAt, updatedAt }`. `pendingAmount` is the sum of that employee's `pending` transactions (income not yet credited because the order isn't closed) — whole-number amount string, never fractional (see `docs/architecture.md` money rule), shown as a secondary "+ N" column next to `amount`.
 
 **`SystemBalance`** — the shared service balance: `{ amount }`.
 

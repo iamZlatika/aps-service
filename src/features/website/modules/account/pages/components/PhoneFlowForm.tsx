@@ -11,6 +11,7 @@ import {
   createAddPhoneSchema,
 } from "@/features/website/modules/account/pages/components/addPhoneGate.schema";
 import { AddPhoneOtpForm } from "@/features/website/modules/account/pages/components/AddPhoneOtpForm";
+import { extractLocalPhoneDigits } from "@/shared/lib/phone";
 import { cn, stripNonDigits } from "@/shared/lib/utils";
 
 interface PhoneFlowFormProps {
@@ -79,6 +80,7 @@ export const PhoneFlowForm = ({
             id={inputId}
             mask="000-000-00-00"
             value={phoneRaw.startsWith("+38") ? phoneRaw.slice(3) : phoneRaw}
+            prepare={extractLocalPhoneDigits}
             onAccept={handlePhoneChange}
             placeholder="0__-___-__-__"
             autoComplete="tel"

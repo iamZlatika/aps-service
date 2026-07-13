@@ -45,6 +45,7 @@ export type PaginatedTransactionsDto = z.infer<
 
 export const BalanceDtoSchema = z.object({
   amount: z.string(),
+  pending_amount: z.string(),
   id: z.number(),
   user: UserDtoSchema,
   created_at: z.iso.datetime(),

@@ -14,6 +14,7 @@ Lives at the root URL and is styled independently from the backoffice with its o
 | Works | `/works` | Portfolio / completed works showcase — in development |
 | Reviews | `/reviews` | Customer reviews |
 | Price List | `/price-list` | Full device repair price list with category navigation |
+| Warranty | `/warranty` | Warranty terms, storage rates, and related info cards |
 | Track | `/track/:token` | Full order tracking page by unique token |
 | User Account | `/account` | Personal account — in development |
 
@@ -30,6 +31,7 @@ export const WEBSITE_ROUTES = {
   reviews: "/reviews",
   account: "/account",
   priceList: "/price-list",
+  warranty: "/warranty",
   track: "/track/:token",   // token is the order tracking identifier
 } as const;
 ```

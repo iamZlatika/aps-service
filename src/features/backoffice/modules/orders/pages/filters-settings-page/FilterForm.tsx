@@ -131,6 +131,7 @@ export const FilterForm = ({ id, onSubmit }: FilterFormProps) => {
               locations={locations}
               value={field.value}
               onChange={field.onChange}
+              clearable
             />
           )}
         />

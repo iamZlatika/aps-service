@@ -53,7 +53,7 @@ export function buildSmsMessageColumns(): ColumnConfig<SmsMessage>[] {
       labelKey: "smsIntegration.messages.table.text",
       sortable: false,
       renderCell: (value) => (
-        <span className="block max-w-xs truncate" title={value as string}>
+        <span className="block max-w-[35ch] whitespace-normal">
           {value as string}
         </span>
       ),

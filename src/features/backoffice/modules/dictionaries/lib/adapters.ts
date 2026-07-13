@@ -3,6 +3,7 @@ import {
   type PaginationMetaDto,
   type PriceListItemPayload,
   type SupplierDto,
+  type SupplierPayload,
 } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import {
   type Outsourcer,
@@ -48,6 +49,17 @@ export function mapSupplierDtoToSupplier(dto: SupplierDto): Supplier {
 
 export function mapOutsourcerDtoToOutsourcer(dto: OutsourcerDto): Outsourcer {
   return mapSupplierDtoToSupplier(dto);
+}
+
+export function mapSupplierFormDataToPayload(
+  data: Record<string, unknown>,
+): SupplierPayload {
+  return {
+    name: String(data.name ?? ""),
+    manager_name: data.managerName ? String(data.managerName) : null,
+    phone: data.phone ? String(data.phone) : null,
+    website: data.website ? String(data.website) : null,
+  };
 }
 
 export function mapPriceListFormDataToPayload(

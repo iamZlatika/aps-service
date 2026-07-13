@@ -7,8 +7,9 @@ import {
   mapPriceListFormDataToPayload,
   mapPriceListItemDtoToPriceListItem,
   mapSupplierDtoToSupplier,
+  mapSupplierFormDataToPayload,
 } from "../lib/adapters";
-import type { PriceListItem } from "../types";
+import type { Outsourcer, PriceListItem, Supplier } from "../types";
 import {
   createDictionaryApi,
   createTypedDictionaryApi,
@@ -22,6 +23,7 @@ import {
   PriceListItemDtoSchema,
   type PriceListItemPayload,
   SupplierDtoSchema,
+  type SupplierPayload,
 } from "./dto";
 import { DICTIONARIES_API } from "./endpoints";
 
@@ -64,22 +66,68 @@ export const orderStatusesApi = createTypedDictionaryApi(
   },
   OrderStatusDtoSchema,
 );
-export const suppliersApi = createTypedDictionaryApi(
-  {
-    list: () => DICTIONARIES_API.suppliers(),
-    item: (id) => DICTIONARIES_API.supplier(id),
+export const suppliersApi = {
+  ...createTypedDictionaryApi(
+    {
+      list: () => DICTIONARIES_API.suppliers(),
+      item: (id) => DICTIONARIES_API.supplier(id),
+    },
+    SupplierDtoSchema,
+    mapSupplierDtoToSupplier,
+  ),
+  create: async (data: Record<string, unknown>): Promise<Supplier> => {
+    const payload = mapSupplierFormDataToPayload(data);
+    const response = await post<SupplierPayload, { data: unknown }>(
+      DICTIONARIES_API.suppliers(),
+      payload,
+    );
+    return mapSupplierDtoToSupplier(parseDto(SupplierDtoSchema, response.data));
   },
-  SupplierDtoSchema,
-  mapSupplierDtoToSupplier,
-);
-export const outsourcersApi = createTypedDictionaryApi(
-  {
-    list: () => DICTIONARIES_API.outsourcers(),
-    item: (id) => DICTIONARIES_API.outsourcer(id),
+  update: async (
+    id: number,
+    data: Record<string, unknown>,
+  ): Promise<Supplier> => {
+    const payload = mapSupplierFormDataToPayload(data);
+    const response = await put<SupplierPayload, { data: unknown }>(
+      DICTIONARIES_API.supplier(id),
+      payload,
+    );
+    return mapSupplierDtoToSupplier(parseDto(SupplierDtoSchema, response.data));
   },
-  OutsourcerDtoSchema,
-  mapOutsourcerDtoToOutsourcer,
-);
+};
+export const outsourcersApi = {
+  ...createTypedDictionaryApi(
+    {
+      list: () => DICTIONARIES_API.outsourcers(),
+      item: (id) => DICTIONARIES_API.outsourcer(id),
+    },
+    OutsourcerDtoSchema,
+    mapOutsourcerDtoToOutsourcer,
+  ),
+  create: async (data: Record<string, unknown>): Promise<Outsourcer> => {
+    const payload = mapSupplierFormDataToPayload(data);
+    const response = await post<SupplierPayload, { data: unknown }>(
+      DICTIONARIES_API.outsourcers(),
+      payload,
+    );
+    return mapOutsourcerDtoToOutsourcer(
+      parseDto(OutsourcerDtoSchema, response.data),
+    );
+  },
+  update: async (
+    id: number,
+    data: Record<string, unknown>,
+  ): Promise<Outsourcer> => {
+    const payload = mapSupplierFormDataToPayload(data);
+    const response = await put<SupplierPayload, { data: unknown }>(
+      DICTIONARIES_API.outsourcer(id),
+      payload,
+    );
+    return mapOutsourcerDtoToOutsourcer(
+      parseDto(OutsourcerDtoSchema, response.data),
+    );
+  },
+};
 export const productsApi = createDictionaryApi({
   list: () => DICTIONARIES_API.products(),
   item: (id) => DICTIONARIES_API.product(id),

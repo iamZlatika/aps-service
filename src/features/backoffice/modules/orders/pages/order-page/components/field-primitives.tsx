@@ -37,8 +37,8 @@ export const DisplayField = ({ value, copyable = true }: DisplayFieldProps) => {
   const { copied, copy } = useCopyToClipboard();
 
   return (
-    <div className="h-11 rounded-md border border-input bg-muted px-3 text-base flex items-center justify-between gap-2">
-      <span className="truncate min-w-0">
+    <div className="min-h-11 rounded-md border border-input bg-muted px-3 py-2 text-base flex items-center justify-between gap-2">
+      <span className="min-w-0 whitespace-normal break-words">
         {value || <span className="text-muted-foreground">—</span>}
       </span>
       {copyable && value && (

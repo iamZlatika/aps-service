@@ -8,6 +8,7 @@ import {
   createExtraPhoneSchema,
   type ExtraPhoneFormValues,
 } from "@/features/website/modules/profile/pages/components/addExtraPhoneRow.schema";
+import { extractLocalPhoneDigits } from "@/shared/lib/phone";
 import { cn, stripNonDigits } from "@/shared/lib/utils";
 
 interface AddExtraPhoneRowProps {
@@ -68,6 +69,7 @@ export const AddExtraPhoneRow = ({
             id="add-extra-phone"
             mask="000-000-00-00"
             value={phoneRaw.startsWith("+38") ? phoneRaw.slice(3) : phoneRaw}
+            prepare={extractLocalPhoneDigits}
             onAccept={handlePhoneChange}
             placeholder="0__-___-__-__"
             autoComplete="tel"
