@@ -358,7 +358,18 @@
       "survivor_label": "Основной клиент (остаётся)",
       "survivor_placeholder": "Выберите клиента",
       "absorbed_label": "Дубликат (будет объединён и удалён)",
-      "absorbed_placeholder": "Выберите дубликат"
+      "absorbed_placeholder": "Выберите дубликат",
+      "confirm": "Объединить",
+      "success": "Клиенты успешно объединены",
+      "confirm_title": "Слияние необратимо",
+      "confirm_description": "Все заказы и телефоны клиента «{{absorbed}}» будут перенесены клиенту «{{survivor}}». Запись «{{absorbed}}» будет удалена без возможности восстановления. Продолжить?"
+    },
+    "filters": {
+      "has_google": "Google",
+      "has_password": "Есть пароль",
+      "email_verified": "Email подтверждён",
+      "has_verified_phone": "Телефон подтверждён",
+      "telegram_subscribed": "Подписан на Telegram"
     },
     "orders": {
       "title": "Заказы клиента",

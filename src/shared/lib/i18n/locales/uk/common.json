@@ -355,7 +355,18 @@
       "survivor_label": "Основний клієнт (залишається)",
       "survivor_placeholder": "Виберіть клієнта",
       "absorbed_label": "Дублікат (буде об'єднано і видалено)",
-      "absorbed_placeholder": "Виберіть дублікат"
+      "absorbed_placeholder": "Виберіть дублікат",
+      "confirm": "Об'єднати",
+      "success": "Клієнтів успішно об'єднано",
+      "confirm_title": "Злиття незворотне",
+      "confirm_description": "Усі замовлення та телефони клієнта «{{absorbed}}» буде перенесено клієнту «{{survivor}}». Запис «{{absorbed}}» буде видалено без можливості відновлення. Продовжити?"
+    },
+    "filters": {
+      "has_google": "Google",
+      "has_password": "Є пароль",
+      "email_verified": "Email підтверджено",
+      "has_verified_phone": "Телефон підтверджено",
+      "telegram_subscribed": "Підписаний на Telegram"
     },
     "orders": {
       "title": "Замовлення клієнта",

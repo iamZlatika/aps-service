@@ -103,7 +103,7 @@ export const SmartTable = <T extends BaseItem>({
       </div>
 
       {(searchField || filterBar) && (
-        <div className="flex items-center gap-4 mb-4 min-w-0">
+        <div className="flex flex-wrap items-center gap-4 mb-4 min-w-0">
           {searchField && (
             <SearchFilter
               fieldName={searchField}
@@ -116,7 +116,11 @@ export const SmartTable = <T extends BaseItem>({
               }
             />
           )}
-          {filterBar && <div className="flex-1 min-w-0">{filterBar}</div>}
+          {filterBar && (
+            <div className="w-full sm:w-auto sm:flex-1 min-w-0">
+              {filterBar}
+            </div>
+          )}
         </div>
       )}
       {isError ? (

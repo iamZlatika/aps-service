@@ -20,9 +20,7 @@ const TOVARYSKA_OFFICE_COORDS = "47.890005,35.0660126";
 
 function isTovaryskaOffice(address: string): boolean {
   const normalized = address.toLowerCase();
-  return (
-    normalized.includes("товарищеск") || normalized.includes("товариськ")
-  );
+  return normalized.includes("товарищеск") || normalized.includes("товариськ");
 }
 
 export function getMapsUrl(address: string): string {
