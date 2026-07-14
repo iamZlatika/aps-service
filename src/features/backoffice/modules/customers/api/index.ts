@@ -153,6 +153,19 @@ export const customersApi = {
     const validatedData = parseDto(CustomerDtoSchema, response.data);
     return mapCustomerDtoToCustomer(validatedData);
   },
+  mergeCustomer: async (
+    survivorId: number,
+    absorbedCustomerId: number,
+  ): Promise<CustomerInfo> => {
+    const response = await post<
+      { absorbed_customer_id: number },
+      { data: CustomerInfoDto }
+    >(CUSTOMERS_API.mergeCustomer(survivorId), {
+      absorbed_customer_id: absorbedCustomerId,
+    });
+    const validatedData = parseDto(CustomerInfoDtoSchema, response.data);
+    return mapCustomerInfoDtoToCustomerInfo(validatedData);
+  },
   getTelegramLink: async (id: number): Promise<TelegramLink> => {
     const response = await post<void, { data: TelegramDtoLink }>(
       CUSTOMERS_API.getTelegramLink(id),

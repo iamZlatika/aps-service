@@ -4,6 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
+import { MergeButton } from "@/features/backoffice/components/MergeButton";
+import {
+  CUSTOMERS_BOOLEAN_FILTER_KEYS,
+  CustomersFilterBar,
+} from "@/features/backoffice/modules/customers/components/CustomersFilterBar.tsx";
+import { MergeCustomerDialog } from "@/features/backoffice/modules/customers/components/MergeCustomerDialog.tsx";
 import { useAddCustomer } from "@/features/backoffice/modules/customers/hooks/useAddCustomer.ts";
 import { newCustomerSchema } from "@/features/backoffice/modules/customers/lib/schemas.ts";
 import {
@@ -26,7 +32,9 @@ const CustomersPage = () => {
   const navigate = useNavigate();
   const { can } = useAuth();
   const canManage = can("customers_manage");
+  const canMerge = can("customers_merge");
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isMergeOpen, setIsMergeOpen] = useState(false);
 
   const { onSubmit: handleAddCustomerSubmit, isPending } = useAddCustomer(() =>
     setIsAddOpen(false),
@@ -107,14 +115,20 @@ const CustomersPage = () => {
         searchPlaceholder="search_placeholders.customer_phone"
         searchField="any_match"
         searchInputClassName="mb-0 flex-none w-full sm:w-[30rem]"
+        filterBar={<CustomersFilterBar />}
+        extraFilterKeys={[...CUSTOMERS_BOOLEAN_FILTER_KEYS]}
         columns={columns}
         headerActions={
-          canManage ? (
-            <AddButton onClick={() => setIsAddOpen(true)} />
+          canManage || canMerge ? (
+            <div className="flex items-center gap-2">
+              {canMerge && <MergeButton onClick={() => setIsMergeOpen(true)} />}
+              {canManage && <AddButton onClick={() => setIsAddOpen(true)} />}
+            </div>
           ) : undefined
         }
         onRowClick={onRowClick}
       />
+      <MergeCustomerDialog isOpen={isMergeOpen} onOpenChange={setIsMergeOpen} />
       <ItemFormDialog
         isOpen={isAddOpen}
         onOpenChange={setIsAddOpen}
