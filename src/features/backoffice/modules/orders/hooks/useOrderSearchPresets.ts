@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
+import { mapSearchPresetToOrderSearchPreset } from "@/features/backoffice/modules/orders/lib/adapters.ts";
 import type { OrderSearchPreset } from "@/features/backoffice/modules/orders/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { notifyError } from "@/shared/lib/errors/services.ts";
@@ -10,8 +11,9 @@ export const useOrderSearchPresets = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const presets: OrderSearchPreset[] =
-    (user?.searchPresets as OrderSearchPreset[] | undefined) ?? [];
+  const presets: OrderSearchPreset[] = (user?.searchPresets ?? []).map(
+    mapSearchPresetToOrderSearchPreset,
+  );
 
   const { mutate: deletePreset, isPending: isDeleting } = useMutation({
     mutationFn: (id: number) => ordersApi.deleteSearchPreset(id),

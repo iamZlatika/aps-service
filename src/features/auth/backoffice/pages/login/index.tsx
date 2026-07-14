@@ -20,7 +20,7 @@ import { Label } from "@/shared/components/ui/label.tsx";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
-import { type LoginFormValues, loginSchema } from "./login.schema.ts";
+import { createLoginSchema, type LoginFormValues } from "./login.schema.ts";
 
 export default function BackofficeLoginPage() {
   const { t } = useTranslation();
@@ -31,7 +31,7 @@ export default function BackofficeLoginPage() {
     setError,
     formState: { errors },
   } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(createLoginSchema()),
     defaultValues: {
       email: "",
       password: "",

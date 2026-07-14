@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { type WorkTypeInfo } from "@/entities/work/types";
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { worksApi } from "@/features/backoffice/modules/works/api";
@@ -26,7 +27,7 @@ const WorksPage = () => {
   const navigate = useNavigate();
   const localize = useLocalize();
   const { can } = useAuth();
-  const canManage = can("landing_works_manage");
+  const canManage = can(ABILITIES.LANDING_WORKS_MANAGE);
 
   const [workToDelete, setWorkToDelete] = useState<BackofficeWork | null>(null);
   const [workToToggle, setWorkToToggle] = useState<BackofficeWork | null>(null);

@@ -11,7 +11,8 @@ interface AccountHeaderProps {
 export const AccountHeader = ({ customer }: AccountHeaderProps) => {
   const { t } = useTranslation("website");
 
-  const firstName = customer?.portalName?.split(" ")[0] || "Client";
+  const firstName =
+    customer?.portalName?.split(" ")[0] || t("cabinet.defaultName");
 
   return (
     <div className="mb-7 flex flex-wrap items-end justify-between gap-5">

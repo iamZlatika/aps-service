@@ -13,6 +13,7 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { BILLING_LINKS } from "@/features/backoffice/modules/billing/navigation.ts";
 import { CUSTOMERS_LINKS } from "@/features/backoffice/modules/customers/navigation";
@@ -72,7 +73,7 @@ export const Sidebar = memo(() => {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {can("quick_orders_manage") && (
+              {can(ABILITIES.QUICK_ORDERS_MANAGE) && (
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild
@@ -131,7 +132,7 @@ export const Sidebar = memo(() => {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {can("billing_view") && (
+              {can(ABILITIES.BILLING_VIEW) && (
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild tooltip={t("sidebar.billing")}>
                     <Link
@@ -145,7 +146,7 @@ export const Sidebar = memo(() => {
                 </SidebarMenuItem>
               )}
 
-              {can("integrations_sms_view") && (
+              {can(ABILITIES.INTEGRATIONS_SMS_VIEW) && (
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild
@@ -162,7 +163,7 @@ export const Sidebar = memo(() => {
                 </SidebarMenuItem>
               )}
 
-              {can("users_roles_permissions_manage") && (
+              {can(ABILITIES.USERS_ROLES_PERMISSIONS_MANAGE) && (
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild

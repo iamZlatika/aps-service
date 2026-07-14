@@ -33,12 +33,15 @@ import {
   type OrderDocument,
   type OrderInfo,
   type OrderPayment,
+  type OrderPresetFilters,
   type OrderProduct,
+  type OrderSearchPreset,
   type OrderService,
   type OrderTransaction,
   type StatusHistoryItem,
 } from "@/features/backoffice/modules/orders/types.ts";
 import { mapUserDtoToUser } from "@/features/backoffice/modules/users/lib/adapters.ts";
+import type { SearchPreset } from "@/features/backoffice/modules/users/types.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
 
 export function mapStatusHistoryItemDtoToStatusHistoryItem(
@@ -321,5 +324,14 @@ export function mapNewPaymentToDto(payment: NewOrderPayment) {
     manager_id: payment.managerId,
     note: payment.note,
     method: payment.method,
+  };
+}
+
+export function mapSearchPresetToOrderSearchPreset(
+  preset: SearchPreset<Record<string, unknown>>,
+): OrderSearchPreset {
+  return {
+    ...preset,
+    filters: preset.filters as OrderPresetFilters,
   };
 }

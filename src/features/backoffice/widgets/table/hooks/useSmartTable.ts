@@ -4,7 +4,10 @@ import { useCallback, useEffect } from "react";
 import { useFilterParams } from "@/features/backoffice/widgets/table/hooks/useFilterParams.ts";
 import { usePageParam } from "@/features/backoffice/widgets/table/hooks/usePageParam.ts";
 import { usePerPage } from "@/features/backoffice/widgets/table/hooks/usePerPage.ts";
-import type { SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
+import type {
+  SortState,
+  SortType,
+} from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import { useSortParams } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
 import { sanitizeFilters } from "@/features/backoffice/widgets/table/lib/sanitizeFilters.ts";
 import type {
@@ -28,6 +31,34 @@ type UseSmartTableParams<T extends BaseItem = BaseItem> = {
   extraFilterKeys?: string[];
 };
 
+type UseSmartTableReturn<T extends BaseItem> = {
+  data: {
+    items: T[] | undefined;
+    isLoading: boolean;
+    isRefetching: boolean;
+    isError: boolean;
+    refetch: () => void;
+  };
+  pagination: {
+    page: number;
+    setPage: (value: number) => void;
+    lastPage: number;
+    pageNumbers: (number | "ellipsis")[];
+    perPage: ReturnType<typeof usePerPage>["perPage"];
+    perPageOptions: ReturnType<typeof usePerPage>["perPageOptions"];
+    handlePerPageChange: (value: string) => void;
+  };
+  sort: {
+    sort: SortState;
+    toggleSort: (column: string) => void;
+  };
+  filters: {
+    filters: Record<string, string>;
+    setFilter: (fieldName: string, value: string) => void;
+    resetFilters: () => void;
+  };
+};
+
 export const useSmartTable = <T extends BaseItem>({
   api,
   queryKeyFn,
@@ -35,7 +66,7 @@ export const useSmartTable = <T extends BaseItem>({
   searchField,
   tableKey,
   extraFilterKeys,
-}: UseSmartTableParams<T>) => {
+}: UseSmartTableParams<T>): UseSmartTableReturn<T> => {
   const { page, setPage } = usePageParam();
   const { perPage, setPerPage, perPageOptions } = usePerPage(tableKey);
   const { sort, toggleSort } = useSortParams();

@@ -325,6 +325,7 @@
     "personalData": "Особисті дані",
     "security": "Безпека",
     "name": "Ім'я та прізвище",
+    "defaultName": "Клієнт",
     "email": "Електронна пошта",
     "phone": "Телефон",
     "changePassword": "Змінити пароль",

@@ -151,6 +151,17 @@ export function mapReadySms(readySmsSentAt: string | null): HistorySms[] {
   return readySmsSentAt ? [{ type: "sms" as const, date: readySmsSentAt }] : [];
 }
 
+export function buildHistoryItemKey(item: OrderHistoryItem): string {
+  if (item.type === "status") return `status-${item.id}`;
+  if (item.type === "product" || item.type === "service") {
+    return `${item.type}-${item.id}-${item.event}`;
+  }
+  if (item.type === "payment") return `payment-${item.id}-${item.event}`;
+  if (item.type === "comment") return `comment-${item.id}`;
+  if (item.type === "call") return `call-${item.id}`;
+  return "sms-ready-sent";
+}
+
 export function buildOrderHistory(
   order: Pick<
     OrderInfo,

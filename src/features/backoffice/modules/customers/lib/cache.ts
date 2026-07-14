@@ -23,7 +23,7 @@ export async function updateCustomerCache(
     },
   );
   queryClient.setQueriesData<OrderInfo>(
-    { queryKey: ["orders", "detail"] },
+    { queryKey: queryKeys.orders.detailAll() },
     (old) => {
       if (!old || old.customer.id !== updatedCustomer.id) return old;
       return { ...old, customer: { ...old.customer, ...updatedCustomer } };

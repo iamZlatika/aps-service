@@ -2,6 +2,16 @@ import { type MessengerKey } from "@/features/website/config";
 import { assertNever } from "@/shared/lib/assertNever";
 import { stripNonDigits } from "@/shared/lib/utils";
 
+export function formatPrice(value: string | number): string {
+  const num = typeof value === "number" ? value : Number.parseFloat(value);
+  const safe = Number.isFinite(num) ? num : 0;
+  return `${new Intl.NumberFormat("uk-UA", { maximumFractionDigits: 0 }).format(safe)} ₴`;
+}
+
+export function getInitial(name: string): string {
+  return name.charAt(0).toUpperCase();
+}
+
 export function formatPhone(raw: string): string {
   const digits = stripNonDigits(raw);
   if (digits.length === 12 && digits.startsWith("380")) {

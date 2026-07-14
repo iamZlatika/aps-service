@@ -85,4 +85,11 @@ export default defineConfig([
       "prettier/prettier": "error",
     },
   },
+
+  {
+    files: ["**/*.sw.js"],
+    languageOptions: {
+      globals: globals.serviceworker,
+    },
+  },
 ]);

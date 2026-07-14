@@ -70,12 +70,20 @@ export const queryKeys = {
     all: ["customers"] as const,
     list: makeEntityKey(["customers"], "list"),
     detail: (id: number) => [...queryKeys.customers.all, "detail", id] as const,
+    searchByName: () => [...queryKeys.customers.all, "search-by-name"] as const,
+    searchByPhone: () =>
+      [...queryKeys.customers.all, "search-by-phone"] as const,
+    mergeSurvivor: (excludeId: number | null) =>
+      [...queryKeys.customers.all, "merge-survivor", excludeId] as const,
+    mergeAbsorbed: (excludeId: number | null) =>
+      [...queryKeys.customers.all, "merge-absorbed", excludeId] as const,
   },
 
   orders: {
     all: ["orders"] as const,
     list: makeEntityKey(["orders"], "list"),
     detail: (id: number) => [...queryKeys.orders.all, "detail", id] as const,
+    detailAll: () => [...queryKeys.orders.all, "detail"] as const,
     byCustomer: (customerId: number, page?: number) =>
       [
         ...queryKeys.orders.all,

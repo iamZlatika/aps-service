@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
-import { useSendPhoneCode } from "@/features/website/modules/account/hooks/useSendPhoneCode";
-import { useSetPrimaryPhone } from "@/features/website/modules/account/hooks/useSetPrimaryPhone";
+import { useSendPhoneCode } from "@/features/website/hooks/useSendPhoneCode";
+import { useSetPrimaryPhone } from "@/features/website/hooks/useSetPrimaryPhone";
 
 const RESEND_COUNTDOWN_SEC = 60;
 

@@ -32,4 +32,9 @@ export type QuickOrderDetail = QuickOrder & {
 
 export type NewQuickOrder = NewQuickOrderSchema;
 
-export type QuickOrderItemType = "service" | "product";
+export const QUICK_ORDER_ITEM_TYPES = {
+  SERVICE: "service",
+  PRODUCT: "product",
+} as const;
+export type QuickOrderItemType =
+  (typeof QUICK_ORDER_ITEM_TYPES)[keyof typeof QUICK_ORDER_ITEM_TYPES];

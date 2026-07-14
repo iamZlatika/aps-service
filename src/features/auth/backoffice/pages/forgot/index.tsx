@@ -17,7 +17,7 @@ import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { cn } from "@/shared/lib/utils.ts";
 
-import { type ForgotFormValues, forgotSchema } from "./forgot.schema";
+import { createForgotSchema, type ForgotFormValues } from "./forgot.schema";
 
 const ForgotPage = () => {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ const ForgotPage = () => {
     setError,
     formState: { errors },
   } = useForm<ForgotFormValues>({
-    resolver: zodResolver(forgotSchema),
+    resolver: zodResolver(createForgotSchema()),
   });
 
   const { forgotPassword, isPending } = useForgotPassword(setError, () =>

@@ -145,7 +145,7 @@ const QuickOrderFormFields = ({
       <div className="flex flex-col gap-1">
         <Label className="text-base">{t("quickOrders.form.comment")}</Label>
         <Input
-          autoComplete="new-password"
+          autoComplete="off"
           placeholder={t("quickOrders.form.commentPlaceholder")}
           className="h-11 text-base md:text-base"
           {...register("comment")}

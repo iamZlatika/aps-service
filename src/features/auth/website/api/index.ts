@@ -61,6 +61,9 @@ export const websiteAuthApi = {
     const validated = parseDto(AuthResponseDtoSchema, response);
     return mapAuthResponseDtoToAuthResponse(validated);
   },
+  // Token is passed explicitly (not via the request interceptor): the caller
+  // clears the session synchronously before this fires, so by request time
+  // apiClient's interceptor would find no token. See useLogout.ts.
   logout: (token: string): Promise<void> => {
     return post(WEBSITE_AUTH_API.logout(), undefined, {
       headers: { Authorization: `Bearer ${token}` },

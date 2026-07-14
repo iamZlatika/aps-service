@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { CustomerSmsSection } from "@/features/backoffice/modules/customers/components/CustomerSmsSection.tsx";
 import { CustomerTelegramSection } from "@/features/backoffice/modules/customers/components/CustomerTelegramSection.tsx";
@@ -41,7 +42,7 @@ export const CustomerInfoCard = ({
 }: CustomerInfoCardProps) => {
   const { t } = useTranslation();
   const { can } = useAuth();
-  const canManage = can("customers_manage");
+  const canManage = can(ABILITIES.CUSTOMERS_MANAGE);
   const [isInfoEditing, setIsInfoEditing] = useState(false);
 
   const { handleChangeInfo } = useCustomerInfo(customer.id, onSuccess);

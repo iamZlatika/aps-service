@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import { useCustomerMe } from "@/features/auth/website/hooks/useCustomerMe";
+import { getInitial } from "@/features/website/lib/service";
 import { CUSTOMER_ACCOUNT_LINKS } from "@/features/website/modules/account/navigation";
 import { cn } from "@/shared/lib/utils";
 
@@ -20,7 +21,7 @@ export const HeaderUserBadge = ({
   const { data: customer } = useCustomerMe();
 
   const firstName = customer?.portalName?.split(" ")[0] || "";
-  const avatarInitial = firstName.charAt(0).toUpperCase();
+  const avatarInitial = getInitial(firstName);
 
   return (
     <div className="flex items-center gap-2">
@@ -33,7 +34,7 @@ export const HeaderUserBadge = ({
           {customer.avatarUrl ? (
             <img
               src={customer.avatarUrl}
-              alt="Client"
+              alt={t("cabinet.defaultName")}
               className="size-full object-cover"
             />
           ) : (

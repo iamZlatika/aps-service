@@ -3,6 +3,7 @@ import { lazy, Suspense, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import { type Customer } from "@/features/auth/website/types";
+import { getInitial } from "@/features/website/lib/service";
 import { useAvatarEditorFlow } from "@/features/website/modules/profile/hooks/useAvatarEditorFlow";
 
 const AvatarEditorModal = lazy(() =>
@@ -29,8 +30,9 @@ export const ProfileAvatar = ({ customer }: ProfileAvatarProps) => {
     closeEditor,
   } = useAvatarEditorFlow();
 
-  const avatarInitial =
-    customer?.portalName?.charAt(0).toUpperCase() || "Client";
+  const avatarInitial = getInitial(
+    customer?.portalName || t("cabinet.defaultName"),
+  );
 
   return (
     <div className="relative shrink-0">
@@ -38,7 +40,7 @@ export const ProfileAvatar = ({ customer }: ProfileAvatarProps) => {
         {customer.avatarUrl ? (
           <img
             src={customer.avatarUrl}
-            alt="Client"
+            alt={t("cabinet.defaultName")}
             className="size-full object-cover"
           />
         ) : (

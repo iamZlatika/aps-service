@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { useSystemBalance } from "@/features/backoffice/modules/billing/hooks/useSystemBalance.ts";
 import { MoneyAmount } from "@/shared/components/common/MoneyAmount.tsx";
@@ -28,7 +29,7 @@ export const SystemBalanceCard = ({ onAdjust }: SystemBalanceCardProps) => {
             value={systemBalance.amount}
             className="text-2xl font-bold"
           />
-          {onAdjust && can("billing_balance_adjust") && (
+          {onAdjust && can(ABILITIES.BILLING_BALANCE_ADJUST) && (
             <Button size="sm" onClick={onAdjust}>
               {t("billing.system_balance.adjust_button")}
             </Button>

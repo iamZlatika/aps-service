@@ -1,14 +1,9 @@
 import { useTranslation } from "react-i18next";
 
 import { CommentsForm } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/CommentsForm.tsx";
-import { CallItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/CallItem.tsx";
-import { CommentItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/CommentItem.tsx";
-import { PaymentItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/PaymentItem.tsx";
-import { ProductServiceItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/ProductServiceItem.tsx";
-import { SmsItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/SmsItem.tsx";
-import { StatusItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/StatusItem.tsx";
+import { HistoryItem } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/HistoryItem.tsx";
+import { buildHistoryItemKey } from "@/features/backoffice/modules/orders/pages/order-page/services.ts";
 import type { OrderHistoryItem } from "@/features/backoffice/modules/orders/pages/order-page/types.ts";
-import { assertNever } from "@/shared/lib/assertNever.ts";
 
 interface HistorySidebarProps {
   orderId: number;
@@ -24,49 +19,12 @@ export const HistorySidebar = ({ orderId, history }: HistorySidebarProps) => {
         <h2 className="font-semibold text-base">{t("orders.history.title")}</h2>
       </div>
       <div className="flex-1 overflow-y-auto">
-        {history.map((historyItem) => {
-          if (historyItem.type === "status") {
-            return (
-              <StatusItem key={`status-${historyItem.id}`} item={historyItem} />
-            );
-          }
-          if (
-            historyItem.type === "product" ||
-            historyItem.type === "service"
-          ) {
-            return (
-              <ProductServiceItem
-                key={`${historyItem.type}-${historyItem.id}-${historyItem.event}`}
-                item={historyItem}
-              />
-            );
-          }
-          if (historyItem.type === "payment") {
-            return (
-              <PaymentItem
-                key={`payment-${historyItem.id}-${historyItem.event}`}
-                item={historyItem}
-              />
-            );
-          }
-          if (historyItem.type === "comment") {
-            return (
-              <CommentItem
-                key={`comment-${historyItem.id}`}
-                item={historyItem}
-              />
-            );
-          }
-          if (historyItem.type === "call") {
-            return (
-              <CallItem key={`call-${historyItem.id}`} item={historyItem} />
-            );
-          }
-          if (historyItem.type === "sms") {
-            return <SmsItem key="sms-ready-sent" item={historyItem} />;
-          }
-          return assertNever(historyItem);
-        })}
+        {history.map((historyItem) => (
+          <HistoryItem
+            key={buildHistoryItemKey(historyItem)}
+            item={historyItem}
+          />
+        ))}
       </div>
       <CommentsForm orderId={orderId} />
     </aside>

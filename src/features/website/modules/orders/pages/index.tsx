@@ -10,13 +10,16 @@ import { OrderDeviceInfo } from "@/features/website/modules/orders/pages/compone
 import { OrderDocumentsList } from "@/features/website/modules/orders/pages/components/OrderDocumentsList";
 import { OrderLineItemsCard } from "@/features/website/modules/orders/pages/components/OrderLineItemsCard";
 import { OrderPaymentsCard } from "@/features/website/modules/orders/pages/components/OrderPaymentsCard";
+import { NotFoundPage } from "@/features/website/pages/not-found";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard";
 
-export const OrderDetailPage = () => {
-  const { id = "" } = useParams<{ id: string }>();
-  const { order, isLoading, isError, error, refetch } = useCustomerOrder(
-    Number(id),
-  );
+interface OrderDetailPageContentProps {
+  orderId: number;
+}
+
+const OrderDetailPageContent = ({ orderId }: OrderDetailPageContentProps) => {
+  const { order, isLoading, isError, error, refetch } =
+    useCustomerOrder(orderId);
   const { t } = useTranslation("website");
 
   return (
@@ -98,6 +101,17 @@ export const OrderDetailPage = () => {
       )}
     </QueryPageGuard>
   );
+};
+
+export const OrderDetailPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const orderId = id ? parseInt(id, 10) : NaN;
+
+  if (!Number.isFinite(orderId)) {
+    return <NotFoundPage />;
+  }
+
+  return <OrderDetailPageContent orderId={orderId} />;
 };
 
 export default OrderDetailPage;

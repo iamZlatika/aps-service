@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
 import { usePermissions } from "@/features/backoffice/modules/roles-permissions/hooks/usePermissions.ts";
@@ -27,8 +28,8 @@ const UserPage = () => {
   const userId = id ? parseInt(id, 10) : null;
 
   const { can } = useAuth();
-  const canManageRoles = can("users_roles_permissions_manage");
-  const canManageUsers = can("users_manage");
+  const canManageRoles = can(ABILITIES.USERS_ROLES_PERMISSIONS_MANAGE);
+  const canManageUsers = can(ABILITIES.USERS_MANAGE);
 
   const { user, isLoading } = useUser(userId);
   const { roles: rolesData } = useRoles(canManageRoles);

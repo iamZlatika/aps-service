@@ -1,7 +1,10 @@
+import { mapStatusDtoToOrderStatus } from "@/entities/order-status/adapters";
 import { post, put } from "@/shared/api/api.ts";
 import { parseDto } from "@/shared/api/parseDto";
 
 import {
+  mapBankCardDtoToBankCard,
+  mapBankCardFormDataToPayload,
   mapLocationDtoToLocation,
   mapOutsourcerDtoToOutsourcer,
   mapPriceListFormDataToPayload,
@@ -9,13 +12,14 @@ import {
   mapSupplierDtoToSupplier,
   mapSupplierFormDataToPayload,
 } from "../lib/adapters";
-import type { Outsourcer, PriceListItem, Supplier } from "../types";
+import type { BankCard, Outsourcer, PriceListItem, Supplier } from "../types";
 import {
   createDictionaryApi,
   createTypedDictionaryApi,
 } from "./createDictionaryApi";
 import {
   BankCardDtoSchema,
+  type BankCardPayload,
   LocationDtoSchema,
   type LocationPayload,
   OrderStatusDtoSchema,
@@ -65,6 +69,7 @@ export const orderStatusesApi = createTypedDictionaryApi(
     item: (id) => DICTIONARIES_API.orderStatus(id),
   },
   OrderStatusDtoSchema,
+  mapStatusDtoToOrderStatus,
 );
 export const suppliersApi = {
   ...createTypedDictionaryApi(
@@ -197,12 +202,32 @@ export const bankCardsApi = {
       item: (id) => DICTIONARIES_API.bankCard(id),
     },
     BankCardDtoSchema,
+    mapBankCardDtoToBankCard,
   ),
-  toggleActive: async (id: number, isActive: boolean) => {
+  create: async (data: Record<string, unknown>): Promise<BankCard> => {
+    const payload = mapBankCardFormDataToPayload(data);
+    const response = await post<BankCardPayload, { data: unknown }>(
+      DICTIONARIES_API.bankCards(),
+      payload,
+    );
+    return mapBankCardDtoToBankCard(parseDto(BankCardDtoSchema, response.data));
+  },
+  update: async (
+    id: number,
+    data: Record<string, unknown>,
+  ): Promise<BankCard> => {
+    const payload = mapBankCardFormDataToPayload(data);
+    const response = await put<BankCardPayload, { data: unknown }>(
+      DICTIONARIES_API.bankCard(id),
+      payload,
+    );
+    return mapBankCardDtoToBankCard(parseDto(BankCardDtoSchema, response.data));
+  },
+  toggleActive: async (id: number, isActive: boolean): Promise<BankCard> => {
     const response = await put<{ is_active: boolean }, { data: unknown }>(
       DICTIONARIES_API.bankCardToggleActive(id),
       { is_active: isActive },
     );
-    return parseDto(BankCardDtoSchema, response.data);
+    return mapBankCardDtoToBankCard(parseDto(BankCardDtoSchema, response.data));
   },
 };

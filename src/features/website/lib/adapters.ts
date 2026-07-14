@@ -1,6 +1,7 @@
 import { mapLocationDtoToLocation } from "@/entities/location/adapters";
 import { mapStatusDtoToOrderStatus } from "@/entities/order-status/adapters";
 import { mapPriceListItemDtoToPriceListItem } from "@/entities/price-list/adapters";
+import { type VerifyPhoneCodeData } from "@/features/auth/website/types";
 import {
   type LandingDto,
   type OrderPreviewDto,
@@ -10,6 +11,7 @@ import {
   type TrackProductDto,
   type TrackServiceDto,
 } from "@/features/website/api/dto";
+import { type VerifyPhoneCodeFormValues } from "@/features/website/lib/phoneFlow.schema";
 import {
   type LandingData,
   type OrderPreview,
@@ -108,6 +110,12 @@ export function mapLandingDtoToLandingData(dto: LandingDto): LandingData {
       minPrice: p.min_price,
     })),
   };
+}
+
+export function mapVerifyPhoneCodeToRequestBody(
+  values: VerifyPhoneCodeFormValues,
+): VerifyPhoneCodeData {
+  return { code: values.code };
 }
 
 export function mapOrderPreviewDtoToOrderPreview(

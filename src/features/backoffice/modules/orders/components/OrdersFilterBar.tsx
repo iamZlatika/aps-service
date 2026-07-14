@@ -103,13 +103,8 @@ export const OrdersFilterBar = () => {
           <FilterTab
             key={preset.id}
             label={preset.name}
-            active={isPresetActive(
-              preset.filters as OrderPresetFilters,
-              searchParams,
-            )}
-            onClick={() =>
-              applyFilter(presetToParams(preset.filters as OrderPresetFilters))
-            }
+            active={isPresetActive(preset.filters, searchParams)}
+            onClick={() => applyFilter(presetToParams(preset.filters))}
           />
         ))}
       </div>

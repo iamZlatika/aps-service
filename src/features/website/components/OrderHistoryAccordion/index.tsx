@@ -3,6 +3,7 @@ import { Box, ChevronDown, Cog } from "lucide-react";
 import { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { formatPrice } from "@/features/website/lib/service";
 import type { OrderHistoryItem } from "@/features/website/types";
 import { useLocalizedName } from "@/shared/hooks/useLocalizedName";
 import { assertNever } from "@/shared/lib/assertNever";
@@ -64,7 +65,7 @@ const ItemContent = ({ item, isCurrent }: ItemContentProps) => {
           isRefund ? "text-rose-400" : "text-emerald-500",
         )}
       >
-        <span>{item.amount} ₴</span>
+        <span>{formatPrice(item.amount)}</span>
         <span className="font-normal text-ws-ink-mute">
           {t(`track.history.payment.${item.paymentType}`)}
           {" · "}
@@ -114,7 +115,7 @@ const ItemContent = ({ item, isCurrent }: ItemContentProps) => {
                 {t("track.history.priceLabel")}
               </span>
               <span className="text-[13.5px] font-semibold tabular-nums leading-none text-ws-ink">
-                {item.price} ₴
+                {formatPrice(item.price)}
               </span>
             </div>
             <div className="flex min-w-[58px] flex-col items-end gap-[3px] bg-white/[.03] px-3 py-[7px]">
@@ -122,7 +123,7 @@ const ItemContent = ({ item, isCurrent }: ItemContentProps) => {
                 {t("track.history.sumLabel")}
               </span>
               <span className="text-[13.5px] font-semibold tabular-nums leading-none text-ws-ember-bright">
-                {item.sum} ₴
+                {formatPrice(item.sum)}
               </span>
             </div>
           </div>

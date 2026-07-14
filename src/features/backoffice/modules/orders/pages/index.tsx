@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
@@ -23,7 +24,7 @@ const OrdersPage = () => {
   const locale = isUk ? "uk-UA" : "ru-RU";
   const isMobile = useIsMobile();
   const { can } = useAuth();
-  const canManage = can("orders_manage");
+  const canManage = can(ABILITIES.ORDERS_MANAGE);
 
   useOrdersSocket();
 

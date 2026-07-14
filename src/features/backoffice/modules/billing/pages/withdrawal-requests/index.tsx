@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { billingApi } from "@/features/backoffice/modules/billing/api";
 import { AdjustSystemBalanceModal } from "@/features/backoffice/modules/billing/components/AdjustSystemBalanceModal.tsx";
@@ -12,7 +13,7 @@ import { queryKeys } from "@/shared/api/queryKeys.ts";
 
 const WithdrawalRequestsPage = () => {
   const { can } = useAuth();
-  const canDecideWithdrawals = can("billing_balance_adjust");
+  const canDecideWithdrawals = can(ABILITIES.BILLING_BALANCE_ADJUST);
   const [isAdjustingSystemBalance, setIsAdjustingSystemBalance] =
     useState(false);
 

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { worksApi } from "@/features/backoffice/modules/works/api";
+import { mapBackofficeWorkToEditFormValues } from "@/features/backoffice/modules/works/lib/adapters.ts";
 import {
   type WorkEditFormValues,
   workEditSchema,
@@ -42,17 +43,7 @@ export const useEditWork = (workId: number): UseEditWorkResult => {
     formState: { errors },
   } = useForm<WorkEditFormValues>({
     resolver: zodResolver(workEditSchema),
-    values: work
-      ? {
-          device_type: work.deviceType,
-          manufacturer: work.manufacturer,
-          device_model: work.deviceModel,
-          description_ru: work.descriptionRu,
-          description_uk: work.descriptionUk,
-          reason_ru: work.reasonRu ?? "",
-          reason_uk: work.reasonUk ?? "",
-        }
-      : undefined,
+    values: work ? mapBackofficeWorkToEditFormValues(work) : undefined,
   });
 
   const mutation = useMutation({

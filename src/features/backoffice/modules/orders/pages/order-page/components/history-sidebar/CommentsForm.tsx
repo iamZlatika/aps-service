@@ -1,5 +1,6 @@
 import { ImagePlus, SendHorizonal, X } from "lucide-react";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { useCommentForm } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/hooks/useCommentForm.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
@@ -12,11 +13,12 @@ interface CommentsFormProps {
 
 export const CommentsForm = ({ orderId }: CommentsFormProps) => {
   const { can } = useAuth();
-  const canManage = can("orders_manage");
+  const canManage = can(ABILITIES.ORDERS_MANAGE);
   const {
     comment,
     pendingImage,
     isPending,
+    isProcessingImage,
     canSend,
     fileInputRef,
     setComment,
@@ -74,7 +76,7 @@ export const CommentsForm = ({ orderId }: CommentsFormProps) => {
         <Button
           variant="secondary"
           className="h-10 w-10 shrink-0"
-          disabled={isPending}
+          disabled={isPending || isProcessingImage}
           onClick={() => fileInputRef.current?.click()}
         >
           <ImagePlus className="h-5 w-5" />

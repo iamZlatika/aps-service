@@ -20,6 +20,7 @@ type UseCommentFormReturn = {
   comment: string;
   pendingImage: PendingImage | null;
   isPending: boolean;
+  isProcessingImage: boolean;
   canSend: boolean;
   fileInputRef: RefObject<HTMLInputElement | null>;
   setComment: (value: string) => void;
@@ -71,7 +72,12 @@ export function useCommentForm(orderId: number): UseCommentFormReturn {
     },
   });
 
+  const isProcessingImage =
+    pendingImage !== null && pendingImage.progress < 100;
+
   const handleFile = async (file: File) => {
+    if (pendingImage && pendingImage.progress < 100) return;
+
     setPendingImage({ file, previewUrl: "", progress: 0 });
 
     let finalFile = file;
@@ -107,6 +113,7 @@ export function useCommentForm(orderId: number): UseCommentFormReturn {
     comment,
     pendingImage,
     isPending,
+    isProcessingImage,
     canSend,
     fileInputRef,
     setComment,

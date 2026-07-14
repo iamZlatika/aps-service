@@ -33,24 +33,14 @@ export const customerOrdersApi = {
     return mapOrderDetailDtoToOrderDetail(validated);
   },
 
-  downloadDocument: async (
+  fetchDocumentBlob: async (
     orderId: number,
     documentId: number,
-    filename: string,
-  ): Promise<void> => {
+  ): Promise<Blob> => {
     const response = await apiClient.get(
       CUSTOMER_ORDERS_API.downloadDocument(orderId, documentId),
       { responseType: "blob" },
     );
-    const objectUrl = URL.createObjectURL(
-      new Blob([response.data], { type: "application/pdf" }),
-    );
-    const a = document.createElement("a");
-    a.href = objectUrl;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(objectUrl), 100);
+    return new Blob([response.data], { type: "application/pdf" });
   },
 };

@@ -19,7 +19,6 @@ export const ReviewsAside = ({
   const { t } = useTranslation("website");
   const localize = useLocalize();
   const { avg, dist } = computeReviewStats(reviews.map((r) => r.rating));
-  const reviewUrl = activeLocation.reviewUrl ?? "#";
   const address = localize(activeLocation.addressRu, activeLocation.addressUa);
   const avgDisplay = avg.toFixed(1);
 
@@ -86,15 +85,17 @@ export const ReviewsAside = ({
           ))}
         </div>
 
-        <a
-          href={reviewUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ws-reviews-cta flex transform-gpu items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-ws-ember-bright to-ws-ember px-5 py-3.5 text-sm font-semibold no-underline shadow-[0_12px_30px_-12px_rgba(238,122,58,0.5)] transition-transform hover:-translate-y-px"
-        >
-          <ExternalLinkIcon className="h-[15px] w-[15px] shrink-0" />
-          {t("reviews.leaveReview")}
-        </a>
+        {activeLocation.reviewUrl && (
+          <a
+            href={activeLocation.reviewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ws-reviews-cta flex transform-gpu items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-ws-ember-bright to-ws-ember px-5 py-3.5 text-sm font-semibold no-underline shadow-[0_12px_30px_-12px_rgba(238,122,58,0.5)] transition-transform hover:-translate-y-px"
+          >
+            <ExternalLinkIcon className="h-[15px] w-[15px] shrink-0" />
+            {t("reviews.leaveReview")}
+          </a>
+        )}
       </div>
     </aside>
   );

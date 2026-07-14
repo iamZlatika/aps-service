@@ -12,6 +12,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard";
 import { CustomerOrdersSection } from "@/features/backoffice/modules/customers/components/CustomerOrdersSection";
@@ -33,6 +34,7 @@ import { CreateOrderForCustomerButton } from "@/shared/components/common/buttons
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
+import { useKeyboardShortcut } from "@/shared/hooks/useKeyboardShortcut.ts";
 import { useIsMobile } from "@/shared/hooks/useMobile.ts";
 import { cn } from "@/shared/lib/utils.ts";
 
@@ -64,7 +66,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   useOrderCustomerTelegramSocket(orderId, selectedOrder?.customer.id ?? null);
 
   const { can } = useAuth();
-  const canManageOrders = can("orders_manage");
+  const canManageOrders = can(ABILITIES.ORDERS_MANAGE);
 
   const { createOrderForCustomer } = useCreateOrderForCustomer();
 
@@ -81,19 +83,17 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   const locationKeyRef = useRef(location.key);
   locationKeyRef.current = location.key;
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        if (locationKeyRef.current === "default") {
-          navigate(ORDERS_LINKS.root());
-        } else {
-          navigate(-1);
-        }
+  useKeyboardShortcut({
+    key: "Escape",
+    ignoreWhenTyping: false,
+    onTrigger: () => {
+      if (locationKeyRef.current === "default") {
+        navigate(ORDERS_LINKS.root());
+      } else {
+        navigate(-1);
       }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [navigate]);
+    },
+  });
 
   const [isPrintOpen, setIsPrintOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<OrderTab>("order");

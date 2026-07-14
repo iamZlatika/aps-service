@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { DeleteConfirmDialog } from "@/features/backoffice/modules/orders/components/info-table/DeleteConfirmDialog.tsx";
 import { type InfoTableColumn } from "@/features/backoffice/modules/orders/components/info-table/InfoTable.tsx";
@@ -39,7 +40,7 @@ const QuickOrderPageContent = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { can } = useAuth();
-  const canManage = can("quick_orders_manage");
+  const canManage = can(ABILITIES.QUICK_ORDERS_MANAGE);
   const [activeTab, setActiveTab] = useState<QuickOrderTab>("sale");
   const [isCancelling, setIsCancelling] = useState(false);
 

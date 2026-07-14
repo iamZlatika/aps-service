@@ -1,5 +1,6 @@
 import { type ReactNode } from "react";
 
+import { formatPrice } from "@/features/website/lib/service";
 import { OrderSectionCard } from "@/features/website/modules/orders/pages/components/OrderSectionCard";
 import { type OrderLineItem } from "@/features/website/modules/orders/types";
 
@@ -25,7 +26,7 @@ export const OrderLineItemsCard = ({
     <OrderSectionCard
       icon={icon}
       title={title}
-      aside={items.length > 0 ? `${total} ₴` : undefined}
+      aside={items.length > 0 ? formatPrice(total) : undefined}
     >
       {items.length === 0 ? (
         <p className="py-[22px] text-center text-[13px] text-ws-ink-mute">
@@ -44,7 +45,7 @@ export const OrderLineItemsCard = ({
               ×{item.quantity}
             </span>
             <span className="whitespace-nowrap text-[14px] font-bold tabular-nums text-ws-ink">
-              {item.sum} ₴
+              {formatPrice(item.sum)}
             </span>
           </div>
         ))

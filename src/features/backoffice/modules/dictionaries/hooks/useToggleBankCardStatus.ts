@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { bankCardsApi } from "@/features/backoffice/modules/dictionaries/api";
-import type { BankCardDto } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
+import type { BankCard } from "@/features/backoffice/modules/dictionaries/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { notifyError } from "@/shared/lib/errors/services.ts";
 
@@ -11,12 +11,12 @@ type UseToggleBankCardStatusReturn = {
 };
 
 export const useToggleBankCardStatus = (
-  card: BankCardDto,
+  card: BankCard,
 ): UseToggleBankCardStatusReturn => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () => bankCardsApi.toggleActive(card.id, !card.is_active),
+    mutationFn: () => bankCardsApi.toggleActive(card.id, !card.isActive),
     onSuccess: () => {
       void queryClient.invalidateQueries({
         queryKey: queryKeys.dictionaries.bankCards(),

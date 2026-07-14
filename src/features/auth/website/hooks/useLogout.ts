@@ -15,6 +15,10 @@ export const useLogout = (redirectTo: string): UseLogoutReturn => {
     meta: { silent: true },
   });
 
+  // Session is cleared synchronously (not in onSettled) for instant UI feedback.
+  // Reverting to an onSettled-based clear reintroduces a login->logout->login
+  // race that previously broke the app (fixed in 895896e) — see PROJECT audit
+  // notes before changing this.
   const logout = () => {
     const token = customerAuthService.getToken();
     sessionLogout("customer", redirectTo);

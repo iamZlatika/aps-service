@@ -149,7 +149,12 @@ export type NewOrderService = Omit<
   | "outsourcer"
 > & { managerId: number | null; outsourcerName: string };
 
-export type OrderItemType = "product" | "service";
+export const ORDER_ITEM_TYPES = {
+  PRODUCT: "product",
+  SERVICE: "service",
+} as const;
+export type OrderItemType =
+  (typeof ORDER_ITEM_TYPES)[keyof typeof ORDER_ITEM_TYPES];
 
 export type OrderItem =
   | (OrderProduct & { type: "product" })

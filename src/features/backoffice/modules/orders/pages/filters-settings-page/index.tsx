@@ -51,12 +51,7 @@ const FiltersSettingsPage = () => {
 
   const maps: PresetDisplayMaps = useMemo(
     () => ({
-      statusMap: new Map(
-        statuses.map((s) => [
-          s.id,
-          getLocalizedName({ nameRu: s.name_ru, nameUa: s.name_ua }),
-        ]),
-      ),
+      statusMap: new Map(statuses.map((s) => [s.id, getLocalizedName(s)])),
       locationMap: new Map(locations.map((l) => [l.id, l.name])),
       managerMap: new Map(users.map((u) => [u.id, u.name])),
     }),

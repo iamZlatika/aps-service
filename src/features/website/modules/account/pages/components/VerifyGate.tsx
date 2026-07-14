@@ -1,19 +1,21 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Send, Smartphone } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { IMaskInput } from "react-imask";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
+import { useSendPhoneCode } from "@/features/website/hooks/useSendPhoneCode";
+import { useVerifyPhoneCode } from "@/features/website/hooks/useVerifyPhoneCode";
 import {
   createVerifyPhoneCodeSchema,
   type VerifyPhoneCodeFormValues,
-} from "@/features/website/modules/account/account.schema";
-import { useSendPhoneCode } from "@/features/website/modules/account/hooks/useSendPhoneCode";
-import { useVerifyPhoneCode } from "@/features/website/modules/account/hooks/useVerifyPhoneCode";
+} from "@/features/website/lib/phoneFlow.schema";
 import { CUSTOMER_PROFILE_LINKS } from "@/features/website/modules/profile/navigation";
+
+const RESEND_COUNTDOWN_SEC = 60;
 
 interface VerifyGateProps {
   readonly phoneNumber: string;
@@ -22,7 +24,30 @@ interface VerifyGateProps {
 export const VerifyGate = ({ phoneNumber }: VerifyGateProps) => {
   const { t } = useTranslation("website");
   const [isCodeSent, setIsCodeSent] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const countdownRef = useRef(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const { submit: sendCode, isPending: isSending } = useSendPhoneCode();
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current !== null) clearInterval(timerRef.current);
+    };
+  }, []);
+
+  const startCountdown = () => {
+    if (timerRef.current !== null) clearInterval(timerRef.current);
+    countdownRef.current = RESEND_COUNTDOWN_SEC;
+    setCountdown(RESEND_COUNTDOWN_SEC);
+    timerRef.current = setInterval(() => {
+      countdownRef.current -= 1;
+      setCountdown(countdownRef.current);
+      if (countdownRef.current <= 0) {
+        clearInterval(timerRef.current!);
+        timerRef.current = null;
+      }
+    }, 1000);
+  };
 
   const {
     handleSubmit,
@@ -46,6 +71,7 @@ export const VerifyGate = ({ phoneNumber }: VerifyGateProps) => {
         setIsCodeSent(true);
         setValue("code", "");
         clearErrors();
+        startCountdown();
       },
     });
   };
@@ -133,10 +159,12 @@ export const VerifyGate = ({ phoneNumber }: VerifyGateProps) => {
             <button
               type="button"
               onClick={handleSendCode}
-              disabled={isSending}
-              className="px-2 py-[13px] text-[13px] font-semibold text-ws-ember-bright hover:underline disabled:opacity-55"
+              disabled={isSending || countdown > 0}
+              className="px-2 py-[13px] text-[13px] font-semibold text-ws-ember-bright hover:underline disabled:opacity-55 disabled:no-underline"
             >
-              {t("cabinet.resendCode")}
+              {countdown > 0
+                ? t("cabinet.resendCodeIn", { seconds: countdown })
+                : t("cabinet.resendCode")}
             </button>
           </div>
           <p className="mt-[7px] min-h-[17px] text-[12px] text-ws-red-bright">

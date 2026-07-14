@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import { StatusBadge } from "@/features/website/components/StatusBadge";
+import { formatPrice } from "@/features/website/lib/service";
 import { CUSTOMER_ORDERS_LINKS } from "@/features/website/modules/orders/navigation";
 import { type OrderListItem } from "@/features/website/modules/orders/types";
 import { formatDate } from "@/shared/lib/utils";
@@ -54,7 +55,7 @@ export const OrderListCard = ({ order }: OrderListCardProps) => {
           }
         >
           {order.estimatedCost
-            ? `≈ ${order.estimatedCost} ₴`
+            ? `≈ ${formatPrice(order.estimatedCost)}`
             : t("cabinet.ordersCostPending")}
         </span>
       </span>

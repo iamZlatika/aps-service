@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { DEVICE_ICONS } from "@/features/website/components/DeviceIcons";
+import { formatPrice } from "@/features/website/lib/service";
 import { type DeviceId } from "@/features/website/pages/home/components/devices/DevicesData";
 
 interface DeviceCardProps {
@@ -46,7 +47,7 @@ export const DeviceCard = ({ id, onClick, minPrice }: DeviceCardProps) => {
           {isOther
             ? t(`devices.items.${id}.price`)
             : minPrice != null
-              ? `${minPrice} ₴`
+              ? formatPrice(minPrice)
               : t(`devices.items.${id}.price`)}
           {!isOther && (
             <span className="ml-1 align-middle text-[20px] font-bold leading-none text-ws-ember-bright">

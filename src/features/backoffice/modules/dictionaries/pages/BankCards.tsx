@@ -1,10 +1,11 @@
 import { Check, Copy, Lock, Unlock } from "lucide-react";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { bankCardsApi } from "@/features/backoffice/modules/dictionaries/api";
-import type { BankCardDto } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { DictionaryTablePage } from "@/features/backoffice/modules/dictionaries/components/DictionaryTablePage.tsx";
 import { useToggleBankCardStatus } from "@/features/backoffice/modules/dictionaries/hooks/useToggleBankCardStatus.ts";
+import type { BankCard } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { ColumnConfig } from "@/features/backoffice/widgets/table/models/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
@@ -32,7 +33,7 @@ const CopyCardNumber = ({ prettyNumber }: { prettyNumber: string }) => {
 };
 
 interface BankCardStatusToggleProps {
-  card: BankCardDto;
+  card: BankCard;
   canManage: boolean;
 }
 
@@ -42,7 +43,7 @@ const BankCardStatusToggle = ({
 }: BankCardStatusToggleProps) => {
   const { toggle, isPending } = useToggleBankCardStatus(card);
 
-  const icon = card.is_active ? (
+  const icon = card.isActive ? (
     <Unlock className="h-4 w-4" />
   ) : (
     <Lock className="h-4 w-4" />
@@ -51,7 +52,7 @@ const BankCardStatusToggle = ({
   if (!canManage) {
     return (
       <span
-        className={card.is_active ? "p-2 text-green-600" : "p-2 text-red-600"}
+        className={card.isActive ? "p-2 text-green-600" : "p-2 text-red-600"}
       >
         {icon}
       </span>
@@ -63,7 +64,7 @@ const BankCardStatusToggle = ({
       variant="ghost"
       size="icon"
       className={
-        card.is_active
+        card.isActive
           ? "text-green-600 hover:text-green-700 hover:bg-green-50"
           : "text-red-600 hover:text-red-700 hover:bg-red-50"
       }
@@ -80,12 +81,12 @@ const BankCardStatusToggle = ({
 
 const BankCardsPage = () => {
   const { can } = useAuth();
-  const canManage = can("dictionaries_bank_cards_manage");
+  const canManage = can(ABILITIES.DICTIONARIES_BANK_CARDS_MANAGE);
 
-  const columns: ColumnConfig<BankCardDto>[] = [
+  const columns: ColumnConfig<BankCard>[] = [
     {
-      key: "owner_name",
-      field: "owner_name",
+      key: "ownerName",
+      field: "ownerName",
       labelKey: "dictionaries.table_fields.ownerName",
       sortable: true,
     },
@@ -96,12 +97,12 @@ const BankCardsPage = () => {
       sortable: false,
       type: "card",
       renderCell: (_, item) => (
-        <CopyCardNumber prettyNumber={item.pretty_number} />
+        <CopyCardNumber prettyNumber={item.prettyNumber} />
       ),
     },
     {
-      key: "is_active",
-      field: "is_active",
+      key: "isActive",
+      field: "isActive",
       labelKey: "dictionaries.table_fields.isActive",
       sortable: false,
       formField: false,
@@ -120,8 +121,8 @@ const BankCardsPage = () => {
       searchField="number"
       searchNumbersOnly
       searchPlaceholder="search_placeholders.card_number"
-      getItemName={(item) => item.owner_name}
-      manageAbility="dictionaries_bank_cards_manage"
+      getItemName={(item) => item.ownerName}
+      manageAbility={ABILITIES.DICTIONARIES_BANK_CARDS_MANAGE}
     />
   );
 };
