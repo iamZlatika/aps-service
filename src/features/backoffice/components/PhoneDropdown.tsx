@@ -25,7 +25,7 @@ export const PhoneDropdown = ({
   const digits = stripNonDigits(phoneNumber);
   const whatsappUrl = `https://wa.me/${digits}`;
   const viberUrl = `viber://chat?number=%2B${digits}`;
-  const telegramUrl = `https://t.me/+${digits}`;
+  const telegramUrl = `https://telegram.me/+${digits}`;
 
   const triggerClass =
     size === "md"
