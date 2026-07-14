@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { billingApi } from "@/features/backoffice/modules/billing/api";
 import { AdjustBalanceModal } from "@/features/backoffice/modules/billing/components/AdjustBalanceModal.tsx";
@@ -19,7 +20,7 @@ const BalancesPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { can } = useAuth();
-  const canAdjust = can("billing_balance_adjust");
+  const canAdjust = can(ABILITIES.BILLING_BALANCE_ADJUST);
   const [adjustingBalance, setAdjustingBalance] = useState<Balance | null>(
     null,
   );

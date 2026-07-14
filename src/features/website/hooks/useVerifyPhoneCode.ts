@@ -4,8 +4,8 @@ import type { UseFormSetError } from "react-hook-form";
 import { customerAuthService } from "@/features/auth/lib/authService";
 import { websiteAuthApi } from "@/features/auth/website/api";
 import { type VerifyPhoneResponse } from "@/features/auth/website/types";
-import { type VerifyPhoneCodeFormValues } from "@/features/website/modules/account/account.schema";
-import { mapVerifyPhoneCodeToRequestBody } from "@/features/website/modules/account/lib/adapters";
+import { mapVerifyPhoneCodeToRequestBody } from "@/features/website/lib/adapters";
+import { type VerifyPhoneCodeFormValues } from "@/features/website/lib/phoneFlow.schema";
 import { queryKeys } from "@/shared/api/queryKeys";
 import { handleFormError } from "@/shared/lib/errors/handleFormError";
 

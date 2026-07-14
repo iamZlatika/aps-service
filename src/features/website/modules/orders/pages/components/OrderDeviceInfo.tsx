@@ -1,6 +1,7 @@
 import { Laptop } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { formatPrice } from "@/features/website/lib/service";
 import { OrderSectionCard } from "@/features/website/modules/orders/pages/components/OrderSectionCard";
 import { type OrderDetail } from "@/features/website/modules/orders/types";
 import { useLocalize } from "@/shared/hooks/useLocalize";
@@ -28,7 +29,7 @@ export const OrderDeviceInfo = ({ order }: OrderDeviceInfoProps) => {
     { label: t("cabinet.specDueDate"), value: formatDate(order.dueDate) },
     {
       label: t("cabinet.specEstimatedCost"),
-      value: order.estimatedCost ? `${order.estimatedCost} ₴` : null,
+      value: order.estimatedCost ? formatPrice(order.estimatedCost) : null,
     },
   ];
 

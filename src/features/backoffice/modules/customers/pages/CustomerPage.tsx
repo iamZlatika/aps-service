@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { CustomerInfoCard } from "@/features/backoffice/modules/customers/components/CustomerInfoCard";
 import { CustomerOrdersSection } from "@/features/backoffice/modules/customers/components/CustomerOrdersSection.tsx";
@@ -23,8 +24,8 @@ const CustomerPage = () => {
   useCustomerTelegramSocket(customerId);
   const { createOrderForCustomer } = useCreateOrderForCustomer();
   const { can } = useAuth();
-  const canManageOrders = can("orders_manage");
-  const canMerge = can("customers_merge");
+  const canManageOrders = can(ABILITIES.ORDERS_MANAGE);
+  const canMerge = can(ABILITIES.CUSTOMERS_MERGE);
 
   if (isLoading) return <Loader />;
   if (!selectedCustomer || !customerId) return null;

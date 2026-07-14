@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+import { type OrderStatus } from "@/entities/order-status/types";
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { orderStatusesApi } from "@/features/backoffice/modules/dictionaries/api";
-import type { OrderStatusDto } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { RowActions } from "@/features/backoffice/modules/dictionaries/components/RowActions.tsx";
 import {
   EditOrderStatusSchema,
@@ -32,7 +33,7 @@ const colorOptions = Object.values(STATUS_COLORS).map((color) => ({
   colorDot: statusColorMap[color as StatusColor],
 }));
 
-const columns: ColumnConfig<OrderStatusDto>[] = [
+const columns: ColumnConfig<OrderStatus>[] = [
   {
     key: "key",
     field: "key",
@@ -40,8 +41,8 @@ const columns: ColumnConfig<OrderStatusDto>[] = [
     sortable: true,
   },
   {
-    key: "name_ua",
-    field: "name_ua",
+    key: "nameUa",
+    field: "nameUa",
     labelKey: "dictionaries.table_fields.name_ua",
     sortable: false,
     renderCell: (value, item) => (
@@ -49,8 +50,8 @@ const columns: ColumnConfig<OrderStatusDto>[] = [
     ),
   },
   {
-    key: "name_ru",
-    field: "name_ru",
+    key: "nameRu",
+    field: "nameRu",
     labelKey: "dictionaries.table_fields.name_ru",
     sortable: false,
     renderCell: (value, item) => (
@@ -62,9 +63,9 @@ const columns: ColumnConfig<OrderStatusDto>[] = [
 const OrderStatusesPage = () => {
   const { t } = useTranslation();
   const { can } = useAuth();
-  const canManage = can("dictionaries_manage");
+  const canManage = can(ABILITIES.DICTIONARIES_MANAGE);
 
-  const { addModal, deleteModal, editModal } = useTableActions<OrderStatusDto>(
+  const { addModal, deleteModal, editModal } = useTableActions<OrderStatus>(
     queryKeys.dictionaries.orderStatuses,
     orderStatusesApi.create,
     orderStatusesApi.remove,
@@ -149,7 +150,7 @@ const OrderStatusesPage = () => {
                   item={item}
                   onEdit={editModal.start}
                   onDelete={deleteModal.requestDelete}
-                  deleteDisabled={item.is_system}
+                  deleteDisabled={item.isSystem}
                 />
               )
             : undefined
@@ -173,7 +174,7 @@ const OrderStatusesPage = () => {
         onOpenChange={deleteModal.setOpen}
         title={t("table.delete_modal.title")}
         description={t("table.delete_modal.description", {
-          name: deleteModal.item?.name_ru ?? deleteModal.item?.key,
+          name: deleteModal.item?.nameRu ?? deleteModal.item?.key,
         })}
         cancelLabel={t("table.delete_modal.cancel")}
         confirmLabel={t("table.delete_modal.confirm")}

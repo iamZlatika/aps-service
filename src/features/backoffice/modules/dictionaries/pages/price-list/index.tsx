@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { priceListApi } from "@/features/backoffice/modules/dictionaries/api";
 import { DictionaryTablePage } from "@/features/backoffice/modules/dictionaries/components/DictionaryTablePage";
 import type {
@@ -130,7 +131,7 @@ const PriceListPage = () => {
       extraFilterKeys={["categories[]", "name"]}
       tableClassName="max-w-[2560px] lg:max-w-[2560px]"
       getItemName={(item) => localize(item.nameRu, item.nameUk)}
-      manageAbility="dictionaries_price_list_manage"
+      manageAbility={ABILITIES.DICTIONARIES_PRICE_LIST_MANAGE}
     />
   );
 };

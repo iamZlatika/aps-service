@@ -5,14 +5,15 @@ import { useTranslation } from "react-i18next";
 import { IMaskInput } from "react-imask";
 import { toast } from "sonner";
 
-import { useAddPhoneFlow } from "@/features/website/modules/account/hooks/useAddPhoneFlow";
+import { useAddPhoneFlow } from "@/features/website/hooks/useAddPhoneFlow";
 import {
   type AddPhoneFormValues,
   createAddPhoneSchema,
-} from "@/features/website/modules/account/pages/components/addPhoneGate.schema";
-import { AddPhoneOtpForm } from "@/features/website/modules/account/pages/components/AddPhoneOtpForm";
+} from "@/features/website/lib/phoneFlow.schema";
 import { extractLocalPhoneDigits } from "@/shared/lib/phone";
 import { cn, stripNonDigits } from "@/shared/lib/utils";
+
+import { AddPhoneOtpForm } from "./AddPhoneOtpForm";
 
 interface PhoneFlowFormProps {
   inputId: string;

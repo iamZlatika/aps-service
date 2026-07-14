@@ -20,7 +20,13 @@ function getStoredPerPage(storageKey: string): PerPageOption {
   return DEFAULT_PER_PAGE;
 }
 
-export function usePerPage(tableKey: string) {
+type UsePerPageReturn = {
+  perPage: PerPageOption;
+  setPerPage: (value: PerPageOption) => void;
+  perPageOptions: typeof PER_PAGE_OPTIONS;
+};
+
+export function usePerPage(tableKey: string): UsePerPageReturn {
   const storageKey = `items_per_page_${tableKey}`;
   const [perPage, setPerPageState] = useState<PerPageOption>(() =>
     getStoredPerPage(storageKey),

@@ -1,6 +1,7 @@
 import { CreditCard, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { formatPrice } from "@/features/website/lib/service";
 import { OrderSectionCard } from "@/features/website/modules/orders/pages/components/OrderSectionCard";
 import { type TrackPayment } from "@/features/website/types";
 import { formatDate } from "@/shared/lib/utils";
@@ -65,7 +66,7 @@ export const OrderPaymentsCard = ({
                 }
               >
                 {isRefund ? "−" : "+"}
-                {payment.amount} ₴
+                {formatPrice(payment.amount)}
               </span>
             </div>
           );
@@ -76,19 +77,19 @@ export const OrderPaymentsCard = ({
         <div className="flex items-center justify-between py-[9px] text-[13.5px] text-ws-ink-soft">
           <span>{t("cabinet.totalCost")}</span>
           <span className="font-semibold tabular-nums text-ws-ink">
-            {totalCost ? `${totalCost} ₴` : t("track.cost.pending")}
+            {totalCost ? formatPrice(totalCost) : t("track.cost.pending")}
           </span>
         </div>
         <div className="flex items-center justify-between py-[9px] text-[13.5px] text-ws-ink-soft">
           <span>{t("cabinet.orderTotalPaid")}</span>
           <span className="font-semibold tabular-nums text-ws-green-bright">
-            {totalPaid} ₴
+            {formatPrice(totalPaid)}
           </span>
         </div>
         <div className="flex items-center justify-between border-t border-ws-line-soft pt-[14px] text-[15px] font-semibold text-ws-ink">
           <span>{t("cabinet.orderRemainingToPay")}</span>
           <span className="text-[18px] font-bold tabular-nums text-ws-ember-bright">
-            {remainingToPay} ₴
+            {formatPrice(remainingToPay)}
           </span>
         </div>
       </div>

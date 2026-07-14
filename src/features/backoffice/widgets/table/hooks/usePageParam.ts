@@ -1,7 +1,12 @@
 import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 
-export function usePageParam() {
+type UsePageParamReturn = {
+  page: number;
+  setPage: (value: number) => void;
+};
+
+export function usePageParam(): UsePageParamReturn {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const page = Number(searchParams.get("page")) || 1;

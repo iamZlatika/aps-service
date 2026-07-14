@@ -1,17 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 
 import type { Location } from "@/entities/location/types.ts";
+import { type OrderStatus } from "@/entities/order-status/types";
 import {
   locationApi,
   orderStatusesApi,
 } from "@/features/backoffice/modules/dictionaries/api";
-import type { OrderStatusDto } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import { usersApi } from "@/features/backoffice/modules/users/api";
 import { type User } from "@/features/backoffice/modules/users/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
 type UseFilterFormOptionsReturn = {
-  statuses: OrderStatusDto[];
+  statuses: OrderStatus[];
   locations: Location[];
   users: User[];
   isLoadingUsers: boolean;

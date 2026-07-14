@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { useTranslation } from "react-i18next";
 
+import { type Ability } from "@/features/auth/backoffice/abilities.ts";
 import { backofficeAuthService } from "@/features/auth/lib/authService.ts";
 import { logout as sessionLogout } from "@/features/auth/lib/sessionManager.ts";
 import { usersApi } from "@/features/backoffice/modules/users/api";
@@ -10,9 +11,11 @@ import { getEcho, initEcho } from "@/shared/lib/echo.ts";
 
 import { authApi } from "../api";
 
+const getToken = (): string | undefined => backofficeAuthService.getToken();
+
 export const useAuth = () => {
   const queryClient = useQueryClient();
-  const token = backofficeAuthService.getToken();
+  const token = useSyncExternalStore(backofficeAuthService.subscribe, getToken);
 
   const { i18n } = useTranslation();
 
@@ -87,7 +90,7 @@ export const useAuth = () => {
     user,
     roles: user?.roles ?? [],
     abilities,
-    can: (ability: string) => abilities.includes(ability),
+    can: (ability: Ability) => abilities.includes(ability),
     isAuthenticated: !!token && !isError,
     isLoading: isLoading || (!!token && !user && !isError),
     login: loginMutation.mutate,

@@ -48,6 +48,8 @@ export const STATUS_COLORS = {
   Gray: "gray",
 } as const;
 
+export type StatusColor = (typeof STATUS_COLORS)[keyof typeof STATUS_COLORS];
+
 export const PAYMENTS = {
   PREPAYMENT: "prepayment",
   PAYMENT: "payment",

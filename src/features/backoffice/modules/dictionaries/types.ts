@@ -1,6 +1,5 @@
 import { type BaseItem } from "@/features/backoffice/widgets/table/models/types.ts";
 import { type WeekDay } from "@/shared/types";
-import { type STATUS_COLORS } from "@/shared/types.ts";
 
 export type { Location } from "@/entities/location/types";
 
@@ -19,6 +18,14 @@ export type Supplier = {
 
 export type Outsourcer = Supplier;
 
+export type BankCard = {
+  id: number;
+  ownerName: string;
+  number: string;
+  prettyNumber: string;
+  isActive: boolean;
+};
+
 export type PaginationMeta = {
   currentPage: number;
   lastPage: number;
@@ -33,12 +40,11 @@ export type PaginatedDictionaryItems<T extends BaseItem = DictionaryItem> = {
   meta: PaginationMeta;
 };
 
-export type StatusColor = (typeof STATUS_COLORS)[keyof typeof STATUS_COLORS];
-
 export type {
   PriceListCategory,
   PriceListItem,
 } from "@/entities/price-list/types";
+export type { StatusColor } from "@/shared/types.ts";
 
 export type ScheduleGroup = {
   fromDay: WeekDay;

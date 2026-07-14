@@ -13,7 +13,29 @@ export default defineConfig({
       injectRegister: null,
       manifest: false,
       workbox: {
-        globPatterns: ["**/*.{js,css,html,svg,png,webp,woff2}"],
+        // New SW activates immediately and takes control of open tabs,
+        // instead of waiting for every tab to be closed first.
+        skipWaiting: true,
+        clientsClaim: true,
+        // HTML must not be served cache-first from precache (that's what
+        // kept stale app shells alive after a deploy) — disable the
+        // default precache-bound navigate fallback and use a
+        // network-first runtimeCaching rule for navigations instead.
+        navigateFallback: undefined,
+        globPatterns: ["**/*.{js,css,svg,png,webp,woff2}"],
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.mode === "navigate",
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "app-shell",
+              networkTimeoutSeconds: 3,
+              expiration: {
+                maxEntries: 5,
+              },
+            },
+          },
+        ],
       },
     }),
   ],

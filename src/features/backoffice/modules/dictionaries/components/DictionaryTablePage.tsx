@@ -1,6 +1,10 @@
 import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
+import {
+  ABILITIES,
+  type Ability,
+} from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { RowActions } from "@/features/backoffice/modules/dictionaries/components/RowActions.tsx";
@@ -44,7 +48,7 @@ interface DictionaryTablePageProps<T extends BaseItem> {
   extraFilterKeys?: string[];
   formFields?: FieldConfig[];
   tableClassName?: string;
-  manageAbility?: string;
+  manageAbility?: Ability;
 }
 
 export const DictionaryTablePage = <T extends BaseItem>({
@@ -61,7 +65,7 @@ export const DictionaryTablePage = <T extends BaseItem>({
   extraFilterKeys,
   formFields,
   tableClassName,
-  manageAbility = "dictionaries_manage",
+  manageAbility = ABILITIES.DICTIONARIES_MANAGE,
 }: DictionaryTablePageProps<T>) => {
   const { t } = useTranslation();
   const { can } = useAuth();

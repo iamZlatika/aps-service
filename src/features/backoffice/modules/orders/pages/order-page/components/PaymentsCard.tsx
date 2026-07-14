@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { type InfoTableColumn } from "@/features/backoffice/modules/orders/components/info-table/InfoTable.tsx";
@@ -13,6 +13,7 @@ import type {
   OrderInfo,
   OrderPayment,
 } from "@/features/backoffice/modules/orders/types.ts";
+import { useKeyboardShortcut } from "@/shared/hooks/useKeyboardShortcut.ts";
 import { PAYMENTS, type PaymentType } from "@/shared/types.ts";
 
 const PAYMENT_TYPE_ORDER = [
@@ -36,17 +37,12 @@ export const PaymentsCard = ({
   const [modalType, setModalType] = useState<PaymentType | null>(null);
   const { onDelete, isPending: isDeleting } = useDeletePayment(orderId);
 
-  useEffect(() => {
-    if (!canManage) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== "Insert" || !e.shiftKey) return;
-      const tag = (e.target as HTMLElement).tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
-      setModalType(PAYMENTS.PREPAYMENT);
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [canManage]);
+  useKeyboardShortcut({
+    key: "Insert",
+    shiftKey: true,
+    enabled: canManage,
+    onTrigger: () => setModalType(PAYMENTS.PREPAYMENT),
+  });
 
   const activePayments = selectedOrder.payments
     .filter((p) => !p.deletedAt)

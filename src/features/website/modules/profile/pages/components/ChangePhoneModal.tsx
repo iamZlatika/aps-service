@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
+import { PhoneFlowForm } from "@/features/website/components/PhoneFlow/PhoneFlowForm";
 import { WebsiteModal } from "@/features/website/components/WebsiteModal";
-import { PhoneFlowForm } from "@/features/website/modules/account/pages/components/PhoneFlowForm";
 
 interface ChangePhoneModalProps {
   open: boolean;

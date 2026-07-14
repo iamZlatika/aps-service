@@ -2,7 +2,7 @@ import { Smartphone } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-import { PhoneFlowForm } from "@/features/website/modules/account/pages/components/PhoneFlowForm";
+import { PhoneFlowForm } from "@/features/website/components/PhoneFlow/PhoneFlowForm";
 
 export const AddPhoneGate = () => {
   const { t } = useTranslation("website");

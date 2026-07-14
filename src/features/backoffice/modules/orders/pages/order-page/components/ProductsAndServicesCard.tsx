@@ -1,5 +1,5 @@
 import { Box, Cog } from "lucide-react";
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const AddOrderItemModal = lazy(
@@ -15,6 +15,7 @@ import {
   type OrderInfo,
   type OrderItem,
 } from "@/features/backoffice/modules/orders/types.ts";
+import { useKeyboardShortcut } from "@/shared/hooks/useKeyboardShortcut.ts";
 
 interface ProductsAndServicesCardProps {
   orderId: number;
@@ -31,17 +32,11 @@ export const ProductsAndServicesCard = ({
   const [modalState, setModalState] = useState<ModalState>(null);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (!canManage) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== "Insert" || e.shiftKey) return;
-      const tag = (e.target as HTMLElement).tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
-      setModalState({ mode: "add", type: "service" });
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [canManage]);
+  useKeyboardShortcut({
+    key: "Insert",
+    enabled: canManage,
+    onTrigger: () => setModalState({ mode: "add", type: "service" }),
+  });
 
   const modalType =
     modalState?.mode === "edit"

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { quickOrdersApi } from "@/features/backoffice/modules/quick-orders/api";
@@ -15,7 +16,7 @@ const columns = buildQuickOrderColumns();
 const QuickOrdersPage = () => {
   const navigate = useNavigate();
   const { can } = useAuth();
-  const canManage = can("quick_orders_manage");
+  const canManage = can(ABILITIES.QUICK_ORDERS_MANAGE);
 
   const onRowClick = (quickOrder: QuickOrder) =>
     navigate(QUICK_ORDERS_LINKS.detail(quickOrder.id));

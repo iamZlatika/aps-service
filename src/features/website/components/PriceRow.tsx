@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { type PriceListItem } from "@/entities/price-list/types";
+import { formatPrice } from "@/features/website/lib/service";
 import { useLocalize } from "@/shared/hooks/useLocalize";
 
 interface PriceRowProps {
@@ -28,7 +29,7 @@ export const PriceRow = ({ item }: PriceRowProps) => {
             {t("devices.from")}
           </span>
         )}
-        <span className="text-[15px]">{`${item.price} ₴`}</span>
+        <span className="text-[15px]">{formatPrice(item.price)}</span>
       </div>
     </div>
   );

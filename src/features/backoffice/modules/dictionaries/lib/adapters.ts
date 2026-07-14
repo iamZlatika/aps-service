@@ -1,4 +1,6 @@
 import {
+  type BankCardDto,
+  type BankCardPayload,
   type OutsourcerDto,
   type PaginationMetaDto,
   type PriceListItemPayload,
@@ -6,6 +8,7 @@ import {
   type SupplierPayload,
 } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
 import {
+  type BankCard,
   type Outsourcer,
   type PaginatedDictionaryItems,
   type PaginationMeta,
@@ -59,6 +62,25 @@ export function mapSupplierFormDataToPayload(
     manager_name: data.managerName ? String(data.managerName) : null,
     phone: data.phone ? String(data.phone) : null,
     website: data.website ? String(data.website) : null,
+  };
+}
+
+export function mapBankCardDtoToBankCard(dto: BankCardDto): BankCard {
+  return {
+    id: dto.id,
+    ownerName: dto.owner_name,
+    number: dto.number,
+    prettyNumber: dto.pretty_number,
+    isActive: dto.is_active,
+  };
+}
+
+export function mapBankCardFormDataToPayload(
+  data: Record<string, unknown>,
+): BankCardPayload {
+  return {
+    owner_name: String(data.ownerName ?? ""),
+    number: String(data.number ?? ""),
   };
 }
 

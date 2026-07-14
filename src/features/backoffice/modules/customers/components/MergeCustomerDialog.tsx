@@ -8,6 +8,7 @@ import {
   type CustomerOptionMeta,
 } from "@/features/backoffice/modules/customers/lib/searchFetchers.ts";
 import { DeleteConfirmDialog } from "@/features/backoffice/widgets/table/components/dialogs";
+import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
   Dialog,
@@ -116,7 +117,7 @@ export const MergeCustomerDialog = ({
                 onClear={() => setSurvivorId(null)}
                 renderOption={renderCustomerOption}
                 fetchItems={createFetchAllCustomers(absorbedId)}
-                queryKey={["customers", "merge-survivor", absorbedId]}
+                queryKey={queryKeys.customers.mergeSurvivor(absorbedId)}
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -131,7 +132,7 @@ export const MergeCustomerDialog = ({
                 onClear={() => setAbsorbedId(null)}
                 renderOption={renderCustomerOption}
                 fetchItems={createFetchMergeableCustomers(survivorId)}
-                queryKey={["customers", "merge-absorbed", survivorId]}
+                queryKey={queryKeys.customers.mergeAbsorbed(survivorId)}
               />
             </div>
             {mergeError && (

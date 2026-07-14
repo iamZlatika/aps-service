@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { usersApi } from "@/features/backoffice/modules/users/api";
@@ -22,7 +23,7 @@ const UsersPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { can } = useAuth();
-  const canManageUsers = can("users_manage");
+  const canManageUsers = can(ABILITIES.USERS_MANAGE);
 
   const columns: ColumnConfig<User>[] = [
     {

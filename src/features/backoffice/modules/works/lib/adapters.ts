@@ -2,6 +2,7 @@ import { mapWorkDtoToWork } from "@/entities/work/adapters";
 
 import { type BackofficeWorkDto } from "../api/dto";
 import { type WorkFormValues } from "../lib/work.schema";
+import { type WorkEditFormValues } from "../lib/work-edit.schema";
 import { type BackofficeWork } from "../types";
 
 export function mapFormValuesToFormData(values: WorkFormValues): FormData {
@@ -30,5 +31,19 @@ export function mapBackofficeWorkDtoToBackofficeWork(
   return {
     ...mapWorkDtoToWork(dto),
     isPublished: dto.is_published,
+  };
+}
+
+export function mapBackofficeWorkToEditFormValues(
+  work: BackofficeWork,
+): WorkEditFormValues {
+  return {
+    device_type: work.deviceType,
+    manufacturer: work.manufacturer,
+    device_model: work.deviceModel,
+    description_ru: work.descriptionRu,
+    description_uk: work.descriptionUk,
+    reason_ru: work.reasonRu ?? "",
+    reason_uk: work.reasonUk ?? "",
   };
 }

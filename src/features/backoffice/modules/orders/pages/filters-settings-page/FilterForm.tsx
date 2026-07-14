@@ -102,10 +102,7 @@ export const FilterForm = ({ id, onSubmit }: FilterFormProps) => {
                     )}
                   >
                     <StatusBadge
-                      name={getLocalizedName({
-                        nameRu: status.name_ru,
-                        nameUa: status.name_ua,
-                      })}
+                      name={getLocalizedName(status)}
                       color={status.color}
                     />
                   </button>

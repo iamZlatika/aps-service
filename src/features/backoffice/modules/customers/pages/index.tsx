@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { MergeButton } from "@/features/backoffice/components/MergeButton";
@@ -31,8 +32,8 @@ const CustomersPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { can } = useAuth();
-  const canManage = can("customers_manage");
-  const canMerge = can("customers_merge");
+  const canManage = can(ABILITIES.CUSTOMERS_MANAGE);
+  const canMerge = can(ABILITIES.CUSTOMERS_MERGE);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isMergeOpen, setIsMergeOpen] = useState(false);
 

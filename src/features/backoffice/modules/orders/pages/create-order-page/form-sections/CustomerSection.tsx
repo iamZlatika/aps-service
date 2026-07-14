@@ -9,6 +9,7 @@ import type {
   CustomerByPhoneMeta,
 } from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
 import { PhoneMaskInput } from "@/features/backoffice/widgets/table/components/inputs/PhoneMaskInput.tsx";
+import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { CardTitle } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
@@ -80,7 +81,7 @@ export const CustomerSection = ({
                   />
                 )}
                 fetchItems={fetchCustomersByName}
-                queryKey={["customers", "search-by-name"]}
+                queryKey={queryKeys.customers.searchByName()}
                 error={errors.customerName}
               />
             )}
@@ -135,7 +136,7 @@ export const CustomerSection = ({
                   />
                 )}
                 fetchItems={fetchCustomersByPhone}
-                queryKey={["customers", "search-by-phone"]}
+                queryKey={queryKeys.customers.searchByPhone()}
                 error={errors.customerPrimaryPhone}
               />
             )}

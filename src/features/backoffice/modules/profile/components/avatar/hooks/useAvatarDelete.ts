@@ -3,13 +3,23 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { profileApi } from "@/features/backoffice/modules/profile/api";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
-export const useAvatarDelete = () => {
+type UseAvatarDeleteReturn = {
+  deleteAvatar: (options?: { onSuccess?: () => void }) => void;
+  isPending: boolean;
+};
+
+export const useAvatarDelete = (): UseAvatarDeleteReturn => {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: profileApi.deleteAvatar,
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: queryKeys.auth.user() });
     },
   });
+
+  return {
+    deleteAvatar: (options) => mutate(undefined, options),
+    isPending,
+  };
 };

@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { Navigate, type RouteObject } from "react-router-dom";
 
 import { ProtectedRoute } from "@/app/ProtectedRoute";
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { BILLING_LINKS } from "@/features/backoffice/modules/billing/navigation.ts";
 import { BILLING_ROUTES } from "@/features/backoffice/modules/billing/routes.ts";
 import { CUSTOMERS_ROUTES } from "@/features/backoffice/modules/customers/routes";
@@ -151,7 +152,9 @@ export const backofficeRoutes: RouteObject = {
 
     {
       element: (
-        <ProtectedRoute requiredAbility="users_roles_permissions_manage" />
+        <ProtectedRoute
+          requiredAbility={ABILITIES.USERS_ROLES_PERMISSIONS_MANAGE}
+        />
       ),
       children: [
         {
@@ -161,7 +164,7 @@ export const backofficeRoutes: RouteObject = {
       ],
     },
     {
-      element: <ProtectedRoute requiredAbility="billing_view" />,
+      element: <ProtectedRoute requiredAbility={ABILITIES.BILLING_VIEW} />,
       children: [
         {
           path: BILLING_ROUTES.root,
@@ -179,7 +182,9 @@ export const backofficeRoutes: RouteObject = {
       ],
     },
     {
-      element: <ProtectedRoute requiredAbility="integrations_sms_view" />,
+      element: (
+        <ProtectedRoute requiredAbility={ABILITIES.INTEGRATIONS_SMS_VIEW} />
+      ),
       children: [
         {
           path: SMS_INTEGRATION_ROUTES.root,
@@ -188,7 +193,9 @@ export const backofficeRoutes: RouteObject = {
       ],
     },
     {
-      element: <ProtectedRoute requiredAbility="quick_orders_manage" />,
+      element: (
+        <ProtectedRoute requiredAbility={ABILITIES.QUICK_ORDERS_MANAGE} />
+      ),
       children: [
         {
           path: QUICK_ORDERS_ROUTES.root,

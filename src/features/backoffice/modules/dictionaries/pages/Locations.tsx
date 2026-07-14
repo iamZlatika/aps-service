@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { type Location } from "@/entities/location/types";
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { AddButton } from "@/features/backoffice/components/AddButton";
 import { PhoneDropdown } from "@/features/backoffice/components/PhoneDropdown";
@@ -19,7 +20,7 @@ const LocationsPage = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { can } = useAuth();
-  const canManage = can("dictionaries_locations_manage");
+  const canManage = can(ABILITIES.DICTIONARIES_LOCATIONS_MANAGE);
 
   const [formState, setFormState] = useState<{
     isOpen: boolean;

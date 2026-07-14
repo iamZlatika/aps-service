@@ -9,7 +9,7 @@ const AvatarEditorDialog = lazy(
 import { useAvatarDelete } from "@/features/backoffice/modules/profile/components/avatar/hooks/useAvatarDelete.ts";
 import { useAvatarUpload } from "@/features/backoffice/modules/profile/components/avatar/hooks/useAvatarUpload.ts";
 import EditButton from "@/features/backoffice/modules/profile/components/buttons/EditButton.tsx";
-import { isCustomAvatar } from "@/features/backoffice/modules/profile/lib/isCusttomAvatar.ts";
+import { isCustomAvatar } from "@/features/backoffice/modules/profile/lib/isCustomAvatar.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { Avatar, AvatarImage } from "@/shared/components/ui/avatar";
 import { useIsMobile } from "@/shared/hooks/useMobile.ts";
@@ -28,8 +28,8 @@ const UserAvatar = ({ userName, userAvatarUrl }: UserAvatarProps) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
 
-  const uploadMutation = useAvatarUpload();
-  const deleteMutation = useAvatarDelete();
+  const { upload, isPending: isUploading } = useAvatarUpload();
+  const { deleteAvatar, isPending: isDeleting } = useAvatarDelete();
 
   const hasCustomAvatar = isCustomAvatar(userAvatarUrl);
 
@@ -43,7 +43,7 @@ const UserAvatar = ({ userName, userAvatarUrl }: UserAvatarProps) => {
   };
 
   const handleUpload = (file: File) => {
-    uploadMutation.mutate(file, {
+    upload(file, {
       onSuccess: () => setIsEditorOpen(false),
     });
   };
@@ -60,7 +60,7 @@ const UserAvatar = ({ userName, userAvatarUrl }: UserAvatarProps) => {
           <AvatarImage src={userAvatarUrl} alt={userName || "User avatar"} />
         </Avatar>
 
-        {deleteMutation.isPending && (
+        {isDeleting && (
           <div className="absolute inset-0 flex items-center justify-center bg-background/60 rounded-full">
             <Loader className="p-0" />
           </div>
@@ -68,8 +68,8 @@ const UserAvatar = ({ userName, userAvatarUrl }: UserAvatarProps) => {
 
         {hasCustomAvatar && (
           <button
-            onClick={() => deleteMutation.mutate()}
-            disabled={deleteMutation.isPending}
+            onClick={() => deleteAvatar()}
+            disabled={isDeleting}
             className="absolute top-1 right-1 flex h-8 w-8 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-md transition-opacity hover:opacity-80 disabled:opacity-50"
             aria-label={t("profile.avatar.remove")}
           >
@@ -96,7 +96,7 @@ const UserAvatar = ({ userName, userAvatarUrl }: UserAvatarProps) => {
         <AvatarEditorDialog
           image={selectedImage}
           open={isEditorOpen}
-          isPending={uploadMutation.isPending}
+          isPending={isUploading}
           onOpenChange={setIsEditorOpen}
           onSave={handleUpload}
         />

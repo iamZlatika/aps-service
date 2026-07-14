@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 import { IMaskInput } from "react-imask";
 import { toast } from "sonner";
 
+import { useVerifyPhoneCode } from "@/features/website/hooks/useVerifyPhoneCode";
 import {
   createVerifyPhoneCodeSchema,
   type VerifyPhoneCodeFormValues,
-} from "@/features/website/modules/account/account.schema";
-import { useVerifyPhoneCode } from "@/features/website/modules/account/hooks/useVerifyPhoneCode";
+} from "@/features/website/lib/phoneFlow.schema";
 
 interface AddPhoneOtpFormProps {
   phone: string;

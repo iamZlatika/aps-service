@@ -19,8 +19,8 @@ import { Label } from "@/shared/components/ui/label.tsx";
 import { cn } from "@/shared/lib/utils.ts";
 
 import {
+  createResetPasswordSchema,
   type ResetPasswordFormValues,
-  resetPasswordSchema,
 } from "./forgot.schema";
 
 const ResetPasswordPage = () => {
@@ -38,7 +38,7 @@ const ResetPasswordPage = () => {
     setError,
     formState: { errors },
   } = useForm<ResetPasswordFormValues>({
-    resolver: zodResolver(resetPasswordSchema),
+    resolver: zodResolver(createResetPasswordSchema()),
     defaultValues: {
       password: "",
       password_confirmation: "",

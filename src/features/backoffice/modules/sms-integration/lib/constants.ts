@@ -1,6 +1,6 @@
-import { type SmsMessageStatus } from "@/shared/types.ts";
+import { type SmsMessageStatus, type StatusColor } from "@/shared/types.ts";
 
-export const SMS_STATUS_COLORS: Record<SmsMessageStatus, string> = {
+export const SMS_STATUS_COLORS: Record<SmsMessageStatus, StatusColor> = {
   pending: "gray",
   sent: "sky",
   delivered: "green",

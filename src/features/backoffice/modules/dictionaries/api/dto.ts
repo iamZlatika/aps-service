@@ -1,8 +1,6 @@
 import { z } from "zod";
 
 import { type Schedule } from "@/entities/location/types";
-import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
-import { STATUS_COLORS } from "@/shared/types.ts";
 
 export const DictionaryItemDtoSchema = z.object({
   id: z.number(),
@@ -45,16 +43,10 @@ export const PaginatedDictionaryItemsDtoSchema = z.object({
   meta: PaginationMetaDtoSchema,
 });
 
-export const OrderStatusDtoSchema = z.object({
-  id: z.number(),
-  key: z.string(),
-  name_ru: z.string(),
-  name_ua: z.string(),
-  color: zodEnumFromConst(STATUS_COLORS),
-  is_system: z.boolean(),
-});
-
-export type OrderStatusDto = z.infer<typeof OrderStatusDtoSchema>;
+export {
+  type StatusDto as OrderStatusDto,
+  StatusDtoSchema as OrderStatusDtoSchema,
+} from "@/entities/order-status/dto";
 
 export const SupplierDtoSchema = z.object({
   id: z.number(),
@@ -124,3 +116,8 @@ export const BankCardDtoSchema = z.object({
 });
 
 export type BankCardDto = z.infer<typeof BankCardDtoSchema>;
+
+export type BankCardPayload = {
+  owner_name: string;
+  number: string;
+};

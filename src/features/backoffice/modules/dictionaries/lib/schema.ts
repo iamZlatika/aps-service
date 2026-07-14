@@ -1,7 +1,7 @@
 import i18next from "i18next";
 import { z } from "zod";
 
-import { type StatusColor } from "@/features/backoffice/modules/dictionaries/types.ts";
+import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
 import { STATUS_COLORS } from "@/shared/types.ts";
 
 export const NewOrderStatusSchema = z.object({
@@ -21,9 +21,7 @@ export const NewOrderStatusSchema = z.object({
   color: z
     .string()
     .min(1, i18next.t("validation.colorRequired"))
-    .pipe(
-      z.enum(Object.values(STATUS_COLORS) as [StatusColor, ...StatusColor[]]),
-    ),
+    .pipe(zodEnumFromConst(STATUS_COLORS)),
 });
 
 export const EditOrderStatusSchema = NewOrderStatusSchema.omit({ key: true });

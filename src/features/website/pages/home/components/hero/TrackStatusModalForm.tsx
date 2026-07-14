@@ -8,7 +8,10 @@ import { type OrderPreview } from "@/features/website/types";
 import { isApiError } from "@/shared/lib/errors/services";
 import { cn } from "@/shared/lib/utils";
 
-import { trackOrderSchema, type TrackOrderValues } from "./trackOrder.schema";
+import {
+  createTrackOrderSchema,
+  type TrackOrderValues,
+} from "./trackOrder.schema";
 
 interface TrackStatusModalFormProps {
   onSuccess: (data: OrderPreview) => void;
@@ -28,7 +31,7 @@ export const TrackStatusModalForm = ({
     reset,
     formState: { errors },
   } = useForm<TrackOrderValues>({
-    resolver: zodResolver(trackOrderSchema),
+    resolver: zodResolver(createTrackOrderSchema()),
     defaultValues: { orderNumber: "" },
   });
 

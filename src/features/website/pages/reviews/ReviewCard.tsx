@@ -1,4 +1,4 @@
-import { getAvatarColor } from "@/features/website/lib/service";
+import { getAvatarColor, getInitial } from "@/features/website/lib/service";
 import { GoogleSpinnerIcon } from "@/features/website/pages/reviews/GoogleSpinnerIcon";
 import { type Review } from "@/features/website/types";
 import { formatDate } from "@/shared/lib/utils";
@@ -9,7 +9,7 @@ interface ReviewCardProps {
 
 export const ReviewCard = ({ review }: ReviewCardProps) => {
   const color = getAvatarColor(review.authorName);
-  const initial = review.authorName.charAt(0).toUpperCase();
+  const initial = getInitial(review.authorName);
   const date = formatDate(review.publishedAt);
 
   return (

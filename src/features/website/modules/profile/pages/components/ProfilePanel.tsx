@@ -30,7 +30,7 @@ export const ProfilePanel = ({ customer }: ProfilePanelProps) => {
   const extraPhones = customer.phones.filter((p) => !p.isPrimary);
 
   const isPhoneVerified = !!primaryPhone?.phoneVerifiedAt;
-  const displayName = customer.portalName ?? "Client";
+  const displayName = customer.portalName ?? t("cabinet.defaultName");
 
   return (
     <div className="max-w-[800px]">
