@@ -16,7 +16,10 @@ export type Customer = {
   portalName: string | null;
   email: string | null;
   emailVerifiedAt: string | null;
+  emailVerified: boolean;
   hasGoogle: boolean;
+  hasPassword: boolean;
+  hasVerifiedPhone: boolean;
   avatarUrl: string;
   phones: Phone[];
   status: UserStatus;

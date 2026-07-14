@@ -141,6 +141,7 @@
       "next": "Вперёд"
     },
     "add_button": "Добавить",
+    "merge_button": "Слияние",
     "name": "Название",
     "no_results": "Нет результатов",
     "add_modal": {
@@ -257,6 +258,7 @@
       "quick_orders_manage": "Управление",
       "customers_view": "Просмотр",
       "customers_manage": "Управление",
+      "customers_merge": "Объединение дублей",
       "landing_works_view": "Просмотр",
       "landing_works_manage": "Управление",
       "billing_view": "Просмотр",
@@ -351,6 +353,13 @@
   },
   "customers": {
     "page_title": "Настройки клиента",
+    "merge": {
+      "title": "Слияние дублирующихся клиентов",
+      "survivor_label": "Основной клиент (остаётся)",
+      "survivor_placeholder": "Выберите клиента",
+      "absorbed_label": "Дубликат (будет объединён и удалён)",
+      "absorbed_placeholder": "Выберите дубликат"
+    },
     "orders": {
       "title": "Заказы клиента",
       "empty": "Заказов нет",

@@ -138,6 +138,7 @@
       "next": "Вперед"
     },
     "add_button": "Додати",
+    "merge_button": "Злиття",
     "name": "Назва",
     "no_results": "Немає результатів",
     "add_modal": {
@@ -254,6 +255,7 @@
       "quick_orders_manage": "Управління",
       "customers_view": "Перегляд",
       "customers_manage": "Управління",
+      "customers_merge": "Об'єднання дублів",
       "landing_works_view": "Перегляд",
       "landing_works_manage": "Управління",
       "billing_view": "Перегляд",
@@ -348,6 +350,13 @@
   },
   "customers": {
     "page_title": "Налаштування клієнта",
+    "merge": {
+      "title": "Злиття клієнтів-дублів",
+      "survivor_label": "Основний клієнт (залишається)",
+      "survivor_placeholder": "Виберіть клієнта",
+      "absorbed_label": "Дублікат (буде об'єднано і видалено)",
+      "absorbed_placeholder": "Виберіть дублікат"
+    },
     "orders": {
       "title": "Замовлення клієнта",
       "empty": "Замовлень немає",
