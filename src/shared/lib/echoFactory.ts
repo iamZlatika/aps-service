@@ -35,12 +35,19 @@ export class EchoConnection {
   }
 }
 
+const MOBILE_BREAKPOINT_PX = 767; // matches useIsMobile's default breakpoint
+
+function isMobileViewport(): boolean {
+  return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT_PX}px)`).matches;
+}
+
 function attachConnectionListener(
   instance: Echo,
   connection: EchoConnection,
 ): void {
   const { connection: ablyConnection } = (instance.connector as AblyConnector)
     .ably;
+  let suspendedToastShown = false;
 
   ablyConnection.on((stateChange) => {
     if (stateChange.current === "failed") {
@@ -49,8 +56,16 @@ function attachConnectionListener(
       instance.disconnect();
       connection.markFailed();
     }
-    if (stateChange.current === "suspended") {
+    if (
+      stateChange.current === "suspended" &&
+      !isMobileViewport() &&
+      !suspendedToastShown
+    ) {
       toast.error(i18next.t("errors.socket_suspended"));
+      suspendedToastShown = true;
+    }
+    if (stateChange.current === "connected") {
+      suspendedToastShown = false;
     }
   });
 }
