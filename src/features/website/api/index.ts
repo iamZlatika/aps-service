@@ -42,6 +42,7 @@ export const websiteApi = {
   getOrderStatus: async (orderNumber: string): Promise<OrderPreview> => {
     const response = await get<{ data: OrderPreviewDto }>(
       WEBSITE_API.status(orderNumber),
+      { silentErrorStatuses: [404] },
     );
     const validated = parseDto(OrderPreviewDtoSchema, response.data);
     return mapOrderPreviewDtoToOrderPreview(validated);
