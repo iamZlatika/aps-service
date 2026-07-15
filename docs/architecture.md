@@ -10,6 +10,7 @@ The goal is to help new developers (and future-you) understand *why* the code is
 - [Money / Amount Fields](#money--amount-fields)
 - [API Layer](#api-layer)
 - [Error Handling](#error-handling)
+- [Error Tracking (Sentry)](#error-tracking-sentry)
 - [Server State: React Query](#server-state-react-query)
 - [Real-time Updates (WebSockets)](#real-time-updates-websockets)
 - [Routing & Navigation](#routing--navigation)
@@ -28,7 +29,9 @@ src/
 ├── entities/         # Shared domain entities reused across features
 │   ├── location/     # Location DTO, domain type, adapter
 │   ├── order-status/ # OrderStatus DTO, domain type, adapter
-│   └── price-list/   # PriceListItem DTO, domain type, adapter
+│   ├── price-list/   # PriceListItem DTO, domain type, adapter
+│   ├── work/          # Work DTO, domain type, adapter
+│   └── role/          # Role/permission DTO, domain type, adapter
 ├── features/
 │   ├── auth/         # Login, token storage, session management
 │   ├── backoffice/   # Employee panel
@@ -36,6 +39,8 @@ src/
 │   │   └── widgets/  # Compound components used across modules (table, etc.)
 │   └── website/      # Public-facing website
 ├── widgets/          # Compound components shared across features
+├── styles/           # Global CSS
+├── test/             # Vitest setup
 └── shared/
     ├── api/          # HTTP client, query client, query keys
     ├── components/   # Generic UI primitives (Button, Dialog, etc.)
@@ -85,6 +90,8 @@ Current entities:
 | `location` | `website` (contacts page, modal phone buttons), `backoffice/dictionaries` |
 | `order-status` | `website` (track page, status badge), `backoffice/orders` |
 | `price-list` | `website` (price modal, price list page) |
+| `work` | `backoffice/works`, `widgets/work-card` (portfolio card on the website) |
+| `role` | `backoffice/roles-permissions`, `backoffice/users` (permission editing) |
 
 **Rule:** Move a type to `entities/` only when it is actually shared across two or more features. Feature-specific types stay in the feature's own `types.ts`.
 
@@ -201,7 +208,9 @@ Axios instance configured with base URL and interceptors.
 **Response interceptor** handles all errors centrally:
 - Network errors → localized message
 - 401 with an existing token → calls `logout()` automatically
-- All errors except 401 and 422 → sent to Sentry
+- A security-blocked response → navigates to the blocked page
+- 503 → navigates to the maintenance page
+- All errors except 401, 403, 422, 503, and any status listed in the request's `silentErrorStatuses` → sent to Sentry (see [Error Tracking](#error-tracking-sentry))
 - Returns an `ApiError` instance with `status` and `data`
 
 You never need to handle auth failures or token injection manually in feature code.
@@ -289,6 +298,26 @@ Wrap page-level queries to handle loading and error states consistently:
 
 ---
 
+## Error Tracking (Sentry)
+
+Sentry setup lives in `shared/lib/sentry.ts`.
+
+- `initSentry()` — called once from `main.tsx`. No-ops if `VITE_SENTRY_DSN` is unset. Only actually reports in production (`enabled: import.meta.env.PROD`) — in dev/test it just logs to the console.
+- `captureError(error, context?)` — reports an exception with extra context. Used by the `apiClient.ts` response interceptor and the Ably connection listener (`echoFactory.ts`, `failed` state).
+- `captureErrorWithId(error, context?)` — same as `captureError`, but returns the Sentry event ID (or `null` outside production) for cases that need to surface it to the user (e.g. an error page showing a reference ID).
+
+### `silentErrorStatuses`
+
+Any Axios request can opt individual HTTP statuses out of Sentry reporting by passing `silentErrorStatuses` in the request config:
+
+```ts
+await get(WEBSITE_API.status(orderNumber), { silentErrorStatuses: [404] });
+```
+
+Use this for expected, user-facing error statuses on public/unauthenticated endpoints (e.g. the website's quick order-status check, where a 404 just means "not found" and isn't a real bug) — it keeps Sentry noise-free without disabling capture for genuine failures on the same endpoint.
+
+---
+
 ## Server State: React Query
 
 All server state is managed through TanStack Query. No Redux, Zustand, or Context for remote data.
@@ -346,7 +375,7 @@ This split keeps Ably (~234 KB) out of the main bundle — it loads only when `i
 
 `echoFactory.ts` attaches a connection state listener on every new instance:
 - `failed` state → captured in Sentry + error toast
-- `suspended` state → error toast (connection unstable)
+- `suspended` state → error toast (connection unstable) — suppressed on mobile viewports (`isMobileViewport()`, ≤767px) and shown at most once per suspension (resets when the connection returns to `connected`), to avoid repeated toasts on flaky mobile networks
 
 No per-subscription error handling is needed — it's all centralized here.
 

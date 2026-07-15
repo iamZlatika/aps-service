@@ -216,8 +216,8 @@ export function buildTransactionColumns({
   return columns;
 }
 
-const ITEM_COLUMN_WRAP_AT = 45;
-const ITEM_COLUMN_MAX_CHARS = 90;
+const ITEM_COLUMN_WRAP_AT = 50;
+const ITEM_COLUMN_MAX_CHARS = 100;
 
 export function buildMyTransactionColumns(): ColumnConfig<Transaction>[] {
   return [

@@ -10,6 +10,10 @@ The backoffice is the internal panel for employees. It lives under `/backoffice`
 - [Dictionaries](#dictionaries)
 - [Billing](#billing)
 - [Profile](#profile)
+- [Works](#works)
+- [Roles & Permissions](#roles--permissions)
+- [SMS Integration](#sms-integration)
+- [Quick Orders](#quick-orders)
 
 ---
 
@@ -73,6 +77,14 @@ The filter settings form's location filter uses `LocationCheckboxGroup` (`shared
 | `useOrderFormDefaults` | Computes default values for the create-order form |
 | `useOrdersSocket()` | Subscribes to `backoffice.orders` WebSocket channel. Keeps the order list in sync in real time. |
 | `useOrderSocket(id)` | Subscribes to `backoffice.orders.{id}` WebSocket channel. Keeps the order detail cache in sync in real time. |
+| `useChangeOrderStatus` | Mutation to change an order's status |
+| `useCloseOrder` | Mutation to close an order |
+| `useCreateFilterPreset` | Mutation to save the current filter set as a new search preset |
+| `useCreateOrderForCustomer` | Pre-fills and opens the create-order form for a specific customer |
+| `useDictionarySection` | Shared logic for the collapsible dictionary-picker sections used in the order form |
+| `useFilterFormOptions` | Fetches dictionary options (device types, statuses, etc.) for the filter form |
+| `useIsUkLocale` | Returns whether the current locale is Ukrainian |
+| `useOrderCustomerTelegramSocket` | Subscribes to Telegram-link updates for the order's customer, patching the order detail cache |
 
 ### Real-time updates
 
@@ -157,6 +169,11 @@ Manages the customer database. Each customer can have multiple phone numbers, a 
 | `useCustomerStatus(customerId)` | Toggle customer status: `active` / `blocked` |
 | `useCustomerTelegram(customerId)` | Generate or revoke Telegram invite link |
 | `useCustomerOrders(customerId)` | Fetches paginated order history for a customer. Returns `{ orders, isLoading, isError, page, lastPage, setPage }` |
+| `useAddCustomer` | Form state and mutation to create a new customer |
+| `useCustomerInfo(id)` | Fetches full `CustomerInfo` |
+| `useCustomerSms` | Sends an SMS to a customer and fetches their SMS history |
+| `useCustomerTelegramSocket(customerId)` | Subscribes to Telegram-link updates for a customer, patching the customer detail cache |
+| `useMergeCustomer` | Mutation to merge duplicate customer records |
 
 ### Customer order history
 
@@ -210,6 +227,13 @@ Manages employee accounts. Only `head_manager` can access this module.
 | `useUserRate(userId)` | Mutation to update commission percentages |
 | `useUpdateLocale()` | Mutation to change the current user's language |
 | `useUpdateTheme()` | Mutation to change the current user's theme |
+| `useManagerOptions()` | Fetches managers for use in select/autocomplete inputs |
+| `usePermissionsSelection()` | Local checkbox-selection state for a set of permissions |
+| `useRegisterUserForm` | Form state for the register-employee form |
+| `useRegisterUser` | Mutation to register a new employee account |
+| `useUpdateUserLocation(userId)` | Mutation to change a user's assigned location |
+| `useUpdateUserStatus(userId)` | Mutation to change a user's status |
+| `useUserPermissionsEditor(userId)` | Manages per-user permission overrides and the save mutation |
 
 ---
 
@@ -435,3 +459,110 @@ The current user's own profile page. Available to all authenticated backoffice u
 - Request a balance withdrawal (Finance tab)
 
 Profile data is fetched via `queryKeys.users.me()` — the same query used throughout the app to identify the current user. The `Me` type includes `balance`, `pendingWithdrawals`, and `available` (see [Billing](#billing)).
+
+---
+
+## Works
+
+**Path:** `/backoffice/works`
+**Source:** `src/features/backoffice/modules/works/`
+
+Manages the portfolio of completed repair/upgrade works shown on the public website's Works page.
+
+### Pages
+
+| Page | Path | Description |
+|------|------|-------------|
+| Works list | `/backoffice/works` | Table of all works, with publish/unpublish and delete row actions |
+| Create work | `/backoffice/works/create` | Multi-section form: device info, work content, before/after/main/additional photos |
+| Edit work | `/backoffice/works/:id/edit` | Edit an existing work entry |
+
+### Key types
+
+**`Work`** (`src/entities/work/`) — shared entity, also consumed by `widgets/work-card` on the website: device info, `type` (`repair` / `upgrade`), localized reason/description, `photos` (`before` / `after` / `main` / `additional`).
+
+**`BackofficeWork`** — extends `Work` with `isPublished`.
+
+### Hooks
+
+| Hook | Description |
+|------|-------------|
+| `useCreateWork` | Form state and mutation for creating a new work entry |
+| `useEditWork` | Fetches an existing work and submits edits |
+| `usePublishWork` | Mutation to toggle `isPublished` |
+| `useDeleteWork` | Mutation to delete a work entry |
+
+---
+
+## Roles & Permissions
+
+**Path:** `/backoffice/roles-permissions`
+**Source:** `src/features/backoffice/modules/roles-permissions/`
+
+Manages which permissions are assigned to each role. A single page: select a role, toggle its permissions grouped by category (`RolePermissionsCard`, categories from `widgets/ability-badge/abilityGroups`).
+
+### Key types
+
+**`Permission`** / **`RoleWithPermissions`** (`src/entities/role/`) — shared entity types. `RoleWithPermissions` holds `permissions` as a flat array of permission names.
+
+### Hooks
+
+| Hook | Description |
+|------|-------------|
+| `usePermissions()` | Fetches all available permissions |
+| `useRoles()` | Fetches all roles with their assigned permissions |
+| `useRolePermissionsEditor()` | Combines `usePermissions`/`useRoles`, manages the selected role and permission toggles, and the save mutation |
+
+---
+
+## SMS Integration
+
+**Path:** `/backoffice/integrations` (route slug `integrations` — differs from the module folder name `sms-integration`)
+**Source:** `src/features/backoffice/modules/sms-integration/`
+
+Shows the SMS provider balance and a log of sent SMS messages (order/customer notifications).
+
+### Key types
+
+**`SmsBalance`** — `{ amount, lowBalanceThreshold, isLow }`.
+
+**`SmsMessage`** — a single sent SMS: `provider`, `phone`, `text`, delivery `status`, `providerStatus`, `price`, `segments`, linked `customer` (nullable).
+
+### Hooks
+
+| Hook | Description |
+|------|-------------|
+| `useSmsBalance()` | Fetches the SMS provider balance. `isUnavailable` is `true` when the provider responds with 503 (integration not configured) |
+
+---
+
+## Quick Orders
+
+**Path:** `/backoffice/quick-orders`
+**Source:** `src/features/backoffice/modules/quick-orders/`
+
+A lightweight order type for walk-in sales that skips the full repair-order lifecycle (no device intake, no status history) — just services/products, payment, and totals.
+
+### Pages
+
+| Page | Path | Description |
+|------|------|-------------|
+| Quick orders list | `/backoffice/quick-orders` | Paginated, filterable table |
+| Create quick order | `/backoffice/quick-orders/new` | Form to register a new quick order |
+| Quick order detail | `/backoffice/quick-orders/:id` | Detail view with a Finance tab (`QuickOrderFinanceTab`) |
+
+### Key types
+
+**`QuickOrder`** — list item: `number`, `manager`, `location`, `paymentMethod`, totals (`totalPrice`, `totalCost`, `totalIncome`).
+
+**`QuickOrderDetail`** — extends `QuickOrder` with `services`, `products`, `transactions`, `comment`, `createdBy`.
+
+### Hooks
+
+| Hook | Description |
+|------|-------------|
+| `useQuickOrder(id)` | Fetches `QuickOrderDetail` |
+| `useAddQuickOrder` | Form state and mutation to create a quick order |
+| `useDeleteQuickOrder` | Mutation to delete a quick order |
+| `useQuickOrderFormDefaults` | Fetches users/locations for the create form's defaults |
+| `useQuickOrderItemForm` | Form state for adding a product or service line item |
