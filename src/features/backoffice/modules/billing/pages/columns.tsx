@@ -6,7 +6,10 @@ import {
   type Balance,
   type Transaction,
 } from "@/features/backoffice/modules/billing/types.ts";
-import { renderWrappedText } from "@/features/backoffice/modules/orders/lib/cellFormatters.tsx";
+import {
+  renderWrappedText,
+  renderWrappedTextMultiline,
+} from "@/features/backoffice/modules/orders/lib/cellFormatters.tsx";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation.ts";
 import { RoleBadge } from "@/features/backoffice/modules/profile/components/RoleBadge.tsx";
 import { QUICK_ORDERS_LINKS } from "@/features/backoffice/modules/quick-orders/navigation.ts";
@@ -173,6 +176,8 @@ export function buildBalanceColumns(): ColumnConfig<Balance>[] {
   ];
 }
 
+const LABEL_COLUMN_WRAP_AT = 60;
+
 export function buildTransactionColumns({
   showEmployeeColumn,
 }: {
@@ -186,6 +191,8 @@ export function buildTransactionColumns({
       field: "label",
       labelKey: "billing.transactions.table.label",
       sortable: false,
+      renderCell: (value) =>
+        renderWrappedTextMultiline(value, { wrapAt: LABEL_COLUMN_WRAP_AT }),
     },
     buildAmountColumn(),
     buildStatusColumn(),
@@ -216,8 +223,8 @@ export function buildTransactionColumns({
   return columns;
 }
 
-const ITEM_COLUMN_WRAP_AT = 50;
-const ITEM_COLUMN_MAX_CHARS = 100;
+const ITEM_COLUMN_WRAP_AT = 45;
+const ITEM_COLUMN_MAX_CHARS = 90;
 
 export function buildMyTransactionColumns(): ColumnConfig<Transaction>[] {
   return [
