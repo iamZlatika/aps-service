@@ -21,6 +21,9 @@ The application has two parts:
 | Styling | Tailwind CSS 3, Radix UI |
 | i18n | i18next (ru / uk) |
 | HTTP client | Axios |
+| Real-time | Ably (`@ably/laravel-echo`) — backoffice WebSocket updates |
+| PWA | `vite-plugin-pwa`, `vite-plugin-compression` |
+| Drag & drop | `@dnd-kit/*` |
 | Error tracking | Sentry |
 | Testing | Vitest, Testing Library |
 
@@ -47,10 +50,14 @@ cp .env.example .env
 | `VITE_BACKOFFICE_LANGUAGE` | Default language for backoffice (`ru` or `uk`) |
 | `VITE_CLIENT_LANGUAGE` | Default language for public website (`ru` or `uk`) |
 | `VITE_GOOGLE_MAPS_KEY` | Google Maps API key (used for the map embed on the contacts page) |
+| `VITE_SITE_URL` | Public site base URL (used for SEO/canonical links, OAuth callback) |
+| `VITE_GTM_ID` | Google Tag Manager container ID (optional) |
+| `VITE_GA_MEASUREMENT_ID` | Google Analytics measurement ID (optional) |
 
 ```bash
 npm run dev        # development server
 npm run build      # production build
+npm run preview    # preview the production build locally
 npm run test       # run tests in watch mode
 npm run test:run   # run tests once
 npm run lint       # lint
@@ -62,12 +69,15 @@ npm run lint:fix   # lint and auto-fix
 ```
 src/
 ├── app/              # Router config, route guards, app root
+├── entities/         # Shared domain entities reused across features (location, order-status, price-list, work, role)
 ├── features/
 │   ├── auth/         # Authentication
 │   ├── backoffice/   # Employee panel
-│   │   └── modules/  # orders, customers, users, dictionaries, profile
+│   │   └── modules/  # orders, customers, users, dictionaries, billing, profile, works, roles-permissions, sms-integration, quick-orders
 │   └── website/      # Public website
 ├── widgets/          # Reusable compound components (used across features)
+├── styles/           # Global CSS
+├── test/             # Vitest setup
 └── shared/
     ├── api/          # HTTP client, query client, query keys
     ├── components/   # Generic UI components

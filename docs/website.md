@@ -11,12 +11,17 @@ Lives at the root URL and is styled independently from the backoffice with its o
 |------|------|-------------|
 | Home | `/` | Landing page: hero with quick status check, device types, PC build section |
 | Contacts | `/contacts` | Service center locations with addresses, phones, and maps |
-| Works | `/works` | Portfolio / completed works showcase — in development |
-| Reviews | `/reviews` | Customer reviews |
+| About | `/about` | About-us page |
+| Works | `/works` | Portfolio / completed works showcase |
+| Reviews | `/reviews` | Customer reviews, aggregated across all locations |
 | Price List | `/price-list` | Full device repair price list with category navigation |
 | Warranty | `/warranty` | Warranty terms, storage rates, and related info cards |
 | Track | `/track/:token` | Full order tracking page by unique token |
-| User Account | `/account` | Personal account — in development |
+| User Account | `/account` | Personal account — order history, profile, phone/Telegram management. Requires customer auth |
+| Account order detail | `/account/orders/:id` | Single order's detail within the account |
+| Account profile | `/account/profile` | Edit avatar, name, email, password, phones, Telegram link |
+
+Also present: standalone auth pages under `/auth/*` (email verify, confirm account, confirm email change, reset password, Google OAuth callback — see [Auth pages](#auth--utility-pages)), and utility pages `not-found`, `maintenance`, `blocked`.
 
 ---
 
@@ -29,14 +34,32 @@ export const WEBSITE_ROUTES = {
   contacts: "/contacts",
   works: "/works",
   reviews: "/reviews",
-  account: "/account",
+  track: "/track/:token",   // token is the order tracking identifier
   priceList: "/price-list",
   warranty: "/warranty",
-  track: "/track/:token",   // token is the order tracking identifier
+  about: "/about",
+  emailVerify: "/auth/email-verify",
+  confirmAccount: "/auth/confirm-account",
+  confirmEmailChange: "/auth/confirm-email-change",
+  resetPassword: "/auth/reset-password",
+  googleCallback: "/auth/google/callback",
 } as const;
 ```
 
 Static links are in `WEBSITE_LINKS`. The `track` route is not in `WEBSITE_LINKS` because it requires a dynamic token — build it manually when needed.
+
+**Account routes are not in `WEBSITE_ROUTES`** — they live in their own module `routes.ts` files, next to the account modules themselves:
+
+```ts
+// modules/account/routes.ts
+export const CUSTOMER_ACCOUNT_ROUTES = { root: "/account" } as const;
+
+// modules/orders/routes.ts
+export const CUSTOMER_ORDERS_ROUTES = { detail: "/account/orders/:id" } as const;
+
+// modules/profile/routes.ts
+export const CUSTOMER_PROFILE_ROUTES = { root: "/account/profile" } as const;
+```
 
 ---
 
@@ -63,9 +86,8 @@ Displays:
 - Issue type and estimated cost
 - Full order history accordion (`OrderHistoryAccordion`) — statuses, payments, products, services sorted by date
 - Device specs table (`TrackSpecsTable`)
-- Intake note
 
-The history is built in `pages/track/services.ts` via `buildOrderHistory(track)` — merges all four event sources and sorts them newest-first. Called through `useMemo` in the page component.
+The history is built in `lib/orderHistory.ts` via `buildOrderHistory(track)` — merges all four event sources and sorts them newest-first. Called through `useMemo` in the page component.
 
 Uses `useOrderTracking(token)` which fetches the full `Track` type.
 
@@ -96,36 +118,72 @@ Each card shows address, phone number, messenger buttons, and a map embed.
 
 ### Works (`/works`)
 
-Portfolio / completed works showcase. Loads works from the API in pages (`getWorksPage`) via `useSuspenseInfiniteQuery`. Uses the same `ErrorBoundary` + `Suspense` + skeleton pattern as the price list page.
+Portfolio / completed works showcase, populated from the backoffice [Works module](backoffice.md#works). Loads works from the API in pages (`getWorksPage`) via `useSuspenseInfiniteQuery`, rendered with `WorkCard` (`src/widgets/work-card`). Uses the same `ErrorBoundary` + `Suspense` + skeleton pattern as the price list page.
 
 ---
 
 ### Reviews (`/reviews`)
 
-Google reviews page. Two-column layout: sticky aside on the left, masonry card wall on the right.
+Google reviews page, now organized **per service-center location** (a "branch"). Two-column layout: sticky aside on the left, tabs + masonry card wall on the right.
 
-**Aside** contains:
-- Section eyebrow and heading
-- Score card: Google spinner icon, computed average rating (`avg.toFixed(1)`), count, filled/empty stars based on `Math.round(avg)`, distribution bars (5→1) as percentage bars
-- "Leave a review" CTA button — links to Google Maps write-review URL derived from the first review's place ID
+- **`ReviewBranchTabs`** — one tab per location, each showing its review count; switching tabs swaps the active location's reviews without a refetch (all locations' reviews are pre-fetched by `useAllLocationReviews`).
+- **`ReviewBranchNote`** — shows the active location's address below the tabs.
+- **`ReviewsAside`** — score card for the active location: Google spinner icon, computed average rating (`avg.toFixed(1)`), review count, filled/empty stars based on `Math.round(avg)`, distribution bars (5→1) as percentage bars, and a "Leave a review" CTA linking to `location.reviewUrl` (only rendered when the location has one).
+- **Card wall** renders one `ReviewCard` per review for the active location, in a CSS masonry layout (`columns: 2`, `break-inside-avoid`). Each card shows a colored letter avatar (color deterministically derived from the author's name via `getAvatarColor`), author name, formatted date, star rating, and review text.
 
-**Card wall** renders one `ReviewCard` per review, in a CSS masonry layout (`columns: 2`, `break-inside-avoid`). Each card shows a colored letter avatar (color deterministically derived from the author's name via `getAvatarColor`), author name, formatted date, star rating, and review text.
+**Service functions** in `lib/service.ts` used here: `getAvatarColor(name)` (maps name to one of 7 palette colors), `computeReviewStats(ratings)` (computes `{ avg, dist }` from a `number[]` in a single reduce pass).
 
-**Service functions** in `lib/service.ts`:
-- `getAvatarColor(name)` — maps name to one of 7 palette colors
-- `getGoogleReviewUrl(reviewId)` — extracts Google place ID from the review ID string and builds the write-review URL
-- `computeReviewStats(ratings)` — computes `{ avg, dist }` from a `number[]` in a single reduce pass
-
-Uses `useReviews()` + `useSuspenseQuery`. Page-level loading state shows a skeleton that already renders the `h1#reviews-heading` so `aria-labelledby` resolves during Suspense.
+Uses `useLocations()` + `useAllLocationReviews(locations)` (both `useSuspenseQuery`/`useSuspenseQueries`). Page-level loading state shows a skeleton that already renders the `h1#reviews-heading` so `aria-labelledby` resolves during Suspense.
 
 ---
 
 ### User Account (`/account`)
 
-Not yet implemented. Planned features:
-- List of the customer's orders
-- Order management actions
-- Telegram subscription management
+Personal account for authenticated customers — fully implemented, protected by `CustomerProtectedRoute`. Split across three sibling modules under `src/features/website/modules/`.
+
+#### `modules/account` — `/account`
+
+The account landing page: `AccountHeader` (name/avatar/logout) + `OrdersPanel` (the customer's order list, paginated via `useCustomerOrders`). `VerifyGate`/`AddPhoneGate` prompt an unverified customer to add/verify a phone before the account is fully usable; `TelegramBanner` prompts linking Telegram if not yet linked.
+
+#### `modules/orders` — `/account/orders/:id`
+
+Single order detail for the logged-in customer: device info (`OrderDeviceInfo`), line items (`OrderLineItemsCard`), payments (`OrderPaymentsCard`), documents with download (`OrderDocumentsList`, via `useDownloadOrderDocument`).
+
+**Key types** (`modules/orders/types.ts`): `OrderListItem` (list row), `OrderDetail` (extends `OrderListItem` with `issueType`, `location`, `payments`, `services`, `products`, `documents`), `OrderDocument`, `OrderLineItem`.
+
+**Hooks:** `useCustomerOrders()` (paginated list), `useCustomerOrder(id)` (detail), `useDownloadOrderDocument()`.
+
+#### `modules/profile` — `/account/profile`
+
+Edit profile: avatar upload with crop (`AvatarEditorModal`, `useAvatarEditorFlow`/`useAvatarUpload`/`useAvatarDelete`), name (`useUpdateProfileName`), email change with confirmation flow (`useChangeEmail`), password change (`useChangePassword`), primary + extra phone numbers (`ExtraPhonesSection`, `useAddPhone`/`useDeletePhone`), and Telegram link/QR (`TelegramRow`, `useProfileTelegram`).
+
+**Key types** (`modules/profile/types.ts`): `TelegramLink` — `{ link, qrCode }`.
+
+Phone verification (adding/changing a phone, used by both this module and account onboarding) is shared top-level logic — see `useAddPhoneFlow` in the [Hooks](#hooks) table.
+
+---
+
+### About (`/about`)
+
+Static about-us page: company stats, process steps (`AboutProcess`), partner logos (`AboutPartners`), "why us" section (`AboutWhy`), office list with map pins.
+
+---
+
+### Auth & Utility Pages
+
+Login, registration, and password/email flows live in `src/features/auth/website/` (not `src/features/website/`) but are wired into `WEBSITE_ROUTES` and reachable from the site header/account flows:
+
+- `email-verify`, `confirm-account`, `confirm-email-change`, `reset-password` — standalone pages for links sent by email (e.g. `/auth/email-verify`)
+- `google-callback` — handles the redirect back from Google OAuth
+- Login, registration, and forgot-password are **modals** (`LoginModal`, `RegistrationModal`, `ForgotPasswordModal`), not routed pages — opened via `useModalParam`, e.g. `?modal=login`
+
+Utility pages in `src/features/website/pages/`:
+
+| Page | Purpose |
+|------|---------|
+| `not-found` | 404 page with links back to key sections |
+| `maintenance` | Shown when the API returns 503 (see [architecture.md](architecture.md#api-layer) — the interceptor redirects here automatically) |
+| `blocked` | Shown when a request is flagged as security-blocked (see `isSecurityBlockedResponse` in [architecture.md](architecture.md#api-layer)) |
 
 ---
 
@@ -138,15 +196,17 @@ All public endpoints are under `/api` (no `/backoffice` prefix — no auth requi
 const BASE = "/api";
 
 WEBSITE_API = {
-  locations: ()             => `${BASE}/dictionaries/locations`,
-  track: (token: string)    => `${BASE}/orders/track/${token}`,
-  status: (orderNumber)     => `${BASE}/orders/status/${orderNumber}`,
-  landing: ()               => `${BASE}/landing`,
-  priceList: ()             => `${BASE}/dictionaries/price-list`,
-  landingWorks: ()          => `${BASE}/landing/works`,
-  reviews: ()               => `${BASE}/reviews`,
+  locations: ()                        => `${BASE}/dictionaries/locations`,
+  track: (token: string)               => `${BASE}/orders/track/${token}`,
+  status: (orderNumber)                => `${BASE}/orders/status/${orderNumber}`,
+  landing: ()                          => `${BASE}/landing`,
+  priceList: ()                        => `${BASE}/dictionaries/price-list`,
+  landingWorks: ()                     => `${BASE}/landing/works`,
+  reviews: (locationId: number)        => `${BASE}/landing/reviews/${locationId}`,
 }
 ```
+
+`getOrderStatus` silences 404s from Sentry via `silentErrorStatuses: [404]` (see [architecture.md](architecture.md#error-tracking-sentry)) — a not-found order number is an expected user input, not a bug.
 
 | Method | What it returns |
 |--------|----------------|
@@ -157,7 +217,35 @@ WEBSITE_API = {
 | `getPriceList(categories)` | `PriceListItem[]` — price list items filtered by category keys. Used by the device price modal. |
 | `getPriceListPage(page)` | `{ items: PriceListItem[], lastPage: number }` — one page (100 items) of the full unfiltered price list. Used by `usePriceListAll`. |
 | `getWorksPage(page)` | `{ items: Work[], lastPage: number }` — one page of portfolio works. |
-| `getReviews()` | `Review[]` — all Google reviews. |
+| `getReviews(locationId)` | `Review[]` — Google reviews for one location. Called once per location by `useAllLocationReviews`. |
+
+### Account API (customer-auth only)
+
+The account modules (`modules/account`, `modules/orders`, `modules/profile`) each have their own API surface — not part of `WEBSITE_API`, since these endpoints require the customer auth token:
+
+```ts
+// modules/orders/api/endpoints.ts
+const BASE = "/api/orders";
+CUSTOMER_ORDERS_API = {
+  orders: ()                                   => BASE,
+  order: (id: number)                          => `${BASE}/${id}`,
+  downloadDocument: (orderId, documentId)      => `${BASE}/${orderId}/documents/${documentId}/download`,
+}
+
+// modules/profile/api/endpoints.ts
+const BASE = "/api/profile";
+CUSTOMER_PROFILE_API = {
+  update: ()                    => BASE,
+  avatar: ()                    => `${BASE}/avatar`,
+  changePassword: ()            => `${BASE}/password`,
+  changeEmail: ()                => `${BASE}/email/change`,
+  primaryPhone: ()              => `${BASE}/phone`,
+  phones: ()                    => `${BASE}/phones`,
+  phoneById: (id: number)       => `${BASE}/phones/${id}`,
+  generateTelegramLink: ()      => `${BASE}/telegram/generate-link`,
+  revokeTelegramLink: ()        => `${BASE}/telegram/revoke-link`,
+}
+```
 
 ---
 
@@ -186,7 +274,7 @@ Shared entity types (used across features) live in `src/entities/`.
 
 ### OrderHistory types (UI layer)
 
-Used by `OrderHistoryAccordion`. Built from `Track` data by `buildOrderHistory()` in `pages/track/services.ts`.
+Used by `OrderHistoryAccordion`. Built from `Track` data by `buildOrderHistory()` in `lib/orderHistory.ts`.
 
 **`OrderHistoryItem`** — discriminated union of all event types:
 - `OrderHistoryStatus` — status change event with status badge
@@ -216,7 +304,7 @@ import { StatusBadge } from "@/features/website/components/StatusBadge";
 
 A collapsible timeline showing all order events sorted newest-first. Used on the track page and will be used in the user account.
 
-Accepts `OrderHistoryItem[]` — build this array with `buildOrderHistory()` from `pages/track/services.ts`.
+Accepts `OrderHistoryItem[]` — build this array with `buildOrderHistory()` from `lib/orderHistory.ts`.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -232,12 +320,36 @@ Renders four event types differently:
 
 ```tsx
 import { OrderHistoryAccordion } from "@/features/website/components/OrderHistoryAccordion";
-import { buildOrderHistory } from "@/features/website/pages/track/services";
+import { buildOrderHistory } from "@/features/website/lib/orderHistory";
 
 const history = useMemo(() => buildOrderHistory(track), [track]);
 
 <OrderHistoryAccordion items={history} />
 ```
+
+---
+
+### Other reusable components — `components/`
+
+| Component | Purpose |
+|-----------|---------|
+| `WebsiteLayout` | Root layout — see [Layout](#layout) |
+| `WebsiteModal` | Base modal shell used by all website dialogs (contact modal, Telegram subscribe, phone flow) |
+| `WebsitePageSeo` / `WebsitePageSeoData` | Renders `<title>`/meta tags per route via `react-helmet-async`, driven by `useWebsiteSeo()` and the route table in `WebsitePageSeoData.ts` |
+| `ErrorFallback` (`WebsiteErrorFallback`) | Error-boundary fallback UI for website `Suspense`/`ErrorBoundary` pages (price list, works, reviews) |
+| `Loader` (`WebsiteLoader`) | Website-styled loading spinner |
+| `CallButton` | "Call us" button, opens `ContactModalContent` |
+| `ContactModalContent` | Contact modal body: location list, phones, messengers |
+| `MessengerLabelButton` | Labeled Telegram/Viber/WhatsApp button (uses `MESSENGERS`/`MESSENGER_ICONS` from `config.ts`) |
+| `TelegramSubscribeModal` | Prompts a logged-in customer to subscribe to order updates via Telegram |
+| `ModalHeader` | Shared header (title + close button) for website modals |
+| `DeviceIcons` | Icon set for device categories, used on the home page and price list |
+| `LangSwitch` | ru/uk language switcher |
+| `ThemeSwitch` | light/dark/system theme switcher — wraps `useWebsiteTheme()` |
+| `WebsiteLogo` | Site logo, links to home |
+| `PhoneFlow/PhoneFlowForm`, `PhoneFlow/AddPhoneOtpForm` | Phone-number entry and OTP-verification form steps, driven by `useAddPhoneFlow` |
+
+**Header subtree** (`components/Header/`): `HeaderAuthArea` (login/register vs. logged-in state), `HeaderCabinetButton` (link to `/account`), `HeaderUserBadge` (avatar + name when logged in), plus the mobile pieces documented under [Layout](#layout).
 
 ---
 
@@ -253,7 +365,13 @@ const history = useMemo(() => buildOrderHistory(track), [track]);
 | `usePriceList(categories)` | Fetches price list items via `useSuspenseQuery`. Accepts `readonly string[]` of category keys. Returns `{ priceList }`. Used by the device price modal. |
 | `usePriceListAll()` | Fetches the complete price list across all pages via `useSuspenseInfiniteQuery` (max 100 items/page). Returns `{ priceList, hasNextPage, isLoadingMore, fetchNextPage }`. The caller is responsible for triggering subsequent pages — call `fetchNextPage()` in a `useEffect` when `hasNextPage && !isLoadingMore`. |
 | `useWorks(page)` | Fetches one page of portfolio works via `useSuspenseInfiniteQuery`. Returns `{ works, hasNextPage, isLoadingMore, fetchNextPage }` |
-| `useReviews()` | Fetches all Google reviews via `useSuspenseQuery`. Returns `{ reviews: Review[] }` |
+| `useAllLocationReviews(locations)` | Fetches Google reviews for every location in parallel via `useSuspenseQueries`. Returns `LocationReviews[]` (`{ locationId, reviews }`). Replaces the old single-list `useReviews()`, which no longer exists — reviews are per-location now |
+| `useModalParam(key)` | Reads/writes a URL search param used to drive modal open state (`?modal=login`, etc). Returns `{ value, set, clear }` |
+| `useWebsiteSeo()` | Looks up the current route in `WebsitePageSeoData`'s `WEBSITE_SEO_ENTRIES` and returns localized `{ title, description, canonical }`, or `null` if the route has no SEO entry. Consumed by `WebsitePageSeo` |
+| `useAddPhoneFlow({ onSuccess? })` | Orchestrates send-code → verify-code → set-as-primary for adding/changing a phone number, with a resend countdown. Composes `useSendPhoneCode`, `useVerifyPhoneCode`, `useSetPrimaryPhone` |
+| `useSendPhoneCode()` | Mutation — sends an OTP to a phone number |
+| `useVerifyPhoneCode()` | Mutation — verifies the OTP code, maps server errors to form fields via `handleFormError` |
+| `useSetPrimaryPhone()` | Mutation — sets a verified phone as the customer's primary phone |
 | `useMobileNav()` | Mobile navigation drawer state: `{ isOpen, open, close }`. Locks scroll and handles Escape key |
 | `useWebsiteThemeManager()` | Manages theme selection and persistence — used once inside `WebsiteLayout` |
 

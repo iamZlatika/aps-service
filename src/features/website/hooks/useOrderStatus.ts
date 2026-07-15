@@ -20,6 +20,7 @@ export const useOrderStatus = ({
   const mutation = useMutation<OrderPreview, Error, string>({
     mutationFn: (orderNumber) => websiteApi.getOrderStatus(orderNumber),
     onSuccess,
+    meta: { silent: true },
   });
 
   return {

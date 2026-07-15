@@ -15,6 +15,12 @@ import { type ServerErrorResponse } from "@/shared/api/types.ts";
 import { ApiError } from "@/shared/lib/errors/services.ts";
 import { captureError } from "@/shared/lib/sentry.ts";
 
+declare module "axios" {
+  export interface AxiosRequestConfig {
+    silentErrorStatuses?: number[];
+  }
+}
+
 const getRequestAuthScope = (url?: string): AuthScope =>
   url?.startsWith("/backoffice") ? "backoffice" : "customer";
 
@@ -74,7 +80,17 @@ apiClient.interceptors.response.use(
 
     const apiError = new ApiError(message, status, data);
 
-    if (status !== 401 && status !== 403 && status !== 422 && status !== 503) {
+    const isSilencedStatus =
+      status !== undefined &&
+      (error.config?.silentErrorStatuses ?? []).includes(status);
+
+    if (
+      status !== 401 &&
+      status !== 403 &&
+      status !== 422 &&
+      status !== 503 &&
+      !isSilencedStatus
+    ) {
       captureError(apiError, {
         url: error.config?.url,
         method: error.config?.method,

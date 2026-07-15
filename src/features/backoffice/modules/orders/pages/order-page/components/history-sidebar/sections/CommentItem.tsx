@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useDownloadImage } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/hooks/useDownloadImage.ts";
 import { HistoryItemWrapper } from "@/features/backoffice/modules/orders/pages/order-page/components/history-sidebar/sections/HistoryItemWrapper.tsx";
 import type { HistoryComment } from "@/features/backoffice/modules/orders/pages/order-page/types.ts";
+import LinkifiedText from "@/shared/components/common/LinkifiedText.tsx";
 
 interface CommentItemProps {
   item: HistoryComment;
@@ -31,7 +32,7 @@ export const CommentItem = memo(({ item }: CommentItemProps) => {
             </span>
           </div>
           <blockquote className="border-l-2 border-muted-foreground/40 pl-3 text-muted-foreground italic whitespace-pre-wrap">
-            {item.text}
+            <LinkifiedText text={item.text} />
           </blockquote>
         </>
       )}
