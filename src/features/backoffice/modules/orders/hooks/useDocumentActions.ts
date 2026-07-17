@@ -4,6 +4,9 @@ import { PDFDocument } from "pdf-lib";
 import { toast } from "sonner";
 
 import { ordersApi } from "@/features/backoffice/modules/orders/api";
+import { useIsMobile } from "@/shared/hooks/useMobile";
+
+const REVOKE_DELAY_MS = 60_000;
 
 type DocRef = { orderId: number; documentId: number };
 type DownloadRef = DocRef & { filename: string };
@@ -15,7 +18,16 @@ type UseDocumentActionsReturn = {
   isPending: boolean;
 };
 
-async function mergeAndPrint(blobs: Blob[], title: string): Promise<void> {
+function openInNewTab(url: string): void {
+  window.open(url, "_blank");
+  window.setTimeout(() => URL.revokeObjectURL(url), REVOKE_DELAY_MS);
+}
+
+async function mergeAndPrint(
+  blobs: Blob[],
+  title: string,
+  isMobile: boolean,
+): Promise<void> {
   const merged = await PDFDocument.create();
   for (const blob of blobs) {
     const bytes = await blob.arrayBuffer();
@@ -27,6 +39,14 @@ async function mergeAndPrint(blobs: Blob[], title: string): Promise<void> {
   const url = URL.createObjectURL(
     new Blob([mergedBytes.buffer as ArrayBuffer], { type: "application/pdf" }),
   );
+
+  if (isMobile) {
+    // Mobile browsers don't reliably support programmatic print() from a
+    // hidden iframe (and some throw SecurityError accessing contentWindow),
+    // so hand off to the browser's own PDF viewer, which has print/share controls.
+    openInNewTab(url);
+    return;
+  }
 
   await new Promise<void>((resolve, reject) => {
     const iframe = document.createElement("iframe");
@@ -49,24 +69,37 @@ async function mergeAndPrint(blobs: Blob[], title: string): Promise<void> {
         reject(new Error("contentWindow is null"));
         return;
       }
-      window.addEventListener(
-        "afterprint",
-        () => {
-          document.body.removeChild(iframe);
-          URL.revokeObjectURL(url);
-          document.title = originalTitle;
-        },
-        { once: true },
-      );
-      document.title = title;
-      iframe.contentWindow.focus();
-      iframe.contentWindow.print();
-      resolve();
+
+      try {
+        window.addEventListener(
+          "afterprint",
+          () => {
+            document.body.removeChild(iframe);
+            URL.revokeObjectURL(url);
+            document.title = originalTitle;
+          },
+          { once: true },
+        );
+        document.title = title;
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+        resolve();
+      } catch {
+        // Some browsers report as desktop-class but are restrictive
+        // WebViews that block cross-frame access to a same-origin blob
+        // iframe. Fall back to the same handoff used for mobile.
+        document.body.removeChild(iframe);
+        document.title = originalTitle;
+        openInNewTab(url);
+        resolve();
+      }
     };
   });
 }
 
 export function useDocumentActions(): UseDocumentActionsReturn {
+  const isMobile = useIsMobile();
+
   const printMutation = useMutation({
     mutationFn: async ({ docs, title }: { docs: DocRef[]; title: string }) => {
       const blobs = await Promise.all(
@@ -74,7 +107,7 @@ export function useDocumentActions(): UseDocumentActionsReturn {
           ordersApi.fetchDocumentBlob(orderId, documentId),
         ),
       );
-      await mergeAndPrint(blobs, title);
+      await mergeAndPrint(blobs, title, isMobile);
     },
     onError: () => {
       toast.error(i18next.t("orders.print.print_error"));

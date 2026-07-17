@@ -95,7 +95,7 @@ export default defineConfig({
     open: true,
     host: true,
     hmr: {
-      host: "192.168.0.106",
+      host: "192.168.0.102",
     },
   },
 });
