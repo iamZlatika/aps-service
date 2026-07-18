@@ -26,27 +26,6 @@ export const queryKeys = {
     user: () => [...queryKeys.auth.all, "user"] as const,
     resetCheck: (token: string, email: string) =>
       [...queryKeys.auth.all, "resetCheck", token, email] as const,
-    customerResetCheck: (token: string, email: string) =>
-      [...queryKeys.auth.all, "customerResetCheck", token, email] as const,
-    emailVerify: (verifyUrl: string) =>
-      [...queryKeys.auth.all, "emailVerify", verifyUrl] as const,
-    googleCallback: (code: string) =>
-      [...queryKeys.auth.all, "googleCallback", code] as const,
-  },
-
-  // Everything owned by the logged-in customer (profile, future orders, etc.)
-  // must nest under this root so logout can clear it in one prefix removal.
-  customer: {
-    all: ["customer"] as const,
-    me: () => [...queryKeys.customer.all, "me"] as const,
-    orders: (page?: number) =>
-      [
-        ...queryKeys.customer.all,
-        "orders",
-        ...(page !== undefined ? [page] : []),
-      ] as const,
-    orderDetail: (id: number) =>
-      [...queryKeys.customer.all, "orders", "detail", id] as const,
   },
 
   users: {
@@ -100,28 +79,10 @@ export const queryKeys = {
       [...queryKeys.quickOrders.all, "detail", id] as const,
   },
 
-  tracking: {
-    all: ["tracking"] as const,
-    detail: (token: string) =>
-      [...queryKeys.tracking.all, "detail", token] as const,
-  },
-
   works: {
     all: ["works"] as const,
     list: makeEntityKey(["works"], "list"),
     detail: (id: number) => [...queryKeys.works.all, "detail", id] as const,
-  },
-
-  website: {
-    all: ["website"] as const,
-    locations: () => ["website", "locations"] as const,
-    landing: () => ["website", "landing"] as const,
-    priceList: (categories: string[]) =>
-      ["website", "price-list", categories] as const,
-    priceListAll: () => ["website", "price-list", "all"] as const,
-    works: () => ["website", "works"] as const,
-    reviews: (locationId: number) =>
-      ["website", "reviews", locationId] as const,
   },
 
   dictionaries: {

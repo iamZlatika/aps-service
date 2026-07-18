@@ -3,7 +3,6 @@ import { Navigate, type RouteObject } from "react-router-dom";
 
 import { authRoutes } from "@/app/routes/auth.tsx";
 import { backofficeRoutes } from "@/app/routes/backoffice.tsx";
-import { websiteRoutes } from "@/app/routes/website.tsx";
 import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
 import { SharedRoutes } from "@/shared/api/routes.ts";
@@ -23,14 +22,18 @@ const NotFoundPage = lazy(
 const ForbiddenPage = lazy(
   () => import("@/shared/components/errors/Forbidden.tsx"),
 );
-const BlockedPage = lazy(() => import("@/features/website/pages/blocked"));
+const BlockedPage = lazy(
+  () => import("@/shared/components/errors/Blocked.tsx"),
+);
 const MaintenancePage = lazy(
-  () => import("@/features/website/pages/maintenance"),
+  () => import("@/shared/components/errors/Maintenance.tsx"),
 );
 
 export const routeConfig: RouteObject[] = [
-  // public website
-  websiteRoutes,
+  {
+    path: "/",
+    element: <Navigate to={AuthRoutes.backofficeRoot()} replace />,
+  },
 
   // backoffice auth
   {

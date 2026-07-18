@@ -46,7 +46,7 @@ export const useAuth = () => {
 
   useEffect(() => {
     if (isError) {
-      sessionLogout("backoffice");
+      sessionLogout();
     }
   }, [isError]);
   const loginMutation = useMutation({
@@ -80,7 +80,7 @@ export const useAuth = () => {
     mutationFn: authApi.logout,
     meta: { silent: true },
     onSettled: () => {
-      sessionLogout("backoffice");
+      sessionLogout();
     },
   });
 
