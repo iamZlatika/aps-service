@@ -18,6 +18,8 @@ export const ORDERS_API = {
     `${BASE}/${orderId}/payments/${paymentId}`,
   downloadDocument: (orderId: number, documentId: number) =>
     `${BASE}/${orderId}/documents/${documentId}/download`,
+  regenerateDocument: (orderId: number) =>
+    `${BASE}/${orderId}/documents/regenerate`,
   addSearchPreset: () => "/backoffice/users/search-presets",
   deleteSearchPreset: (id: number) => `/backoffice/users/search-presets/${id}`,
   reorderSearchPresets: () => "/backoffice/users/search-presets/reorder",

@@ -1,8 +1,9 @@
-import { Download, PrinterCheck } from "lucide-react";
+import { Download, PrinterCheck, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useDocumentActions } from "@/features/backoffice/modules/orders/hooks/useDocumentActions.ts";
+import { RegenerateDocumentDialog } from "@/features/backoffice/modules/orders/pages/order-page/components/RegenerateDocumentDialog.tsx";
 import type { OrderDocument } from "@/features/backoffice/modules/orders/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
@@ -14,12 +15,14 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
+import type { DocumentType } from "@/shared/types.ts";
 
 interface PrintDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   orderId: number;
   documents: OrderDocument[];
+  canManage: boolean;
 }
 
 export const PrintDialog = ({
@@ -27,9 +30,13 @@ export const PrintDialog = ({
   onOpenChange,
   orderId,
   documents,
+  canManage,
 }: PrintDialogProps) => {
   const { t } = useTranslation();
   const { print, download, isPending } = useDocumentActions();
+  const [regenerateType, setRegenerateType] = useState<DocumentType | null>(
+    null,
+  );
 
   const intakeDoc = documents.find((d) => d.type === "intake_receipt");
   const closingDoc = documents.find((d) => d.type === "closing_receipt");
@@ -85,7 +92,21 @@ export const PrintDialog = ({
                 checked={intakeChecked}
                 onCheckedChange={(checked) => setIntakeChecked(!!checked)}
               />
-              <Label htmlFor="intake">{t("orders.print.intake_receipt")}</Label>
+              <Label htmlFor="intake" className="flex-1">
+                {t("orders.print.intake_receipt")}
+              </Label>
+              {canManage && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  title={t("orders.regenerateDocument.action")}
+                  onClick={() => setRegenerateType("intake_receipt")}
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           )}
 
@@ -96,9 +117,21 @@ export const PrintDialog = ({
                 checked={closingChecked}
                 onCheckedChange={(checked) => setClosingChecked(!!checked)}
               />
-              <Label htmlFor="closing">
+              <Label htmlFor="closing" className="flex-1">
                 {t("orders.print.closing_receipt")}
               </Label>
+              {canManage && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  title={t("orders.regenerateDocument.action")}
+                  onClick={() => setRegenerateType("closing_receipt")}
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           )}
         </div>
@@ -117,6 +150,12 @@ export const PrintDialog = ({
           </Button>
         </DialogFooter>
       </DialogContent>
+
+      <RegenerateDocumentDialog
+        orderId={orderId}
+        type={regenerateType}
+        onOpenChange={(open) => !open && setRegenerateType(null)}
+      />
     </Dialog>
   );
 };

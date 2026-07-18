@@ -271,6 +271,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                 onOpenChange={setIsPrintOpen}
                 orderId={orderId}
                 documents={selectedOrder.documents}
+                canManage={canManageOrders}
               />
             </Suspense>
           </>
