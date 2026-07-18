@@ -1,4 +1,6 @@
 import {
+  type DocumentDto,
+  DocumentsDtoSchema,
   type OrderCommentDto,
   OrderCommentDtoSchema,
   type OrderDto,
@@ -14,6 +16,7 @@ import {
 } from "@/features/backoffice/modules/orders/api/dto.ts";
 import { ORDERS_API } from "@/features/backoffice/modules/orders/api/endpoints.ts";
 import {
+  mapDocumentDtoToOrderDocument,
   mapEditOrderInfoToDto,
   mapNewOrderToDto,
   mapNewPaymentToDto,
@@ -35,6 +38,7 @@ import {
   type NewOrderService,
   type Order,
   type OrderComment,
+  type OrderDocument,
   type OrderInfo,
   type OrderPayment,
   type OrderProduct,
@@ -47,6 +51,7 @@ import type { PaginatedResponse } from "@/features/backoffice/widgets/table/mode
 import { buildPaginatedParams, del, get, post, put } from "@/shared/api/api.ts";
 import { apiClient } from "@/shared/api/apiClient.ts";
 import { parseDto } from "@/shared/api/parseDto";
+import type { DocumentType } from "@/shared/types.ts";
 
 export const ordersApi = {
   getAll: async (
@@ -249,6 +254,18 @@ export const ordersApi = {
       { responseType: "blob" },
     );
     return new Blob([response.data], { type: "application/pdf" });
+  },
+  regenerateDocument: async (
+    orderId: number,
+    type: DocumentType,
+    notify: boolean,
+  ): Promise<OrderDocument> => {
+    const response = await post<
+      { type: DocumentType; notify: boolean },
+      { data: DocumentDto }
+    >(ORDERS_API.regenerateDocument(orderId), { type, notify });
+    const validated = parseDto(DocumentsDtoSchema, response.data);
+    return mapDocumentDtoToOrderDocument(validated);
   },
   createSearchPreset: async (
     preset: Pick<OrderSearchPreset, "name" | "filters">,

@@ -740,6 +740,13 @@
       "print_error": "Не вдалося відкрити діалог друку",
       "print_document_timeout": "Документ не отримано — роздрукуйте акт вручну"
     },
+    "regenerateDocument": {
+      "action": "Перегенерувати",
+      "title": "Перегенерувати документ «{{document}}»",
+      "notifyLabel": "Надіслати клієнту в Telegram",
+      "confirm": "Перегенерувати",
+      "success": "Документ перегенеровано"
+    },
     "filters": {
       "all": "Всі",
       "schastlivaya": "Щаслива",
