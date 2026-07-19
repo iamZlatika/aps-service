@@ -1,4 +1,4 @@
-const BASE = "/backoffice/quick-orders";
+const BASE = "/quick-orders";
 
 export const QUICK_ORDERS_LINKS = {
   root: () => BASE,

@@ -1,4 +1,4 @@
-const BASE = "/backoffice/billing";
+const BASE = "/billing";
 
 export const BILLING_LINKS = {
   root: () => BASE,

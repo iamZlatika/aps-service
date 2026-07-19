@@ -1,4 +1,4 @@
-const BASE = "/backoffice/profile";
+const BASE = "/profile";
 
 export const PROFILE_LINKS = {
   root: () => BASE,

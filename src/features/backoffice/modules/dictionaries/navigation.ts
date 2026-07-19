@@ -1,4 +1,4 @@
-const BASE = "/backoffice/dictionaries";
+const BASE = "/dictionaries";
 
 export const DICTIONARIES_LINKS = {
   root: () => BASE,

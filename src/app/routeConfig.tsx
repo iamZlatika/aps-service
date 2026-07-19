@@ -30,11 +30,6 @@ const MaintenancePage = lazy(
 );
 
 export const routeConfig: RouteObject[] = [
-  {
-    path: "/",
-    element: <Navigate to={AuthRoutes.backofficeRoot()} replace />,
-  },
-
   // backoffice auth
   {
     path: AuthRoutes.backofficeRoot(),

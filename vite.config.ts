@@ -8,8 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       // Manifest and service worker registration are wired up manually
-      // (see useBackofficePwa) so install stays scoped to /backoffice
-      // and never appears on the public website.
+      // (see useBackofficePwa).
       injectRegister: null,
       manifest: false,
       workbox: {

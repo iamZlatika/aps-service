@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 const MANIFEST_HREF = "/backoffice-manifest.webmanifest";
 const SERVICE_WORKER_URL = "/sw.js";
-const SERVICE_WORKER_SCOPE = "/backoffice/";
+const SERVICE_WORKER_SCOPE = "/";
 
 export const useBackofficePwa = (): void => {
   useEffect(() => {

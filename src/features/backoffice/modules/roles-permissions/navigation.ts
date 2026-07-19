@@ -1,4 +1,4 @@
-const BASE = "/backoffice/roles-permissions";
+const BASE = "/roles-permissions";
 
 export const ROLES_PERMISSIONS_LINKS = {
   root: () => BASE,

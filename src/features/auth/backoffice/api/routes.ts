@@ -1,6 +1,6 @@
 export const AuthRoutes = {
   //router
-  backofficeRoot: () => "/backoffice",
+  backofficeRoot: () => "/",
   auth: () => "auth",
   login: () => "login",
   forgotPassword: () => "forgot",
@@ -8,9 +8,9 @@ export const AuthRoutes = {
   resetPassword: () => "reset-password",
 
   // navigate
-  linkToForgot: () => "/backoffice/auth/forgot",
-  linkToEmailSent: () => "/backoffice/auth/email-sent",
-  linkToLogin: () => "/backoffice/auth/login",
+  linkToForgot: () => "/auth/forgot",
+  linkToEmailSent: () => "/auth/email-sent",
+  linkToLogin: () => "/auth/login",
   // api
   backofficeForgotApi: () => "/backoffice/auth/forgot-password",
   backofficeLoginApi: () => "/backoffice/auth/login",
