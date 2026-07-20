@@ -26,6 +26,7 @@ export type Customer = {
   rating: RatingValue;
   comment: string | null;
   smsNotificationsEnabled: boolean;
+  isReferral: boolean;
   lastOrderAt: string | null;
   createdAt: string;
   updatedAt: string;

@@ -73,7 +73,7 @@ src/
 ├── features/
 │   ├── auth/         # Authentication
 │   ├── backoffice/   # Employee panel
-│   │   └── modules/  # orders, customers, users, dictionaries, billing, profile, works, roles-permissions, sms-integration, quick-orders
+│   │   └── modules/  # orders, customers, users, dictionaries, billing, referrals, profile, works, roles-permissions, sms-integration, quick-orders
 │   └── website/      # Public website
 ├── widgets/          # Reusable compound components (used across features)
 ├── styles/           # Global CSS

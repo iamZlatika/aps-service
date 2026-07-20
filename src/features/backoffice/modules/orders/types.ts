@@ -19,6 +19,7 @@ import type {
   StatusHistoryItemDto,
 } from "@/features/backoffice/modules/orders/api/dto";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
+import type { Referral } from "@/features/backoffice/modules/referrals/types.ts";
 import type {
   SearchPreset,
   User,
@@ -74,6 +75,7 @@ export type Order = {
   isUrgent: boolean;
   isCalled: boolean;
   location: Location;
+  referral: Referral | null;
   totalCost: string;
   totalIncome: string;
   createdAt: string;
@@ -185,6 +187,7 @@ export type OrderTransaction = {
   label: string;
   status: TransactionStatus;
   user: User | null;
+  referral: Referral | null;
   orderId: number;
   orderNumber: string;
   orderServiceId: number | null;

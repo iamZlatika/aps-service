@@ -108,13 +108,14 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
     [selectedOrder],
   );
 
-  const handleStatusSuccess = useCallback(
-    () =>
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.orders.detail(orderId),
-      }),
-    [orderId],
-  );
+  const handleStatusSuccess = useCallback(() => {
+    // Broad invalidation (not just this order's detail) — this is the only
+    // success handler that runs for the "closed" status flow (via
+    // StatusSelect -> CloseOrderModal -> useCloseOrder), which otherwise
+    // never refreshes the orders table or referral balances/transactions.
+    void queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+    void queryClient.invalidateQueries({ queryKey: queryKeys.referrals.all });
+  }, []);
 
   return (
     <>
@@ -187,6 +188,13 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                           {t("orders.form.location")}:{" "}
                           {selectedOrder.location.name}
                         </p>
+                        {selectedOrder.referral && (
+                          <p className="text-muted-foreground text-sm sm:text-base font-medium">
+                            {t("orders.form.referral")}:{" "}
+                            {selectedOrder.referral.customer.name} (
+                            {selectedOrder.referral.commissionPercent}%)
+                          </p>
+                        )}
                         <p className="text-muted-foreground text-xs sm:text-sm">
                           {selectedOrder.closedAt
                             ? `${t("orders.createdAt")}: ${format(new Date(selectedOrder.createdAt), "dd.MM.yyyy")} — ${t("orders.closedAt")}: ${format(new Date(selectedOrder.closedAt), "dd.MM.yyyy")}`

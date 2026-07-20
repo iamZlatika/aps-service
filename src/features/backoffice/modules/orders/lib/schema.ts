@@ -29,6 +29,7 @@ export const newOrderSchema = () =>
       .number({ error: i18next.t("validation.locationRequired") })
       .int()
       .positive(),
+    referralId: z.number().int().positive().nullable().optional(),
     prepayment: z.string().optional(),
     prepaymentMethod: zodEnumFromConst(PAYMENT_METHODS),
     isUrgent: z.boolean().optional(),

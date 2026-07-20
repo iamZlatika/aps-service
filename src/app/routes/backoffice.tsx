@@ -10,6 +10,7 @@ import { DICTIONARIES_ROUTES } from "@/features/backoffice/modules/dictionaries/
 import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
 import { PROFILE_ROUTES } from "@/features/backoffice/modules/profile/routes.ts";
 import { QUICK_ORDERS_ROUTES } from "@/features/backoffice/modules/quick-orders/routes.ts";
+import { REFERRALS_ROUTES } from "@/features/backoffice/modules/referrals/routes.ts";
 import { ROLES_PERMISSIONS_ROUTES } from "@/features/backoffice/modules/roles-permissions/routes.ts";
 import { SMS_INTEGRATION_ROUTES } from "@/features/backoffice/modules/sms-integration/routes.ts";
 import { USERS_ROUTES } from "@/features/backoffice/modules/users/routes";
@@ -132,6 +133,12 @@ const CreateQuickOrderPage = lazy(
 const QuickOrderPage = lazy(
   () =>
     import("@/features/backoffice/modules/quick-orders/pages/quick-order-page/QuickOrderPage.tsx"),
+);
+const ReferralsPage = lazy(
+  () => import("@/features/backoffice/modules/referrals/pages"),
+);
+const ReferralTransactionsPage = lazy(
+  () => import("@/features/backoffice/modules/referrals/pages/transactions"),
 );
 
 export const backofficeRoutes: RouteObject = {
@@ -274,6 +281,16 @@ export const backofficeRoutes: RouteObject = {
     {
       path: DICTIONARIES_ROUTES.priceList,
       element: <PriceListPage />,
+    },
+    {
+      element: <ProtectedRoute requiredAbility={ABILITIES.REFERRALS_MANAGE} />,
+      children: [
+        { path: REFERRALS_ROUTES.root, element: <ReferralsPage /> },
+        {
+          path: REFERRALS_ROUTES.transactions,
+          element: <ReferralTransactionsPage />,
+        },
+      ],
     },
     {
       path: WORKS_ROUTES.root,

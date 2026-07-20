@@ -33,7 +33,7 @@ export const FinanceTab = ({ transactions, totalIncome }: FinanceTabProps) => {
     {
       key: "user",
       label: t("orders.finance.table.user"),
-      render: (row) => row.user?.name ?? "—",
+      render: (row) => row.referral?.customer.name ?? row.user?.name ?? "—",
     },
     {
       key: "label",

@@ -1,6 +1,7 @@
 import {
   BookOpenText,
   CreditCard,
+  Handshake,
   Images,
   MessageSquare,
   Package,
@@ -20,6 +21,7 @@ import { CUSTOMERS_LINKS } from "@/features/backoffice/modules/customers/navigat
 import { DICTIONARIES_LINKS } from "@/features/backoffice/modules/dictionaries/navigation";
 import { ORDERS_LINKS } from "@/features/backoffice/modules/orders/navigation";
 import { QUICK_ORDERS_LINKS } from "@/features/backoffice/modules/quick-orders/navigation.ts";
+import { REFERRALS_LINKS } from "@/features/backoffice/modules/referrals/navigation.ts";
 import { ROLES_PERMISSIONS_LINKS } from "@/features/backoffice/modules/roles-permissions/navigation.ts";
 import { SMS_INTEGRATION_LINKS } from "@/features/backoffice/modules/sms-integration/navigation.ts";
 import { USERS_LINKS } from "@/features/backoffice/modules/users/navigation";
@@ -101,6 +103,20 @@ export const Sidebar = memo(() => {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
+
+              {can(ABILITIES.REFERRALS_MANAGE) && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild tooltip={t("sidebar.referrals")}>
+                    <Link
+                      to={REFERRALS_LINKS.root()}
+                      onClick={closeMobileSidebar}
+                    >
+                      <Handshake className="h-4 w-4" />
+                      <span>{t("sidebar.referrals")}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
 
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip={t("sidebar.masters")}>

@@ -9,6 +9,7 @@ The backoffice is the internal panel for employees. It lives under `/backoffice`
 - [Users](#users)
 - [Dictionaries](#dictionaries)
 - [Billing](#billing)
+- [Referrals](#referrals)
 - [Profile](#profile)
 - [Works](#works)
 - [Roles & Permissions](#roles--permissions)
@@ -37,7 +38,7 @@ The filter settings form's location filter uses `LocationCheckboxGroup` (`shared
 
 ### Key types
 
-**`Order`** — list item. Contains core fields: device info, customer, manager, status, financial summary, flags.
+**`Order`** — list item. Contains core fields: device info, customer, manager, status, financial summary, flags, `referral` (nullable — the attached [referral](#referrals), if any).
 
 **`OrderInfo`** — detail view. Extends `Order` and adds:
 - `statusHistory` — list of status changes with timestamps and responsible user
@@ -129,6 +130,14 @@ Order statuses are dynamic — they are managed in the Dictionaries module, not 
 Each status has a `key`, localized names (`nameRu`, `nameUa`), a display color, and an `isSystem` flag.
 System statuses cannot be deleted.
 
+### Referral attachment
+
+The create-order form's `AdditionalInfoSection` shows a referral picker (`SearchableSelect` over `referralsApi.getAll`, filtered by `customer_name`) when the current user has `orders_manage` **or** `referrals_manage` — attaching a referral is treated as part of editing the order, not a separate permission. The selected referral's id is submitted as `referralId`.
+
+When an order has a referral, its name and commission % show in the order header and, in the Finance tab, the referral's name is shown instead of the staff member for that referral's own income row (`transaction.referral?.customer.name ?? transaction.user?.name`). See [Referrals](#referrals) for how the payout itself is calculated and tracked.
+
+Because adding/editing/deleting order services and products, and closing an order, all recalculate the referral's pending/completed balance, the corresponding hooks (`useOrderItemSubmit`, `useDeleteOrderItem`, `useChangeOrderStatus`) also invalidate `queryKeys.referrals.all` alongside the orders queries.
+
 ---
 
 ## Customers
@@ -147,7 +156,7 @@ Manages the customer database. Each customer can have multiple phone numbers, a 
 
 ### Key types
 
-**`Customer`** — list item. Core fields: name, portal login, email, phones, status, rating, last order date.
+**`Customer`** — list item. Core fields: name, portal login, email, phones, status, rating, last order date, `isReferral` (`true` if the customer currently has an active [referral](#referrals) record — drives the "Make referral" button vs. a badge on the customer detail page).
 
 **`CustomerInfo`** — detail view. Extends `Customer` with:
 - `telegram` — linked Telegram account info, QR code, invite link
@@ -174,6 +183,10 @@ Manages the customer database. Each customer can have multiple phone numbers, a 
 | `useCustomerSms` | Sends an SMS to a customer and fetches their SMS history |
 | `useCustomerTelegramSocket(customerId)` | Subscribes to Telegram-link updates for a customer, patching the customer detail cache |
 | `useMergeCustomer` | Mutation to merge duplicate customer records |
+
+### Referral promotion
+
+With `referrals_manage`, the customer detail page header shows either a "Make referral" button (opens `MakeReferralDialog` from the [Referrals](#referrals) module, preset to this customer) or a green "Referral" badge if `customer.isReferral` is already `true`.
 
 ### Customer order history
 
@@ -385,8 +398,10 @@ Employee balances, financial transactions, the shared service balance, and self-
 
 **`Transaction`** — a single balance movement. Fields: `amount` (signed string), `type`, `label`, `status`, `user` (nullable — `null` for system-level transactions), `createdBy`, `orderId`/`orderNumber` (nullable — `null` for manual/system/withdrawal entries), `orderService`/`orderProduct` (nullable — the order line item the transaction is for, when there is one).
 
-`type` values: `intake_order_income`, `service_income`, `products_income`, `system_order_income`, `manual_adjustment`, `withdrawal_request`.
+`type` values: `intake_order_income`, `service_income`, `products_income`, `system_order_income`, `manual_adjustment`, `withdrawal_request`, `reversal`, `referral_income`.
 `status` values: `pending`, `completed`, `rejected` (rejected only applies to withdrawal requests).
+
+`referral_income` transactions (a [referral's](#referrals) cut of an order's profit) never appear in these staff transaction lists — `MyTransactionsFilterBar`/`TransactionCommonFilters` hard-exclude `TRANSACTION_TYPES.REFERRAL_INCOME` so referral money never mixes with staff money in a shared view. They're visible only on the referral's own transactions page.
 
 **`Balance`** — an employee's current balance: `{ id, amount, pendingAmount, user, createdAt, updatedAt }`. `pendingAmount` is the sum of that employee's `pending` transactions (income not yet credited because the order isn't closed) — whole-number amount string, never fractional (see `docs/architecture.md` money rule), shown as a secondary "+ N" column next to `amount`.
 
@@ -434,6 +449,67 @@ All transaction-list endpoints (`allTransactions`, `myTransactions`, `withdrawal
 ### Shared modal shell
 
 `AdjustBalanceModal`, `RequestWithdrawalModal`, and `AdjustSystemBalanceModal` all wrap the same `AmountDescriptionModal` (Dialog + form + error + footer boilerplate) and only supply the title, submit handler, and their own amount/description fields — the first adds an accrue/deduct toggle, the second an "available" hint line, the third is the plainest of the three.
+
+---
+
+## Referrals
+
+**Path:** `/backoffice/referrals`
+**Source:** `src/features/backoffice/modules/referrals/`
+**Required ability:** `referrals_manage` (list/detail pages, sidebar link, and route are all gated on it)
+
+A referral is an existing [customer](#customers) promoted to earn a commission on orders attributed to them. When an order has a referral attached, the referral gets a cut of the order's profit — see [Referral attachment](#referral-attachment) in Orders for how that's wired into the order form/detail page.
+
+**Profit distribution order:** intake staff → **referral** → repair master → service (shared balance). Each step takes its percentage from what's left after the previous one — e.g. on 1000 profit with intake 10% / referral 10% / master 50%: intake gets 100, referral gets 10% of the remaining 900 = 90, master gets 50% of the remaining 810 = 405, service keeps the last 405.
+
+### Pages
+
+| Page | Path | Description |
+|------|------|-------------|
+| Referrals list | `/backoffice/referrals` | Paginated, searchable (`customer_name`) table of all referrals |
+| Referral transactions | `/backoffice/referrals/:id/transactions` | A referral's info card (customer, commission, balance, pending balance) + their transaction history |
+
+### Key types
+
+**`Referral`** — `{ id, customer, commissionPercent, balance, pendingBalance, createdBy, createdAt, updatedAt }`. There is no `isActive` flag: a referral either **exists** (active) or has been **demoted** (soft-deleted) — promoting the same customer again restores the same record, same `id`, same balance and transaction history, instead of creating a new one.
+
+- `balance` — already accrued: closed orders' finalized payouts, plus manual adjustments.
+- `pendingBalance` — sum of `pending` `referral_income` on the referral's still-open orders; becomes part of `balance` once those orders close. Shown as `"0"` when there's nothing pending (UI hides/dashes it rather than showing `+ 0`).
+
+**`ReferralTransaction`** — same shape as billing's `Transaction`, scoped to a referral: `{ id, amount, type, label, status, orderId, orderNumber, orderService, orderProduct, createdBy, createdAt, updatedAt }`. `type` is `referral_income` (automatic, tied to an order) or `manual_adjustment` (an accrual/deduction made from this module).
+
+**`NewReferral`** — `{ customerId, commissionPercent }`, the promotion payload.
+
+**`EditReferral`** — `{ commissionPercent }` — commission is the only editable field; there's no "deactivate without demoting" state.
+
+**`NewReferralBalanceTransaction`** — `{ amount, description }`. `amount` is a signed string built by `useAdjustReferralBalanceSubmit` from a separate accrue/deduct toggle in the UI (`REFERRAL_DIRECTIONS.ACCRUE` / `DEDUCT`) plus a positive-number form field — the form never lets the user type a `-` directly.
+
+### API
+
+| Method | Description |
+|--------|-------------|
+| `referralsApi.getAll` | Paginated referral list; also reused as the picker source in the order form and in `MakeReferralDialog`'s customer/referral search (`fetchCustomersForReferral`, `fetchReferralsByName` in `lib/searchFetchers.ts`) |
+| `referralsApi.getOne` | Single referral, used on the transactions page header card |
+| `referralsApi.create` | Promote a customer to referral |
+| `referralsApi.update` | Edit commission percent |
+| `referralsApi.demote` | Soft-delete (demote) a referral |
+| `referralsApi.transactions.getAll` | Paginated transaction history for one referral |
+| `referralsApi.adjustBalance` | Manual accrual/deduction, posts a `completed` transaction immediately (no `pending` stage, unlike order-driven income) |
+
+`createReferralTransactionsApi(referralId)` binds a referral id to a `SmartTable`-compatible `{ getAll }` object, the same pattern `billingApi.withdrawalRequests` uses to pin a shared endpoint's filters.
+
+### Hooks
+
+| Hook | Description |
+|------|-------------|
+| `useMakeReferral(onSuccess)` | Promotes a customer; invalidates the referral list and that customer's detail query (so `isReferral` flips without a refresh) |
+| `useEditReferral(onSuccess)` | Updates commission percent |
+| `useDemoteReferral(onSuccess)` | Soft-deletes a referral |
+| `useAdjustReferralBalanceSubmit(onSuccess)` | Builds the signed `amount` from the accrue/deduct toggle and submits the manual transaction; invalidates the list, that referral's detail, and its transaction history |
+
+### File layout note
+
+`api/dto.ts`/`lib/adapters.ts` are split from `api/referralResourceDto.ts`/`lib/referralAdapters.ts` specifically to avoid a circular import: the Orders module needs `ReferralDtoSchema`/`mapReferralDtoToReferral` to embed a referral on `OrderResource`, while the Referrals module itself needs Orders' service/product schemas to shape `ReferralTransactionDtoSchema`. The split file has no dependency back on Orders, so Orders can import from it safely.
 
 ---
 

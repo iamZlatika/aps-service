@@ -118,4 +118,13 @@ export const queryKeys = {
     balance: () => [...queryKeys.smsIntegration.all, "balance"] as const,
     messages: makeEntityKey(["smsIntegration"], "messages"),
   },
+
+  referrals: {
+    all: ["referrals"] as const,
+    list: makeEntityKey(["referrals"], "list"),
+    detail: (id: number) => [...queryKeys.referrals.all, "detail", id] as const,
+    transactions: (referralId: number) =>
+      makeEntityKey(["referrals"], `transactions-${referralId}`),
+    searchByName: () => [...queryKeys.referrals.all, "search-by-name"] as const,
+  },
 } as const;

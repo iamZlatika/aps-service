@@ -215,8 +215,12 @@ export function buildTransactionColumns({
       field: "user",
       labelKey: "billing.transactions.table.employee",
       sortable: false,
-      renderCell: (value) =>
-        isUser(value) ? value.name : i18next.t("billing.transactions.system"),
+      renderCell: (value, item) =>
+        item.referral
+          ? item.referral.customer.name
+          : isUser(value)
+            ? value.name
+            : i18next.t("billing.transactions.system"),
     });
   }
 

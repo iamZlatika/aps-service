@@ -78,6 +78,7 @@ export const TRANSACTION_TYPES = {
   MANUAL_ADJUSTMENT: "manual_adjustment",
   WITHDRAWAL_REQUEST: "withdrawal_request",
   REVERSAL: "reversal",
+  REFERRAL_INCOME: "referral_income",
 } as const;
 
 export type TransactionType =
