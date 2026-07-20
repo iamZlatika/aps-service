@@ -22,9 +22,13 @@ export const useDeleteOrderItem = (
         : ordersApi.deleteServiceInOrder(orderId, item.id),
     onSuccess: () => {
       toast.success(i18next.t("common.deleteDialog.success"));
-      return queryClient.invalidateQueries({
-        queryKey: queryKeys.orders.detail(orderId),
-      });
+      // Removing a service/product recalculates the referral's pending
+      // referral_income — refresh referrals so the pending amount stays in sync.
+      void queryClient.invalidateQueries({ queryKey: queryKeys.referrals.all });
+      // Broad invalidation (not just this order's detail) — removing an item
+      // changes the order's total sum, which the orders table also displays,
+      // so the list cache needs refreshing too.
+      return queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
     },
   });
 

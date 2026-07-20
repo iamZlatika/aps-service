@@ -10,6 +10,7 @@ import {
   OutsourcerDtoSchema,
   SupplierDtoSchema,
 } from "@/features/backoffice/modules/dictionaries/api/dto.ts";
+import { ReferralDtoSchema } from "@/features/backoffice/modules/referrals/api/referralResourceDto.ts";
 import { UserDtoSchema } from "@/features/backoffice/modules/users/api/dto.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
 import {
@@ -58,6 +59,7 @@ export const OrderDtoSchema = z.object({
   is_urgent: z.boolean(),
   is_called: z.boolean(),
   location: LocationDtoSchema,
+  referral: ReferralDtoSchema.nullable(),
   total_cost: z.string(),
   total_income: z.string(),
   created_at: z.iso.datetime(),
@@ -155,6 +157,7 @@ export const OrderTransactionDtoSchema = z.object({
   label: z.string(),
   status: zodEnumFromConst(TRANSACTION_STATUSES),
   user: UserDtoSchema.nullable(),
+  referral: ReferralDtoSchema.nullable(),
   order_id: z.number(),
   order_number: z.string(),
   order_service_id: z.number().nullable().optional(),

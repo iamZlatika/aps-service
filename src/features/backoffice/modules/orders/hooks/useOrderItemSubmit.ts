@@ -76,9 +76,13 @@ export const useOrderItemSubmit = ({
       };
       toast.success(i18next.t(toastKeys[type][isEdit ? "edit" : "add"]));
       onSuccess();
-      return queryClient.invalidateQueries({
-        queryKey: queryKeys.orders.detail(orderId),
-      });
+      // Services/products recalculate the referral's pending referral_income —
+      // refresh referrals so the pending amount stays in sync.
+      void queryClient.invalidateQueries({ queryKey: queryKeys.referrals.all });
+      // Broad invalidation (not just this order's detail) — adding/removing
+      // an item changes the order's total sum, which the orders table also
+      // displays, so the list cache needs refreshing too.
+      return queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
     },
   });
 

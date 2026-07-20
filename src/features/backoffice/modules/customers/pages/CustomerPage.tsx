@@ -1,4 +1,4 @@
-import { RefreshCcw } from "lucide-react";
+import { Handshake, RefreshCcw } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -11,6 +11,7 @@ import { MergeCustomerDialog } from "@/features/backoffice/modules/customers/com
 import { useCustomer } from "@/features/backoffice/modules/customers/hooks/useCustomer.ts";
 import { useCustomerTelegramSocket } from "@/features/backoffice/modules/customers/hooks/useCustomerTelegramSocket.ts";
 import { useCreateOrderForCustomer } from "@/features/backoffice/modules/orders/hooks/useCreateOrderForCustomer.ts";
+import { MakeReferralDialog } from "@/features/backoffice/modules/referrals/components/MakeReferralDialog.tsx";
 import { CreateOrderForCustomerButton } from "@/shared/components/common/buttons/index.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 
@@ -19,6 +20,7 @@ const CustomerPage = () => {
   const customerId = id ? parseInt(id, 10) : null;
   const { t } = useTranslation();
   const [isMergeOpen, setIsMergeOpen] = useState(false);
+  const [isMakeReferralOpen, setIsMakeReferralOpen] = useState(false);
 
   const { selectedCustomer, isLoading } = useCustomer(customerId);
   useCustomerTelegramSocket(customerId);
@@ -26,6 +28,7 @@ const CustomerPage = () => {
   const { can } = useAuth();
   const canManageOrders = can(ABILITIES.ORDERS_MANAGE);
   const canMerge = can(ABILITIES.CUSTOMERS_MERGE);
+  const canManageReferrals = can(ABILITIES.REFERRALS_MANAGE);
 
   if (isLoading) return <Loader />;
   if (!selectedCustomer || !customerId) return null;
@@ -49,6 +52,21 @@ const CustomerPage = () => {
               <RefreshCcw className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
           )}
+          {canManageReferrals &&
+            (selectedCustomer.isReferral ? (
+              <span className="inline-flex items-center gap-1.5 h-9 sm:h-12 px-3 rounded-md border border-green-600 bg-green-600 text-sm font-medium text-white">
+                <Handshake className="h-4 w-4" />
+                {t("customers.referral_badge")}
+              </span>
+            ) : (
+              <button
+                type="button"
+                className="h-9 w-9 sm:h-12 sm:w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"
+                onClick={() => setIsMakeReferralOpen(true)}
+              >
+                <Handshake className="h-4 w-4 sm:h-5 sm:w-5" />
+              </button>
+            ))}
         </div>
       </div>
       <CustomerInfoCard customer={selectedCustomer} />
@@ -57,6 +75,14 @@ const CustomerPage = () => {
         isOpen={isMergeOpen}
         onOpenChange={setIsMergeOpen}
         initialSurvivor={{
+          id: selectedCustomer.id,
+          name: selectedCustomer.name,
+        }}
+      />
+      <MakeReferralDialog
+        isOpen={isMakeReferralOpen}
+        onOpenChange={setIsMakeReferralOpen}
+        presetCustomer={{
           id: selectedCustomer.id,
           name: selectedCustomer.name,
         }}

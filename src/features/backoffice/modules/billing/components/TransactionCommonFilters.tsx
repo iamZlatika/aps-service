@@ -21,10 +21,12 @@ const ALL_VALUE = "__all__";
 
 interface TransactionCommonFiltersProps {
   readonly excludedTypes?: TransactionType[];
+  readonly showDateRange?: boolean;
 }
 
 export const TransactionCommonFilters = ({
   excludedTypes = [],
+  showDateRange = true,
 }: TransactionCommonFiltersProps) => {
   const { t } = useTranslation();
   const { filters, setFilter, setFilters } = useFilterParams();
@@ -82,18 +84,22 @@ export const TransactionCommonFilters = ({
         </Select>
       </FilterSlot>
 
-      <FilterSlot
-        active={!!filters["created_at[0]"]}
-        onClear={() => setFilters({ "created_at[0]": "", "created_at[1]": "" })}
-      >
-        <TransactionDateRangeFilter
-          from={filters["created_at[0]"] ?? ""}
-          to={filters["created_at[1]"] ?? ""}
-          onApply={(from, to) =>
-            setFilters({ "created_at[0]": from, "created_at[1]": to })
+      {showDateRange && (
+        <FilterSlot
+          active={!!filters["created_at[0]"]}
+          onClear={() =>
+            setFilters({ "created_at[0]": "", "created_at[1]": "" })
           }
-        />
-      </FilterSlot>
+        >
+          <TransactionDateRangeFilter
+            from={filters["created_at[0]"] ?? ""}
+            to={filters["created_at[1]"] ?? ""}
+            onApply={(from, to) =>
+              setFilters({ "created_at[0]": from, "created_at[1]": to })
+            }
+          />
+        </FilterSlot>
+      )}
 
       <FilterSlot
         active={!!filters.order_number}

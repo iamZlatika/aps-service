@@ -4,6 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
+import { ABILITIES } from "@/features/auth/backoffice/abilities.ts";
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
 import { LeaveConfirmDialog } from "@/features/backoffice/modules/orders/components/LeaveConfirmDialog.tsx";
 import { useCreateOrder } from "@/features/backoffice/modules/orders/hooks/useCreateOrder.ts";
@@ -18,6 +19,7 @@ import {
   fetchCustomersByName,
   fetchCustomersByPhone,
 } from "@/features/backoffice/modules/orders/lib/searchFetchers.ts";
+import { fetchReferralsByName } from "@/features/backoffice/modules/referrals/lib/searchFetchers.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { PAYMENT_METHODS } from "@/shared/types.ts";
@@ -28,8 +30,10 @@ import { DeviceSection } from "./form-sections/DeviceSection.tsx";
 
 const CreateOrderPage = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, can } = useAuth();
   const { state } = useLocation();
+  const canPickReferral =
+    can(ABILITIES.ORDERS_MANAGE) || can(ABILITIES.REFERRALS_MANAGE);
 
   const parsed = prefillStateSchema.safeParse(state);
   const prefillCustomer = parsed.success ? parsed.data.customer : undefined;
@@ -84,6 +88,8 @@ const CreateOrderPage = () => {
                   isLoadingUsers={isLoadingUsers}
                   locations={locations}
                   isLoadingLocations={isLoadingLocations}
+                  showReferralField={canPickReferral}
+                  fetchReferralsByName={fetchReferralsByName}
                 />
                 <Button
                   type="submit"

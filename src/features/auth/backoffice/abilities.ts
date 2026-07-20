@@ -13,6 +13,7 @@ export const ABILITIES = {
   DICTIONARIES_PRICE_LIST_MANAGE: "dictionaries_price_list_manage",
   LANDING_WORKS_MANAGE: "landing_works_manage",
   INTEGRATIONS_SMS_VIEW: "integrations_sms_view",
+  REFERRALS_MANAGE: "referrals_manage",
 } as const;
 
 export type Ability = (typeof ABILITIES)[keyof typeof ABILITIES];

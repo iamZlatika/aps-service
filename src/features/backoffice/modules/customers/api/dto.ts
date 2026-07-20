@@ -45,6 +45,7 @@ export const CustomerDtoSchema = z.object({
     .nullable(),
   comment: z.string().nullable(),
   sms_notifications_enabled: z.boolean().nullable(),
+  is_referral: z.boolean(),
   last_order_at: z.iso.datetime().nullable(),
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),

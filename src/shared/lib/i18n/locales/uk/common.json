@@ -87,6 +87,7 @@
     "sms_integration": "SMS-інтеграція",
     "roles_permissions": "Ролі та доступи",
     "quick_orders": "Продажі",
+    "referrals": "Реферали",
     "dictionaries_list": {
       "title": "Довідники",
       "accessories": "Комплектації",
@@ -252,11 +253,13 @@
         "users": "Співробітники",
         "dictionaries": "Довідники",
         "integrations": "Інтеграції",
-        "quick_orders": "Продажі"
+        "quick_orders": "Продажі",
+        "referrals": "Реферали"
       },
       "orders_view": "Перегляд",
       "orders_manage": "Управління",
       "quick_orders_manage": "Управління",
+      "referrals_manage": "Управління",
       "customers_view": "Перегляд",
       "customers_manage": "Управління",
       "customers_merge": "Об'єднання дублів",
@@ -354,6 +357,7 @@
   },
   "customers": {
     "page_title": "Налаштування клієнта",
+    "referral_badge": "Реферал",
     "merge": {
       "title": "Злиття клієнтів-дублів",
       "survivor_label": "Основний клієнт (залишається)",
@@ -511,6 +515,9 @@
     "successCreate": "Замовлення успішно створено",
     "successUpdate": "Інформацію про замовлення оновлено",
     "order": "Замовлення",
+    "errors": {
+      "referralInvalid": "Реферал не знайдений або неактивний — оберіть зі списку"
+    },
     "tabs": {
       "order": "Про замовлення",
       "finance": "Фінанси"
@@ -654,6 +661,7 @@
       "manager": "Замовлення прийняв",
       "assignee": "Призначений співробітник",
       "location": "Локація",
+      "referral": "Реферал",
       "dueDate": "Дедлайн"
     },
     "placeholders": {
@@ -672,6 +680,7 @@
       "estimatedCost": "Вкажіть приблизну вартість (необов’язково)",
       "prepayment": "Введіть суму передоплати (необов’язково)",
       "location": "Оберіть локацію",
+      "referral": "Пошук реферала за ім'ям клієнта",
       "noResults": "Немає результатів",
       "dueDate": "Оберіть дату (необов'язково)"
     },
@@ -881,7 +890,8 @@
       "system_order_income": "Зарахування на баланс сервісу",
       "manual_adjustment": "Ручне коригування балансу",
       "withdrawal_request": "Виплата коштів співробітнику",
-      "reversal": "Анулювання"
+      "reversal": "Анулювання",
+      "referral_income": "Реферальний бонус"
     },
     "transaction_statuses": {
       "pending": "Очікує",
@@ -928,6 +938,57 @@
       "reject": "Відхилити",
       "approve_success": "Заявку на виплату проведено",
       "reject_success": "Заявку на виплату відхилено"
+    }
+  },
+  "referrals": {
+    "title": "Реферали",
+    "search_placeholder": "Пошук за ім'ям клієнта",
+    "add_button": "Додати реферала",
+    "table": {
+      "customer": "Клієнт",
+      "commission_percent": "Комісія",
+      "balance": "Баланс",
+      "pending_balance": "Очікується до зарахування",
+      "created_by": "Хто додав",
+      "created_at": "Дата додавання"
+    },
+    "make_referral_modal": {
+      "title": "Зробити рефералом",
+      "customer_label": "Клієнт",
+      "customer_placeholder": "Пошук клієнта за ім'ям",
+      "commission_label": "Комісія, %",
+      "submit": "Зберегти",
+      "customer_already_referral": "Цей клієнт вже є рефералом"
+    },
+    "edit_modal": {
+      "title_for": "Редагування реферала — {{name}}",
+      "commission_label": "Комісія, %",
+      "submit": "Зберегти"
+    },
+    "adjust_modal": {
+      "title_for": "Нарахувати / Списати — {{name}}",
+      "accrue": "Нарахувати (+)",
+      "deduct": "Списати (−)",
+      "amount": "Сума",
+      "description": "Опис",
+      "submit": "Зберегти"
+    },
+    "demote_confirm": {
+      "title": "Демоут реферала",
+      "description": "Клієнт «{{name}}» перестане бути рефералом. Історія транзакцій та баланс збережуться, повторна промоція відновить запис.",
+      "confirm": "Демоутувати"
+    },
+    "transactions": {
+      "title": "Транзакції реферала",
+      "table": {
+        "date": "Дата",
+        "type": "Тип",
+        "label": "Опис",
+        "amount": "Сума",
+        "status": "Статус",
+        "order": "Замовлення",
+        "created_by": "Менеджер"
+      }
     }
   },
   "smsIntegration": {

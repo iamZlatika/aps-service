@@ -37,7 +37,14 @@ export const useCreateOrder = (
     },
     onError: (error) => {
       if (isApiError(error) && error.status === 422) {
-        handleFormError(error, setError);
+        handleFormError(error, setError, {
+          fieldMap: { referral_id: "referralId" },
+          messageMap: {
+            "The selected referral id is invalid.": i18next.t(
+              "orders.errors.referralInvalid",
+            ),
+          },
+        });
       } else {
         notifyError(error);
       }

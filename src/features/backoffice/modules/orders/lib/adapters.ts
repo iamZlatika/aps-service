@@ -40,6 +40,7 @@ import {
   type OrderTransaction,
   type StatusHistoryItem,
 } from "@/features/backoffice/modules/orders/types.ts";
+import { mapReferralDtoToReferral } from "@/features/backoffice/modules/referrals/lib/referralAdapters.ts";
 import { mapUserDtoToUser } from "@/features/backoffice/modules/users/lib/adapters.ts";
 import type { SearchPreset } from "@/features/backoffice/modules/users/types.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
@@ -86,6 +87,7 @@ export function mapOrderDtoToOrder(dto: OrderDto): Order {
     isUrgent: dto.is_urgent,
     isCalled: dto.is_called,
     location: mapLocationDtoToLocation(dto.location),
+    referral: dto.referral ? mapReferralDtoToReferral(dto.referral) : null,
     totalCost: dto.total_cost,
     totalIncome: dto.total_income,
     createdAt: dto.created_at,
@@ -194,6 +196,7 @@ export function mapOrderTransactionDtoToOrderTransaction(
     label: dto.label,
     status: dto.status,
     user: dto.user ? mapUserDtoToUser(dto.user) : null,
+    referral: dto.referral ? mapReferralDtoToReferral(dto.referral) : null,
     orderId: dto.order_id,
     orderNumber: dto.order_number,
     orderServiceId: dto.order_service_id ?? null,
@@ -280,6 +283,7 @@ export function mapNewOrderToDto(order: NewOrder) {
     customer_comment: order.customerComment,
     manager_id: order.managerId,
     location_id: order.locationId,
+    referral_id: order.referralId ?? null,
     prepayment: order.prepayment,
     prepayment_method: order.prepaymentMethod,
     is_urgent: order.isUrgent,

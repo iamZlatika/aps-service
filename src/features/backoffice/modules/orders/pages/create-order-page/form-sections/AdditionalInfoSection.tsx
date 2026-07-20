@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
 import type { NewOrderSchema } from "@/features/backoffice/modules/orders/lib/schema.ts";
+import type { ReferralPickerMeta } from "@/features/backoffice/modules/referrals/lib/searchFetchers.ts";
 import { type User } from "@/features/backoffice/modules/users/types.ts";
+import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { CardTitle } from "@/shared/components/ui/card";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
@@ -17,12 +20,18 @@ import {
 } from "@/shared/components/ui/select.tsx";
 import { stripNonDigits } from "@/shared/lib/utils";
 import { PAYMENT_METHODS } from "@/shared/types.ts";
+import type { SearchableSelectOption } from "@/widgets/searchable-select";
+import SearchableSelect from "@/widgets/searchable-select";
 
 type AdditionalInfoSectionProps = {
   users: User[];
   isLoadingUsers?: boolean;
   locations: Location[];
   isLoadingLocations?: boolean;
+  showReferralField?: boolean;
+  fetchReferralsByName?: (
+    search: string,
+  ) => Promise<SearchableSelectOption<ReferralPickerMeta>[]>;
 };
 
 export const AdditionalInfoSection = ({
@@ -30,13 +39,17 @@ export const AdditionalInfoSection = ({
   isLoadingUsers,
   locations,
   isLoadingLocations,
+  showReferralField,
+  fetchReferralsByName,
 }: AdditionalInfoSectionProps) => {
   const { t } = useTranslation();
   const {
     control,
     register,
+    setValue,
     formState: { errors },
   } = useFormContext<NewOrderSchema>();
+  const [referralName, setReferralName] = useState("");
 
   return (
     <div className="lg:col-start-1 lg:row-start-2 flex flex-col gap-4">
@@ -162,6 +175,30 @@ export const AdditionalInfoSection = ({
           {...register("prepayment")}
         />
       </div>
+
+      {showReferralField && fetchReferralsByName && (
+        <div className="flex flex-col gap-1">
+          <Label className="text-base">{t("orders.form.referral")}</Label>
+          <SearchableSelect
+            placeholder={t("orders.placeholders.referral")}
+            value={referralName}
+            onChange={setReferralName}
+            onSelect={(option) => setValue("referralId", option.id)}
+            onClear={() => setValue("referralId", null)}
+            renderOption={(option) => (
+              <div className="flex flex-col">
+                <span className="text-sm font-medium">{option.name}</span>
+                <span className="text-xs text-muted-foreground">
+                  {option.meta.commissionPercent}%
+                </span>
+              </div>
+            )}
+            fetchItems={fetchReferralsByName}
+            queryKey={queryKeys.referrals.searchByName()}
+            error={errors.referralId}
+          />
+        </div>
+      )}
     </div>
   );
 };

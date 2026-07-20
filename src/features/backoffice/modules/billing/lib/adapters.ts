@@ -17,6 +17,7 @@ import {
   mapOrderProductDtoToOrderProduct,
   mapOrderServiceDtoToOrderService,
 } from "@/features/backoffice/modules/orders/lib/adapters.ts";
+import { mapReferralDtoToReferral } from "@/features/backoffice/modules/referrals/lib/referralAdapters.ts";
 import { mapUserDtoToUser } from "@/features/backoffice/modules/users/lib/adapters.ts";
 import type { PaginatedResponse } from "@/features/backoffice/widgets/table/models/types.ts";
 
@@ -33,6 +34,7 @@ export function mapTransactionDtoToTransaction(
     label: dto.label,
     status: dto.status,
     user: dto.user ? mapUserDtoToUser(dto.user) : null,
+    referral: dto.referral ? mapReferralDtoToReferral(dto.referral) : null,
     orderId: dto.order_id,
     orderNumber: dto.order_number,
     orderService: dto.order_service
