@@ -17,7 +17,7 @@ The goal is to help new developers (and future-you) understand *why* the code is
 - [Forms](#forms)
 - [Enums & Shared Types](#enums--shared-types)
 - [i18n](#i18n)
-- [Adding a New Backoffice Module](#adding-a-new-backoffice-module)
+- [Adding a New Feature Module](#adding-a-new-feature-module)
 
 ---
 
@@ -32,11 +32,11 @@ src/
 │   ├── price-list/   # PriceListItem DTO, domain type, adapter
 │   ├── work/          # Work DTO, domain type, adapter
 │   └── role/          # Role/permission DTO, domain type, adapter
-├── features/
+├── features/         # Self-contained feature modules (see below)
 │   ├── auth/         # Login, token storage, session management
-│   └── backoffice/   # Employee panel
-│       ├── modules/  # Self-contained feature modules (see below)
-│       └── widgets/  # Compound components used across modules (table, etc.)
+│   ├── orders/
+│   ├── customers/
+│   └── ...           # users, dictionaries, billing, referrals, profile, works, roles-permissions, sms-integration, quick-orders
 ├── widgets/          # Compound components shared across features
 ├── styles/           # Global CSS
 ├── test/             # Vitest setup
@@ -48,10 +48,10 @@ src/
     └── types.ts      # Global enums and shared types
 ```
 
-Each backoffice module is self-contained and follows the same structure:
+Each feature module is self-contained and follows the same structure:
 
 ```
-modules/<name>/
+features/<name>/
 ├── api/
 │   ├── dto.ts        # Zod schemas for server response shapes (snake_case)
 │   ├── endpoints.ts  # API URL constants and builder functions
@@ -71,7 +71,7 @@ modules/<name>/
 
 ## Shared Entities (`src/entities/`)
 
-These originated as types shared between the (now-removed, see [README](../README.md#overview)) public website and the backoffice. Since the website split into its own repo, every entity below is consumed from a single feature (`backoffice`), sometimes across more than one of its modules. They stay in `src/entities/` rather than moving into a module's own `types.ts` because they're still cross-module within `backoffice`, and because the same server response shapes are also what the standalone public site consumes from the API — keeping them isolated here keeps that boundary explicit. Whether to consolidate further is a call for the team, not something to do silently.
+These originated as types shared between the (now-removed, see [README](../README.md#overview)) public website and this app. Since the website split into its own repo, every entity below is consumed only within this repo's own feature modules — sometimes just one, sometimes several. They stay in `src/entities/` rather than moving into a single module's own `types.ts` because they're still cross-module here, and because the same server response shapes are also what the standalone public site consumes from the API — keeping them isolated here keeps that boundary explicit. Whether to consolidate further is a call for the team, not something to do silently.
 
 Each entity follows the same three-file structure:
 
@@ -86,11 +86,11 @@ Current entities:
 
 | Entity | Consumers |
 |--------|-----------|
-| `location` | `backoffice/dictionaries`, `backoffice/users`, `backoffice/orders`, `backoffice/quick-orders` |
-| `order-status` | `backoffice/dictionaries`, `backoffice/orders` |
-| `price-list` | `backoffice/dictionaries` (price list dictionary page) only — no longer multi-module |
-| `work` | `backoffice/works`, `widgets/work-card` (used by the works module's preview modal — see [Backoffice → Works](backoffice.md#works)) |
-| `role` | `backoffice/roles-permissions`, `backoffice/users` (permission editing) |
+| `location` | `features/dictionaries`, `features/users`, `features/orders`, `features/quick-orders` |
+| `order-status` | `features/dictionaries`, `features/orders` |
+| `price-list` | `features/dictionaries` (price list dictionary page) only — no longer multi-module |
+| `work` | `features/works`, `widgets/work-card` (used by the works module's preview modal — see [Backoffice → Works](backoffice.md#works)) |
+| `role` | `features/roles-permissions`, `features/users` (permission editing) |
 
 **Rule:** Move a type to `entities/` only when it is actually shared across two or more features. Feature-specific types stay in the feature's own `types.ts`.
 
@@ -299,11 +299,21 @@ Wrap page-level queries to handle loading and error states consistently:
 
 ## Error Tracking (Sentry)
 
-Sentry setup lives in `shared/lib/sentry.ts`.
+Like the Echo/Ably setup above, the Sentry integration is split across two files to keep the SDK (~45 KB gzipped) out of the main bundle:
 
-- `initSentry()` — called once from `main.tsx`. No-ops if `VITE_SENTRY_DSN` is unset. Only actually reports in production (`enabled: import.meta.env.PROD`) — in dev/test it just logs to the console.
+| File | Role |
+|------|------|
+| `shared/lib/sentry.ts` | Thin wrapper — public API: `initSentry`, `captureError`, `captureErrorWithId`, `getLastEventId`. Never imports `@sentry/react` at the top level. |
+| `shared/lib/sentryFactory.ts` | Heavy implementation with the real `@sentry/react` import. Lazy-loaded via dynamic `import()` on first call to any of the wrapper's functions. |
+
+Because of this, `@sentry/react` is no longer `modulepreload`ed in `index.html` — it loads only the first time it's actually needed (an error, or `initSentry()` at boot), instead of blocking every visitor's initial page load.
+
+- `initSentry()` — called once from `main.tsx`. No-ops if `VITE_SENTRY_DSN` is unset (the factory is never even fetched in that case). Only actually reports in production (`enabled: import.meta.env.PROD`) — in dev/test it just logs to the console.
 - `captureError(error, context?)` — reports an exception with extra context. Used by the `apiClient.ts` response interceptor and the Ably connection listener (`echoFactory.ts`, `failed` state).
-- `captureErrorWithId(error, context?)` — same as `captureError`, but returns the Sentry event ID (or `null` outside production) for cases that need to surface it to the user (e.g. an error page showing a reference ID).
+- `captureErrorWithId(error, context?)` — same as `captureError`, but returns the Sentry event ID synchronously if the factory has already loaded, otherwise `null` (and kicks off/joins the load in the background). No current call site uses the returned value.
+- `getLastEventId()` — returns the last captured event's ID (or `undefined` if the factory hasn't loaded yet), used by `ErrorFallback.tsx` to show a reference ID on the fallback UI.
+
+**Do not import from `sentryFactory.ts` directly** — it carries all Sentry code and is lazy-loaded. Always go through `sentry.ts`.
 
 ### `silentErrorStatuses`
 
@@ -452,7 +462,7 @@ export const ORDERS_ROUTES = {
 `navigation.ts` — link builder functions used in components and hooks:
 
 ```ts
-const BASE = "/backoffice/orders";
+const BASE = "/orders";
 
 export const ORDERS_LINKS = {
   root: () => BASE,
@@ -467,7 +477,7 @@ export const ORDERS_LINKS = {
 navigate(ORDERS_LINKS.detail(order.id));
 
 // ❌ wrong
-navigate(`/backoffice/orders/${order.id}`);
+navigate(`/orders/${order.id}`);
 ```
 
 ---
@@ -547,11 +557,11 @@ Strings from the server are translated server-side.
 
 ---
 
-## Adding a New Backoffice Module
+## Adding a New Feature Module
 
 Checklist for a new module (e.g. `invoices`):
 
-- [ ] Create `src/features/backoffice/modules/invoices/`
+- [ ] Create `src/features/invoices/`
 - [ ] `api/dto.ts` — Zod schemas for all server response shapes
 - [ ] `api/endpoints.ts` — URL constants and builder functions
 - [ ] `api/index.ts` — API object with typed async methods (validate + map in each method)

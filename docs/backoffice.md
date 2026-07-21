@@ -1,6 +1,6 @@
 # Backoffice
 
-The backoffice is the internal panel for employees. It lives under `/backoffice` and is accessible only to authenticated users with the `manager` or `head_manager` role.
+The backoffice is the internal panel for employees, accessible only to authenticated users with the `manager` or `head_manager` role.
 
 ## Modules
 
@@ -20,8 +20,8 @@ The backoffice is the internal panel for employees. It lives under `/backoffice`
 
 ## Orders
 
-**Path:** `/backoffice/orders`
-**Source:** `src/features/backoffice/modules/orders/`
+**Path:** `/orders`
+**Source:** `src/features/orders/`
 
 The core module of the system. Manages the full lifecycle of a repair order — from intake to closing, including payments, services, spare parts, documents, and comments.
 
@@ -29,10 +29,10 @@ The core module of the system. Manages the full lifecycle of a repair order — 
 
 | Page | Path | Description |
 |------|------|-------------|
-| Orders list | `/backoffice/orders` | Paginated, sortable, filterable table of all orders |
-| Create order | `/backoffice/orders/order-new` | Multi-step form to register a new order |
-| Order detail | `/backoffice/orders/:id` | Full order view with all related data |
-| Filter settings | `/backoffice/orders/order-filter-settings` | Manage saved search presets |
+| Orders list | `/orders` | Paginated, sortable, filterable table of all orders |
+| Create order | `/orders/order-new` | Multi-step form to register a new order |
+| Order detail | `/orders/:id` | Full order view with all related data |
+| Filter settings | `/orders/order-filter-settings` | Manage saved search presets |
 
 The filter settings form's location filter uses `LocationCheckboxGroup` (`shared/components/common/`) with `clearable` — unlike its other usages, unchecking the selected location here clears the filter instead of requiring a different location to be picked.
 
@@ -142,8 +142,8 @@ Because adding/editing/deleting order services and products, and closing an orde
 
 ## Customers
 
-**Path:** `/backoffice/customers`
-**Source:** `src/features/backoffice/modules/customers/`
+**Path:** `/customers`
+**Source:** `src/features/customers/`
 
 Manages the customer database. Each customer can have multiple phone numbers, a portal account, a Telegram link, and a rating.
 
@@ -151,8 +151,8 @@ Manages the customer database. Each customer can have multiple phone numbers, a 
 
 | Page | Path | Description |
 |------|------|-------------|
-| Customers list | `/backoffice/customers` | Paginated, searchable table |
-| Customer detail | `/backoffice/customers/:id` | Full customer profile with phone, Telegram, ratings |
+| Customers list | `/customers` | Paginated, searchable table |
+| Customer detail | `/customers/:id` | Full customer profile with phone, Telegram, ratings |
 
 ### Key types
 
@@ -200,8 +200,8 @@ Each row highlights the currently open order (`currentOrderId`) and links to the
 
 ## Users
 
-**Path:** `/backoffice/users`
-**Source:** `src/features/backoffice/modules/users/`
+**Path:** `/users`
+**Source:** `src/features/users/`
 
 Manages employee accounts. Only `head_manager` can access this module.
 
@@ -209,8 +209,8 @@ Manages employee accounts. Only `head_manager` can access this module.
 
 | Page | Path | Description |
 |------|------|-------------|
-| Users list | `/backoffice/users` | Table of all employees |
-| User detail | `/backoffice/users/:id` | Employee profile: role, location, commission rates |
+| Users list | `/users` | Table of all employees |
+| User detail | `/users/:id` | Employee profile: role, location, commission rates |
 
 ### Key types
 
@@ -252,8 +252,8 @@ Manages employee accounts. Only `head_manager` can access this module.
 
 ## Dictionaries
 
-**Path:** `/backoffice/dictionaries/*`
-**Source:** `src/features/backoffice/modules/dictionaries/`
+**Path:** `/dictionaries/*`
+**Source:** `src/features/dictionaries/`
 
 Reference data used across all modules. All dictionary pages are built from the same two factory abstractions — adding a new one takes minutes.
 
@@ -371,8 +371,8 @@ For non-standard dictionaries (custom fields, special create form), use `createT
 
 ## Billing
 
-**Path:** `/backoffice/billing`
-**Source:** `src/features/backoffice/modules/billing/`
+**Path:** `/billing`
+**Source:** `src/features/billing/`
 
 Employee balances, financial transactions, the shared service balance, and self-service payout requests. Every employee's own balance/transactions are also surfaced on the [Profile](#profile) page's Finance tab, but the underlying components, API, and types all live in this module.
 
@@ -380,11 +380,11 @@ Employee balances, financial transactions, the shared service balance, and self-
 
 | Page | Path | Required ability | Description |
 |------|------|-------------------|-------------|
-| Balances | `/backoffice/billing/balances` | `billing_view` | All employees' balances; row action to accrue/deduct |
-| All Transactions | `/backoffice/billing/transactions` | `billing_view` | Full transaction log across all employees, with filters |
-| Withdrawal Requests | `/backoffice/billing/withdrawal-requests` | `billing_view` | Same transaction table, hard-filtered to `type=withdrawal_request&status=pending` |
+| Balances | `/billing/balances` | `billing_view` | All employees' balances; row action to accrue/deduct |
+| All Transactions | `/billing/transactions` | `billing_view` | Full transaction log across all employees, with filters |
+| Withdrawal Requests | `/billing/withdrawal-requests` | `billing_view` | Same transaction table, hard-filtered to `type=withdrawal_request&status=pending` |
 
-`/backoffice/billing` itself redirects to Balances. All three pages share `BillingTabs` (the third tab shows a pending-request count badge and is disabled when there are none) and `SystemBalanceCard`.
+`/billing` itself redirects to Balances. All three pages share `BillingTabs` (the third tab shows a pending-request count badge and is disabled when there are none) and `SystemBalanceCard`.
 
 ### Permissions
 
@@ -454,8 +454,8 @@ All transaction-list endpoints (`allTransactions`, `myTransactions`, `withdrawal
 
 ## Referrals
 
-**Path:** `/backoffice/referrals`
-**Source:** `src/features/backoffice/modules/referrals/`
+**Path:** `/referrals`
+**Source:** `src/features/referrals/`
 **Required ability:** `referrals_manage` (list/detail pages, sidebar link, and route are all gated on it)
 
 A referral is an existing [customer](#customers) promoted to earn a commission on orders attributed to them. When an order has a referral attached, the referral gets a cut of the order's profit — see [Referral attachment](#referral-attachment) in Orders for how that's wired into the order form/detail page.
@@ -466,8 +466,8 @@ A referral is an existing [customer](#customers) promoted to earn a commission o
 
 | Page | Path | Description |
 |------|------|-------------|
-| Referrals list | `/backoffice/referrals` | Paginated, searchable (`customer_name`) table of all referrals |
-| Referral transactions | `/backoffice/referrals/:id/transactions` | A referral's info card (customer, commission, balance, pending balance) + their transaction history |
+| Referrals list | `/referrals` | Paginated, searchable (`customer_name`) table of all referrals |
+| Referral transactions | `/referrals/:id/transactions` | A referral's info card (customer, commission, balance, pending balance) + their transaction history |
 
 ### Key types
 
@@ -515,15 +515,15 @@ A referral is an existing [customer](#customers) promoted to earn a commission o
 
 ## Profile
 
-**Path:** `/backoffice/profile`
-**Source:** `src/features/backoffice/modules/profile/`
+**Path:** `/profile`
+**Source:** `src/features/profile/`
 
 The current user's own profile page. Available to all authenticated backoffice users. Split into two tabs (`ProfileTabs`):
 
 | Tab | Path | Contents |
 |-----|------|----------|
-| Profile | `/backoffice/profile` | Avatar/name/email/roles header, permissions summary, change password |
-| Finance | `/backoffice/profile/finance` | Own balance + available-to-withdraw (`MyBalanceCard`), commission rates, own transaction history with filters — see [Billing](#billing) |
+| Profile | `/profile` | Avatar/name/email/roles header, permissions summary, change password |
+| Finance | `/profile/finance` | Own balance + available-to-withdraw (`MyBalanceCard`), commission rates, own transaction history with filters — see [Billing](#billing) |
 
 ### Features
 
@@ -540,8 +540,8 @@ Profile data is fetched via `queryKeys.users.me()` — the same query used throu
 
 ## Works
 
-**Path:** `/backoffice/works`
-**Source:** `src/features/backoffice/modules/works/`
+**Path:** `/works`
+**Source:** `src/features/works/`
 
 Manages the portfolio of completed repair/upgrade works. Published works are surfaced on the public site's Works page (separate `aps-website` repo, same API); `WorkCard`/`widgets/work-card` is kept in this repo only to power the create/edit form's live preview (`WorkPreviewModal`) of how an entry will render there.
 
@@ -549,9 +549,9 @@ Manages the portfolio of completed repair/upgrade works. Published works are sur
 
 | Page | Path | Description |
 |------|------|-------------|
-| Works list | `/backoffice/works` | Table of all works, with publish/unpublish and delete row actions |
-| Create work | `/backoffice/works/create` | Multi-section form: device info, work content, before/after/main/additional photos |
-| Edit work | `/backoffice/works/:id/edit` | Edit an existing work entry |
+| Works list | `/works` | Table of all works, with publish/unpublish and delete row actions |
+| Create work | `/works/create` | Multi-section form: device info, work content, before/after/main/additional photos |
+| Edit work | `/works/:id/edit` | Edit an existing work entry |
 
 ### Key types
 
@@ -572,8 +572,8 @@ Manages the portfolio of completed repair/upgrade works. Published works are sur
 
 ## Roles & Permissions
 
-**Path:** `/backoffice/roles-permissions`
-**Source:** `src/features/backoffice/modules/roles-permissions/`
+**Path:** `/roles-permissions`
+**Source:** `src/features/roles-permissions/`
 
 Manages which permissions are assigned to each role. A single page: select a role, toggle its permissions grouped by category (`RolePermissionsCard`, categories from `widgets/ability-badge/abilityGroups`).
 
@@ -593,8 +593,8 @@ Manages which permissions are assigned to each role. A single page: select a rol
 
 ## SMS Integration
 
-**Path:** `/backoffice/integrations` (route slug `integrations` — differs from the module folder name `sms-integration`)
-**Source:** `src/features/backoffice/modules/sms-integration/`
+**Path:** `/integrations` (route slug `integrations` — differs from the module folder name `sms-integration`)
+**Source:** `src/features/sms-integration/`
 
 Shows the SMS provider balance and a log of sent SMS messages (order/customer notifications).
 
@@ -614,8 +614,8 @@ Shows the SMS provider balance and a log of sent SMS messages (order/customer no
 
 ## Quick Orders
 
-**Path:** `/backoffice/quick-orders`
-**Source:** `src/features/backoffice/modules/quick-orders/`
+**Path:** `/quick-orders`
+**Source:** `src/features/quick-orders/`
 
 A lightweight order type for walk-in sales that skips the full repair-order lifecycle (no device intake, no status history) — just services/products, payment, and totals.
 
@@ -623,9 +623,9 @@ A lightweight order type for walk-in sales that skips the full repair-order life
 
 | Page | Path | Description |
 |------|------|-------------|
-| Quick orders list | `/backoffice/quick-orders` | Paginated, filterable table |
-| Create quick order | `/backoffice/quick-orders/new` | Form to register a new quick order |
-| Quick order detail | `/backoffice/quick-orders/:id` | Detail view with a Finance tab (`QuickOrderFinanceTab`) |
+| Quick orders list | `/quick-orders` | Paginated, filterable table |
+| Create quick order | `/quick-orders/new` | Form to register a new quick order |
+| Quick order detail | `/quick-orders/:id` | Detail view with a Finance tab (`QuickOrderFinanceTab`) |
 
 ### Key types
 

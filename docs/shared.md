@@ -332,7 +332,7 @@ Maps 422 server validation errors to React Hook Form fields. See [architecture.m
 
 ### Sentry — `src/shared/lib/sentry.ts`
 
-`initSentry()`, `captureError()`, `captureErrorWithId()`, and the `silentErrorStatuses` request option. See the full write-up in [architecture.md](architecture.md#error-tracking-sentry).
+`initSentry()`, `captureError()`, `captureErrorWithId()`, `getLastEventId()`, and the `silentErrorStatuses` request option. The real `@sentry/react` SDK is lazy-loaded behind `sentryFactory.ts` — never import that file directly. See the full write-up in [architecture.md](architecture.md#error-tracking-sentry).
 
 ---
 
@@ -485,12 +485,12 @@ Key props: same as `SearchableSelect`, plus:
 
 ---
 
-### `PersonCard` — `src/features/backoffice/widgets/person-card`
+### `PersonCard` — `src/widgets/person-card`
 
 A card layout for displaying a person (customer, user) with avatar, info, meta, and action slots.
 
 ```tsx
-import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard";
+import { PersonCard } from "@/widgets/person-card/PersonCard";
 
 <PersonCard
   avatarSlot={<UserAvatar user={customer} />}
@@ -504,7 +504,7 @@ Slots: `avatarSlot`, `infoSlot`, `metaSlot?`, `commentSlot?`, `leftAction?`, `ri
 
 ---
 
-### `SmartTable` — `src/features/backoffice/widgets/table`
+### `SmartTable` — `src/widgets/table`
 
 The main data table for backoffice list pages. Handles pagination, sorting, filtering, and row actions out of the box.
 

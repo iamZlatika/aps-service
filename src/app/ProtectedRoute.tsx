@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-import { type Ability } from "@/features/auth/backoffice/abilities.ts";
-import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
-import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
+import { type Ability } from "@/features/auth/abilities.ts";
+import { AuthRoutes } from "@/features/auth/api/routes.ts";
+import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import { destroyEcho } from "@/shared/lib/echo.ts";

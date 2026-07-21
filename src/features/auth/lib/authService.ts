@@ -34,4 +34,4 @@ const createAuthService = (): AuthService => {
   };
 };
 
-export const backofficeAuthService = createAuthService();
+export const authService = createAuthService();

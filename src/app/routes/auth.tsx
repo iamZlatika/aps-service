@@ -2,19 +2,15 @@ import { lazy } from "react";
 import { type RouteObject } from "react-router-dom";
 
 import { GuestRoute } from "@/app/GuestRoute.tsx";
-import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
+import { AuthRoutes } from "@/features/auth/api/routes.ts";
 
-const BackofficeLoginPage = lazy(
-  () => import("@/features/auth/backoffice/pages/login"),
-);
-const ForgotPasswordPage = lazy(
-  () => import("@/features/auth/backoffice/pages/forgot"),
-);
+const LoginPage = lazy(() => import("@/features/auth/pages/login"));
+const ForgotPasswordPage = lazy(() => import("@/features/auth/pages/forgot"));
 const EmailSentPage = lazy(
-  () => import("@/features/auth/backoffice/pages/forgot/EmailSentPage"),
+  () => import("@/features/auth/pages/forgot/EmailSentPage"),
 );
 const ResetPasswordPage = lazy(
-  () => import("@/features/auth/backoffice/pages/forgot/ResetPasswordPage"),
+  () => import("@/features/auth/pages/forgot/ResetPasswordPage"),
 );
 
 export const authRoutes: RouteObject = {
@@ -25,9 +21,7 @@ export const authRoutes: RouteObject = {
       // login request and the profile fetch, so it opts out of GuestRoute's
       // loader to avoid showing a second, competing one.
       element: <GuestRoute showLoader={false} />,
-      children: [
-        { path: AuthRoutes.login(), element: <BackofficeLoginPage /> },
-      ],
+      children: [{ path: AuthRoutes.login(), element: <LoginPage /> }],
     },
     {
       element: <GuestRoute />,

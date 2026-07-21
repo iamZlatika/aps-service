@@ -1,25 +1,39 @@
-import * as Sentry from "@sentry/react";
+import type * as SentryFactoryModule from "@/shared/lib/sentryFactory";
 
-export function initSentry() {
+type SentryFactory = typeof SentryFactoryModule;
+
+let factory: SentryFactory | null = null;
+let loadingPromise: Promise<SentryFactory> | null = null;
+
+function ensureFactory(): Promise<SentryFactory> {
+  loadingPromise ??= import("@/shared/lib/sentryFactory").then((module) => {
+    factory = module;
+    return module;
+  });
+  return loadingPromise;
+}
+
+export function initSentry(): void {
   if (!import.meta.env.VITE_SENTRY_DSN) return;
 
-  Sentry.init({
-    dsn: import.meta.env.VITE_SENTRY_DSN,
-    environment: import.meta.env.MODE,
-    enabled: import.meta.env.PROD,
-    integrations: [Sentry.browserTracingIntegration()],
-    tracesSampleRate: 0.2,
-  });
+  void ensureFactory().then((module) => module.initSentryInstance());
 }
 
 export function captureError(
   error: unknown,
   context?: Record<string, unknown>,
-) {
-  if (import.meta.env.PROD) {
-    Sentry.captureException(error, { extra: context });
-  } else {
+): void {
+  if (!import.meta.env.PROD) {
     console.error("[Sentry would capture]:", error, context);
+    return;
+  }
+
+  if (factory) {
+    factory.captureExceptionInstance(error, context);
+  } else {
+    void ensureFactory().then((module) =>
+      module.captureExceptionInstance(error, context),
+    );
   }
 }
 
@@ -27,9 +41,21 @@ export function captureErrorWithId(
   error: unknown,
   context?: Record<string, unknown>,
 ): string | null {
-  if (import.meta.env.PROD) {
-    return Sentry.captureException(error, { extra: context });
+  if (!import.meta.env.PROD) {
+    console.error("[Sentry would capture]:", error, context);
+    return null;
   }
-  console.error("[Sentry would capture]:", error, context);
+
+  if (factory) {
+    return factory.captureExceptionInstance(error, context);
+  }
+
+  void ensureFactory().then((module) =>
+    module.captureExceptionInstance(error, context),
+  );
   return null;
+}
+
+export function getLastEventId(): string | undefined {
+  return factory?.lastEventIdInstance();
 }
