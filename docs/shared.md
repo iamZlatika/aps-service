@@ -485,12 +485,12 @@ Key props: same as `SearchableSelect`, plus:
 
 ---
 
-### `PersonCard` — `src/features/backoffice/widgets/person-card`
+### `PersonCard` — `src/widgets/person-card`
 
 A card layout for displaying a person (customer, user) with avatar, info, meta, and action slots.
 
 ```tsx
-import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard";
+import { PersonCard } from "@/widgets/person-card/PersonCard";
 
 <PersonCard
   avatarSlot={<UserAvatar user={customer} />}
@@ -504,7 +504,7 @@ Slots: `avatarSlot`, `infoSlot`, `metaSlot?`, `commentSlot?`, `leftAction?`, `ri
 
 ---
 
-### `SmartTable` — `src/features/backoffice/widgets/table`
+### `SmartTable` — `src/widgets/table`
 
 The main data table for backoffice list pages. Handles pagination, sorting, filtering, and row actions out of the box.
 

@@ -2,18 +2,16 @@ import { lazy, Suspense } from "react";
 import { Navigate, type RouteObject } from "react-router-dom";
 
 import { authRoutes } from "@/app/routes/auth.tsx";
-import { backofficeRoutes } from "@/app/routes/backoffice.tsx";
-import { AuthRoutes } from "@/features/auth/backoffice/api/routes.ts";
-import { ORDERS_ROUTES } from "@/features/backoffice/modules/orders/routes";
+import { modulesRoutes } from "@/app/routes/modules.tsx";
+import { AuthRoutes } from "@/features/auth/api/routes.ts";
+import { ORDERS_ROUTES } from "@/features/orders/routes";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 
 import { ProtectedRoute } from "./ProtectedRoute";
 
 // Layouts
-const BackofficeLayout = lazy(
-  () => import("@/features/backoffice/components/Layout"),
-);
+const Layout = lazy(() => import("@/shared/components/Layout"));
 
 // Shared
 const NotFoundPage = lazy(
@@ -30,9 +28,8 @@ const MaintenancePage = lazy(
 );
 
 export const routeConfig: RouteObject[] = [
-  // backoffice auth
   {
-    path: AuthRoutes.backofficeRoot(),
+    path: AuthRoutes.root(),
 
     children: [
       authRoutes,
@@ -44,7 +41,7 @@ export const routeConfig: RouteObject[] = [
           {
             element: (
               <Suspense fallback={<Loader />}>
-                <BackofficeLayout />
+                <Layout />
               </Suspense>
             ),
             children: [
@@ -52,7 +49,7 @@ export const routeConfig: RouteObject[] = [
                 index: true,
                 element: <Navigate to={ORDERS_ROUTES.root} replace />,
               },
-              backofficeRoutes,
+              modulesRoutes,
             ],
           },
         ],

@@ -1,5 +1,5 @@
-import { type SortType } from "@/features/backoffice/widgets/table/hooks/useSortParams.ts";
-import { type Filters } from "@/features/backoffice/widgets/table/models/types.ts";
+import { type SortType } from "@/widgets/table/hooks/useSortParams.ts";
+import { type Filters } from "@/widgets/table/models/types.ts";
 
 const makeEntityKey =
   (base: readonly string[], name: string) =>

@@ -2,7 +2,7 @@ import axios, { type AxiosError } from "axios";
 import i18next from "i18next";
 
 import { router } from "@/app/router.ts";
-import { backofficeAuthService } from "@/features/auth/lib/authService.ts";
+import { authService } from "@/features/auth/lib/authService.ts";
 import { logout } from "@/features/auth/lib/sessionManager.ts";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import { isSecurityBlockedResponse } from "@/shared/api/securityBlock.ts";
@@ -28,7 +28,7 @@ export const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    const token = backofficeAuthService.getToken();
+    const token = authService.getToken();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -46,7 +46,7 @@ apiClient.interceptors.response.use(
     const status = error.response?.status;
     const data = error.response?.data;
 
-    if (status === 401 && backofficeAuthService.getToken()) {
+    if (status === 401 && authService.getToken()) {
       logout();
     }
 

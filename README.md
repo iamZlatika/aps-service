@@ -63,11 +63,8 @@ npm run lint:fix   # lint and auto-fix
 ```
 src/
 ├── app/              # Router config, route guards, app root
-├── entities/         # Shared domain entities reused across backoffice modules (location, order-status, price-list, work, role)
-├── features/
-│   ├── auth/         # Authentication
-│   └── backoffice/   # Employee panel
-│       └── modules/  # orders, customers, users, dictionaries, billing, referrals, profile, works, roles-permissions, sms-integration, quick-orders
+├── entities/         # Shared domain entities reused across features (location, order-status, price-list, work, role)
+├── features/         # Self-contained feature modules — auth, orders, customers, users, dictionaries, billing, referrals, profile, works, roles-permissions, sms-integration, quick-orders
 ├── widgets/          # Reusable compound components (used across features)
 ├── styles/           # Global CSS
 ├── test/             # Vitest setup
