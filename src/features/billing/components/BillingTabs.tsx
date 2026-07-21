@@ -96,6 +96,11 @@ export const BillingTabs = () => {
           disabled={pendingWithdrawalsCount === 0}
           badgeCount={pendingWithdrawalsCount}
         />
+        <BillingTab
+          label={t("billing.order_payments.title")}
+          to={BILLING_LINKS.orderPayments()}
+          active={pathname === BILLING_LINKS.orderPayments()}
+        />
       </div>
     </div>
   );

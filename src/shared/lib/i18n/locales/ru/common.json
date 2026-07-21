@@ -867,6 +867,33 @@
       "title": "Запросы на выплату"
     },
     "withdrawal_requests_count": "{{count}} запросов на выплату",
+    "order_payments": {
+      "title": "Движение средств по оплатам заказов",
+      "summary": {
+        "total": "Всего",
+        "cash": "Наличные",
+        "card": "Карта",
+        "count": "Количество оплат"
+      },
+      "table": {
+        "date": "Дата",
+        "order_number": "№ заказа",
+        "manager": "Принял",
+        "type": "Тип",
+        "method": "Метод",
+        "amount": "Сумма",
+        "note": "Заметки"
+      },
+      "types": {
+        "prepayment": "Предоплата",
+        "payment": "Оплата",
+        "refund": "Возврат"
+      },
+      "methods": {
+        "cash": "Наличные",
+        "card": "Карта"
+      }
+    },
     "my_transactions": {
       "title": "Ваши транзакции"
     },
@@ -910,7 +937,9 @@
       "order_number": "№ заказа",
       "clear": "Сбросить фильтр",
       "reset_all": "Сбросить все фильтры",
-      "withdrawal_preset": "Запросы на выплату"
+      "withdrawal_preset": "Запросы на выплату",
+      "manager": "Менеджер",
+      "method": "Метод"
     },
     "adjust_modal": {
       "title_for": "Начислить / Списать — {{name}}",

@@ -3,4 +3,5 @@ export const BILLING_ROUTES = {
   balances: "billing/balances",
   transactions: "billing/transactions",
   withdrawalRequests: "billing/withdrawal-requests",
+  orderPayments: "billing/order-payments",
 } as const;

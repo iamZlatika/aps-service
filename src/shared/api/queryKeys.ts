@@ -111,6 +111,13 @@ export const queryKeys = {
     myTransactions: makeEntityKey(["billing"], "myTransactions"),
     withdrawalRequests: makeEntityKey(["billing"], "withdrawalRequests"),
     systemBalance: () => [...queryKeys.billing.all, "systemBalance"] as const,
+    orderPayments: makeEntityKey(["billing"], "orderPayments"),
+    orderPaymentsSummary: (filters?: Filters) =>
+      [
+        ...queryKeys.billing.all,
+        "orderPaymentsSummary",
+        ...(filters && Object.keys(filters).length > 0 ? [filters] : []),
+      ] as const,
   },
 
   smsIntegration: {

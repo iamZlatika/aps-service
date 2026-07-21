@@ -2,7 +2,11 @@ import i18next from "i18next";
 import { Link } from "react-router-dom";
 
 import { TRANSACTION_STATUS_COLORS } from "@/features/billing/lib/constants.ts";
-import { type Balance, type Transaction } from "@/features/billing/types.ts";
+import {
+  type Balance,
+  type OrderPaymentRecord,
+  type Transaction,
+} from "@/features/billing/types.ts";
 import {
   renderWrappedText,
   renderWrappedTextMultiline,
@@ -253,5 +257,83 @@ export function buildMyTransactionColumns(): ColumnConfig<Transaction>[] {
     buildCreatedAtColumn(),
     buildTypeColumn(),
     buildStatusColumn(),
+  ];
+}
+
+const NOTE_COLUMN_WRAP_AT = 60;
+
+export function buildOrderPaymentColumns(): ColumnConfig<OrderPaymentRecord>[] {
+  return [
+    {
+      key: "createdAt",
+      field: "createdAt",
+      labelKey: "billing.order_payments.table.date",
+      sortable: true,
+      sortKey: "created_at",
+      renderCell: (value) => formatDateTime(value as string),
+    },
+    {
+      key: "orderNumber",
+      field: "orderNumber",
+      labelKey: "billing.order_payments.table.order_number",
+      sortable: false,
+      renderCell: (_value, item) => (
+        <Link
+          to={ORDERS_LINKS.detail(item.orderId)}
+          className="text-primary hover:underline"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {item.orderNumber}
+        </Link>
+      ),
+    },
+    {
+      key: "manager",
+      field: "manager",
+      labelKey: "billing.order_payments.table.manager",
+      sortable: false,
+      renderCell: (value) => {
+        if (!isUser(value)) return "—";
+        return (
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={value.avatarUrl} alt={value.name} />
+            </Avatar>
+            <span>{value.name}</span>
+          </div>
+        );
+      },
+    },
+    {
+      key: "type",
+      field: "type",
+      labelKey: "billing.order_payments.table.type",
+      sortable: true,
+      renderCell: (value) =>
+        i18next.t(`billing.order_payments.types.${value as string}`),
+    },
+    {
+      key: "method",
+      field: "method",
+      labelKey: "billing.order_payments.table.method",
+      sortable: true,
+      renderCell: (value) =>
+        i18next.t(`billing.order_payments.methods.${value as string}`),
+    },
+    {
+      key: "amount",
+      field: "amount",
+      labelKey: "billing.order_payments.table.amount",
+      sortable: true,
+      renderCell: (value) => <MoneyAmount value={value as string} />,
+    },
+    {
+      key: "note",
+      field: "note",
+      labelKey: "billing.order_payments.table.note",
+      sortable: false,
+      renderCell: (value) =>
+        renderWrappedTextMultiline(value, { wrapAt: NOTE_COLUMN_WRAP_AT }),
+    },
   ];
 }

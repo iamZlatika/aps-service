@@ -1,5 +1,7 @@
 import {
+  OrderPaymentsSummaryDtoSchema,
   PaginatedBalancesDtoSchema,
+  PaginatedOrderPaymentsDtoSchema,
   PaginatedTransactionsDtoSchema,
   SystemBalanceDtoSchema,
   TransactionDtoSchema,
@@ -9,7 +11,10 @@ import {
   mapNewSystemBalanceTransactionToDto,
   mapNewTransactionToDto,
   mapNewWithdrawalRequestToDto,
+  mapOrderPaymentsFiltersToApiFilters,
+  mapOrderPaymentsSummaryDtoToSummary,
   mapPaginatedBalancesDtoToResponse,
+  mapPaginatedOrderPaymentsDtoToResponse,
   mapPaginatedTransactionsDtoToResponse,
   mapSystemBalanceDtoToSystemBalance,
   mapTransactionDtoToTransaction,
@@ -19,6 +24,8 @@ import type {
   NewBillingTransaction,
   NewSystemBalanceTransaction,
   NewWithdrawalRequest,
+  OrderPaymentRecord,
+  OrderPaymentsSummary,
   SystemBalance,
   Transaction,
 } from "@/features/billing/types.ts";
@@ -132,6 +139,54 @@ export const billingApi = {
           status: TRANSACTION_STATUSES.PENDING,
         },
       ),
+  },
+
+  orderPayments: {
+    getAll: async (
+      page = 1,
+      perPage = 20,
+      sortColumn?: string | null,
+      sortType?: SortType,
+      filters?: Record<string, string>,
+    ): Promise<PaginatedResponse<OrderPaymentRecord>> => {
+      const params = buildPaginatedParams(
+        page,
+        perPage,
+        sortColumn,
+        sortType,
+        mapOrderPaymentsFiltersToApiFilters(filters ?? {}),
+      );
+      const response = await get(
+        `${BILLING_API.orderPayments()}?${params.toString()}`,
+      );
+      return mapPaginatedOrderPaymentsDtoToResponse(
+        parseDto(PaginatedOrderPaymentsDtoSchema, response),
+      );
+    },
+
+    // Not paginated — totals cover the whole filtered set, per the backend
+    // contract, so params are built directly rather than via
+    // buildPaginatedParams (which always forces page/per_page).
+    getSummary: async (
+      filters?: Record<string, string>,
+    ): Promise<OrderPaymentsSummary> => {
+      const params = new URLSearchParams();
+      Object.entries(
+        mapOrderPaymentsFiltersToApiFilters(filters ?? {}),
+      ).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((v) => params.append(`${key}[]`, v));
+        } else if (value) {
+          params.set(key, value);
+        }
+      });
+      const response = await get<{ data: unknown }>(
+        `${BILLING_API.orderPaymentsSummary()}?${params.toString()}`,
+      );
+      return mapOrderPaymentsSummaryDtoToSummary(
+        parseDto(OrderPaymentsSummaryDtoSchema, response.data),
+      );
+    },
   },
 
   getSystemBalance: async (): Promise<SystemBalance> => {

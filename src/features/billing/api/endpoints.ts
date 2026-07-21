@@ -8,4 +8,6 @@ export const BILLING_API = {
   withdrawals: () => `${BASE}/withdrawals`,
   withdrawalApprove: (id: number) => `${BASE}/withdrawals/${id}/approve`,
   withdrawalReject: (id: number) => `${BASE}/withdrawals/${id}/reject`,
+  orderPayments: () => `${BASE}/order-payments`,
+  orderPaymentsSummary: () => `${BASE}/order-payments/summary`,
 } as const;

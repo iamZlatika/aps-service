@@ -15,6 +15,8 @@ interface ManagerSelectProps {
   users: User[];
   isLoading: boolean;
   clearable?: boolean;
+  triggerClassName?: string;
+  placeholder?: string;
 }
 
 const CLEAR_VALUE = "__clear__";
@@ -25,6 +27,8 @@ export const ManagerSelect = ({
   users,
   isLoading,
   clearable,
+  triggerClassName,
+  placeholder,
 }: ManagerSelectProps) => {
   const { t } = useTranslation();
 
@@ -36,8 +40,10 @@ export const ManagerSelect = ({
       }
       disabled={!users.length || isLoading}
     >
-      <SelectTrigger className="h-11 text-base">
-        <SelectValue placeholder={isLoading ? t("loader.default") : "..."} />
+      <SelectTrigger className={triggerClassName ?? "h-11 text-base"}>
+        <SelectValue
+          placeholder={isLoading ? t("loader.default") : (placeholder ?? "...")}
+        />
       </SelectTrigger>
       <SelectContent>
         {clearable && <SelectItem value={CLEAR_VALUE}>—</SelectItem>}

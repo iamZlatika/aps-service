@@ -97,6 +97,9 @@ const AllTransactionsPage = lazy(
 const WithdrawalRequestsPage = lazy(
   () => import("@/features/billing/pages/withdrawal-requests"),
 );
+const OrderPaymentsReportPage = lazy(
+  () => import("@/features/billing/pages/order-payments"),
+);
 const SmsIntegrationPage = lazy(
   () => import("@/features/sms-integration/pages"),
 );
@@ -157,6 +160,10 @@ export const modulesRoutes: RouteObject = {
         {
           path: BILLING_ROUTES.withdrawalRequests,
           element: <WithdrawalRequestsPage />,
+        },
+        {
+          path: BILLING_ROUTES.orderPayments,
+          element: <OrderPaymentsReportPage />,
         },
       ],
     },
