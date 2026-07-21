@@ -865,6 +865,33 @@
       "title": "Запити на виплату"
     },
     "withdrawal_requests_count": "{{count}} запитів на виплату",
+    "order_payments": {
+      "title": "Рух коштів по оплатах замовлень",
+      "summary": {
+        "total": "Всього",
+        "cash": "Готівка",
+        "card": "Картка",
+        "count": "Кількість оплат"
+      },
+      "table": {
+        "date": "Дата",
+        "order_number": "№ замовлення",
+        "manager": "Прийняв",
+        "type": "Тип",
+        "method": "Метод",
+        "amount": "Сума",
+        "note": "Нотатки"
+      },
+      "types": {
+        "prepayment": "Передоплата",
+        "payment": "Оплата",
+        "refund": "Повернення"
+      },
+      "methods": {
+        "cash": "Готівка",
+        "card": "Картка"
+      }
+    },
     "my_transactions": {
       "title": "Ваші транзакції"
     },
@@ -908,7 +935,9 @@
       "order_number": "№ замовлення",
       "clear": "Скинути фільтр",
       "reset_all": "Скинути всі фільтри",
-      "withdrawal_preset": "Запити на виплату"
+      "withdrawal_preset": "Запити на виплату",
+      "manager": "Менеджер",
+      "method": "Метод"
     },
     "adjust_modal": {
       "title_for": "Нарахувати / Списати — {{name}}",

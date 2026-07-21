@@ -1,4 +1,5 @@
 import type {
+  OrderPayment,
   OrderProduct,
   OrderService,
   OrderTransaction,
@@ -50,3 +51,24 @@ export type NewSystemBalanceTransaction = {
 export const SERVICE_VALUE = "service";
 
 export type EmployeeSelectValue = number | typeof SERVICE_VALUE | undefined;
+
+// Order-payments report row: same fields as an order-embedded OrderPayment
+// (id/type/method/amount/note/createdAt), minus soft-delete metadata, plus
+// order reference fields (always present here, unlike Transaction's
+// nullable ones) and a nullable manager (order-embedded payments always
+// have one, report rows may not).
+export type OrderPaymentRecord = Omit<
+  OrderPayment,
+  "manager" | "deletedAt" | "deletedByUser"
+> & {
+  orderId: number;
+  orderNumber: string;
+  manager: User | null;
+};
+
+export type OrderPaymentsSummary = {
+  total: string;
+  cash: string;
+  card: string;
+  count: number;
+};

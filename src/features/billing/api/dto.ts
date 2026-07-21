@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import {
+  OrderPaymentSchema,
   OrderProductSchema,
   OrderServiceSchema,
   OrderTransactionDtoSchema,
@@ -61,3 +62,36 @@ export type PaginatedBalancesDto = z.infer<typeof PaginatedBalancesDtoSchema>;
 
 export const SystemBalanceDtoSchema = z.object({ amount: z.string() });
 export type SystemBalanceDto = z.infer<typeof SystemBalanceDtoSchema>;
+
+// Same row shape order-embedded payments already use (OrderPaymentSchema),
+// minus soft-delete metadata (irrelevant to a read-only report) plus the
+// order reference fields, which the report always has (unlike Transaction's
+// order_id/order_number, this never covers quick-sales) and a nullable
+// manager (order-embedded payments always have one, report rows may not).
+export const OrderPaymentReportDtoSchema = OrderPaymentSchema.omit({
+  deleted_at: true,
+  deleted_by_user: true,
+}).extend({
+  order_id: z.number(),
+  order_number: z.string(),
+  manager: UserDtoSchema.nullable(),
+});
+export type OrderPaymentReportDto = z.infer<typeof OrderPaymentReportDtoSchema>;
+
+export const PaginatedOrderPaymentsDtoSchema = z.object({
+  data: z.array(OrderPaymentReportDtoSchema),
+  meta: PaginationMetaDtoSchema,
+});
+export type PaginatedOrderPaymentsDto = z.infer<
+  typeof PaginatedOrderPaymentsDtoSchema
+>;
+
+export const OrderPaymentsSummaryDtoSchema = z.object({
+  total: z.string(),
+  cash: z.string(),
+  card: z.string(),
+  count: z.number(),
+});
+export type OrderPaymentsSummaryDto = z.infer<
+  typeof OrderPaymentsSummaryDtoSchema
+>;

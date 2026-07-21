@@ -7,4 +7,5 @@ export const BILLING_LINKS = {
   transactionsByUser: (userId: number) =>
     `${BASE}/transactions?user_id=${userId}`,
   withdrawalRequests: () => `${BASE}/withdrawal-requests`,
+  orderPayments: () => `${BASE}/order-payments`,
 } as const;
