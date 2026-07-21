@@ -425,7 +425,7 @@ Generic reusable pieces from `src/shared/components/common/` — not primitives 
 |-----------|---------|
 | `MoneyAmount` | Standard debt/positive amount styling with optional `prefix`. See [Money / Amount Fields](architecture.md#money--amount-fields) |
 | `LocationCheckboxGroup` | Single-select-styled-as-checkboxes location picker. Takes `clearable` to allow unchecking the selected location (used by the orders filter settings form's location filter — see [backoffice.md](backoffice.md#orders)) |
-| `StatusBadge` | Generic status pill using `statusColorMap`/`statusTextColorMap`, with `isPending` (spinner) and `selectable` (chevron) states. Backoffice-only — not to be confused with the website's own `StatusBadge` in `features/website/components/` |
+| `StatusBadge` | Generic status pill using `statusColorMap`/`statusTextColorMap`, with `isPending` (spinner) and `selectable` (chevron) states |
 | `FormField` | `Input` wrapper that renders a `FieldError` message below the input |
 | `Loader` | Full-section loading spinner (`react-loader-spinner` `MutatingDots`) |
 | `UserStatusButton` | Toggle button for a user's active/blocked status, lock/unlock icon |
@@ -527,7 +527,9 @@ Fullscreen image viewer (Radix `Dialog` based) with keyboard (arrow key) navigat
 
 ### `WorkCard` — `src/widgets/work-card`
 
-Renders one portfolio entry on the website's [Works page](website.md#works-works): device photos (`WorkMedia`, opens `Lightbox` via `useWorkGallery`) and text info (`WorkInfo`).
+Renders one portfolio entry: device photos (`WorkMedia`, opens `Lightbox` via `useWorkGallery`) and text info (`WorkInfo`). The public site (separate `aps-website` repo) has its own copy for actually rendering the Works page; in this repo it's used only by the backoffice [Works module's](backoffice.md#works) `WorkPreviewModal`, to preview how an entry will look there before publishing.
+
+Styled with its own `ws-*` design-token scope (`work-card.css`, `.ws-theme-dark`/`.ws-theme-light`), mirroring the public site's palette so the preview is representative. These tokens are local to this widget — do not use `ws-*` classes elsewhere in the backoffice.
 
 ```tsx
 import { WorkCard } from "@/widgets/work-card";

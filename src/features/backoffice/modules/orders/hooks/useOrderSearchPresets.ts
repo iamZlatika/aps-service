@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useAuth } from "@/features/auth/backoffice/hooks/useAuth.ts";
@@ -11,8 +13,10 @@ export const useOrderSearchPresets = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const presets: OrderSearchPreset[] = (user?.searchPresets ?? []).map(
-    mapSearchPresetToOrderSearchPreset,
+  const searchPresets = user?.searchPresets;
+  const presets: OrderSearchPreset[] = useMemo(
+    () => (searchPresets ?? []).map(mapSearchPresetToOrderSearchPreset),
+    [searchPresets],
   );
 
   const { mutate: deletePreset, isPending: isDeleting } = useMutation({
