@@ -2,12 +2,7 @@ import axios, { type AxiosError } from "axios";
 import i18next from "i18next";
 
 import { router } from "@/app/router.ts";
-import {
-  type AuthScope,
-  type AuthService,
-  backofficeAuthService,
-  customerAuthService,
-} from "@/features/auth/lib/authService.ts";
+import { authService } from "@/features/auth/lib/authService.ts";
 import { logout } from "@/features/auth/lib/sessionManager.ts";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import { isSecurityBlockedResponse } from "@/shared/api/securityBlock.ts";
@@ -21,12 +16,6 @@ declare module "axios" {
   }
 }
 
-const getRequestAuthScope = (url?: string): AuthScope =>
-  url?.startsWith("/backoffice") ? "backoffice" : "customer";
-
-const getAuthServiceForScope = (scope: AuthScope): AuthService =>
-  scope === "backoffice" ? backofficeAuthService : customerAuthService;
-
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
@@ -39,8 +28,7 @@ export const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    const scope = getRequestAuthScope(config.url);
-    const token = getAuthServiceForScope(scope).getToken();
+    const token = authService.getToken();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -58,11 +46,8 @@ apiClient.interceptors.response.use(
     const status = error.response?.status;
     const data = error.response?.data;
 
-    if (status === 401) {
-      const scope = getRequestAuthScope(error.config?.url);
-      if (getAuthServiceForScope(scope).getToken()) {
-        logout(scope);
-      }
+    if (status === 401 && authService.getToken()) {
+      logout();
     }
 
     if (isSecurityBlockedResponse(status, data?.message)) {

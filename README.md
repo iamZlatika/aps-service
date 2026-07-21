@@ -4,10 +4,9 @@ A CRM system for managing electronics repair orders — built for a service cent
 
 ## Overview
 
-The application has two parts:
+This repo is the **backoffice** — the internal panel for employees: order management, customer database, products, services, billing, referrals, and staff administration.
 
-- **Backoffice** — internal panel for employees: order management, customer database, products, services, and staff
-- **Website** — public interface for customers: company information, repair status tracking, and a personal account for viewing orders and managing Telegram subscriptions
+The public-facing customer website used to live in this repo but has been split out into a separate project, **aps-website** (Next.js), which consumes the same backend API independently. A few pieces of shared design/domain code remain here because the backoffice still needs them (e.g. the `Work` entity and `WorkCard` widget, reused by a live preview modal that shows how a portfolio entry will look on the public site) — see [Architecture](docs/architecture.md#shared-entities-srcentities) for details.
 
 ## Tech Stack
 
@@ -21,6 +20,9 @@ The application has two parts:
 | Styling | Tailwind CSS 3, Radix UI |
 | i18n | i18next (ru / uk) |
 | HTTP client | Axios |
+| Real-time | Ably (`@ably/laravel-echo`) — backoffice WebSocket updates |
+| PWA | `vite-plugin-pwa`, `vite-plugin-compression` |
+| Drag & drop | `@dnd-kit/*` |
 | Error tracking | Sentry |
 | Testing | Vitest, Testing Library |
 
@@ -45,12 +47,11 @@ cp .env.example .env
 | `VITE_API_URL` | Backend API base URL |
 | `VITE_SENTRY_DSN` | Sentry DSN for error tracking (optional) |
 | `VITE_BACKOFFICE_LANGUAGE` | Default language for backoffice (`ru` or `uk`) |
-| `VITE_CLIENT_LANGUAGE` | Default language for public website (`ru` or `uk`) |
-| `VITE_GOOGLE_MAPS_KEY` | Google Maps API key (used for the map embed on the contacts page) |
 
 ```bash
 npm run dev        # development server
 npm run build      # production build
+npm run preview    # preview the production build locally
 npm run test       # run tests in watch mode
 npm run test:run   # run tests once
 npm run lint       # lint
@@ -62,12 +63,11 @@ npm run lint:fix   # lint and auto-fix
 ```
 src/
 ├── app/              # Router config, route guards, app root
-├── features/
-│   ├── auth/         # Authentication
-│   ├── backoffice/   # Employee panel
-│   │   └── modules/  # orders, customers, users, dictionaries, profile
-│   └── website/      # Public website
+├── entities/         # Shared domain entities reused across features (location, order-status, price-list, work, role)
+├── features/         # Self-contained feature modules — auth, orders, customers, users, dictionaries, billing, referrals, profile, works, roles-permissions, sms-integration, quick-orders
 ├── widgets/          # Reusable compound components (used across features)
+├── styles/           # Global CSS
+├── test/             # Vitest setup
 └── shared/
     ├── api/          # HTTP client, query client, query keys
     ├── components/   # Generic UI components
@@ -80,5 +80,4 @@ src/
 
 - [Architecture & patterns](docs/architecture.md)
 - [Backoffice modules](docs/backoffice.md)
-- [Website](docs/website.md)
 - [Shared utilities & components](docs/shared.md)

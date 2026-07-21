@@ -1,0 +1,242 @@
+import { AlertCircle } from "lucide-react";
+import { Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+
+import {
+  getOrderItemInitialValues,
+  getOrderItemModalTitle,
+} from "@/features/orders/components/info-table/services.ts";
+import { ManagerSelect } from "@/features/orders/components/ManagerSelect.tsx";
+import { useAddOrderItemForm } from "@/features/orders/hooks/useAddOrderItemForm.ts";
+import { useOrderItemSubmit } from "@/features/orders/hooks/useOrderItemSubmit.ts";
+import type { OrderItem, OrderItemType } from "@/features/orders/types.ts";
+import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { Button } from "@/shared/components/ui/button.tsx";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/shared/components/ui/dialog.tsx";
+import { Input } from "@/shared/components/ui/input.tsx";
+import { Label } from "@/shared/components/ui/label.tsx";
+import { stripNonDigits } from "@/shared/lib/utils.ts";
+import SearchableSelect from "@/widgets/searchable-select";
+
+interface AddOrderItemModalProps {
+  orderId: number;
+  type: OrderItemType;
+  open: boolean;
+  onClose: () => void;
+  editItem?: OrderItem;
+  readOnly?: boolean;
+}
+
+const AddOrderItemModal = ({
+  orderId,
+  type,
+  open,
+  onClose,
+  editItem,
+  readOnly,
+}: AddOrderItemModalProps) => {
+  const { t } = useTranslation();
+
+  const initialData = editItem
+    ? getOrderItemInitialValues(editItem)
+    : undefined;
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    errors,
+    users,
+    isLoadingUsers,
+    fetchNameItems,
+    nameQueryKey,
+    onCreateNameItem,
+    fetchSuppliers,
+    onCreateSupplier,
+    supplierDisplay,
+    onSupplierChange,
+    onSupplierSelect,
+    fetchOutsourcers,
+    onCreateOutsourcer,
+    outsourcerDisplay,
+    onOutsourcerChange,
+    onOutsourcerSelect,
+  } = useAddOrderItemForm({
+    type,
+    initialValues: initialData?.formValues,
+    initialSupplierDisplay: initialData?.supplierDisplay,
+    initialOutsourcerDisplay: initialData?.outsourcerDisplay,
+  });
+
+  const { onSubmit, isPending } = useOrderItemSubmit({
+    orderId,
+    type,
+    editItemId: editItem?.id,
+    onSuccess: onClose,
+  });
+
+  const title = getOrderItemModalTitle(t, type, !!editItem);
+
+  return (
+    <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent onEscapeKeyDown={(e) => e.stopPropagation()}>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+        {readOnly && (
+          <div className="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
+            <AlertCircle className="h-4 w-4 shrink-0" />
+            {type === "product"
+              ? t("orders.orderTable.readOnly.product")
+              : t("orders.orderTable.readOnly.service")}
+          </div>
+        )}
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <fieldset disabled={readOnly} className="contents">
+            <div className="flex flex-col gap-1">
+              <Label>{t("orders.orderTable.form.name")}</Label>
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => (
+                  <SearchableSelect
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    fetchItems={fetchNameItems}
+                    queryKey={nameQueryKey}
+                    onCreateItem={onCreateNameItem}
+                    error={errors.name}
+                  />
+                )}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <Label>{t("orders.orderTable.form.price")}</Label>
+              <Input
+                inputMode="numeric"
+                onInput={(e) => {
+                  e.currentTarget.value = stripNonDigits(e.currentTarget.value);
+                }}
+                {...register("price")}
+              />
+              {errors.price && (
+                <p className="text-sm text-destructive">
+                  {errors.price.message}
+                </p>
+              )}
+            </div>
+            {type === "product" && (
+              <div className="flex flex-col gap-1">
+                <Label>{t("orders.orderTable.form.purchasePrice")}</Label>
+                <Input
+                  inputMode="numeric"
+                  onInput={(e) => {
+                    e.currentTarget.value = stripNonDigits(
+                      e.currentTarget.value,
+                    );
+                  }}
+                  {...register("purchasePrice")}
+                />
+                {errors.purchasePrice && (
+                  <p className="text-sm text-destructive">
+                    {errors.purchasePrice.message}
+                  </p>
+                )}
+              </div>
+            )}
+            {type === "service" && (
+              <div className="flex flex-col gap-1">
+                <Label>{t("orders.orderTable.form.costPrice")}</Label>
+                <Input
+                  inputMode="numeric"
+                  onInput={(e) => {
+                    e.currentTarget.value = stripNonDigits(
+                      e.currentTarget.value,
+                    );
+                  }}
+                  {...register("costPrice")}
+                />
+                {errors.costPrice && (
+                  <p className="text-sm text-destructive">
+                    {errors.costPrice.message}
+                  </p>
+                )}
+              </div>
+            )}
+            <div className="flex flex-col gap-1">
+              <Label>{t("orders.orderTable.form.quantity")}</Label>
+              <Input
+                {...register("quantity")}
+                type="number"
+                inputMode="numeric"
+                min={1}
+              />
+              {errors.quantity && (
+                <p className="text-sm text-destructive">
+                  {errors.quantity.message}
+                </p>
+              )}
+            </div>
+            {type === "product" && (
+              <div className="flex flex-col gap-1">
+                <Label>{t("orders.orderTable.form.supplierName")}</Label>
+                <SearchableSelect
+                  value={supplierDisplay}
+                  onChange={onSupplierChange}
+                  onSelect={onSupplierSelect}
+                  fetchItems={fetchSuppliers}
+                  queryKey={queryKeys.dictionaries.suppliers()}
+                  onCreateItem={onCreateSupplier}
+                />
+              </div>
+            )}
+            {type === "service" && (
+              <div className="flex flex-col gap-1">
+                <Label>{t("orders.orderTable.form.outsourcer")}</Label>
+                <SearchableSelect
+                  value={outsourcerDisplay}
+                  onChange={onOutsourcerChange}
+                  onSelect={onOutsourcerSelect}
+                  fetchItems={fetchOutsourcers}
+                  queryKey={queryKeys.dictionaries.outsourcers()}
+                  onCreateItem={onCreateOutsourcer}
+                />
+              </div>
+            )}
+            <div className="flex flex-col gap-1">
+              <Label>{t("orders.orderTable.form.executor")}</Label>
+              <Controller
+                name="managerId"
+                control={control}
+                render={({ field }) => (
+                  <ManagerSelect
+                    value={field.value}
+                    onChange={field.onChange}
+                    users={users}
+                    isLoading={isLoadingUsers}
+                  />
+                )}
+              />
+            </div>
+          </fieldset>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={onClose}>
+              {t("common.cancel")}
+            </Button>
+            <Button type="submit" disabled={isPending || readOnly}>
+              {editItem ? t("common.save") : t("common.add")}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default AddOrderItemModal;

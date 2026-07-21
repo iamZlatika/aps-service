@@ -1,11 +1,6 @@
 import Cookies from "js-cookie";
 
-export type AuthScope = "backoffice" | "customer";
-
-const COOKIE_NAMES: Record<AuthScope, string> = {
-  backoffice: "backoffice_auth_token",
-  customer: "customer_auth_token",
-};
+const COOKIE_NAME = "backoffice_auth_token";
 
 export type AuthService = {
   getToken: () => string | undefined;
@@ -14,15 +9,14 @@ export type AuthService = {
   subscribe: (listener: () => void) => () => void;
 };
 
-const createAuthService = (scope: AuthScope): AuthService => {
-  const cookieName = COOKIE_NAMES[scope];
+const createAuthService = (): AuthService => {
   const listeners = new Set<() => void>();
   const notify = () => listeners.forEach((listener) => listener());
 
   return {
-    getToken: (): string | undefined => Cookies.get(cookieName),
+    getToken: (): string | undefined => Cookies.get(COOKIE_NAME),
     setToken: (token: string, expiresDays = 365) => {
-      Cookies.set(cookieName, token, {
+      Cookies.set(COOKIE_NAME, token, {
         expires: expiresDays,
         secure: true,
         sameSite: "strict",
@@ -30,7 +24,7 @@ const createAuthService = (scope: AuthScope): AuthService => {
       notify();
     },
     clearToken: () => {
-      Cookies.remove(cookieName);
+      Cookies.remove(COOKIE_NAME);
       notify();
     },
     subscribe: (listener: () => void) => {
@@ -40,5 +34,4 @@ const createAuthService = (scope: AuthScope): AuthService => {
   };
 };
 
-export const backofficeAuthService = createAuthService("backoffice");
-export const customerAuthService = createAuthService("customer");
+export const authService = createAuthService();

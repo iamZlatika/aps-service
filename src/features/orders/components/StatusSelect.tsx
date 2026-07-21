@@ -1,0 +1,108 @@
+import { lazy, Suspense, useState } from "react";
+
+const CloseOrderModal = lazy(() =>
+  import("@/features/orders/components/CloseOrderModal.tsx").then((m) => ({
+    default: m.CloseOrderModal,
+  })),
+);
+import { useQueryClient } from "@tanstack/react-query";
+
+import { ABILITIES } from "@/features/auth/abilities.ts";
+import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { useChangeOrderStatus } from "@/features/orders/hooks/useChangeOrderStatus.ts";
+import type { OrderStatus } from "@/features/orders/types.ts";
+import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { StatusBadge } from "@/shared/components/common/StatusBadge.tsx";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/shared/components/ui/dropdown-menu.tsx";
+import { useLocalizedName } from "@/shared/hooks/useLocalizedName.ts";
+
+const CLOSED_STATUS_KEY = "closed";
+
+interface StatusSelectProps {
+  orderId: number;
+  status: OrderStatus;
+  remainingToPay?: string;
+  onSuccess?: () => void;
+}
+
+export const StatusSelect = ({
+  orderId,
+  status,
+  remainingToPay = "0",
+  onSuccess,
+}: StatusSelectProps) => {
+  const getLocalizedName = useLocalizedName();
+  const queryClient = useQueryClient();
+  const { can } = useAuth();
+  const canManage = can(ABILITIES.ORDERS_MANAGE);
+  const [closedStatusId, setClosedStatusId] = useState<number | null>(null);
+
+  const { statuses, changeStatus, isPending } = useChangeOrderStatus(
+    orderId,
+    onSuccess,
+  );
+
+  const displayName = getLocalizedName(status);
+
+  if (!canManage) {
+    return <StatusBadge name={displayName} color={status.color} />;
+  }
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className="group flex items-center gap-1 cursor-pointer focus:outline-none rounded-full">
+            <StatusBadge
+              name={displayName}
+              color={status.color}
+              isPending={isPending}
+              selectable
+            />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          {statuses.map((s) => (
+            <DropdownMenuItem
+              key={s.id}
+              onSelect={() => {
+                if (s.key === CLOSED_STATUS_KEY) {
+                  setClosedStatusId(s.id);
+                } else {
+                  changeStatus(s.id, s.key);
+                }
+              }}
+              disabled={s.id === status.id || isPending}
+            >
+              <StatusBadge name={getLocalizedName(s)} color={s.color} />
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {closedStatusId !== null && (
+        <Suspense>
+          <CloseOrderModal
+            open
+            onClose={() => setClosedStatusId(null)}
+            orderId={orderId}
+            statusId={closedStatusId}
+            remainingToPay={remainingToPay}
+            onSuccess={
+              onSuccess ??
+              (() =>
+                void queryClient.invalidateQueries({
+                  queryKey: queryKeys.orders.all,
+                }))
+            }
+          />
+        </Suspense>
+      )}
+    </>
+  );
+};

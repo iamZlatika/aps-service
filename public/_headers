@@ -4,7 +4,7 @@
 /index.html
   Cache-Control: no-cache
 
-/backoffice-manifest.webmanifest
+/manifest.webmanifest
   Cache-Control: no-cache
 
 /assets/*

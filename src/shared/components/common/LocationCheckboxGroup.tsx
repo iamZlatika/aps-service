@@ -1,4 +1,4 @@
-import type { Location } from "@/features/backoffice/modules/dictionaries/types.ts";
+import type { Location } from "@/features/dictionaries/types.ts";
 import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
 
 interface LocationCheckboxGroupProps {

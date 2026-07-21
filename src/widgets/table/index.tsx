@@ -1,0 +1,178 @@
+import { type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
+
+import { Button } from "@/shared/components/ui/button.tsx";
+import { Table, TableBody } from "@/shared/components/ui/table.tsx";
+import { cn } from "@/shared/lib/utils.ts";
+import {
+  SortableTableHeader,
+  TableContent,
+  TablePagination,
+} from "@/widgets/table/components";
+import { SearchFilter } from "@/widgets/table/components/filters/FilterInput.tsx";
+import type { SortType } from "@/widgets/table/hooks/useSortParams.ts";
+import type {
+  BaseItem,
+  ColumnConfig,
+  RenderRowActions,
+  SmartTableApi,
+} from "@/widgets/table/models/types.ts";
+
+import { useSmartTable } from "./hooks/useSmartTable.ts";
+
+type RowInteraction<T extends BaseItem> = {
+  onRowClick?: (item: T) => void;
+  renderRowActions?: RenderRowActions<T>;
+};
+
+type SmartTableProps<T extends BaseItem = BaseItem> = {
+  titleKey: string;
+  className?: string;
+  api: SmartTableApi<T>;
+  queryKeyFn: (
+    page: number,
+    perPage: number,
+    sortColumn: string | null,
+    sortType: SortType,
+    filters: Record<string, string>,
+  ) => readonly unknown[];
+  columns: ColumnConfig<T>[];
+  searchPlaceholder: string;
+  searchField?: string;
+  searchNumbersOnly?: boolean;
+  searchInputClassName?: string;
+  headerActions?: ReactNode;
+  extraFilterKeys?: string[];
+  filterBar?: ReactNode;
+} & RowInteraction<T>;
+
+export const SmartTable = <T extends BaseItem>({
+  titleKey,
+  api,
+  queryKeyFn,
+  searchPlaceholder,
+  searchField,
+  searchNumbersOnly,
+  searchInputClassName,
+  columns,
+  renderRowActions,
+  onRowClick,
+  headerActions,
+  className,
+  extraFilterKeys,
+  filterBar,
+}: SmartTableProps<T>) => {
+  const { t } = useTranslation();
+
+  const {
+    data: { items, isLoading, isRefetching, isError, refetch },
+    pagination,
+    sort: { sort, toggleSort },
+    filters: { filters, setFilter },
+  } = useSmartTable({
+    api,
+    queryKeyFn,
+    columns,
+    searchField: searchField ?? "name",
+    tableKey: titleKey,
+    extraFilterKeys,
+  });
+
+  const {
+    page,
+    setPage,
+    lastPage,
+    pageNumbers,
+    perPage,
+    perPageOptions,
+    handlePerPageChange,
+  } = pagination;
+
+  return (
+    <div
+      className={cn(
+        "p-2 sm:p-4 max-w-3xl lg:max-w-screen-2xl mx-auto w-full",
+        className,
+      )}
+    >
+      <div className="mb-2 sm:mb-3 flex items-center justify-between gap-2">
+        <h1 className="text-xl sm:text-2xl font-bold truncate min-w-0">
+          {t(titleKey)}
+        </h1>
+        {headerActions && <div className="flex-shrink-0">{headerActions}</div>}
+      </div>
+
+      {(searchField || filterBar) && (
+        <div className="flex flex-wrap items-center gap-4 mb-4 min-w-0">
+          {searchField && (
+            <SearchFilter
+              fieldName={searchField}
+              placeholder={t(searchPlaceholder)}
+              value={filters[searchField ?? "name"] ?? ""}
+              onChange={setFilter}
+              numbersOnly={searchNumbersOnly}
+              className={
+                searchInputClassName ?? "mb-0 flex-none w-56 sm:w-[30rem]"
+              }
+            />
+          )}
+          {filterBar && (
+            <div className="w-full sm:w-auto sm:flex-1 min-w-0">
+              {filterBar}
+            </div>
+          )}
+        </div>
+      )}
+      {isError ? (
+        <div className="rounded-md border p-8 text-center">
+          <p className="text-muted-foreground mb-4">
+            {t("errors.failed_to_load")}
+          </p>
+          <Button variant="outline" onClick={() => refetch()}>
+            {t("errors.retry")}
+          </Button>
+        </div>
+      ) : (
+        <>
+          <div
+            className={cn(
+              "rounded-md border overflow-hidden bg-card",
+              isRefetching && "opacity-60 pointer-events-none",
+            )}
+          >
+            <div className="overflow-x-auto">
+              <Table>
+                <SortableTableHeader
+                  columns={columns}
+                  sort={sort}
+                  onToggleSort={toggleSort}
+                  hasActions={!!renderRowActions}
+                />
+                <TableBody>
+                  <TableContent
+                    columns={columns}
+                    items={items}
+                    isLoading={isLoading}
+                    perPage={perPage}
+                    renderRowActions={renderRowActions}
+                    onRowClick={onRowClick}
+                  />
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+
+          <TablePagination
+            page={page}
+            lastPage={lastPage}
+            pageNumbers={pageNumbers}
+            perPage={perPage}
+            perPageOptions={perPageOptions}
+            onPageChange={setPage}
+            onPerPageChange={handlePerPageChange}
+          />
+        </>
+      )}
+    </div>
+  );
+};

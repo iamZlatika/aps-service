@@ -1,7 +1,2 @@
 User-agent: *
-Allow: /
-Disallow: /account
-Disallow: /track
-Disallow: /auth
-
-Sitemap: https://aps.zp.ua/sitemap.xml
+Disallow: /

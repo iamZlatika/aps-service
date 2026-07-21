@@ -87,6 +87,7 @@
     "sms_integration": "SMS-интеграция",
     "roles_permissions": "Роли и доступы",
     "quick_orders": "Продажи",
+    "referrals": "Рефералы",
     "dictionaries_list": {
       "title": "Справочники",
       "accessories": "Комплектации",
@@ -131,7 +132,11 @@
     "clipboard_error": "Не удалось скопировать",
     "error_id": "Код ошибки",
     "socket_failed": "Потеряно соединение с сервером. Обновления в реальном времени недоступны",
-    "socket_suspended": "Соединение нестабильно. Обновления могут задерживаться"
+    "socket_suspended": "Соединение нестабильно. Обновления могут задерживаться",
+    "blocked_title": "Запрос заблокирован",
+    "blocked_description": "Обратитесь в поддержку, если считаете, что это ошибка.",
+    "maintenance_title": "Технические работы",
+    "maintenance_description": "Система временно недоступна. Попробуйте обновить страницу через несколько минут."
   },
   "table": {
     "per_page": "Показывать:",
@@ -251,11 +256,13 @@
         "users": "Сотрудники",
         "dictionaries": "Справочники",
         "integrations": "Интеграции",
-        "quick_orders": "Продажи"
+        "quick_orders": "Продажи",
+        "referrals": "Рефералы"
       },
       "orders_view": "Просмотр",
       "orders_manage": "Управление",
       "quick_orders_manage": "Управление",
+      "referrals_manage": "Управление",
       "customers_view": "Просмотр",
       "customers_manage": "Управление",
       "customers_merge": "Объединение дублей",
@@ -353,6 +360,7 @@
   },
   "customers": {
     "page_title": "Настройки клиента",
+    "referral_badge": "Реферал",
     "merge": {
       "title": "Слияние дублирующихся клиентов",
       "survivor_label": "Основной клиент (остаётся)",
@@ -510,6 +518,9 @@
     "successCreate": "Заказ успешно создан",
     "successUpdate": "Информация о заказе обновлена",
     "order": "Заказ",
+    "errors": {
+      "referralInvalid": "Реферал не найден или неактивен — выберите из списка"
+    },
     "tabs": {
       "order": "О заказе",
       "finance": "Финансы"
@@ -653,6 +664,7 @@
       "manager": "Заказ принял",
       "assignee": "Назначен сотрудником",
       "location": "Локация",
+      "referral": "Реферал",
       "dueDate": "Дедлайн"
     },
     "placeholders": {
@@ -671,6 +683,7 @@
       "estimatedCost": "Укажите примерную стоимость (необязательно)",
       "prepayment": "Введите сумму предоплаты (необязательно)",
       "location": "Выберите локацию",
+      "referral": "Поиск реферала по имени клиента",
       "dueDate": "Выберите дату (необязательно)"
     },
     "orderTable": {
@@ -742,8 +755,14 @@
       "print_error": "Не удалось открыть диалог печати",
       "print_document_timeout": "Документ не получен — распечатайте акт вручную"
     },
+    "regenerateDocument": {
+      "action": "Перегенерировать",
+      "title": "Перегенерировать документ «{{document}}»",
+      "notifyLabel": "Отправить клиенту в Telegram",
+      "confirm": "Перегенерировать",
+      "success": "Документ перегенерирован"
+    },
     "filters": {
-
       "all": "Все",
       "schastlivaya": "Счастливая",
       "active": "Активные",
@@ -873,7 +892,8 @@
       "system_order_income": "Зачисление на баланс сервиса",
       "manual_adjustment": "Ручная корректировка баланса",
       "withdrawal_request": "Выплата средств сотруднику",
-      "reversal": "Аннулирование"
+      "reversal": "Аннулирование",
+      "referral_income": "Реферальный бонус"
     },
     "transaction_statuses": {
       "pending": "Ожидает",
@@ -920,6 +940,57 @@
       "reject": "Отклонить",
       "approve_success": "Заявка на выплату проведена",
       "reject_success": "Заявка на выплату отклонена"
+    }
+  },
+  "referrals": {
+    "title": "Рефералы",
+    "search_placeholder": "Поиск по имени клиента",
+    "add_button": "Добавить реферала",
+    "table": {
+      "customer": "Клиент",
+      "commission_percent": "Комиссия",
+      "balance": "Баланс",
+      "pending_balance": "Ожидается к зачислению",
+      "created_by": "Кто добавил",
+      "created_at": "Дата добавления"
+    },
+    "make_referral_modal": {
+      "title": "Сделать рефералом",
+      "customer_label": "Клиент",
+      "customer_placeholder": "Поиск клиента по имени",
+      "commission_label": "Комиссия, %",
+      "submit": "Сохранить",
+      "customer_already_referral": "Этот клиент уже является рефералом"
+    },
+    "edit_modal": {
+      "title_for": "Редактирование реферала — {{name}}",
+      "commission_label": "Комиссия, %",
+      "submit": "Сохранить"
+    },
+    "adjust_modal": {
+      "title_for": "Начислить / Списать — {{name}}",
+      "accrue": "Начислить (+)",
+      "deduct": "Списать (−)",
+      "amount": "Сумма",
+      "description": "Описание",
+      "submit": "Сохранить"
+    },
+    "demote_confirm": {
+      "title": "Демоут реферала",
+      "description": "Клиент «{{name}}» перестанет быть рефералом. История транзакций и баланс сохранятся, повторная промоция восстановит запись.",
+      "confirm": "Демоутировать"
+    },
+    "transactions": {
+      "title": "Транзакции реферала",
+      "table": {
+        "date": "Дата",
+        "type": "Тип",
+        "label": "Описание",
+        "amount": "Сумма",
+        "status": "Статус",
+        "order": "Заказ",
+        "created_by": "Менеджер"
+      }
     }
   },
   "smsIntegration": {

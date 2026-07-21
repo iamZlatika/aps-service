@@ -10,13 +10,14 @@ The goal is to help new developers (and future-you) understand *why* the code is
 - [Money / Amount Fields](#money--amount-fields)
 - [API Layer](#api-layer)
 - [Error Handling](#error-handling)
+- [Error Tracking (Sentry)](#error-tracking-sentry)
 - [Server State: React Query](#server-state-react-query)
 - [Real-time Updates (WebSockets)](#real-time-updates-websockets)
 - [Routing & Navigation](#routing--navigation)
 - [Forms](#forms)
 - [Enums & Shared Types](#enums--shared-types)
 - [i18n](#i18n)
-- [Adding a New Backoffice Module](#adding-a-new-backoffice-module)
+- [Adding a New Feature Module](#adding-a-new-feature-module)
 
 ---
 
@@ -28,14 +29,17 @@ src/
 ├── entities/         # Shared domain entities reused across features
 │   ├── location/     # Location DTO, domain type, adapter
 │   ├── order-status/ # OrderStatus DTO, domain type, adapter
-│   └── price-list/   # PriceListItem DTO, domain type, adapter
-├── features/
+│   ├── price-list/   # PriceListItem DTO, domain type, adapter
+│   ├── work/          # Work DTO, domain type, adapter
+│   └── role/          # Role/permission DTO, domain type, adapter
+├── features/         # Self-contained feature modules (see below)
 │   ├── auth/         # Login, token storage, session management
-│   ├── backoffice/   # Employee panel
-│   │   ├── modules/  # Self-contained feature modules (see below)
-│   │   └── widgets/  # Compound components used across modules (table, etc.)
-│   └── website/      # Public-facing website
+│   ├── orders/
+│   ├── customers/
+│   └── ...           # users, dictionaries, billing, referrals, profile, works, roles-permissions, sms-integration, quick-orders
 ├── widgets/          # Compound components shared across features
+├── styles/           # Global CSS
+├── test/             # Vitest setup
 └── shared/
     ├── api/          # HTTP client, query client, query keys
     ├── components/   # Generic UI primitives (Button, Dialog, etc.)
@@ -44,10 +48,10 @@ src/
     └── types.ts      # Global enums and shared types
 ```
 
-Each backoffice module is self-contained and follows the same structure:
+Each feature module is self-contained and follows the same structure:
 
 ```
-modules/<name>/
+features/<name>/
 ├── api/
 │   ├── dto.ts        # Zod schemas for server response shapes (snake_case)
 │   ├── endpoints.ts  # API URL constants and builder functions
@@ -67,7 +71,7 @@ modules/<name>/
 
 ## Shared Entities (`src/entities/`)
 
-Some domain types and their DTO/adapter layers are shared between features (e.g. `Location` is used by both the website and the backoffice dictionaries module). These live in `src/entities/` rather than in any single feature.
+These originated as types shared between the (now-removed, see [README](../README.md#overview)) public website and this app. Since the website split into its own repo, every entity below is consumed only within this repo's own feature modules — sometimes just one, sometimes several. They stay in `src/entities/` rather than moving into a single module's own `types.ts` because they're still cross-module here, and because the same server response shapes are also what the standalone public site consumes from the API — keeping them isolated here keeps that boundary explicit. Whether to consolidate further is a call for the team, not something to do silently.
 
 Each entity follows the same three-file structure:
 
@@ -82,9 +86,11 @@ Current entities:
 
 | Entity | Consumers |
 |--------|-----------|
-| `location` | `website` (contacts page, modal phone buttons), `backoffice/dictionaries` |
-| `order-status` | `website` (track page, status badge), `backoffice/orders` |
-| `price-list` | `website` (price modal, price list page) |
+| `location` | `features/dictionaries`, `features/users`, `features/orders`, `features/quick-orders` |
+| `order-status` | `features/dictionaries`, `features/orders` |
+| `price-list` | `features/dictionaries` (price list dictionary page) only — no longer multi-module |
+| `work` | `features/works`, `widgets/work-card` (used by the works module's preview modal — see [Backoffice → Works](backoffice.md#works)) |
+| `role` | `features/roles-permissions`, `features/users` (permission editing) |
 
 **Rule:** Move a type to `entities/` only when it is actually shared across two or more features. Feature-specific types stay in the feature's own `types.ts`.
 
@@ -201,7 +207,9 @@ Axios instance configured with base URL and interceptors.
 **Response interceptor** handles all errors centrally:
 - Network errors → localized message
 - 401 with an existing token → calls `logout()` automatically
-- All errors except 401 and 422 → sent to Sentry
+- A security-blocked response → navigates to the blocked page
+- 503 → navigates to the maintenance page
+- All errors except 401, 403, 422, 503, and any status listed in the request's `silentErrorStatuses` → sent to Sentry (see [Error Tracking](#error-tracking-sentry))
 - Returns an `ApiError` instance with `status` and `data`
 
 You never need to handle auth failures or token injection manually in feature code.
@@ -289,6 +297,36 @@ Wrap page-level queries to handle loading and error states consistently:
 
 ---
 
+## Error Tracking (Sentry)
+
+Like the Echo/Ably setup above, the Sentry integration is split across two files to keep the SDK (~45 KB gzipped) out of the main bundle:
+
+| File | Role |
+|------|------|
+| `shared/lib/sentry.ts` | Thin wrapper — public API: `initSentry`, `captureError`, `captureErrorWithId`, `getLastEventId`. Never imports `@sentry/react` at the top level. |
+| `shared/lib/sentryFactory.ts` | Heavy implementation with the real `@sentry/react` import. Lazy-loaded via dynamic `import()` on first call to any of the wrapper's functions. |
+
+Because of this, `@sentry/react` is no longer `modulepreload`ed in `index.html` — it loads only the first time it's actually needed (an error, or `initSentry()` at boot), instead of blocking every visitor's initial page load.
+
+- `initSentry()` — called once from `main.tsx`. No-ops if `VITE_SENTRY_DSN` is unset (the factory is never even fetched in that case). Only actually reports in production (`enabled: import.meta.env.PROD`) — in dev/test it just logs to the console.
+- `captureError(error, context?)` — reports an exception with extra context. Used by the `apiClient.ts` response interceptor and the Ably connection listener (`echoFactory.ts`, `failed` state).
+- `captureErrorWithId(error, context?)` — same as `captureError`, but returns the Sentry event ID synchronously if the factory has already loaded, otherwise `null` (and kicks off/joins the load in the background). No current call site uses the returned value.
+- `getLastEventId()` — returns the last captured event's ID (or `undefined` if the factory hasn't loaded yet), used by `ErrorFallback.tsx` to show a reference ID on the fallback UI.
+
+**Do not import from `sentryFactory.ts` directly** — it carries all Sentry code and is lazy-loaded. Always go through `sentry.ts`.
+
+### `silentErrorStatuses`
+
+Any Axios request can opt individual HTTP statuses out of Sentry reporting by passing `silentErrorStatuses` in the request config:
+
+```ts
+await get(SOME_API.endpoint(id), { silentErrorStatuses: [404] });
+```
+
+Use this for expected error statuses that aren't real bugs (e.g. a 404 on a "does this exist" check) — it keeps Sentry noise-free without disabling capture for genuine failures on the same endpoint. No call site in this repo currently uses it (its original caller was the public website's order-status check, now part of the separate `aps-website` repo), but the option remains wired up in `apiClient.ts` for the next endpoint that needs it.
+
+---
+
 ## Server State: React Query
 
 All server state is managed through TanStack Query. No Redux, Zustand, or Context for remote data.
@@ -346,7 +384,7 @@ This split keeps Ably (~234 KB) out of the main bundle — it loads only when `i
 
 `echoFactory.ts` attaches a connection state listener on every new instance:
 - `failed` state → captured in Sentry + error toast
-- `suspended` state → error toast (connection unstable)
+- `suspended` state → error toast (connection unstable) — suppressed on mobile viewports (`isMobileViewport()`, ≤767px) and shown at most once per suspension (resets when the connection returns to `connected`), to avoid repeated toasts on flaky mobile networks
 
 No per-subscription error handling is needed — it's all centralized here.
 
@@ -424,7 +462,7 @@ export const ORDERS_ROUTES = {
 `navigation.ts` — link builder functions used in components and hooks:
 
 ```ts
-const BASE = "/backoffice/orders";
+const BASE = "/orders";
 
 export const ORDERS_LINKS = {
   root: () => BASE,
@@ -439,7 +477,7 @@ export const ORDERS_LINKS = {
 navigate(ORDERS_LINKS.detail(order.id));
 
 // ❌ wrong
-navigate(`/backoffice/orders/${order.id}`);
+navigate(`/orders/${order.id}`);
 ```
 
 ---
@@ -508,7 +546,7 @@ role: zodEnumFromConst(ROLES),
 
 ## i18n
 
-The project supports two locales: `ru` (default for backoffice) and `uk` (default for website).
+The project supports two locales: `ru` (default) and `uk`, switchable per user from the [Profile](backoffice.md#profile) page.
 Translation files live in `src/shared/lib/i18n/locales/{ru,uk}/*.json`.
 
 - In components and hooks: `const { t } = useTranslation()`
@@ -519,11 +557,11 @@ Strings from the server are translated server-side.
 
 ---
 
-## Adding a New Backoffice Module
+## Adding a New Feature Module
 
 Checklist for a new module (e.g. `invoices`):
 
-- [ ] Create `src/features/backoffice/modules/invoices/`
+- [ ] Create `src/features/invoices/`
 - [ ] `api/dto.ts` — Zod schemas for all server response shapes
 - [ ] `api/endpoints.ts` — URL constants and builder functions
 - [ ] `api/index.ts` — API object with typed async methods (validate + map in each method)

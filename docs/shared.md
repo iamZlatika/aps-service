@@ -12,6 +12,7 @@ Everything listed here is ready to use. Reimplementing any of it is a bug.
 - [Error Handling Helpers](#error-handling-helpers)
 - [UI Components](#ui-components)
 - [Error & State Components](#error--state-components)
+- [Common Components](#common-components)
 - [Widgets](#widgets)
 
 ---
@@ -98,6 +99,30 @@ Used to push UI above the mobile keyboard when it appears.
 
 ---
 
+### `useKeyboardShortcut({ key, shiftKey?, enabled?, ignoreWhenTyping?, ignoreWhenDialogOpen?, onTrigger })`
+
+Registers a global `keydown` shortcut. By default ignores keystrokes while typing in an input/textarea/select, and while any Radix dialog (`[role="dialog"]`) is open.
+
+```ts
+import { useKeyboardShortcut } from "@/shared/hooks/useKeyboardShortcut";
+
+useKeyboardShortcut({ key: "Escape", onTrigger: closeModal });
+```
+
+---
+
+### `usePullToRefresh(containerRef)`
+
+Mobile-only pull-to-refresh gesture on a scrollable container. Invalidates all React Query caches once the pull threshold is met. Returns `{ progress, status }` (`status` is one of `PULL_TO_REFRESH_STATUS`) — drive `PullToRefreshIndicator`/`PullToRefreshBackdrop`/`PullToRefreshLoaderFrame` (`shared/components/`) with these values.
+
+---
+
+### `useScrollLock()`
+
+Locks `document.body` scroll for as long as the calling component is mounted (restores the previous `overflow` value on unmount). Use in modals/drawers that must prevent background scroll.
+
+---
+
 ## Utilities
 
 All utilities live in `src/shared/lib/`.
@@ -114,15 +139,31 @@ import { cn } from "@/shared/lib/utils";
 
 ---
 
-### `formatDate(isoString)`
+### `formatDate(isoString)` / `formatDateTime(isoString)` / `stripNonDigits(value)`
 
-Formats an ISO datetime string to `dd.MM.yyyy`. Returns `null` for empty or invalid input.
+All in `shared/lib/utils.ts`, alongside `cn`.
+
+`formatDate` formats an ISO datetime string to `dd.MM.yyyy`; `formatDateTime` formats to `dd.MM.yyyy HH:mm`. Both return `null` for empty or invalid input. `stripNonDigits` removes all non-digit characters from a string (used by phone formatting/validation).
 
 ```ts
-import { formatDate } from "@/shared/lib/utils";
+import { formatDate, formatDateTime, stripNonDigits } from "@/shared/lib/utils";
 
-formatDate(order.createdAt); // → "01.06.2025"
-formatDate(null);            // → null
+formatDate(order.createdAt);     // → "01.06.2025"
+formatDate(null);                // → null
+formatDateTime(order.createdAt); // → "01.06.2025 14:30"
+stripNonDigits("+380 (67) 123-45-67"); // → "380671234567"
+```
+
+---
+
+### `formatMoney(value)`
+
+Formats an amount string/number as `"1 234,00 ₴"` (2 decimal places). See the [Money / Amount Fields](architecture.md#money--amount-fields) rule in architecture.md — use with `MoneyAmount` for standard debt/positive styling.
+
+```ts
+import { formatMoney } from "@/shared/lib/utils";
+
+formatMoney("1500"); // → "1 500,00 ₴"
 ```
 
 ---
@@ -170,6 +211,58 @@ import { storageGet, storageSet } from "@/shared/lib/storage";
 
 ---
 
+### `phone.ts`
+
+Ukrainian mobile phone helpers, used by phone validation/formatting across the app:
+
+- `MOBILE_OPERATOR_CODES` — the set of supported operator prefixes (Vodafone, Kyivstar, lifecell)
+- `isSupportedMobileOperator(phone)` — checks a `+380XXXXXXXXX` phone's operator code against `MOBILE_OPERATOR_CODES`
+- `extractLocalPhoneDigits(chars)` — normalizes `380...`/`38...`-prefixed input to a local `0...` digit string, for masked phone inputs
+
+---
+
+### `pagination.ts`
+
+`getPageNumbers(currentPage, lastPage)` — computes the page-number list (with `"ellipsis"` entries) for a pagination control, collapsing runs of pages beyond a small window around the current page.
+
+---
+
+### `imageCompression.ts`
+
+`IMAGE_COMPRESSION_OPTIONS` — options passed to `browser-image-compression` (`maxSizeMB: 2`, `maxWidthOrHeight: 1920`, `useWebWorker: true`). Used before uploading avatars/work photos.
+
+---
+
+### `pullToRefresh.ts`
+
+Pure helpers backing `usePullToRefresh` (see [Hooks](#hooks)): `PULL_TO_REFRESH_STATUS`, `PULL_THRESHOLD_PX` (70), `PULL_MAX_DISTANCE_PX` (120), `PULL_RESISTANCE` (0.5), `calculatePullDistance(deltaY, maxDistance)`, `isPullThresholdMet(distance, threshold)`.
+
+---
+
+### `zod-helpers.ts` — `phoneField(message?)` / `optionalPhoneField(message?)`
+
+In addition to `zodEnumFromConst` (below), this file exports Zod field validators for Ukrainian phone numbers — format check via `phoneRegex` plus operator check via `isSupportedMobileOperator`. `optionalPhoneField` treats an empty string as `undefined`.
+
+```ts
+import { phoneField, optionalPhoneField } from "@/shared/lib/zod-helpers";
+
+phone: phoneField(),
+extraPhone: optionalPhoneField(),
+```
+
+---
+
+### `errors/getErrorDescription(error, eventId?)`
+
+Formats an error for display: in dev, the raw error message/stringified value; in prod, `"Error ID: <eventId>"` if a Sentry event ID was captured, otherwise `undefined`. Used by error pages to show a support-friendly reference without leaking internals in production.
+
+---
+
+### `errors/serverMessageMap.ts` — `getSharedServerMessageMap()`
+
+Returns a `Record<string, string>` mapping known raw server error strings to translated messages (e.g. "The name has already been taken." → localized). Shared by `notifyError` and `handleFormError` so the same server message is translated consistently everywhere it can appear.
+
+---
 
 ## Constants
 
@@ -185,6 +278,8 @@ From `src/shared/lib/constants.ts`:
 | `statusColorMap` | object | Maps status color keys → Tailwind `bg-*` classes |
 | `statusTextColorMap` | object | Maps status color keys → Tailwind `text-*` classes |
 | `emailRegex` | RegExp | Email validation pattern |
+| `phoneRegex` | RegExp | Ukrainian phone format validation (`+380XXXXXXXXX`) |
+| `ACCESSORY_QUICK_SELECT` | array | Quick-select labels for common accessory values |
 | `LANG_STORAGE_KEY` | string | localStorage key for language preference |
 | `THEME_STORAGE_KEY` | string | localStorage key for theme preference |
 
@@ -220,24 +315,24 @@ Connection error handling (Sentry capture + error toasts for `failed` / `suspend
 
 ## Error Handling Helpers
 
-From `src/shared/lib/errors/services.ts`:
+### `isApiError(error)` / `notifyError(error)` — `src/shared/lib/errors/services.ts`
 
-### `isApiError(error)`
-
-Type guard — narrows `unknown` to `ApiError`. Use before branching on status or data.
+`isApiError` is a type guard — narrows `unknown` to `ApiError`. Use before branching on status or data.
 
 ```ts
 if (isApiError(error) && error.status === 422) { ... }
 ```
 
-### `notifyError(error)`
-
-Shows an error toast. Handles 403 with a localized "forbidden" message automatically.
+`notifyError` shows an error toast. Handles 403 with a localized "forbidden" message automatically.
 For mutations without `onError`, this is called automatically by the query client.
 
-### `handleFormError(error, setError, options?)`
+### `handleFormError(error, setError, options?)` — `src/shared/lib/errors/handleFormError.ts`
 
-Maps 422 server validation errors to React Hook Form fields. See [architecture.md](architecture.md#error-handling) for details.
+Maps 422 server validation errors to React Hook Form fields. See [architecture.md](architecture.md#error-handling) for details. Lives in its own file, separate from `isApiError`/`notifyError`.
+
+### Sentry — `src/shared/lib/sentry.ts`
+
+`initSentry()`, `captureError()`, `captureErrorWithId()`, `getLastEventId()`, and the `silentErrorStatuses` request option. The real `@sentry/react` SDK is lazy-loaded behind `sentryFactory.ts` — never import that file directly. See the full write-up in [architecture.md](architecture.md#error-tracking-sentry).
 
 ---
 
@@ -253,6 +348,7 @@ Generic primitives from `src/shared/components/ui/`. These are Radix UI componen
 | `Label` | `label.tsx` | Form label, connects to input via `htmlFor` |
 | `Select` | `select.tsx` | Radix-based dropdown select |
 | `Checkbox` | `checkbox.tsx` | Radix-based checkbox |
+| `Switch` | `switch.tsx` | Radix-based toggle switch |
 | `Dialog` | `dialog.tsx` | Modal dialog — use for confirmations and forms |
 | `Sheet` | `sheet.tsx` | Slide-in panel (drawer) from any side |
 | `Tooltip` | `tooltip.tsx` | Hover tooltip |
@@ -315,6 +411,26 @@ Used internally by `QueryPageGuard`. Can also be used standalone.
 
 Shown when the user tries to access a resource they don't have permission for.
 
+### `NotFound`
+
+404 page stub for unmatched backoffice routes. Currently placeholder content only (not yet styled to match `ErrorPage`).
+
+---
+
+## Common Components
+
+Generic reusable pieces from `src/shared/components/common/` — not primitives (those are in `ui/`), but not complex enough to be a widget either.
+
+| Component | Purpose |
+|-----------|---------|
+| `MoneyAmount` | Standard debt/positive amount styling with optional `prefix`. See [Money / Amount Fields](architecture.md#money--amount-fields) |
+| `LocationCheckboxGroup` | Single-select-styled-as-checkboxes location picker. Takes `clearable` to allow unchecking the selected location (used by the orders filter settings form's location filter — see [backoffice.md](backoffice.md#orders)) |
+| `StatusBadge` | Generic status pill using `statusColorMap`/`statusTextColorMap`, with `isPending` (spinner) and `selectable` (chevron) states |
+| `FormField` | `Input` wrapper that renders a `FieldError` message below the input |
+| `Loader` | Full-section loading spinner (`react-loader-spinner` `MutatingDots`) |
+| `UserStatusButton` | Toggle button for a user's active/blocked status, lock/unlock icon |
+| `buttons/` | Icon-only action buttons used in table rows and forms: `AcceptButton`, `CancelButton`, `DeleteButton`, `EditButton`, `CreateOrderForCustomerButton` |
+
 ---
 
 ## Widgets
@@ -369,12 +485,12 @@ Key props: same as `SearchableSelect`, plus:
 
 ---
 
-### `PersonCard` — `src/features/backoffice/widgets/person-card`
+### `PersonCard` — `src/widgets/person-card`
 
 A card layout for displaying a person (customer, user) with avatar, info, meta, and action slots.
 
 ```tsx
-import { PersonCard } from "@/features/backoffice/widgets/person-card/PersonCard";
+import { PersonCard } from "@/widgets/person-card/PersonCard";
 
 <PersonCard
   avatarSlot={<UserAvatar user={customer} />}
@@ -388,9 +504,35 @@ Slots: `avatarSlot`, `infoSlot`, `metaSlot?`, `commentSlot?`, `leftAction?`, `ri
 
 ---
 
-### `SmartTable` — `src/features/backoffice/widgets/table`
+### `SmartTable` — `src/widgets/table`
 
 The main data table for backoffice list pages. Handles pagination, sorting, filtering, and row actions out of the box.
 
 Used by orders, customers, users, and dictionaries list pages.
 Accepts a `columns` config and a query hook via `SmartTableApi`. See existing list pages for usage examples.
+
+---
+
+### `AbilityBadge` — `src/widgets/ability-badge`
+
+Colored badge for a single permission/ability. `abilityColors.ts` maps ability categories to colors; `abilityGroups.ts` (`groupPermissionsByCategory`) groups a flat permission list by category. Used by the [Roles & Permissions](backoffice.md#roles--permissions) editor.
+
+---
+
+### `Lightbox` — `src/widgets/lightbox`
+
+Fullscreen image viewer (Radix `Dialog` based) with keyboard (arrow key) navigation between images. Used by `work-card` for before/after/additional photos.
+
+---
+
+### `WorkCard` — `src/widgets/work-card`
+
+Renders one portfolio entry: device photos (`WorkMedia`, opens `Lightbox` via `useWorkGallery`) and text info (`WorkInfo`). The public site (separate `aps-website` repo) has its own copy for actually rendering the Works page; in this repo it's used only by the backoffice [Works module's](backoffice.md#works) `WorkPreviewModal`, to preview how an entry will look there before publishing.
+
+Styled with its own `ws-*` design-token scope (`work-card.css`, `.ws-theme-dark`/`.ws-theme-light`), mirroring the public site's palette so the preview is representative. These tokens are local to this widget — do not use `ws-*` classes elsewhere in the backoffice.
+
+```tsx
+import { WorkCard } from "@/widgets/work-card";
+
+<WorkCard work={work} isReverse={index % 2 === 1} />
+```
