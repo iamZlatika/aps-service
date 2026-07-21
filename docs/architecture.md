@@ -34,10 +34,9 @@ src/
 │   └── role/          # Role/permission DTO, domain type, adapter
 ├── features/
 │   ├── auth/         # Login, token storage, session management
-│   ├── backoffice/   # Employee panel
-│   │   ├── modules/  # Self-contained feature modules (see below)
-│   │   └── widgets/  # Compound components used across modules (table, etc.)
-│   └── website/      # Public-facing website
+│   └── backoffice/   # Employee panel
+│       ├── modules/  # Self-contained feature modules (see below)
+│       └── widgets/  # Compound components used across modules (table, etc.)
 ├── widgets/          # Compound components shared across features
 ├── styles/           # Global CSS
 ├── test/             # Vitest setup
@@ -72,7 +71,7 @@ modules/<name>/
 
 ## Shared Entities (`src/entities/`)
 
-Some domain types and their DTO/adapter layers are shared between features (e.g. `Location` is used by both the website and the backoffice dictionaries module). These live in `src/entities/` rather than in any single feature.
+These originated as types shared between the (now-removed, see [README](../README.md#overview)) public website and the backoffice. Since the website split into its own repo, every entity below is consumed from a single feature (`backoffice`), sometimes across more than one of its modules. They stay in `src/entities/` rather than moving into a module's own `types.ts` because they're still cross-module within `backoffice`, and because the same server response shapes are also what the standalone public site consumes from the API — keeping them isolated here keeps that boundary explicit. Whether to consolidate further is a call for the team, not something to do silently.
 
 Each entity follows the same three-file structure:
 
@@ -87,10 +86,10 @@ Current entities:
 
 | Entity | Consumers |
 |--------|-----------|
-| `location` | `website` (contacts page, modal phone buttons), `backoffice/dictionaries` |
-| `order-status` | `website` (track page, status badge), `backoffice/orders` |
-| `price-list` | `website` (price modal, price list page) |
-| `work` | `backoffice/works`, `widgets/work-card` (portfolio card on the website) |
+| `location` | `backoffice/dictionaries`, `backoffice/users`, `backoffice/orders`, `backoffice/quick-orders` |
+| `order-status` | `backoffice/dictionaries`, `backoffice/orders` |
+| `price-list` | `backoffice/dictionaries` (price list dictionary page) only — no longer multi-module |
+| `work` | `backoffice/works`, `widgets/work-card` (used by the works module's preview modal — see [Backoffice → Works](backoffice.md#works)) |
 | `role` | `backoffice/roles-permissions`, `backoffice/users` (permission editing) |
 
 **Rule:** Move a type to `entities/` only when it is actually shared across two or more features. Feature-specific types stay in the feature's own `types.ts`.
@@ -311,10 +310,10 @@ Sentry setup lives in `shared/lib/sentry.ts`.
 Any Axios request can opt individual HTTP statuses out of Sentry reporting by passing `silentErrorStatuses` in the request config:
 
 ```ts
-await get(WEBSITE_API.status(orderNumber), { silentErrorStatuses: [404] });
+await get(SOME_API.endpoint(id), { silentErrorStatuses: [404] });
 ```
 
-Use this for expected, user-facing error statuses on public/unauthenticated endpoints (e.g. the website's quick order-status check, where a 404 just means "not found" and isn't a real bug) — it keeps Sentry noise-free without disabling capture for genuine failures on the same endpoint.
+Use this for expected error statuses that aren't real bugs (e.g. a 404 on a "does this exist" check) — it keeps Sentry noise-free without disabling capture for genuine failures on the same endpoint. No call site in this repo currently uses it (its original caller was the public website's order-status check, now part of the separate `aps-website` repo), but the option remains wired up in `apiClient.ts` for the next endpoint that needs it.
 
 ---
 
@@ -537,7 +536,7 @@ role: zodEnumFromConst(ROLES),
 
 ## i18n
 
-The project supports two locales: `ru` (default for backoffice) and `uk` (default for website).
+The project supports two locales: `ru` (default) and `uk`, switchable per user from the [Profile](backoffice.md#profile) page.
 Translation files live in `src/shared/lib/i18n/locales/{ru,uk}/*.json`.
 
 - In components and hooks: `const { t } = useTranslation()`

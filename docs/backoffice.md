@@ -122,7 +122,7 @@ This pattern propagates through `CustomerOrdersSection` as well: when the sectio
 
 The order detail page shows a chronological event log in a sidebar (`HistorySidebar`) on desktop and a bottom drawer (`MobileHistoryDrawer`) on mobile.
 
-The history is built by `buildOrderHistory(orderInfo)` in `pages/order-page/services.ts` — same function as on the website track page. It merges status changes, payments, products, and services into a unified `OrderHistoryItem[]` sorted newest-first.
+The history is built by `buildOrderHistory(orderInfo)` in `pages/order-page/services.ts`. It merges status changes, payments, products, and services into a unified `OrderHistoryItem[]` sorted newest-first.
 
 ### Status system
 
@@ -275,7 +275,7 @@ Reference data used across all modules. All dictionary pages are built from the 
 | Order Statuses | `/dictionaries/order-statuses` | Custom statuses with color and system flag |
 | Locations | `/dictionaries/locations` | Service center branches with address and schedule |
 | Bank Cards | `/dictionaries/bank-cards` | Bank cards used for card payments |
-| Price List | `/dictionaries/price-list` | Public repair price list shown on the website |
+| Price List | `/dictionaries/price-list` | Public repair price list, surfaced on the public site (separate `aps-website` repo) via the API |
 
 ### Factory pattern
 
@@ -543,7 +543,7 @@ Profile data is fetched via `queryKeys.users.me()` — the same query used throu
 **Path:** `/backoffice/works`
 **Source:** `src/features/backoffice/modules/works/`
 
-Manages the portfolio of completed repair/upgrade works shown on the public website's Works page.
+Manages the portfolio of completed repair/upgrade works. Published works are surfaced on the public site's Works page (separate `aps-website` repo, same API); `WorkCard`/`widgets/work-card` is kept in this repo only to power the create/edit form's live preview (`WorkPreviewModal`) of how an entry will render there.
 
 ### Pages
 
@@ -555,7 +555,7 @@ Manages the portfolio of completed repair/upgrade works shown on the public webs
 
 ### Key types
 
-**`Work`** (`src/entities/work/`) — shared entity, also consumed by `widgets/work-card` on the website: device info, `type` (`repair` / `upgrade`), localized reason/description, `photos` (`before` / `after` / `main` / `additional`).
+**`Work`** (`src/entities/work/`) — shared entity, also consumed by `widgets/work-card` (see [Works](#works) above): device info, `type` (`repair` / `upgrade`), localized reason/description, `photos` (`before` / `after` / `main` / `additional`).
 
 **`BackofficeWork`** — extends `Work` with `isPublished`.
 
