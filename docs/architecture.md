@@ -299,11 +299,21 @@ Wrap page-level queries to handle loading and error states consistently:
 
 ## Error Tracking (Sentry)
 
-Sentry setup lives in `shared/lib/sentry.ts`.
+Like the Echo/Ably setup above, the Sentry integration is split across two files to keep the SDK (~45 KB gzipped) out of the main bundle:
 
-- `initSentry()` — called once from `main.tsx`. No-ops if `VITE_SENTRY_DSN` is unset. Only actually reports in production (`enabled: import.meta.env.PROD`) — in dev/test it just logs to the console.
+| File | Role |
+|------|------|
+| `shared/lib/sentry.ts` | Thin wrapper — public API: `initSentry`, `captureError`, `captureErrorWithId`, `getLastEventId`. Never imports `@sentry/react` at the top level. |
+| `shared/lib/sentryFactory.ts` | Heavy implementation with the real `@sentry/react` import. Lazy-loaded via dynamic `import()` on first call to any of the wrapper's functions. |
+
+Because of this, `@sentry/react` is no longer `modulepreload`ed in `index.html` — it loads only the first time it's actually needed (an error, or `initSentry()` at boot), instead of blocking every visitor's initial page load.
+
+- `initSentry()` — called once from `main.tsx`. No-ops if `VITE_SENTRY_DSN` is unset (the factory is never even fetched in that case). Only actually reports in production (`enabled: import.meta.env.PROD`) — in dev/test it just logs to the console.
 - `captureError(error, context?)` — reports an exception with extra context. Used by the `apiClient.ts` response interceptor and the Ably connection listener (`echoFactory.ts`, `failed` state).
-- `captureErrorWithId(error, context?)` — same as `captureError`, but returns the Sentry event ID (or `null` outside production) for cases that need to surface it to the user (e.g. an error page showing a reference ID).
+- `captureErrorWithId(error, context?)` — same as `captureError`, but returns the Sentry event ID synchronously if the factory has already loaded, otherwise `null` (and kicks off/joins the load in the background). No current call site uses the returned value.
+- `getLastEventId()` — returns the last captured event's ID (or `undefined` if the factory hasn't loaded yet), used by `ErrorFallback.tsx` to show a reference ID on the fallback UI.
+
+**Do not import from `sentryFactory.ts` directly** — it carries all Sentry code and is lazy-loaded. Always go through `sentry.ts`.
 
 ### `silentErrorStatuses`
 

@@ -332,7 +332,7 @@ Maps 422 server validation errors to React Hook Form fields. See [architecture.m
 
 ### Sentry — `src/shared/lib/sentry.ts`
 
-`initSentry()`, `captureError()`, `captureErrorWithId()`, and the `silentErrorStatuses` request option. See the full write-up in [architecture.md](architecture.md#error-tracking-sentry).
+`initSentry()`, `captureError()`, `captureErrorWithId()`, `getLastEventId()`, and the `silentErrorStatuses` request option. The real `@sentry/react` SDK is lazy-loaded behind `sentryFactory.ts` — never import that file directly. See the full write-up in [architecture.md](architecture.md#error-tracking-sentry).
 
 ---
 
