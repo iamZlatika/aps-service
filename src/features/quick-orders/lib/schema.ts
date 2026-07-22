@@ -45,7 +45,10 @@ export const newQuickOrderSchema = () =>
       .number({ error: i18next.t("validation.locationRequired") })
       .int()
       .positive(),
-    paymentMethod: zodEnumFromConst(PAYMENT_METHODS).optional(),
+    paymentMethod: zodEnumFromConst(
+      PAYMENT_METHODS,
+      i18next.t("validation.field_required"),
+    ),
     comment: z.string().max(2048).optional(),
     services: z.array(newQuickOrderItemSchema()),
     products: z.array(newQuickOrderItemSchema()),

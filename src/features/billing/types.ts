@@ -54,15 +54,17 @@ export type EmployeeSelectValue = number | typeof SERVICE_VALUE | undefined;
 
 // Order-payments report row: same fields as an order-embedded OrderPayment
 // (id/type/method/amount/note/createdAt), minus soft-delete metadata, plus
-// order reference fields (always present here, unlike Transaction's
-// nullable ones) and a nullable manager (order-embedded payments always
-// have one, report rows may not).
+// order reference fields and a nullable manager (order-embedded payments
+// always have one, report rows may not). orderId/orderNumber are null and
+// quickOrderId/quickOrderNumber are filled instead for quick-sale rows.
 export type OrderPaymentRecord = Omit<
   OrderPayment,
   "manager" | "deletedAt" | "deletedByUser"
 > & {
-  orderId: number;
-  orderNumber: string;
+  orderId: number | null;
+  orderNumber: string | null;
+  quickOrderId: number | null;
+  quickOrderNumber: string | null;
   manager: User | null;
 };
 

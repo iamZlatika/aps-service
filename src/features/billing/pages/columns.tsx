@@ -277,15 +277,31 @@ export function buildOrderPaymentColumns(): ColumnConfig<OrderPaymentRecord>[] {
       field: "orderNumber",
       labelKey: "billing.order_payments.table.order_number",
       sortable: false,
-      renderCell: (_value, item) => (
-        <Link
-          to={ORDERS_LINKS.detail(item.orderId)}
-          className="text-primary hover:underline"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {item.orderNumber}
-        </Link>
-      ),
+      renderCell: (_value, item) => {
+        if (item.orderId) {
+          return (
+            <Link
+              to={ORDERS_LINKS.detail(item.orderId)}
+              className="text-primary hover:underline"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {item.orderNumber}
+            </Link>
+          );
+        }
+        if (item.quickOrderId) {
+          return (
+            <Link
+              to={QUICK_ORDERS_LINKS.detail(item.quickOrderId)}
+              className="text-primary hover:underline"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {item.quickOrderNumber}
+            </Link>
+          );
+        }
+        return "—";
+      },
     },
     {
       key: "manager",

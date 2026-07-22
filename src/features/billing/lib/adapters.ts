@@ -106,6 +106,8 @@ export function mapOrderPaymentReportDtoToOrderPaymentRecord(
     id: dto.id,
     orderId: dto.order_id,
     orderNumber: dto.order_number,
+    quickOrderId: dto.quick_order_id,
+    quickOrderNumber: dto.quick_order_number,
     type: dto.type,
     method: dto.method,
     amount: dto.amount,

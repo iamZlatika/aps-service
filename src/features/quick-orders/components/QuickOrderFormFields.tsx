@@ -140,6 +140,11 @@ const QuickOrderFormFields = ({
             </div>
           )}
         />
+        {errors.paymentMethod && (
+          <p className="text-sm text-destructive">
+            {errors.paymentMethod.message}
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col gap-1">
