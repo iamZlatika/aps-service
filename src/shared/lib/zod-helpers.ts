@@ -4,8 +4,10 @@ import { z } from "zod";
 import { phoneRegex } from "@/shared/lib/constants";
 import { isSupportedMobileOperator } from "@/shared/lib/phone";
 
-export const zodEnumFromConst = <T extends Record<string, string>>(obj: T) =>
-  z.enum(Object.values(obj) as [T[keyof T], ...T[keyof T][]]);
+export const zodEnumFromConst = <T extends Record<string, string>>(
+  obj: T,
+  message?: string,
+) => z.enum(Object.values(obj) as [T[keyof T], ...T[keyof T][]], message);
 
 function validatePhoneValue(
   val: string,

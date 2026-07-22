@@ -65,15 +65,18 @@ export type SystemBalanceDto = z.infer<typeof SystemBalanceDtoSchema>;
 
 // Same row shape order-embedded payments already use (OrderPaymentSchema),
 // minus soft-delete metadata (irrelevant to a read-only report) plus the
-// order reference fields, which the report always has (unlike Transaction's
-// order_id/order_number, this never covers quick-sales) and a nullable
-// manager (order-embedded payments always have one, report rows may not).
+// order reference fields and a nullable manager (order-embedded payments
+// always have one, report rows may not). order_id/order_number are null and
+// quick_order_id/quick_order_number are filled instead when the row is a
+// quick-sale payment rather than a repair-order one.
 export const OrderPaymentReportDtoSchema = OrderPaymentSchema.omit({
   deleted_at: true,
   deleted_by_user: true,
 }).extend({
-  order_id: z.number(),
-  order_number: z.string(),
+  order_id: z.number().nullable(),
+  order_number: z.string().nullable(),
+  quick_order_id: z.number().nullable(),
+  quick_order_number: z.string().nullable(),
   manager: UserDtoSchema.nullable(),
 });
 export type OrderPaymentReportDto = z.infer<typeof OrderPaymentReportDtoSchema>;

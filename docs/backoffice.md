@@ -385,8 +385,9 @@ Employee balances, financial transactions, the shared service balance, and self-
 | Balances | `/billing/balances` | `billing_view` | All employees' balances; row action to accrue/deduct |
 | All Transactions | `/billing/transactions` | `billing_view` | Full transaction log across all employees, with filters |
 | Withdrawal Requests | `/billing/withdrawal-requests` | `billing_view` | Same transaction table, hard-filtered to `type=withdrawal_request&status=pending` |
+| Order Payments | `/billing/order-payments` | `billing_view` | Flat cash-flow log of order payments (prepayment/payment/refund) with date/manager/type/method/order-number filters and total/cash/card/count summary cards |
 
-`/billing` itself redirects to Balances. All three pages share `BillingTabs` (the third tab shows a pending-request count badge and is disabled when there are none) and `SystemBalanceCard`.
+`/billing` itself redirects to Balances. All four pages share `BillingTabs` (the withdrawal-requests tab shows a pending-request count badge and is disabled when there are none) and `SystemBalanceCard`.
 
 ### Permissions
 
@@ -415,6 +416,10 @@ Employee balances, financial transactions, the shared service balance, and self-
 
 **`NewSystemBalanceTransaction`** — payload for a system-balance deduction: `{ amount, description }`. Posts to the same endpoint as `NewBillingTransaction` but omits `userId` entirely — that's what tells the backend it's a system-level entry.
 
+**`OrderPaymentRecord`** — Order Payments report row: `id`, `type` (`prepayment`/`payment`/`refund`), `method` (`cash`/`card`), `amount` (signed — refunds are negative), `note`, `manager` (nullable), `createdAt`. `orderId`/`orderNumber` are set for a repair-order payment; `quickOrderId`/`quickOrderNumber` are set instead for a payment created by a [quick order](#quick-orders) sale — the two pairs are mutually exclusive and exactly one is non-null per row. The `orderNumber` column links to whichever one is present.
+
+**`OrderPaymentsSummary`** — totals for the report's current filter set (not the current page): `{ total, cash, card, count }`. `total === cash + card`; refunds reduce the totals. Fetched separately from the row list via `useOrderPaymentsSummary` whenever filters change.
+
 ### API
 
 All transaction-list endpoints (`allTransactions`, `myTransactions`, `withdrawalRequests`) share one `fetchPaginatedTransactions` helper in `api/index.ts` — they differ only in the endpoint URL and, for `withdrawalRequests`, a hardcoded `type`/`status` filter merged in server-side (not user-editable, unlike the other filters).
@@ -430,6 +435,8 @@ All transaction-list endpoints (`allTransactions`, `myTransactions`, `withdrawal
 | `billingApi.requestWithdrawal` | Self-service withdrawal request |
 | `billingApi.approveWithdrawal` / `rejectWithdrawal` | Approve or reject a pending withdrawal request |
 | `billingApi.adjustSystemBalance` | Deduct from the service balance |
+| `billingApi.orderPayments.getAll` | Paginated Order Payments report rows |
+| `billingApi.orderPayments.getSummary` | Total/cash/card/count for the report's current filters |
 
 ### Hooks
 
@@ -441,6 +448,7 @@ All transaction-list endpoints (`allTransactions`, `myTransactions`, `withdrawal
 | `useRequestWithdrawalSubmit(onSuccess)` | Form submit logic for requesting a withdrawal |
 | `useAdjustSystemBalanceSubmit(onSuccess)` | Form submit logic for deducting from the system balance |
 | `useWithdrawalActions()` | `approve(id)` / `reject(id)` mutations, used by both All Transactions and Withdrawal Requests row actions |
+| `useOrderPaymentsSummary()` | Fetches the Order Payments summary cards for the report page's current filters |
 
 ### Withdrawal request workflow
 
@@ -631,9 +639,11 @@ A lightweight order type for walk-in sales that skips the full repair-order life
 
 ### Key types
 
-**`QuickOrder`** — list item: `number`, `manager`, `location`, `paymentMethod`, totals (`totalPrice`, `totalCost`, `totalIncome`).
+**`QuickOrder`** — list item: `number`, `manager`, `location`, `paymentMethod` (nullable in the response — older quick orders predate the field being required), totals (`totalPrice`, `totalCost`, `totalIncome`).
 
 **`QuickOrderDetail`** — extends `QuickOrder` with `services`, `products`, `transactions`, `comment`, `createdBy`.
+
+**`NewQuickOrder`** (create-form payload) — `paymentMethod` (`cash`/`card`) is **required**; submission is blocked with a validation error until one is picked. Creating a quick order also creates a matching row in the [Order Payments](#billing) report (`type=payment`, `method=paymentMethod`, `amount=totalPrice`), which is soft-deleted if the quick order is cancelled.
 
 ### Hooks
 
