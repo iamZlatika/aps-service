@@ -1,3 +1,5 @@
+import { X } from "lucide-react";
+import { useEffect, useState } from "react";
 import type {
   Control,
   FieldError,
@@ -11,14 +13,26 @@ import { DueDatePicker } from "@/features/orders/components/DueDatePicker.tsx";
 import { useDictionarySection } from "@/features/orders/hooks/useDictionarySection.ts";
 import type { EditOrderInfoFormValues } from "@/features/orders/lib/schema.ts";
 import type { OrderInfo } from "@/features/orders/types.ts";
+import {
+  fetchReferralsByName,
+  type ReferralPickerMeta,
+} from "@/features/referrals/lib/searchFetchers.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { FormField } from "@/shared/components/common/FormField.tsx";
 import { SEARCH_PAGE_SIZE } from "@/shared/lib/constants.ts";
 import { formatDate } from "@/shared/lib/utils.ts";
 import { MultiSearchableSelect } from "@/widgets/multi-searchable-select";
-import SearchableSelect from "@/widgets/searchable-select";
+import SearchableSelect, {
+  type SearchableSelectOption,
+} from "@/widgets/searchable-select";
 
 import { DisplayField, LabeledField } from "../field-primitives.tsx";
+
+const REMOVE_REFERRAL_OPTION: SearchableSelectOption<ReferralPickerMeta> = {
+  id: -1,
+  name: "",
+  meta: { commissionPercent: 0 },
+};
 
 interface EditOrderInfoFormProps {
   register: UseFormRegister<EditOrderInfoFormValues>;
@@ -37,6 +51,13 @@ export const OrderInfoFields = ({
 }: EditOrderInfoFormProps) => {
   const { t } = useTranslation();
   const { fetchers, createItemFns } = useDictionarySection();
+  const [referralName, setReferralName] = useState(
+    order.referral?.customer.name ?? "",
+  );
+
+  useEffect(() => {
+    setReferralName(order.referral?.customer.name ?? "");
+  }, [order, isEditing]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -268,6 +289,56 @@ export const OrderInfoFields = ({
           />
         ) : (
           <DisplayField value={order.estimatedCost} />
+        )}
+      </LabeledField>
+
+      <LabeledField label={t("orders.form.referral")}>
+        {isEditing ? (
+          <Controller
+            name="referralId"
+            control={control}
+            render={({ field }) => (
+              <SearchableSelect
+                value={referralName}
+                onChange={setReferralName}
+                onSelect={(option) =>
+                  field.onChange(
+                    option.id === REMOVE_REFERRAL_OPTION.id ? null : option.id,
+                  )
+                }
+                onClear={() => field.onChange(null)}
+                renderOption={(option) =>
+                  option.id === REMOVE_REFERRAL_OPTION.id ? (
+                    <span className="flex items-center gap-1.5 text-destructive">
+                      <X className="h-3.5 w-3.5" />
+                      {t("orders.form.removeReferral")}
+                    </span>
+                  ) : (
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium">{option.name}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {option.meta.commissionPercent}%
+                      </span>
+                    </div>
+                  )
+                }
+                fetchItems={fetchReferralsByName}
+                queryKey={queryKeys.referrals.searchByName()}
+                placeholder={t("orders.placeholders.referral")}
+                error={errors.referralId}
+                extraOptions={field.value ? [REMOVE_REFERRAL_OPTION] : []}
+                dropUp
+              />
+            )}
+          />
+        ) : (
+          <DisplayField
+            value={
+              order.referral
+                ? `${order.referral.customer.name} (${order.referral.commissionPercent}%)`
+                : null
+            }
+          />
         )}
       </LabeledField>
     </div>

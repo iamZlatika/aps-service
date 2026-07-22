@@ -454,6 +454,7 @@ Key props:
 | `onCreateItem` | `(name: string) => Promise<void>` | Enables inline item creation |
 | `clearOnSelect` | `boolean` | Clears the input after selection |
 | `dropUp` | `boolean` | Opens the list above the input |
+| `extraOptions` | `Option[]` | Static options pinned above the fetched results (e.g. a "remove selection" entry) — bypass the network fetch entirely, so they're always shown regardless of the search term |
 
 ```tsx
 import { SearchableSelect } from "@/widgets/searchable-select";

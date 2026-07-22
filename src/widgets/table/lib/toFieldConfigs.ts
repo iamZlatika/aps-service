@@ -13,7 +13,7 @@ export const toFieldConfigs = <T extends BaseItem>(
     .map((col) => ({
       key: col.field,
       label: t(col.labelKey),
-      placeholder: t(col.labelKey),
+      placeholder: t(col.placeholderKey ?? col.labelKey),
       required: col.required !== false,
       type: col.type ?? "input",
       options: col.options,

@@ -64,7 +64,7 @@ The filter settings form's location filter uses `LocationCheckboxGroup` (`shared
 |------|-------------|
 | `useOrder(id)` | Fetches full `OrderInfo` for the detail page |
 | `useCreateOrder()` | Mutation to submit a new order form |
-| `useEditOrderInfo(orderId, order, onSuccess, formValuesStorage)` | Form state and mutation for editing order device/contact details. Persists unsaved form values in `formValuesStorage` when navigating between orders so changes survive order-to-order transitions. |
+| `useEditOrderInfo(orderId, order, onSuccess, formValuesStorage)` | Form state and mutation for editing order device/contact details, including the attached referral. Persists unsaved form values in `formValuesStorage` when navigating between orders so changes survive order-to-order transitions. |
 | `useOrderEditingState()` | Manages which orders are currently in edit mode. Enforces single-order editing: opening a second order's form while one is already being edited triggers a conflict dialog. Returns `editingOrderIds`, `formValuesStorage`, `editConflict`, and handlers. |
 | `useOrderFlags(orderId)` | Mutations to toggle `isUrgent` and `isCalled` flags |
 | `useAddOrderItemForm` | Form state for adding a product or service to an order |
@@ -133,6 +133,8 @@ System statuses cannot be deleted.
 ### Referral attachment
 
 The create-order form's `AdditionalInfoSection` shows a referral picker (`SearchableSelect` over `referralsApi.getAll`, filtered by `customer_name`) when the current user has `orders_manage` **or** `referrals_manage` — attaching a referral is treated as part of editing the order, not a separate permission. The selected referral's id is submitted as `referralId`.
+
+The same picker (`fetchReferralsByName` from `features/referrals/lib/searchFetchers.ts`) is also available in `OrderInfoFields`, at the bottom of the order detail page's editable info card — so a referral can be attached, changed, or removed after the order already exists, not just at creation. When the field currently has a referral assigned, `SearchableSelect`'s `extraOptions` prop pins a synthetic "✕ Remove referral" entry at the top of the results list; selecting it sets `referralId` to `null` on submit. `extraOptions` is a generic addition to the `SearchableSelect` widget itself (see [`SearchableSelect`](shared.md#searchableselect--srcwidgetssearchable-select)) — any picker can pin static entries above its fetched results the same way.
 
 When an order has a referral, its name and commission % show in the order header and, in the Finance tab, the referral's name is shown instead of the staff member for that referral's own income row (`transaction.referral?.customer.name ?? transaction.user?.name`). See [Referrals](#referrals) for how the payout itself is calculated and tracked.
 

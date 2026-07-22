@@ -32,7 +32,7 @@ export type FieldConfig = {
   label: string;
   placeholder?: string;
   required?: boolean;
-  type?: "input" | "select" | "phone" | "card";
+  type?: "input" | "select" | "phone" | "card" | "url";
   inputType?: string;
   options?: SelectOption[];
   getInitialValue?: (item: Record<string, unknown>) => unknown;
@@ -44,11 +44,12 @@ export type ColumnConfig<
   key: string;
   field: K;
   labelKey: string;
+  placeholderKey?: string;
   sortable: boolean;
   sortKey?: string;
   className?: string;
   required?: boolean;
-  type?: "input" | "select" | "phone" | "card";
+  type?: "input" | "select" | "phone" | "card" | "url";
   options?: { value: string; label: string }[];
   renderCell?: (value: T[K], item: T) => ReactNode;
   filterable?: boolean;

@@ -252,6 +252,7 @@ export function mapOrderInfoToEditFormValues(
     accessory: order.accessory?.split(", ").filter(Boolean) ?? [],
     intakeNote: order.intakeNote ?? "",
     estimatedCost: order.estimatedCost ?? "",
+    referralId: order.referral?.id ?? null,
   };
 }
 
@@ -271,6 +272,7 @@ export function mapEditOrderInfoToDto(data: EditOrderInfoFormValues) {
     accessory: data.accessory?.length ? data.accessory.join(", ") : null,
     intake_note: data.intakeNote || null,
     estimated_cost: data.estimatedCost || null,
+    referral_id: data.referralId ?? null,
   };
 }
 

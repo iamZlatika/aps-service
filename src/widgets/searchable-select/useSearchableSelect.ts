@@ -24,6 +24,7 @@ type UseSearchableSelectParams<TMeta> = {
   onCreateItem?: (
     name: string,
   ) => Promise<SearchableSelectOption<TMeta> | void>;
+  extraOptions?: SearchableSelectOption<TMeta>[];
 };
 
 type UseSearchableSelectReturn<TMeta> = {
@@ -54,6 +55,7 @@ export function useSearchableSelect<TMeta = undefined>({
   queryKey,
   clearOnSelect,
   onCreateItem,
+  extraOptions,
 }: UseSearchableSelectParams<TMeta>): UseSearchableSelectReturn<TMeta> {
   const queryClient = useQueryClient();
 
@@ -87,11 +89,15 @@ export function useSearchableSelect<TMeta = undefined>({
     return () => document.removeEventListener("mousedown", handleMouseDown);
   }, []);
 
-  const { data: options = [], isFetching } = useQuery({
+  const { data: fetchedOptions = [], isFetching } = useQuery({
     queryKey: [...queryKey, debouncedSearch],
     queryFn: () => fetchItems(debouncedSearch),
     enabled: isOpen,
   });
+
+  const options = extraOptions?.length
+    ? [...extraOptions, ...fetchedOptions]
+    : fetchedOptions;
 
   const canCreate = !!onCreateItem && inputValue.trim().length > 0;
 

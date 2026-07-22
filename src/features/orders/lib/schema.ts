@@ -113,6 +113,7 @@ export const editOrderInfoSchema = () =>
     accessory: z.array(z.string()).optional(),
     intakeNote: z.string().optional(),
     estimatedCost: z.string().optional(),
+    referralId: z.number().int().positive().nullable().optional(),
   });
 
 export type EditOrderInfoFormValues = z.input<

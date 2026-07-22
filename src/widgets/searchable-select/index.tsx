@@ -36,6 +36,7 @@ interface SearchableSelectProps<TMeta = undefined> {
   ) => Promise<SearchableSelectOption<TMeta> | void>;
   dropUp?: boolean;
   maxVisible?: number;
+  extraOptions?: SearchableSelectOption<TMeta>[];
 }
 
 const defaultRenderInput = (props: SearchableSelectInputProps) => (
@@ -85,6 +86,7 @@ function SearchableSelect<TMeta = undefined>({
   onCreateItem,
   dropUp,
   maxVisible,
+  extraOptions,
 }: SearchableSelectProps<TMeta>) {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
@@ -116,6 +118,7 @@ function SearchableSelect<TMeta = undefined>({
     queryKey,
     clearOnSelect,
     onCreateItem,
+    extraOptions,
   });
 
   const inputProps: SearchableSelectInputProps = {

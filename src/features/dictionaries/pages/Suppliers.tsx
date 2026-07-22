@@ -38,8 +38,10 @@ const SuppliersPage = () => {
       key: "website",
       field: "website",
       labelKey: "dictionaries.table_fields.website",
+      placeholderKey: "dictionaries.placeholders.website",
       sortable: false,
       required: false,
+      type: "url",
       renderCell: (value) =>
         value ? (
           <a

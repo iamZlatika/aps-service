@@ -171,6 +171,7 @@
     "field_required": "Поле не може бути порожнім",
     "passwords_dont_match": "Паролі не збігаються",
     "phone_invalid": "Введіть номер у форматі +38 0XX-XXX-XX-XX",
+    "url_invalid": "Введіть адресу сайту у форматі https://example.com (обов'язково з http:// або https://)",
     "phone_incomplete": "Ви не повністю ввели номер телефону",
     "phone_operator_invalid": "Введіть номер українського мобільного оператора (Vodafone, Київстар, lifecell)",
     "code_invalid": "Введіть 4-значний код із SMS",
@@ -466,7 +467,8 @@
     "placeholders": {
       "key": "Тільки латиниця, цифри та _",
       "name": "Введіть назву",
-      "color": "Оберіть колір"
+      "color": "Оберіть колір",
+      "website": "https://example.com"
     },
     "locations": {
       "form": {
@@ -662,6 +664,7 @@
       "assignee": "Призначений співробітник",
       "location": "Локація",
       "referral": "Реферал",
+      "removeReferral": "Прибрати реферала",
       "dueDate": "Дедлайн"
     },
     "placeholders": {
