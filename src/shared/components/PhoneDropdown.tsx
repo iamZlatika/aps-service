@@ -60,7 +60,7 @@ export const PhoneDropdown = ({
           </a>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className={itemClass}>
-          <a href={telegramUrl}>
+          <a href={telegramUrl} target="_blank" rel="noopener noreferrer">
             <TelegramIcon className={iconClass} />
             <span>{t("common.phone_dropdown.telegram")}</span>
           </a>
