@@ -13,6 +13,7 @@ import { QUICK_ORDERS_ROUTES } from "@/features/quick-orders/routes.ts";
 import { REFERRALS_ROUTES } from "@/features/referrals/routes.ts";
 import { ROLES_PERMISSIONS_ROUTES } from "@/features/roles-permissions/routes.ts";
 import { SMS_INTEGRATION_ROUTES } from "@/features/sms-integration/routes.ts";
+import { STATISTICS_ROUTES } from "@/features/statistics/routes.ts";
 import { USERS_ROUTES } from "@/features/users/routes";
 import { WORKS_ROUTES } from "@/features/works/routes";
 
@@ -115,6 +116,7 @@ const ReferralsPage = lazy(() => import("@/features/referrals/pages"));
 const ReferralTransactionsPage = lazy(
   () => import("@/features/referrals/pages/transactions"),
 );
+const StatisticsPage = lazy(() => import("@/features/statistics/pages"));
 
 export const modulesRoutes: RouteObject = {
   children: [
@@ -270,6 +272,10 @@ export const modulesRoutes: RouteObject = {
           element: <ReferralTransactionsPage />,
         },
       ],
+    },
+    {
+      element: <ProtectedRoute requiredAbility={ABILITIES.STATISTICS_VIEW} />,
+      children: [{ path: STATISTICS_ROUTES.root, element: <StatisticsPage /> }],
     },
     {
       path: WORKS_ROUTES.root,
