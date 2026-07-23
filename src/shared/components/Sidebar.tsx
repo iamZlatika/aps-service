@@ -1,4 +1,5 @@
 import {
+  BarChart3,
   BookOpenText,
   CreditCard,
   Handshake,
@@ -24,8 +25,10 @@ import { QUICK_ORDERS_LINKS } from "@/features/quick-orders/navigation.ts";
 import { REFERRALS_LINKS } from "@/features/referrals/navigation.ts";
 import { ROLES_PERMISSIONS_LINKS } from "@/features/roles-permissions/navigation.ts";
 import { SMS_INTEGRATION_LINKS } from "@/features/sms-integration/navigation.ts";
+import { STATISTICS_LINKS } from "@/features/statistics/navigation.ts";
 import { USERS_LINKS } from "@/features/users/navigation";
 import { WORKS_LINKS } from "@/features/works/navigation";
+import { SidebarNavItem } from "@/shared/components/common/SidebarNavItem.tsx";
 import {
   Sidebar as SidebarRoot,
   SidebarContent,
@@ -34,8 +37,7 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarSeparator,
   useSidebar,
 } from "@/shared/components/ui/sidebar";
 
@@ -63,141 +65,128 @@ export const Sidebar = memo(() => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>{t("sidebar.management")}</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("sidebar.groups.orders")}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip={t("sidebar.orders")}>
-                  <Link to={ORDERS_LINKS.root()} onClick={closeMobileSidebar}>
-                    <Package className="h-4 w-4" />
-                    <span>{t("sidebar.orders")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
+              <SidebarNavItem
+                to={ORDERS_LINKS.root()}
+                icon={Package}
+                label={t("sidebar.orders")}
+                onClick={closeMobileSidebar}
+              />
               {can(ABILITIES.QUICK_ORDERS_MANAGE) && (
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    asChild
-                    tooltip={t("sidebar.quick_orders")}
-                  >
-                    <Link
-                      to={QUICK_ORDERS_LINKS.root()}
-                      onClick={closeMobileSidebar}
-                    >
-                      <ShoppingCart className="h-4 w-4" />
-                      <span>{t("sidebar.quick_orders")}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
-
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip={t("sidebar.customers")}>
-                  <Link
-                    to={CUSTOMERS_LINKS.root()}
-                    onClick={closeMobileSidebar}
-                  >
-                    <Users className="h-4 w-4" />
-                    <span>{t("sidebar.customers")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              {can(ABILITIES.REFERRALS_MANAGE) && (
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild tooltip={t("sidebar.referrals")}>
-                    <Link
-                      to={REFERRALS_LINKS.root()}
-                      onClick={closeMobileSidebar}
-                    >
-                      <Handshake className="h-4 w-4" />
-                      <span>{t("sidebar.referrals")}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
-
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip={t("sidebar.masters")}>
-                  <Link to={USERS_LINKS.root()} onClick={closeMobileSidebar}>
-                    <Wrench className="h-4 w-4" />
-                    <span>{t("sidebar.masters")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip={t("sidebar.dictionaries")}>
-                  <Link
-                    to={DICTIONARIES_LINKS.root()}
-                    onClick={closeMobileSidebar}
-                  >
-                    <BookOpenText className="h-4 w-4" />
-                    <span>{t("sidebar.dictionaries")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip={t("sidebar.works")}>
-                  <Link to={WORKS_LINKS.root()} onClick={closeMobileSidebar}>
-                    <Images className="h-4 w-4" />
-                    <span>{t("sidebar.works")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              {can(ABILITIES.BILLING_VIEW) && (
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild tooltip={t("sidebar.billing")}>
-                    <Link
-                      to={BILLING_LINKS.balances()}
-                      onClick={closeMobileSidebar}
-                    >
-                      <CreditCard className="h-4 w-4" />
-                      <span>{t("sidebar.billing")}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
-
-              {can(ABILITIES.INTEGRATIONS_SMS_VIEW) && (
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    asChild
-                    tooltip={t("sidebar.sms_integration")}
-                  >
-                    <Link
-                      to={SMS_INTEGRATION_LINKS.root()}
-                      onClick={closeMobileSidebar}
-                    >
-                      <MessageSquare className="h-4 w-4" />
-                      <span>{t("sidebar.sms_integration")}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
-
-              {can(ABILITIES.USERS_ROLES_PERMISSIONS_MANAGE) && (
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    asChild
-                    tooltip={t("sidebar.roles_permissions")}
-                  >
-                    <Link
-                      to={ROLES_PERMISSIONS_LINKS.root()}
-                      onClick={closeMobileSidebar}
-                    >
-                      <ShieldCheck className="h-4 w-4" />
-                      <span>{t("sidebar.roles_permissions")}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <SidebarNavItem
+                  to={QUICK_ORDERS_LINKS.root()}
+                  icon={ShoppingCart}
+                  label={t("sidebar.quick_orders")}
+                  onClick={closeMobileSidebar}
+                />
               )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>{t("sidebar.groups.customers")}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarNavItem
+                to={CUSTOMERS_LINKS.root()}
+                icon={Users}
+                label={t("sidebar.customers")}
+                onClick={closeMobileSidebar}
+              />
+              {can(ABILITIES.REFERRALS_MANAGE) && (
+                <SidebarNavItem
+                  to={REFERRALS_LINKS.root()}
+                  icon={Handshake}
+                  label={t("sidebar.referrals")}
+                  onClick={closeMobileSidebar}
+                />
+              )}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarSeparator />
+
+        <SidebarGroup>
+          <SidebarGroupLabel>{t("sidebar.management")}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarNavItem
+                to={USERS_LINKS.root()}
+                icon={Wrench}
+                label={t("sidebar.masters")}
+                onClick={closeMobileSidebar}
+              />
+              {can(ABILITIES.BILLING_VIEW) && (
+                <SidebarNavItem
+                  to={BILLING_LINKS.balances()}
+                  icon={CreditCard}
+                  label={t("sidebar.billing")}
+                  onClick={closeMobileSidebar}
+                />
+              )}
+              {can(ABILITIES.USERS_ROLES_PERMISSIONS_MANAGE) && (
+                <SidebarNavItem
+                  to={ROLES_PERMISSIONS_LINKS.root()}
+                  icon={ShieldCheck}
+                  label={t("sidebar.roles_permissions")}
+                  onClick={closeMobileSidebar}
+                />
+              )}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarSeparator />
+
+        <SidebarGroup>
+          <SidebarGroupLabel>{t("sidebar.misc")}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarNavItem
+                to={DICTIONARIES_LINKS.root()}
+                icon={BookOpenText}
+                label={t("sidebar.dictionaries")}
+                onClick={closeMobileSidebar}
+              />
+              <SidebarNavItem
+                to={WORKS_LINKS.root()}
+                icon={Images}
+                label={t("sidebar.works")}
+                onClick={closeMobileSidebar}
+              />
+              {can(ABILITIES.INTEGRATIONS_SMS_VIEW) && (
+                <SidebarNavItem
+                  to={SMS_INTEGRATION_LINKS.root()}
+                  icon={MessageSquare}
+                  label={t("sidebar.sms_integration")}
+                  onClick={closeMobileSidebar}
+                />
+              )}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {can(ABILITIES.STATISTICS_VIEW) && (
+          <>
+            <SidebarSeparator />
+            <SidebarGroup>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarNavItem
+                    to={STATISTICS_LINKS.root()}
+                    icon={BarChart3}
+                    label={t("sidebar.statistics")}
+                    onClick={closeMobileSidebar}
+                  />
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
+        )}
       </SidebarContent>
     </SidebarRoot>
   );

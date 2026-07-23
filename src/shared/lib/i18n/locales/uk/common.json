@@ -8,6 +8,10 @@
     "delete": "Видалити",
     "add": "Додати",
     "copy": "Копіювати",
+    "date_range_filter": {
+      "placeholder": "Період",
+      "apply": "ОК"
+    },
     "deleteDialog": {
       "title": "Видалення",
       "description": "Ви впевнені, що хочете видалити цей запис?",
@@ -76,10 +80,14 @@
     }
   },
   "sidebar": {
+    "groups": {
+      "orders": "Замовлення і продажі",
+      "customers": "Клієнти і реферали"
+    },
     "management": "Керування",
     "orders": "Замовлення",
     "customers": "Клієнти",
-    "settings": "Налаштування",
+    "misc": "Різне",
     "masters": "Співробітники",
     "dictionaries": "Довідники",
     "works": "Роботи",
@@ -88,6 +96,7 @@
     "roles_permissions": "Ролі та доступи",
     "quick_orders": "Продажі",
     "referrals": "Реферали",
+    "statistics": "Статистика",
     "dictionaries_list": {
       "title": "Довідники",
       "accessories": "Комплектації",
@@ -255,7 +264,8 @@
         "dictionaries": "Довідники",
         "integrations": "Інтеграції",
         "quick_orders": "Продажі",
-        "referrals": "Реферали"
+        "referrals": "Реферали",
+        "statistics": "Статистика"
       },
       "orders_view": "Перегляд",
       "orders_manage": "Управління",
@@ -276,7 +286,8 @@
       "dictionaries_manage": "Управління",
       "dictionaries_bank_cards_manage": "Банківські картки (ред.)",
       "dictionaries_locations_manage": "Локації (ред.)",
-      "dictionaries_price_list_manage": "Прайс-лист (ред.)"
+      "dictionaries_price_list_manage": "Прайс-лист (ред.)",
+      "statistics_view": "Перегляд"
     },
     "master_rate": "Ставка співробітника",
     "services_percent": "Відсоток за послуги",
@@ -931,8 +942,6 @@
     "filters": {
       "type": "Тип",
       "status": "Статус",
-      "date_range": "Період",
-      "apply": "ОК",
       "employee": "Співробітник",
       "service": "Сервіс",
       "order_number": "№ замовлення",
@@ -1126,6 +1135,73 @@
       "costOrPurchasePrice": "Собівартість/закупівля",
       "addService": "Додати послугу",
       "addProduct": "Додати товар"
+    }
+  },
+  "statistics": {
+    "title": "Статистика",
+    "now_label": "зараз",
+    "empty_period": "Немає даних за період",
+    "filters": {
+      "period": "Період",
+      "location": "Локація",
+      "all_locations": "Усі локації",
+      "presets": {
+        "today": "Сьогодні",
+        "7d": "7 днів",
+        "30d": "30 днів",
+        "this_month": "Цей місяць",
+        "last_month": "Минулий місяць",
+        "this_year": "Цей рік",
+        "custom": "Довільний"
+      }
+    },
+    "revenue": {
+      "title": "Виручка / маржа",
+      "payments_total": "Оплати (реальні гроші в касі)",
+      "payments_cash": "Готівка",
+      "payments_card": "Картка",
+      "turnover": "Оборот (гроші, отримані в цьому періоді із закритих замовлень)",
+      "margin": "Маржа (чисті: оплата-витрати)",
+      "cost": "Собівартість (витрати: оплата-маржа)",
+      "granularity": {
+        "day": "День",
+        "week": "Тиждень",
+        "month": "Місяць"
+      }
+    },
+    "orders": {
+      "title": "Замовлення",
+      "new": "Нові",
+      "closed": "Закриті",
+      "overdue": "Прострочені",
+      "avg_repair_days": "Сер. час ремонту"
+    },
+    "top": {
+      "title": "Топ-розрізи",
+      "manufacturers": "Топ виробники",
+      "device_types": "Топ типи пристроїв",
+      "customers": "Топ клієнти",
+      "customers_table": {
+        "customer": "Клієнт",
+        "orders": "Замовлень",
+        "turnover": "Оборот",
+        "profit": "Прибутковість"
+      },
+      "locations": "По локаціях",
+      "location_orders": "Замовлень",
+      "location_payments": "Оплат",
+      "show_more": "Показати більше"
+    },
+    "staff": {
+      "title": "Продуктивність майстрів",
+      "master": "Майстер",
+      "closed": "Закрито",
+      "turnover": "Оборот",
+      "margin": "Маржа",
+      "earned": "Нараховано",
+      "paid_out": "Виплачено",
+      "balance": "Баланс (заявка+рахунок)",
+      "available": "Доступно (рахунок)"
     }
   }
 }

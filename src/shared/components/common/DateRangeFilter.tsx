@@ -8,7 +8,7 @@ import { Button } from "@/shared/components/ui/button.tsx";
 import { Calendar } from "@/shared/components/ui/calendar.tsx";
 import { cn } from "@/shared/lib/utils.ts";
 
-interface TransactionDateRangeFilterProps {
+interface DateRangeFilterProps {
   from: string;
   to: string;
   onApply: (from: string, to: string) => void;
@@ -22,11 +22,11 @@ const toRange = (from: string, to: string): DateRange | undefined =>
     ? { from: parseStoredDate(from), to: to ? parseStoredDate(to) : undefined }
     : undefined;
 
-export const TransactionDateRangeFilter = ({
+export const DateRangeFilter = ({
   from,
   to,
   onApply,
-}: TransactionDateRangeFilterProps) => {
+}: DateRangeFilterProps) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [pendingRange, setPendingRange] = useState<DateRange | undefined>(() =>
@@ -95,7 +95,7 @@ export const TransactionDateRangeFilter = ({
   const label =
     from && to
       ? `${format(parseStoredDate(from), "dd.MM.yyyy")} — ${format(parseStoredDate(to), "dd.MM.yyyy")}`
-      : t("billing.filters.date_range");
+      : t("common.date_range_filter.placeholder");
 
   return (
     <div ref={containerRef} className="relative">
@@ -135,7 +135,7 @@ export const TransactionDateRangeFilter = ({
               disabled={!pendingRange?.from || !pendingRange?.to}
               onClick={handleApply}
             >
-              {t("billing.filters.apply")}
+              {t("common.date_range_filter.apply")}
             </Button>
           </div>
         </div>

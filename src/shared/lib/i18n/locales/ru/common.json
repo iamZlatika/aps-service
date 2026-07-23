@@ -8,6 +8,10 @@
     "delete": "Удалить",
     "add": "Добавить",
     "copy": "Копировать",
+    "date_range_filter": {
+      "placeholder": "Период",
+      "apply": "ОК"
+    },
     "deleteDialog": {
       "title": "Удаление",
       "description": "Вы уверены, что хотите удалить эту запись?",
@@ -76,10 +80,14 @@
     }
   },
   "sidebar": {
+    "groups": {
+      "orders": "Заказы и продажи",
+      "customers": "Клиенты и рефералы"
+    },
     "management": "Управление",
     "orders": "Заказы",
     "customers": "Клиенты",
-    "settings": "Настройки",
+    "misc": "Разное",
     "masters": "Сотрудники",
     "dictionaries": "Справочники",
     "works": "Работы",
@@ -88,6 +96,7 @@
     "roles_permissions": "Роли и доступы",
     "quick_orders": "Продажи",
     "referrals": "Рефералы",
+    "statistics": "Статистика",
     "dictionaries_list": {
       "title": "Справочники",
       "accessories": "Комплектации",
@@ -258,7 +267,8 @@
         "dictionaries": "Справочники",
         "integrations": "Интеграции",
         "quick_orders": "Продажи",
-        "referrals": "Рефералы"
+        "referrals": "Рефералы",
+        "statistics": "Статистика"
       },
       "orders_view": "Просмотр",
       "orders_manage": "Управление",
@@ -279,7 +289,8 @@
       "dictionaries_manage": "Управление",
       "dictionaries_bank_cards_manage": "Банковские карты (ред.)",
       "dictionaries_locations_manage": "Локации (ред.)",
-      "dictionaries_price_list_manage": "Прайс-лист (ред.)"
+      "dictionaries_price_list_manage": "Прайс-лист (ред.)",
+      "statistics_view": "Просмотр"
     },
     "master_rate": "Ставка сотрудника",
     "services_percent": "Процент за услуги",
@@ -933,8 +944,6 @@
     "filters": {
       "type": "Тип",
       "status": "Статус",
-      "date_range": "Период",
-      "apply": "ОК",
       "employee": "Сотрудник",
       "service": "Сервис",
       "order_number": "№ заказа",
@@ -1128,6 +1137,73 @@
       "costOrPurchasePrice": "Себестоимость/закупка",
       "addService": "Добавить услугу",
       "addProduct": "Добавить товар"
+    }
+  },
+  "statistics": {
+    "title": "Статистика",
+    "now_label": "сейчас",
+    "empty_period": "Нет данных за период",
+    "filters": {
+      "period": "Период",
+      "location": "Локация",
+      "all_locations": "Все локации",
+      "presets": {
+        "today": "Сегодня",
+        "7d": "7 дней",
+        "30d": "30 дней",
+        "this_month": "Этот месяц",
+        "last_month": "Прошлый месяц",
+        "this_year": "Этот год",
+        "custom": "Произвольный"
+      }
+    },
+    "revenue": {
+      "title": "Выручка / маржа",
+      "payments_total": "Оплаты (реальные деньги в кассе)",
+      "payments_cash": "Наличные",
+      "payments_card": "Карта",
+      "turnover": "Оборот (деньги, полученные в этом периоде с закрытых заказов)",
+      "margin": "Маржа (чистые: оплата-расходы)",
+      "cost": "Себестоимость (расходы: оплата-маржа)",
+      "granularity": {
+        "day": "День",
+        "week": "Неделя",
+        "month": "Месяц"
+      }
+    },
+    "orders": {
+      "title": "Заказы",
+      "new": "Новые",
+      "closed": "Закрыты",
+      "overdue": "Просрочены",
+      "avg_repair_days": "Ср. время ремонта"
+    },
+    "top": {
+      "title": "Топ-разрезы",
+      "manufacturers": "Топ производители",
+      "device_types": "Топ типы устройств",
+      "customers": "Топ клиенты",
+      "customers_table": {
+        "customer": "Клиент",
+        "orders": "Заказов",
+        "turnover": "Оборот",
+        "profit": "Прибыльность"
+      },
+      "locations": "По локациям",
+      "location_orders": "Заказов",
+      "location_payments": "Оплат",
+      "show_more": "Показать больше"
+    },
+    "staff": {
+      "title": "Продуктивность мастеров",
+      "master": "Мастер",
+      "closed": "Закрыто",
+      "turnover": "Оборот",
+      "margin": "Маржа",
+      "earned": "Начислено",
+      "paid_out": "Выплачено",
+      "balance": "Баланс (заявка+счет)",
+      "available": "Доступно (счет)"
     }
   }
 }

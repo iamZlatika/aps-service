@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 
 import { FilterSlot } from "@/features/billing/components/FilterSlot.tsx";
-import { TransactionDateRangeFilter } from "@/features/billing/components/TransactionDateRangeFilter.tsx";
 import { ManagerSelect } from "@/features/orders/components/ManagerSelect.tsx";
 import { useManagerOptions } from "@/features/users/hooks/useManagerOptions.ts";
+import { DateRangeFilter } from "@/shared/components/common/DateRangeFilter.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import {
   Select,
@@ -28,7 +28,7 @@ export const OrderPaymentsFilterBar = () => {
         active={!!filters["created_at[0]"]}
         onClear={() => setFilters({ "created_at[0]": "", "created_at[1]": "" })}
       >
-        <TransactionDateRangeFilter
+        <DateRangeFilter
           from={filters["created_at[0]"] ?? ""}
           to={filters["created_at[1]"] ?? ""}
           onApply={(from, to) =>

@@ -1,3 +1,7 @@
+import type {
+  Granularity,
+  StatisticsFilters,
+} from "@/features/statistics/types.ts";
 import { type SortType } from "@/widgets/table/hooks/useSortParams.ts";
 import { type Filters } from "@/widgets/table/models/types.ts";
 
@@ -133,5 +137,22 @@ export const queryKeys = {
     transactions: (referralId: number) =>
       makeEntityKey(["referrals"], `transactions-${referralId}`),
     searchByName: () => [...queryKeys.referrals.all, "search-by-name"] as const,
+  },
+
+  statistics: {
+    all: ["statistics"] as const,
+    revenue: (filters: StatisticsFilters, granularity?: Granularity) =>
+      [
+        ...queryKeys.statistics.all,
+        "revenue",
+        filters,
+        ...(granularity ? [granularity] : []),
+      ] as const,
+    orders: (filters: StatisticsFilters) =>
+      [...queryKeys.statistics.all, "orders", filters] as const,
+    top: (filters: StatisticsFilters, limit: number) =>
+      [...queryKeys.statistics.all, "top", filters, limit] as const,
+    staff: (filters: StatisticsFilters) =>
+      [...queryKeys.statistics.all, "staff", filters] as const,
   },
 } as const;

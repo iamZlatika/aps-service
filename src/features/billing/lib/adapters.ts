@@ -137,7 +137,7 @@ export function mapOrderPaymentsSummaryDtoToSummary(
 }
 
 // The UI stores a date-range filter as two flat keys (created_at[0]/[1] —
-// see TransactionDateRangeFilter), but this endpoint expects a real array
+// see DateRangeFilter), but this endpoint expects a real array
 // param (created_at[]=from&created_at[]=to). Reshape before it reaches
 // buildPaginatedParams, which already knows how to serialize array values.
 export function mapOrderPaymentsFiltersToApiFilters(

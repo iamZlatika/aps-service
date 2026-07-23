@@ -14,6 +14,7 @@ export const ABILITIES = {
   LANDING_WORKS_MANAGE: "landing_works_manage",
   INTEGRATIONS_SMS_VIEW: "integrations_sms_view",
   REFERRALS_MANAGE: "referrals_manage",
+  STATISTICS_VIEW: "statistics_view",
 } as const;
 
 export type Ability = (typeof ABILITIES)[keyof typeof ABILITIES];
