@@ -187,6 +187,15 @@ export function useSearchableSelect<TMeta = undefined>({
       e.preventDefault();
       if (activeIndex >= 0 && activeIndex < options.length) {
         handleSelect(options[activeIndex]);
+        return;
+      }
+      // No option highlighted via arrows/hover — if what's typed matches an
+      // option exactly, select it directly instead of requiring navigation.
+      const exactMatch = options.find(
+        (o) => o.name.toLowerCase() === inputValue.trim().toLowerCase(),
+      );
+      if (exactMatch) {
+        handleSelect(exactMatch);
       }
     } else if (e.key === "Escape") {
       setIsOpen(false);
