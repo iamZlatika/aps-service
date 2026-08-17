@@ -309,7 +309,7 @@ export function mapNewProductToDto(product: NewOrderProduct) {
     purchase_price: product.purchasePrice || null,
     quantity: product.quantity,
     supplier_name: product.supplierName || null,
-    manager_id: product.managerId ?? null,
+    manager_id: product.managerId,
   };
 }
 
@@ -320,7 +320,7 @@ export function mapNewServiceToDto(service: NewOrderService) {
     cost_price: service.costPrice || null,
     outsourcer_name: service.outsourcerName || null,
     quantity: service.quantity,
-    manager_id: service.managerId ?? null,
+    manager_id: service.managerId,
   };
 }
 export function mapNewPaymentToDto(payment: NewOrderPayment) {

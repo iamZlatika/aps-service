@@ -114,7 +114,7 @@ export type NewOrderProduct = Omit<
   | "completedAt"
   | "deletedByUser"
   | "supplier"
-> & { managerId: number | null; supplierName: string };
+> & { managerId: number; supplierName: string };
 export type OrderService = {
   id: number;
   manager: User;
@@ -143,7 +143,7 @@ export type NewOrderService = Omit<
   | "completedAt"
   | "deletedByUser"
   | "outsourcer"
-> & { managerId: number | null; outsourcerName: string };
+> & { managerId: number; outsourcerName: string };
 
 export const ORDER_ITEM_TYPES = {
   PRODUCT: "product",

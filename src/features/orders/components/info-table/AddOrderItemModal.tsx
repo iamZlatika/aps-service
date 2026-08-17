@@ -52,6 +52,7 @@ const AddOrderItemModal = ({
     register,
     handleSubmit,
     errors,
+    setError,
     users,
     isLoadingUsers,
     fetchNameItems,
@@ -79,6 +80,7 @@ const AddOrderItemModal = ({
     type,
     editItemId: editItem?.id,
     onSuccess: onClose,
+    setError,
   });
 
   const title = getOrderItemModalTitle(t, type, !!editItem);
@@ -223,8 +225,16 @@ const AddOrderItemModal = ({
                   />
                 )}
               />
+              {errors.managerId && (
+                <p className="text-sm text-destructive">
+                  {errors.managerId.message}
+                </p>
+              )}
             </div>
           </fieldset>
+          {errors.root && (
+            <p className="text-sm text-destructive">{errors.root.message}</p>
+          )}
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
               {t("common.cancel")}

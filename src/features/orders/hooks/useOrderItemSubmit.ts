@@ -1,9 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
 import i18next from "i18next";
+import type { UseFormSetError } from "react-hook-form";
 import { toast } from "sonner";
 
 import { ordersApi } from "@/features/orders/api";
-import type { NewOrderItemSchema } from "@/features/orders/lib/schema.ts";
+import type {
+  NewOrderItemFormValues,
+  NewOrderItemSchema,
+} from "@/features/orders/lib/schema.ts";
 import type {
   OrderItemType,
   OrderProduct,
@@ -11,12 +15,15 @@ import type {
 } from "@/features/orders/types.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
+import { isApiError, notifyError } from "@/shared/lib/errors/services.ts";
 
 type UseOrderItemSubmitParams = {
   orderId: number;
   type: OrderItemType;
   editItemId?: number;
   onSuccess: () => void;
+  setError: UseFormSetError<NewOrderItemFormValues>;
 };
 
 type UseOrderItemSubmitReturn = {
@@ -29,6 +36,7 @@ export const useOrderItemSubmit = ({
   type,
   editItemId,
   onSuccess,
+  setError,
 }: UseOrderItemSubmitParams): UseOrderItemSubmitReturn => {
   const isEdit = editItemId !== undefined;
 
@@ -45,7 +53,7 @@ export const useOrderItemSubmit = ({
           purchasePrice: data.purchasePrice ?? "",
           supplierName: data.supplierName ?? "",
           quantity: data.quantity,
-          managerId: data.managerId ?? null,
+          managerId: data.managerId,
         };
         return isEdit
           ? ordersApi.editProductInOrder(orderId, payload, editItemId)
@@ -57,7 +65,7 @@ export const useOrderItemSubmit = ({
         costPrice: data.costPrice ?? "",
         outsourcerName: data.outsourcerName ?? "",
         quantity: data.quantity,
-        managerId: data.managerId ?? null,
+        managerId: data.managerId,
       };
       return isEdit
         ? ordersApi.editServiceInOrder(orderId, payload, editItemId)
@@ -83,6 +91,13 @@ export const useOrderItemSubmit = ({
       // an item changes the order's total sum, which the orders table also
       // displays, so the list cache needs refreshing too.
       return queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+    },
+    onError: (error) => {
+      if (isApiError(error) && error.status === 422) {
+        handleFormError(error, setError);
+      } else {
+        notifyError(error);
+      }
     },
   });
 

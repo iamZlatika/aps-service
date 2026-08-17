@@ -84,7 +84,10 @@ export const newOrderItemSchema = () =>
         message: i18next.t("validation.digitsOnly"),
       }),
     outsourcerName: z.string().optional().default(""),
-    managerId: z.number().int().positive().optional(),
+    managerId: z
+      .number({ error: i18next.t("validation.field_required") })
+      .int()
+      .positive(),
   });
 
 export type NewOrderItemSchema = z.infer<ReturnType<typeof newOrderItemSchema>>;
