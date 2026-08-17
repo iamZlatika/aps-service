@@ -308,7 +308,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
             </Suspense>
             <ChangeManagerDialog
               orderId={orderId}
-              currentManagerId={selectedOrder.manager.id}
+              currentManager={selectedOrder.manager}
               isOpen={isChangeManagerOpen}
               onOpenChange={setIsChangeManagerOpen}
             />

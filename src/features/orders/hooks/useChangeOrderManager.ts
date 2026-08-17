@@ -7,6 +7,7 @@ import { usersApi } from "@/features/users/api";
 import type { User } from "@/features/users/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys";
 import { notifyError } from "@/shared/lib/errors/services.ts";
+import { USER_STATUSES } from "@/shared/types.ts";
 
 type UseChangeOrderManagerReturn = {
   users: User[];
@@ -39,8 +40,12 @@ export function useChangeOrderManager(
     onError: (error) => notifyError(error),
   });
 
+  const users = (usersData?.items ?? []).filter(
+    (u) => u.status === USER_STATUSES.ACTIVE,
+  );
+
   return {
-    users: usersData?.items ?? [],
+    users,
     isLoadingUsers,
     changeManager: mutation.mutate,
     isPending: mutation.isPending,
