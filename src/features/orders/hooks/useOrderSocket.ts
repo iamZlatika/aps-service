@@ -34,7 +34,14 @@ const ORDER_UPDATE_EVENTS = [
 ] as const;
 
 const mergeOrderFields = (old: OrderInfo, orderDto: OrderDto): OrderInfo => {
-  const { customer: _customer, ...orderFields } = mapOrderDtoToOrder(orderDto);
+  // documents have their own dedicated event (.order.document_added) and
+  // list-merge logic in handleDocumentAdded — merging them here would let a
+  // stale snapshot from this event overwrite a document added out of order.
+  const {
+    customer: _customer,
+    documents: _documents,
+    ...orderFields
+  } = mapOrderDtoToOrder(orderDto);
   return { ...old, ...orderFields };
 };
 

@@ -118,6 +118,15 @@ export const ordersApi = {
       dueDate: response.data.due_date,
     };
   },
+  changeManager: async (orderId: number, managerId: number): Promise<void> => {
+    await put(ORDERS_API.changeManager(orderId), { manager_id: managerId });
+  },
+  changeLocation: async (
+    orderId: number,
+    locationId: number,
+  ): Promise<void> => {
+    await put(ORDERS_API.changeLocation(orderId), { location_id: locationId });
+  },
   getOrder: async (id: number): Promise<OrderInfo> => {
     const response = await get<{ data: OrderInfoDto }>(
       `${ORDERS_API.order(id)}`,
