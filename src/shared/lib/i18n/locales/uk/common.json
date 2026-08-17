@@ -760,6 +760,7 @@
     "print": {
       "title": "Розпочати друк",
       "intake_receipt": "Прийомна квитанція",
+      "payment_invoice": "Рахунок до оплати",
       "closing_receipt": "Акт виконаних робіт",
       "print": "Друк",
       "cancel": "Скасувати",

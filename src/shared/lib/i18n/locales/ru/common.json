@@ -762,6 +762,7 @@
     "print": {
       "title": "Начать печать",
       "intake_receipt": "Приемная квитанция",
+      "payment_invoice": "Счет к оплате",
       "closing_receipt": "Акт выполненных работ",
       "print": "Печать",
       "cancel": "Отмена",
