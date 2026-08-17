@@ -1,9 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 import { type OrderStatus } from "@/entities/order-status/types";
 import { orderStatusesApi } from "@/features/dictionaries/api";
 import { ordersApi } from "@/features/orders/api";
+import { waitForOrderDocument } from "@/features/orders/lib/waitForOrderDocument";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+
+const READY_STATUS_KEY = "ready";
+const PAYMENT_INVOICE_WAIT_MS = 15_000;
 
 type UseChangeOrderStatusReturn = {
   statuses: OrderStatus[];
@@ -15,6 +21,7 @@ export const useChangeOrderStatus = (
   orderId: number,
   onSuccess?: () => void,
 ): UseChangeOrderStatusReturn => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   const { data } = useQuery({
@@ -23,8 +30,21 @@ export const useChangeOrderStatus = (
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: ({ id }: { id: number; key: string }) =>
-      ordersApi.changeStatus(orderId, id),
+    mutationFn: async ({ id, key }: { id: number; key: string }) => {
+      await ordersApi.changeStatus(orderId, id);
+
+      if (key === READY_STATUS_KEY) {
+        const invoice = await waitForOrderDocument(
+          queryClient,
+          orderId,
+          "payment_invoice",
+          PAYMENT_INVOICE_WAIT_MS,
+        );
+        if (!invoice) {
+          toast.error(t("orders.print.payment_invoice_timeout"));
+        }
+      }
+    },
     onSuccess: () => {
       onSuccess?.();
       void queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });

@@ -48,7 +48,7 @@ The filter settings form's location filter uses `LocationCheckboxGroup` (`shared
 - `payments` — payment transactions (prepayments, payments, refunds)
 - `transactions` — full financial transaction log
 - `comments` — internal comments with optional image attachments
-- `documents` — generated PDF documents (intake receipt, closing receipt)
+- `documents` — generated PDF documents (intake receipt, payment invoice, closing receipt) — see [Order documents](#order-documents)
 
 **`OrderProduct`** / **`NewOrderProduct`** — spare part line item. `NewOrderProduct` omits server-generated fields.
 
@@ -78,8 +78,10 @@ The filter settings form's location filter uses `LocationCheckboxGroup` (`shared
 | `useOrderFormDefaults` | Computes default values for the create-order form |
 | `useOrdersSocket()` | Subscribes to `backoffice.orders` WebSocket channel. Keeps the order list in sync in real time. |
 | `useOrderSocket(id)` | Subscribes to `backoffice.orders.{id}` WebSocket channel. Keeps the order detail cache in sync in real time. |
-| `useChangeOrderStatus` | Mutation to change an order's status |
+| `useChangeOrderStatus` | Mutation to change an order's status. When the target status is `ready`, awaits the async-generated `payment_invoice` document (see [Order documents](#order-documents)) before resolving, so the status badge's pending state covers the whole wait, not just the HTTP call |
 | `useCloseOrder` | Mutation to close an order |
+| `useChangeOrderManager` | Fetches the manager list and mutates `PUT /orders/{id}/manager` to correct who's credited as the order's accepting manager. Blocked once the order is closed (see [Manager & location correction](#manager--location-correction)) |
+| `useChangeOrderLocation` | Fetches the location list and mutates `PUT /orders/{id}/location` to correct an order's assigned branch. Allowed regardless of order status |
 | `useCreateFilterPreset` | Mutation to save the current filter set as a new search preset |
 | `useCreateOrderForCustomer` | Pre-fills and opens the create-order form for a specific customer |
 | `useDictionarySection` | Shared logic for the collapsible dictionary-picker sections used in the order form |
@@ -129,6 +131,33 @@ The history is built by `buildOrderHistory(orderInfo)` in `pages/order-page/serv
 Order statuses are dynamic — they are managed in the Dictionaries module, not hardcoded.
 Each status has a `key`, localized names (`nameRu`, `nameUa`), a display color, and an `isSystem` flag.
 System statuses cannot be deleted.
+
+### Order documents
+
+An order accumulates up to three generated PDF documents over its lifecycle, all in `OrderInfo.documents` (`OrderDocument[]`, shape `{ id, type, name, url, createdAt }`):
+
+| `type` | Label | Generated when |
+|--------|-------|-----------------|
+| `intake_receipt` | Приемная квитанция | Order is created |
+| `payment_invoice` | Счет к оплате | Order transitions to the `ready` status |
+| `closing_receipt` | Акт выполненных работ | Order is closed |
+
+`DOCUMENTS_TYPES`/`DocumentType` live in `shared/types.ts`; the label map is the `orders.print.*` i18n keys (`ru`/`uk`), used both by `PrintDialog` and by `RegenerateDocumentDialog`'s title.
+
+**Printing/downloading** — `PrintDialog` (`pages/order-page/components/`) lists whichever of the three documents actually exist on the order as checkboxes (`DocumentCheckboxRow`), defaulting to the most recently-produced one (`closing_receipt` > `payment_invoice` > `intake_receipt`, i.e. the last `DOCUMENTS_TYPES` entry present). Selected documents are merged into one PDF and printed/downloaded via `useDocumentActions`.
+
+**Regenerating** — `POST /orders/{id}/documents/regenerate` (`useRegenerateDocument`) re-renders a document from the order's current data and overwrites it in place (same `id`/`type`). Gated on `orders_manage`; an optional `notify` flag resends the fresh file to the customer's Telegram. This matters most for `payment_invoice`, which is generated once at the `ready` transition — if services/payments change afterward, the manager re-generates it manually to keep the PDF's totals in sync with what the order page shows.
+
+**Async generation** — `payment_invoice` (on the `ready` transition) and `closing_receipt` (on close) aren't in the API response that changes the status; the backend renders the PDF and (for `payment_invoice`) sends the customer's Telegram notification afterward, and only then fires `.order.document_added`. See [Waiting for an async-generated document](architecture.md#waiting-for-an-async-generated-document) for how the frontend surfaces that wait.
+
+### Manager & location correction
+
+Two narrow endpoints exist purely to fix data-entry mistakes made at order creation — picking the wrong accepting manager or the wrong branch. Both are `orders_manage`-gated and edited via a pencil icon next to the manager/location line in the order header (`ChangeManagerDialog` / `ChangeLocationDialog`, `pages/order-page/components/`), a `Select` populated from the same manager/location lists used by the create-order form (`usersApi.getAll` / `locationApi.getAll`).
+
+- **Manager** (`PUT /orders/{id}/manager`) — only editable while the order is **not closed** (the pencil icon is hidden once `closedAt` is set — the backend would 422 anyway). Changing it also reassigns the pending intake-manager payout to the new manager, at the new manager's commission rate; the frontend does nothing special for that, it's purely a backend-side recalculation.
+- **Location** (`PUT /orders/{id}/location`) — editable in any status; there's no financial link to a location, and mis-assignment is often only noticed after the fact.
+
+Both mutations are fire-and-forget (`Promise<void>`, like `changeOrderInfo`/`changeStatus`) — the backend's `order.updated` socket event (see [Real-time Updates](architecture.md#real-time-updates-websockets)) is what actually refreshes `OrderInfo.manager`/`.location` in the cache.
 
 ### Referral attachment
 

@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { Printer } from "lucide-react";
+import { Pencil, Printer } from "lucide-react";
 import {
   lazy,
   Suspense,
@@ -23,6 +23,8 @@ import { useOrderCustomerTelegramSocket } from "@/features/orders/hooks/useOrder
 import { useOrderEditingState } from "@/features/orders/hooks/useOrderEditingState.ts";
 import { useOrderSocket } from "@/features/orders/hooks/useOrderSocket.ts";
 import { ORDERS_LINKS } from "@/features/orders/navigation.ts";
+import { ChangeLocationDialog } from "@/features/orders/pages/order-page/components/ChangeLocationDialog.tsx";
+import { ChangeManagerDialog } from "@/features/orders/pages/order-page/components/ChangeManagerDialog.tsx";
 import { HistorySidebar } from "@/features/orders/pages/order-page/components/history-sidebar/HistorySidebar.tsx";
 import { MobileHistoryDrawer } from "@/features/orders/pages/order-page/components/history-sidebar/MobileHistoryDrawer.tsx";
 import { PaymentsCard } from "@/features/orders/pages/order-page/components/PaymentsCard.tsx";
@@ -96,6 +98,8 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   });
 
   const [isPrintOpen, setIsPrintOpen] = useState(false);
+  const [isChangeManagerOpen, setIsChangeManagerOpen] = useState(false);
+  const [isChangeLocationOpen, setIsChangeLocationOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<OrderTab>("order");
 
   useEffect(() => {
@@ -181,12 +185,32 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
 
                     <div className="flex items-end justify-between gap-2">
                       <div>
-                        <p className="text-muted-foreground text-sm sm:text-base font-medium">
+                        <p className="text-muted-foreground text-sm sm:text-base font-medium flex items-center gap-1">
                           {t("orders.acceptedBy")}: {selectedOrder.manager.name}
+                          {canManageOrders && !selectedOrder.closedAt && (
+                            <button
+                              type="button"
+                              className="text-muted-foreground hover:text-foreground"
+                              title={t("orders.changeManager.action")}
+                              onClick={() => setIsChangeManagerOpen(true)}
+                            >
+                              <Pencil className="h-3.5 w-3.5" />
+                            </button>
+                          )}
                         </p>
-                        <p className="text-muted-foreground text-sm sm:text-base font-medium">
+                        <p className="text-muted-foreground text-sm sm:text-base font-medium flex items-center gap-1">
                           {t("orders.form.location")}:{" "}
                           {selectedOrder.location.name}
+                          {canManageOrders && (
+                            <button
+                              type="button"
+                              className="text-muted-foreground hover:text-foreground"
+                              title={t("orders.changeLocation.action")}
+                              onClick={() => setIsChangeLocationOpen(true)}
+                            >
+                              <Pencil className="h-3.5 w-3.5" />
+                            </button>
+                          )}
                         </p>
                         {selectedOrder.referral && (
                           <p className="text-muted-foreground text-sm sm:text-base font-medium">
@@ -282,6 +306,18 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                 canManage={canManageOrders}
               />
             </Suspense>
+            <ChangeManagerDialog
+              orderId={orderId}
+              currentManagerId={selectedOrder.manager.id}
+              isOpen={isChangeManagerOpen}
+              onOpenChange={setIsChangeManagerOpen}
+            />
+            <ChangeLocationDialog
+              orderId={orderId}
+              currentLocationId={selectedOrder.location.id}
+              isOpen={isChangeLocationOpen}
+              onOpenChange={setIsChangeLocationOpen}
+            />
           </>
         )}
       </QueryPageGuard>

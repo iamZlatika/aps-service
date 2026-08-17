@@ -439,10 +439,41 @@ Subscribed in `useOrderSocket(orderId)`, mounted on the order detail page.
 
 Payment, service, and product events fire on **both** channels simultaneously. Each hook handles only its own cache slice — they don't interfere.
 
+#### `documents` is excluded from header merges
+
+`.order.status_changed`/`.order.updated`/etc.'s `{ order }` payload technically includes a `documents` field (it's part of the base `Order` shape), but the card channel's merge helper (`mergeOrderFields` in `useOrderSocket.ts`) strips it out before spreading, the same way it already strips `customer`. `documents` is owned exclusively by `.order.document_added`'s append/upsert logic — if a header-merge event's snapshot were allowed to win, a document that had just arrived via `.order.document_added` (or was about to) could get silently overwritten by a stale snapshot from a same-or-later event, since these events aren't guaranteed to arrive in generation order. This was a real bug: `payment_invoice` would vanish from the cache right after being added, reappearing only on refetch. If you add a new field to `Order` that has its own dedicated event and its own list-merge logic, exclude it from `mergeOrderFields` too.
+
 #### `action` field
 
 For `*_changed` events: `action` is `"created" | "updated" | "deleted"`.
 The `applyItemAction` helper in `orders/lib/services.ts` handles upsert/delete logic for sub-collections.
+
+### Waiting for an async-generated document
+
+Some order documents aren't ready by the time the triggering mutation resolves — `closing_receipt` (on close) and `payment_invoice` (on the `ready` status transition) are rendered by the backend *after* the status-changing request responds, and only then does `.order.document_added` fire (see [Order documents](backoffice.md#order-documents)). A plain `await mutate()` isn't enough to know when the document actually exists.
+
+`waitForOrderDocument(queryClient, orderId, documentType, timeoutMs)` (`features/orders/lib/waitForOrderDocument.ts`) bridges this: it checks the cache once, then — if the document isn't there yet — subscribes to the query cache and resolves as soon as a matching document shows up (i.e. as soon as `.order.document_added`'s handler writes it), or resolves `undefined` after `timeoutMs`.
+
+```ts
+const invoice = await waitForOrderDocument(
+  queryClient,
+  orderId,
+  "payment_invoice",
+  15_000,
+);
+if (invoice) {
+  // do something now that it's actually there
+} else {
+  toast.error(t("orders.print.payment_invoice_timeout")); // gave up waiting
+}
+```
+
+Both current callers run this *inside* their mutation's `mutationFn`, before the mutation resolves — so `isPending` stays `true` for the whole wait, not just the initial HTTP call:
+
+- `useCloseOrder` — waits for `closing_receipt`, then auto-prints it (only on the "close and print" action; skipped on a plain close)
+- `useChangeOrderStatus` — waits for `payment_invoice` when the target status is `ready`, purely to keep the status badge's pending state accurate; no auto-print, just a timeout toast if the document doesn't show up in time
+
+**Rule:** this is for documents whose absence is *expected and temporary* right after a specific mutation. Don't reach for it as a general "wait for any socket event" tool — for that, the WebSocket cache patching above is normally the answer on its own.
 
 ---
 

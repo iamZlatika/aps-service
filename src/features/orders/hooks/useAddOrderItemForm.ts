@@ -8,6 +8,7 @@ import {
   useForm,
   type UseFormHandleSubmit,
   type UseFormRegister,
+  type UseFormSetError,
 } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -47,6 +48,7 @@ type UseAddOrderItemFormReturn = {
   register: UseFormRegister<NewOrderItemFormValues>;
   handleSubmit: UseFormHandleSubmit<NewOrderItemFormValues, NewOrderItemSchema>;
   errors: FieldErrors<NewOrderItemFormValues>;
+  setError: UseFormSetError<NewOrderItemFormValues>;
   users: User[];
   isLoadingUsers: boolean;
   fetchNameItems: (search: string) => Promise<SearchableSelectOption[]>;
@@ -83,6 +85,7 @@ export const useAddOrderItemForm = ({
     control,
     register,
     setValue,
+    setError,
     handleSubmit,
     formState: { errors },
   } = useForm<NewOrderItemFormValues, unknown, NewOrderItemSchema>({
@@ -150,6 +153,7 @@ export const useAddOrderItemForm = ({
     register,
     handleSubmit,
     errors,
+    setError,
     users,
     isLoadingUsers,
     fetchNameItems,

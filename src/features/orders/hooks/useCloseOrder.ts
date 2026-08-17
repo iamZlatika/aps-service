@@ -6,13 +6,14 @@ import { toast } from "sonner";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { ordersApi } from "@/features/orders/api";
 import { useDocumentActions } from "@/features/orders/hooks/useDocumentActions";
-import { type OrderDocument, type OrderInfo } from "@/features/orders/types";
-import { queryKeys } from "@/shared/api/queryKeys";
+import { waitForOrderDocument } from "@/features/orders/lib/waitForOrderDocument";
 import {
   PAYMENT_METHODS,
   type PaymentMethodType,
   PAYMENTS,
 } from "@/shared/types";
+
+const CLOSING_RECEIPT_WAIT_MS = 15_000;
 
 type UseCloseOrderParams = {
   orderId: number;
@@ -51,36 +52,6 @@ export function useCloseOrder({
   const hasBalance = remaining !== 0;
   const displayAmount = parseFloat(Math.abs(remaining).toFixed(2)).toString();
 
-  const waitForClosingReceipt = (): Promise<OrderDocument | undefined> => {
-    return new Promise((resolve) => {
-      const queryKey = queryKeys.orders.detail(orderId);
-
-      const existing = queryClient.getQueryData<OrderInfo>(queryKey);
-      const existingDoc = existing?.documents.find(
-        (d) => d.type === "closing_receipt",
-      );
-      if (existingDoc) {
-        resolve(existingDoc);
-        return;
-      }
-
-      const timer = setTimeout(() => {
-        unsubscribe();
-        resolve(undefined);
-      }, 15_000);
-
-      const unsubscribe = queryClient.getQueryCache().subscribe(() => {
-        const data = queryClient.getQueryData<OrderInfo>(queryKey);
-        const doc = data?.documents.find((d) => d.type === "closing_receipt");
-        if (doc) {
-          clearTimeout(timer);
-          unsubscribe();
-          resolve(doc);
-        }
-      });
-    });
-  };
-
   const { mutate: close, isPending } = useMutation({
     mutationFn: async (withPrint: boolean) => {
       if (hasBalance && user) {
@@ -98,7 +69,12 @@ export function useCloseOrder({
       await ordersApi.changeStatus(orderId, statusId);
 
       if (withPrint) {
-        const closingDoc = await waitForClosingReceipt();
+        const closingDoc = await waitForOrderDocument(
+          queryClient,
+          orderId,
+          "closing_receipt",
+          CLOSING_RECEIPT_WAIT_MS,
+        );
         if (closingDoc) {
           await printAsync(
             [{ orderId, documentId: closingDoc.id }],
