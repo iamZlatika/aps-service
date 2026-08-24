@@ -60,6 +60,8 @@ export const queryKeys = {
       [...queryKeys.customers.all, "merge-survivor", excludeId] as const,
     mergeAbsorbed: (excludeId: number | null) =>
       [...queryKeys.customers.all, "merge-absorbed", excludeId] as const,
+    changeOrderCustomer: (excludeId: number | null) =>
+      [...queryKeys.customers.all, "change-order-customer", excludeId] as const,
   },
 
   orders: {

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CircleCheck, Pencil } from "lucide-react";
+import { CircleCheck, Pencil, RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -33,12 +33,14 @@ interface CustomerInfoCardProps {
   customer: CustomerInfo;
   showStatusToggle?: boolean;
   onSuccess?: () => void;
+  onChangeCustomerClick?: () => void;
 }
 
 export const CustomerInfoCard = ({
   customer,
   showStatusToggle = true,
   onSuccess,
+  onChangeCustomerClick,
 }: CustomerInfoCardProps) => {
   const { t } = useTranslation();
   const { can } = useAuth();
@@ -138,20 +140,42 @@ export const CustomerInfoCard = ({
     <p>{customer.comment}</p>
   ) : null;
 
-  const rightAction = !canManage ? undefined : isInfoEditing ? (
-    <>
-      <AcceptButton type="submit" />
-      <CancelButton onClick={() => setIsInfoEditing(false)} />
-    </>
-  ) : (
-    <button
-      type="button"
-      onClick={() => setIsInfoEditing(true)}
-      className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-    >
-      <Pencil className="h-4 w-4" />
-    </button>
-  );
+  const editButton = canManage ? (
+    isInfoEditing ? (
+      <>
+        <AcceptButton type="submit" />
+        <CancelButton onClick={() => setIsInfoEditing(false)} />
+      </>
+    ) : (
+      <button
+        type="button"
+        onClick={() => setIsInfoEditing(true)}
+        className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <Pencil className="h-4 w-4" />
+      </button>
+    )
+  ) : null;
+
+  const changeCustomerButton =
+    onChangeCustomerClick && !isInfoEditing ? (
+      <button
+        type="button"
+        onClick={onChangeCustomerClick}
+        title={t("orders.changeCustomer.action")}
+        className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <RefreshCcw className="h-4 w-4" />
+      </button>
+    ) : null;
+
+  const rightAction =
+    editButton || changeCustomerButton ? (
+      <>
+        {changeCustomerButton}
+        {editButton}
+      </>
+    ) : undefined;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
