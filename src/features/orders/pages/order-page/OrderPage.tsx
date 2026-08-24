@@ -23,6 +23,7 @@ import { useOrderCustomerTelegramSocket } from "@/features/orders/hooks/useOrder
 import { useOrderEditingState } from "@/features/orders/hooks/useOrderEditingState.ts";
 import { useOrderSocket } from "@/features/orders/hooks/useOrderSocket.ts";
 import { ORDERS_LINKS } from "@/features/orders/navigation.ts";
+import { ChangeCustomerDialog } from "@/features/orders/pages/order-page/components/ChangeCustomerDialog.tsx";
 import { ChangeLocationDialog } from "@/features/orders/pages/order-page/components/ChangeLocationDialog.tsx";
 import { ChangeManagerDialog } from "@/features/orders/pages/order-page/components/ChangeManagerDialog.tsx";
 import { HistorySidebar } from "@/features/orders/pages/order-page/components/history-sidebar/HistorySidebar.tsx";
@@ -100,6 +101,7 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   const [isPrintOpen, setIsPrintOpen] = useState(false);
   const [isChangeManagerOpen, setIsChangeManagerOpen] = useState(false);
   const [isChangeLocationOpen, setIsChangeLocationOpen] = useState(false);
+  const [isChangeCustomerOpen, setIsChangeCustomerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<OrderTab>("order");
 
   useEffect(() => {
@@ -272,6 +274,11 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                             customer={selectedOrder.customer}
                             showStatusToggle={false}
                             onSuccess={handleStatusSuccess}
+                            onChangeCustomerClick={
+                              canManageOrders && !selectedOrder.closedAt
+                                ? () => setIsChangeCustomerOpen(true)
+                                : undefined
+                            }
                           />
                           <CustomerOrdersSection
                             customerId={selectedOrder.customer.id}
@@ -317,6 +324,12 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
               currentLocationId={selectedOrder.location.id}
               isOpen={isChangeLocationOpen}
               onOpenChange={setIsChangeLocationOpen}
+            />
+            <ChangeCustomerDialog
+              orderId={orderId}
+              currentCustomer={selectedOrder.customer}
+              isOpen={isChangeCustomerOpen}
+              onOpenChange={setIsChangeCustomerOpen}
             />
           </>
         )}

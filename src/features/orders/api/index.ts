@@ -127,6 +127,12 @@ export const ordersApi = {
   ): Promise<void> => {
     await put(ORDERS_API.changeLocation(orderId), { location_id: locationId });
   },
+  changeCustomer: async (
+    orderId: number,
+    customerId: number,
+  ): Promise<void> => {
+    await put(ORDERS_API.changeCustomer(orderId), { customer_id: customerId });
+  },
   getOrder: async (id: number): Promise<OrderInfo> => {
     const response = await get<{ data: OrderInfoDto }>(
       `${ORDERS_API.order(id)}`,

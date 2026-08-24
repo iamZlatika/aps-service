@@ -8,6 +8,7 @@ export const ORDERS_API = {
   changeIsUrgent: (id: number) => `${BASE}/${id}/is-urgent`,
   changeManager: (id: number) => `${BASE}/${id}/manager`,
   changeLocation: (id: number) => `${BASE}/${id}/location`,
+  changeCustomer: (id: number) => `${BASE}/${id}/customer`,
   addComment: (id: number) => `${BASE}/${id}/comments`,
   addProduct: (id: number) => `${BASE}/${id}/products`,
   changeProduct: (orderId: number, productId: number) =>
