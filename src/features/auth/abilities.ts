@@ -6,6 +6,7 @@ export const ABILITIES = {
   USERS_ROLES_PERMISSIONS_MANAGE: "users_roles_permissions_manage",
   BILLING_VIEW: "billing_view",
   BILLING_BALANCE_ADJUST: "billing_balance_adjust",
+  BANKING_VIEW: "banking_view",
   QUICK_ORDERS_MANAGE: "quick_orders_manage",
   DICTIONARIES_MANAGE: "dictionaries_manage",
   DICTIONARIES_LOCATIONS_MANAGE: "dictionaries_locations_manage",

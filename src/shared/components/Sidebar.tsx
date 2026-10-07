@@ -4,6 +4,7 @@ import {
   CreditCard,
   Handshake,
   Images,
+  Landmark,
   MessageSquare,
   Package,
   ShieldCheck,
@@ -17,6 +18,7 @@ import { Link } from "react-router-dom";
 
 import { ABILITIES } from "@/features/auth/abilities.ts";
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { BANKING_LINKS } from "@/features/banking/navigation.ts";
 import { BILLING_LINKS } from "@/features/billing/navigation.ts";
 import { CUSTOMERS_LINKS } from "@/features/customers/navigation";
 import { DICTIONARIES_LINKS } from "@/features/dictionaries/navigation";
@@ -125,6 +127,14 @@ export const Sidebar = memo(() => {
                   to={BILLING_LINKS.balances()}
                   icon={CreditCard}
                   label={t("sidebar.billing")}
+                  onClick={closeMobileSidebar}
+                />
+              )}
+              {can(ABILITIES.BANKING_VIEW) && (
+                <SidebarNavItem
+                  to={BANKING_LINKS.root()}
+                  icon={Landmark}
+                  label={t("sidebar.banking")}
                   onClick={closeMobileSidebar}
                 />
               )}

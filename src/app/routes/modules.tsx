@@ -3,6 +3,7 @@ import { Navigate, type RouteObject } from "react-router-dom";
 
 import { ProtectedRoute } from "@/app/ProtectedRoute";
 import { ABILITIES } from "@/features/auth/abilities.ts";
+import { BANKING_ROUTES } from "@/features/banking/routes.ts";
 import { BILLING_LINKS } from "@/features/billing/navigation.ts";
 import { BILLING_ROUTES } from "@/features/billing/routes.ts";
 import { CUSTOMERS_ROUTES } from "@/features/customers/routes";
@@ -101,6 +102,7 @@ const WithdrawalRequestsPage = lazy(
 const OrderPaymentsReportPage = lazy(
   () => import("@/features/billing/pages/order-payments"),
 );
+const BankingPage = lazy(() => import("@/features/banking/pages"));
 const SmsIntegrationPage = lazy(
   () => import("@/features/sms-integration/pages"),
 );
@@ -168,6 +170,10 @@ export const modulesRoutes: RouteObject = {
           element: <OrderPaymentsReportPage />,
         },
       ],
+    },
+    {
+      element: <ProtectedRoute requiredAbility={ABILITIES.BANKING_VIEW} />,
+      children: [{ path: BANKING_ROUTES.root, element: <BankingPage /> }],
     },
     {
       element: (
