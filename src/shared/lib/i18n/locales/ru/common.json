@@ -92,6 +92,7 @@
     "dictionaries": "Справочники",
     "works": "Работы",
     "billing": "Биллинг",
+    "banking": "Банкинг",
     "sms_integration": "SMS-интеграция",
     "roles_permissions": "Роли и доступы",
     "quick_orders": "Продажи",
@@ -268,7 +269,8 @@
         "integrations": "Интеграции",
         "quick_orders": "Продажи",
         "referrals": "Рефералы",
-        "statistics": "Статистика"
+        "statistics": "Статистика",
+        "banking": "Банкинг"
       },
       "orders_view": "Просмотр",
       "orders_manage": "Управление",
@@ -290,7 +292,8 @@
       "dictionaries_bank_cards_manage": "Банковские карты (ред.)",
       "dictionaries_locations_manage": "Локации (ред.)",
       "dictionaries_price_list_manage": "Прайс-лист (ред.)",
-      "statistics_view": "Просмотр"
+      "statistics_view": "Просмотр",
+      "banking_view": "Просмотр"
     },
     "master_rate": "Ставка сотрудника",
     "services_percent": "Процент за услуги",
@@ -1055,6 +1058,24 @@
         "order": "Заказ",
         "created_by": "Менеджер"
       }
+    }
+  },
+  "banking": {
+    "transactions": {
+      "title": "Зачисления на карту",
+      "search_placeholder": "Поиск по плательщику, описанию, комментарию",
+      "late_hint": "Получено с опозданием",
+      "table": {
+        "date": "Дата операции",
+        "amount": "Сумма",
+        "description": "Описание",
+        "comment": "Комментарий",
+        "counter_name": "Плательщик",
+        "counter_iban": "IBAN плательщика"
+      }
+    },
+    "toast": {
+      "received": "Зачисление +{{amount}}"
     }
   },
   "smsIntegration": {

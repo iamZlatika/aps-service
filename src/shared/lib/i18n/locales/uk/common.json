@@ -92,6 +92,7 @@
     "dictionaries": "Довідники",
     "works": "Роботи",
     "billing": "Білінг",
+    "banking": "Банкінг",
     "sms_integration": "SMS-інтеграція",
     "roles_permissions": "Ролі та доступи",
     "quick_orders": "Продажі",
@@ -265,7 +266,8 @@
         "integrations": "Інтеграції",
         "quick_orders": "Продажі",
         "referrals": "Реферали",
-        "statistics": "Статистика"
+        "statistics": "Статистика",
+        "banking": "Банкінг"
       },
       "orders_view": "Перегляд",
       "orders_manage": "Управління",
@@ -287,7 +289,8 @@
       "dictionaries_bank_cards_manage": "Банківські картки (ред.)",
       "dictionaries_locations_manage": "Локації (ред.)",
       "dictionaries_price_list_manage": "Прайс-лист (ред.)",
-      "statistics_view": "Перегляд"
+      "statistics_view": "Перегляд",
+      "banking_view": "Перегляд"
     },
     "master_rate": "Ставка співробітника",
     "services_percent": "Відсоток за послуги",
@@ -1053,6 +1056,24 @@
         "order": "Замовлення",
         "created_by": "Менеджер"
       }
+    }
+  },
+  "banking": {
+    "transactions": {
+      "title": "Зарахування на картку",
+      "search_placeholder": "Пошук за платником, описом, коментарем",
+      "late_hint": "Отримано із запізненням",
+      "table": {
+        "date": "Дата операції",
+        "amount": "Сума",
+        "description": "Опис",
+        "comment": "Коментар",
+        "counter_name": "Платник",
+        "counter_iban": "IBAN платника"
+      }
+    },
+    "toast": {
+      "received": "Зарахування +{{amount}}"
     }
   },
   "smsIntegration": {

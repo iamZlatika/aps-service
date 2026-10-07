@@ -126,6 +126,11 @@ export const queryKeys = {
       ] as const,
   },
 
+  banking: {
+    all: ["banking"] as const,
+    transactions: makeEntityKey(["banking"], "transactions"),
+  },
+
   smsIntegration: {
     all: ["smsIntegration"] as const,
     balance: () => [...queryKeys.smsIntegration.all, "balance"] as const,

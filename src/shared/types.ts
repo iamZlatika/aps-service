@@ -118,6 +118,14 @@ export const SMS_PROVIDERS = {
 
 export type SmsProvider = (typeof SMS_PROVIDERS)[keyof typeof SMS_PROVIDERS];
 
+export const BANK_TRANSACTION_SOURCES = {
+  WEBHOOK: "webhook",
+  SYNC: "sync",
+} as const;
+
+export type BankTransactionSource =
+  (typeof BANK_TRANSACTION_SOURCES)[keyof typeof BANK_TRANSACTION_SOURCES];
+
 export const WEEK_DAYS = [
   "mon",
   "tue",
