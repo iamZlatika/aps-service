@@ -37,6 +37,7 @@ const CreateOrderPage = () => {
 
   const parsed = prefillStateSchema.safeParse(state);
   const prefillCustomer = parsed.success ? parsed.data.customer : undefined;
+  const prefillDevice = parsed.success ? parsed.data.device : undefined;
 
   const primaryPhone = prefillCustomer?.phones.find((p) => p.isPrimary);
 
@@ -49,10 +50,10 @@ const CreateOrderPage = () => {
       customerEmail: prefillCustomer?.email ?? "",
       customerComment: prefillCustomer?.comment ?? "",
       issueType: "",
-      deviceType: "",
-      manufacturer: "",
-      deviceModel: "",
-      devicePassword: "",
+      deviceType: prefillDevice?.deviceType ?? "",
+      manufacturer: prefillDevice?.manufacturer ?? "",
+      deviceModel: prefillDevice?.deviceModel ?? "",
+      devicePassword: prefillDevice?.devicePassword ?? "",
       managerId: user?.id,
       prepaymentMethod: PAYMENT_METHODS.CASH,
       dueDate: format(addDays(new Date(), 5), "yyyy-MM-dd"),

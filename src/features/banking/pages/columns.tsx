@@ -46,19 +46,5 @@ export function buildBankTransactionColumns(): ColumnConfig<BankTransaction>[] {
       sortable: false,
       renderCell: renderText,
     },
-    {
-      key: "counterName",
-      field: "counterName",
-      labelKey: "banking.transactions.table.counter_name",
-      sortable: false,
-      renderCell: renderText,
-    },
-    {
-      key: "counterIban",
-      field: "counterIban",
-      labelKey: "banking.transactions.table.counter_iban",
-      sortable: false,
-      renderCell: (value) => (value as string | null) ?? "—",
-    },
   ];
 }
