@@ -12,6 +12,7 @@ interface SearchFilterProps {
   onChange: (fieldName: string, value: string) => void;
   debounceMs?: number;
   numbersOnly?: boolean;
+  normalize?: (value: string) => string;
   autoFocus?: boolean;
   className?: string;
 }
@@ -23,6 +24,7 @@ export const SearchFilter = ({
   onChange,
   debounceMs = FILTER_DEBOUNCE_MS,
   numbersOnly = false,
+  normalize,
   autoFocus = false,
   className,
 }: SearchFilterProps) => {
@@ -43,7 +45,8 @@ export const SearchFilter = ({
   }, [value]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const next = numbersOnly ? stripNonDigits(e.target.value) : e.target.value;
+    const raw = numbersOnly ? stripNonDigits(e.target.value) : e.target.value;
+    const next = normalize ? normalize(raw) : raw;
     setLocalValue(next);
 
     if (timerRef.current) {
