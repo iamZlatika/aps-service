@@ -1,13 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import imageCompression from "browser-image-compression";
 import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import { type RefObject } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 
-import { ordersApi } from "@/features/orders/api";
-import type { OrderInfo } from "@/features/orders/types";
-import { queryKeys } from "@/shared/api/queryKeys.ts";
+import { usePostOrderComment } from "@/features/orders/pages/order-page/components/history-sidebar/hooks/usePostOrderComment.ts";
 import { IMAGE_COMPRESSION_OPTIONS } from "@/shared/lib/imageCompression.ts";
 
 type PendingImage = {
@@ -33,8 +28,6 @@ type UseCommentFormReturn = {
 const MAX_BYTES = IMAGE_COMPRESSION_OPTIONS.maxSizeMB * 1024 * 1024;
 
 export function useCommentForm(orderId: number): UseCommentFormReturn {
-  const { t } = useTranslation();
-  const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewUrlRef = useRef<string | null>(null);
   const [comment, setComment] = useState("");
@@ -53,23 +46,10 @@ export function useCommentForm(orderId: number): UseCommentFormReturn {
     }
   };
 
-  const { mutate: sendComment, isPending } = useMutation({
-    mutationFn: () =>
-      ordersApi.postComment(orderId, {
-        comment: comment.trim() || undefined,
-        file: pendingImage?.file,
-      }),
-    onSuccess: (newComment) => {
-      setComment("");
-      revokePreview();
-      setPendingImage(null);
-      toast.success(t("orders.successAddComment"));
-      queryClient.setQueryData<OrderInfo>(
-        queryKeys.orders.detail(orderId),
-        (old) =>
-          old ? { ...old, comments: [...old.comments, newComment] } : old,
-      );
-    },
+  const { postComment, isPending } = usePostOrderComment(orderId, () => {
+    setComment("");
+    revokePreview();
+    setPendingImage(null);
   });
 
   const isProcessingImage =
@@ -123,6 +103,10 @@ export function useCommentForm(orderId: number): UseCommentFormReturn {
     },
     handleFileChange,
     handleFile,
-    handleSend: () => sendComment(undefined),
+    handleSend: () =>
+      postComment({
+        comment: comment.trim() || undefined,
+        file: pendingImage?.file,
+      }),
   };
 }

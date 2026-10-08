@@ -1,11 +1,14 @@
-import { ImagePlus, SendHorizonal, X } from "lucide-react";
+import { ImagePlus, Phone, SendHorizonal, X } from "lucide-react";
+import { useState } from "react";
 
 import { ABILITIES } from "@/features/auth/abilities.ts";
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
+import { CommentPhoneForm } from "@/features/orders/pages/order-page/components/history-sidebar/CommentPhoneForm.tsx";
 import { useCommentForm } from "@/features/orders/pages/order-page/components/history-sidebar/hooks/useCommentForm.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Progress } from "@/shared/components/ui/progress.tsx";
 import { Textarea } from "@/shared/components/ui/textarea.tsx";
+import { cn } from "@/shared/lib/utils.ts";
 
 interface CommentsFormProps {
   orderId: number;
@@ -14,6 +17,7 @@ interface CommentsFormProps {
 export const CommentsForm = ({ orderId }: CommentsFormProps) => {
   const { can } = useAuth();
   const canManage = can(ABILITIES.ORDERS_MANAGE);
+  const [isPhoneMode, setIsPhoneMode] = useState(false);
   const {
     comment,
     pendingImage,
@@ -64,7 +68,14 @@ export const CommentsForm = ({ orderId }: CommentsFormProps) => {
           </div>
         ))}
 
-      <div className="flex items-end gap-2">
+      {isPhoneMode && (
+        <CommentPhoneForm
+          orderId={orderId}
+          onClose={() => setIsPhoneMode(false)}
+        />
+      )}
+
+      <div className={cn("flex items-end gap-2", isPhoneMode && "hidden")}>
         <input
           ref={fileInputRef}
           type="file"
@@ -80,6 +91,15 @@ export const CommentsForm = ({ orderId }: CommentsFormProps) => {
           onClick={() => fileInputRef.current?.click()}
         >
           <ImagePlus className="h-5 w-5" />
+        </Button>
+
+        <Button
+          variant="secondary"
+          className="h-10 w-10 shrink-0"
+          disabled={isPending}
+          onClick={() => setIsPhoneMode(true)}
+        >
+          <Phone className="h-5 w-5" />
         </Button>
 
         <div className="flex-1">
