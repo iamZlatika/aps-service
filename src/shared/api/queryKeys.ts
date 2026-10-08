@@ -35,6 +35,7 @@ export const queryKeys = {
   users: {
     all: ["users"] as const,
     list: makeEntityKey(["users"], "list"),
+    activeList: () => [...queryKeys.users.all, "active-list"] as const,
     me: () => [...queryKeys.users.all, "me"] as const,
     detail: (id: number) => [...queryKeys.users.all, "detail", id] as const,
   },

@@ -60,6 +60,7 @@ const OrdersPage = () => {
         isMobile ? "mb-0 flex-none w-44" : "mb-0 flex-none w-56 sm:w-[30rem]"
       }
       searchField="search"
+      searchAutoFocus={!isMobile}
       columns={isMobile ? mobileColumns : columns}
       headerActions={
         canManage ? (

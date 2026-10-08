@@ -1,13 +1,12 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import i18next from "i18next";
 import { toast } from "sonner";
 
 import { ordersApi } from "@/features/orders/api";
-import { usersApi } from "@/features/users/api";
+import { useManagerOptions } from "@/features/users/hooks/useManagerOptions.ts";
 import type { User } from "@/features/users/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys";
 import { notifyError } from "@/shared/lib/errors/services.ts";
-import { USER_STATUSES } from "@/shared/types.ts";
 
 type UseChangeOrderManagerReturn = {
   users: User[];
@@ -22,10 +21,7 @@ export function useChangeOrderManager(
 ): UseChangeOrderManagerReturn {
   const queryClient = useQueryClient();
 
-  const { data: usersData, isLoading: isLoadingUsers } = useQuery({
-    queryKey: queryKeys.users.list(),
-    queryFn: () => usersApi.getAll(1, 100),
-  });
+  const { users, isLoadingUsers } = useManagerOptions({ activeOnly: true });
 
   const mutation = useMutation({
     mutationFn: (managerId: number) =>
@@ -39,10 +35,6 @@ export function useChangeOrderManager(
     },
     onError: (error) => notifyError(error),
   });
-
-  const users = (usersData?.items ?? []).filter(
-    (u) => u.status === USER_STATUSES.ACTIVE,
-  );
 
   return {
     users,

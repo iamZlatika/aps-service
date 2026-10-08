@@ -71,6 +71,7 @@ const AddOrderItemModal = ({
   } = useAddOrderItemForm({
     type,
     initialValues: initialData?.formValues,
+    currentManager: editItem?.manager,
     initialSupplierDisplay: initialData?.supplierDisplay,
     initialOutsourcerDisplay: initialData?.outsourcerDisplay,
   });

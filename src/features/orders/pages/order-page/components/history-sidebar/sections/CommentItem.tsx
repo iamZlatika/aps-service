@@ -31,7 +31,7 @@ export const CommentItem = memo(({ item }: CommentItemProps) => {
               {t("orders.history.comment.addedText")}
             </span>
           </div>
-          <blockquote className="border-l-2 border-muted-foreground/40 pl-3 text-muted-foreground italic whitespace-pre-wrap">
+          <blockquote className="border-l-2 border-muted-foreground/40 rounded-r-md bg-muted px-3 py-2 font-bold text-foreground italic whitespace-pre-wrap">
             <LinkifiedText text={item.text} />
           </blockquote>
         </>

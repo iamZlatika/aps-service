@@ -12,6 +12,7 @@ interface SearchFilterProps {
   onChange: (fieldName: string, value: string) => void;
   debounceMs?: number;
   numbersOnly?: boolean;
+  autoFocus?: boolean;
   className?: string;
 }
 
@@ -22,6 +23,7 @@ export const SearchFilter = ({
   onChange,
   debounceMs = FILTER_DEBOUNCE_MS,
   numbersOnly = false,
+  autoFocus = false,
   className,
 }: SearchFilterProps) => {
   const [localValue, setLocalValue] = useState(value);
@@ -80,6 +82,7 @@ export const SearchFilter = ({
         onChange={handleChange}
         placeholder={placeholder}
         inputMode={numbersOnly ? "numeric" : undefined}
+        autoFocus={autoFocus}
         className="pl-9 pr-9 bg-background"
       />
 
