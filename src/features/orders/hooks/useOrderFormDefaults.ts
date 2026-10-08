@@ -5,7 +5,7 @@ import type { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 import { locationApi } from "@/features/dictionaries/api";
 import type { Location } from "@/features/dictionaries/types.ts";
 import type { NewOrderSchema } from "@/features/orders/lib/schema.ts";
-import { usersApi } from "@/features/users/api";
+import { useManagerOptions } from "@/features/users/hooks/useManagerOptions.ts";
 import type { User } from "@/features/users/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 
@@ -21,17 +21,13 @@ export const useOrderFormDefaults = (
   getValues: UseFormGetValues<NewOrderSchema>,
   user: User | null | undefined,
 ): UseOrderFormDefaultsReturn => {
-  const { data: usersData, isLoading: isLoadingUsers } = useQuery({
-    queryKey: queryKeys.users.list(),
-    queryFn: () => usersApi.getAll(1, 100),
-  });
+  const { users, isLoadingUsers } = useManagerOptions({ activeOnly: true });
 
   const { data: locationsData, isLoading: isLoadingLocations } = useQuery({
     queryKey: queryKeys.dictionaries.locations(),
     queryFn: () => locationApi.getAll(1, 100),
   });
 
-  const users = usersData?.items ?? [];
   const locations = useMemo(
     () => locationsData?.items ?? [],
     [locationsData?.items],

@@ -15,6 +15,7 @@ import { type Customer, type Phone } from "@/features/customers/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { AddButton } from "@/shared/components/AddButton";
 import { MergeButton } from "@/shared/components/MergeButton";
+import { normalizePhoneSearchQuery } from "@/shared/lib/phone.ts";
 import { SmartTable } from "@/widgets/table";
 import { ItemFormDialog } from "@/widgets/table/components/dialogs";
 import type {
@@ -112,6 +113,7 @@ const CustomersPage = () => {
         queryKeyFn={queryKeys.customers.list}
         searchPlaceholder="search_placeholders.customer_phone"
         searchField="any_match"
+        searchNormalize={normalizePhoneSearchQuery}
         searchInputClassName="mb-0 flex-none w-full sm:w-[30rem]"
         filterBar={<CustomersFilterBar />}
         extraFilterKeys={[...CUSTOMERS_BOOLEAN_FILTER_KEYS]}

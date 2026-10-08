@@ -12,6 +12,7 @@ import { type Order } from "@/features/orders/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { AddButton } from "@/shared/components/AddButton";
 import { useIsMobile } from "@/shared/hooks/useMobile.ts";
+import { normalizePhoneSearchQuery } from "@/shared/lib/phone.ts";
 import { SmartTable } from "@/widgets/table";
 
 import { buildOrderColumns } from "./columns";
@@ -60,6 +61,8 @@ const OrdersPage = () => {
         isMobile ? "mb-0 flex-none w-44" : "mb-0 flex-none w-56 sm:w-[30rem]"
       }
       searchField="search"
+      searchNormalize={normalizePhoneSearchQuery}
+      searchAutoFocus={!isMobile}
       columns={isMobile ? mobileColumns : columns}
       headerActions={
         canManage ? (

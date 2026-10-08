@@ -40,6 +40,8 @@ type SmartTableProps<T extends BaseItem = BaseItem> = {
   searchPlaceholder: string;
   searchField?: string;
   searchNumbersOnly?: boolean;
+  searchNormalize?: (value: string) => string;
+  searchAutoFocus?: boolean;
   searchInputClassName?: string;
   headerActions?: ReactNode;
   extraFilterKeys?: string[];
@@ -53,6 +55,8 @@ export const SmartTable = <T extends BaseItem>({
   searchPlaceholder,
   searchField,
   searchNumbersOnly,
+  searchNormalize,
+  searchAutoFocus,
   searchInputClassName,
   columns,
   renderRowActions,
@@ -111,6 +115,8 @@ export const SmartTable = <T extends BaseItem>({
               value={filters[searchField ?? "name"] ?? ""}
               onChange={setFilter}
               numbersOnly={searchNumbersOnly}
+              normalize={searchNormalize}
+              autoFocus={searchAutoFocus}
               className={
                 searchInputClassName ?? "mb-0 flex-none w-56 sm:w-[30rem]"
               }

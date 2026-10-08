@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
 import i18next from "i18next";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   type Control,
   type FieldErrors,
@@ -12,6 +11,7 @@ import {
 } from "react-hook-form";
 import { toast } from "sonner";
 
+import { ABILITIES } from "@/features/auth/abilities.ts";
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import {
   outsourcersApi,
@@ -26,7 +26,7 @@ import {
 } from "@/features/orders/lib/schema.ts";
 import { createNameSearchFetcher } from "@/features/orders/lib/searchFetchers.ts";
 import type { OrderItemType } from "@/features/orders/types.ts";
-import { usersApi } from "@/features/users/api";
+import { useManagerOptions } from "@/features/users/hooks/useManagerOptions.ts";
 import type { User } from "@/features/users/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import type { SearchableSelectOption } from "@/widgets/searchable-select";
@@ -39,6 +39,7 @@ const fetchOutsourcerItems = createNameSearchFetcher(outsourcersApi.getAll);
 type UseAddOrderItemFormParams = {
   type: OrderItemType;
   initialValues?: Partial<NewOrderItemFormValues>;
+  currentManager?: User;
   initialSupplierDisplay?: string;
   initialOutsourcerDisplay?: string;
 };
@@ -53,7 +54,7 @@ type UseAddOrderItemFormReturn = {
   isLoadingUsers: boolean;
   fetchNameItems: (search: string) => Promise<SearchableSelectOption[]>;
   nameQueryKey: readonly unknown[];
-  onCreateNameItem: (name: string) => Promise<void>;
+  onCreateNameItem: ((name: string) => Promise<void>) | undefined;
   fetchSuppliers: (search: string) => Promise<SearchableSelectOption[]>;
   onCreateSupplier: (name: string) => Promise<SearchableSelectOption>;
   supplierDisplay: string;
@@ -69,17 +70,26 @@ type UseAddOrderItemFormReturn = {
 export const useAddOrderItemForm = ({
   type,
   initialValues,
+  currentManager,
   initialSupplierDisplay = "",
   initialOutsourcerDisplay = "",
 }: UseAddOrderItemFormParams): UseAddOrderItemFormReturn => {
-  const { user } = useAuth();
+  const { user, can } = useAuth();
+  const canManageDictionaries = can(ABILITIES.DICTIONARIES_MANAGE);
 
-  const { data: usersData, isLoading: isLoadingUsers } = useQuery({
-    queryKey: queryKeys.users.list(),
-    queryFn: () => usersApi.getAll(1, 100),
+  const { users: activeUsers, isLoadingUsers } = useManagerOptions({
+    activeOnly: true,
   });
 
-  const users = usersData?.items ?? [];
+  // The item's current executor may be blocked by now — keep them selectable
+  // so the field doesn't render empty while managerId is still set.
+  const users = useMemo(
+    () =>
+      currentManager && !activeUsers.some((u) => u.id === currentManager.id)
+        ? [...activeUsers, currentManager]
+        : activeUsers,
+    [activeUsers, currentManager],
+  );
 
   const {
     control,
@@ -158,7 +168,9 @@ export const useAddOrderItemForm = ({
     isLoadingUsers,
     fetchNameItems,
     nameQueryKey,
-    onCreateNameItem,
+    // Saving a name to the dictionary is the only way in now, and the
+    // dictionary routes require this ability (403 otherwise).
+    onCreateNameItem: canManageDictionaries ? onCreateNameItem : undefined,
     fetchSuppliers: fetchSupplierItems,
     onCreateSupplier,
     supplierDisplay,

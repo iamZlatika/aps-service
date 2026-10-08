@@ -39,7 +39,7 @@ const AddPaymentModal = ({
 }: AddPaymentModalProps) => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const { users, isLoadingUsers } = useManagerOptions();
+  const { users, isLoadingUsers } = useManagerOptions({ activeOnly: true });
 
   const {
     control,

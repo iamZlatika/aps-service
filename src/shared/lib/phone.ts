@@ -29,3 +29,16 @@ export function extractLocalPhoneDigits(chars: string): string {
   if (digits.startsWith("38")) return "0" + digits.slice(2);
   return digits;
 }
+
+const PHONE_LIKE_QUERY = /^\+?[\d\s()-]+$/;
+const MIN_PHONE_DIGITS = 10;
+
+// Phone inputs display numbers masked as 099-732-66-75; a number copied from
+// there must still match when pasted into a search field. Shorter or
+// non-numeric queries (names, order numbers like APS-0128) are left as is.
+export function normalizePhoneSearchQuery(query: string): string {
+  if (!PHONE_LIKE_QUERY.test(query)) return query;
+
+  const digits = query.replace(/\D/g, "");
+  return digits.length >= MIN_PHONE_DIGITS ? digits : query;
+}
