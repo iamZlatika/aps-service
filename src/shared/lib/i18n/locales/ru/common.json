@@ -518,6 +518,7 @@
   },
   "orders": {
     "createNew": "Создание заказа",
+    "createForDevice": "Новый заказ на это устройство",
     "remainingToPay": "К оплате",
     "overpayment": "Переплата",
     "closeOrder": "Закрытие заказа",
@@ -1068,10 +1069,8 @@
       "table": {
         "date": "Дата операции",
         "amount": "Сумма",
-        "description": "Описание",
-        "comment": "Комментарий",
-        "counter_name": "Плательщик",
-        "counter_iban": "IBAN плательщика"
+        "description": "От кого",
+        "comment": "Комментарий"
       }
     },
     "toast": {

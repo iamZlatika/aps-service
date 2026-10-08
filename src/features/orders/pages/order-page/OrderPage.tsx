@@ -33,7 +33,10 @@ import { ProductsAndServicesCard } from "@/features/orders/pages/order-page/comp
 import { buildOrderHistory } from "@/features/orders/pages/order-page/services.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { CreateOrderForCustomerButton } from "@/shared/components/common/buttons/index.ts";
+import {
+  CreateOrderForCustomerButton,
+  CreateOrderForDeviceButton,
+} from "@/shared/components/common/buttons/index.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
@@ -71,7 +74,8 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
   const { can } = useAuth();
   const canManageOrders = can(ABILITIES.ORDERS_MANAGE);
 
-  const { createOrderForCustomer } = useCreateOrderForCustomer();
+  const { createOrderForCustomer, createOrderForDevice } =
+    useCreateOrderForCustomer();
 
   const {
     editingOrderIds,
@@ -144,11 +148,22 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                       </h1>
                       <div className="flex items-center gap-2 shrink-0">
                         {canManageOrders && (
-                          <CreateOrderForCustomerButton
-                            onClick={() =>
-                              createOrderForCustomer(selectedOrder.customer)
-                            }
-                          />
+                          <>
+                            <CreateOrderForCustomerButton
+                              onClick={() =>
+                                createOrderForCustomer(selectedOrder.customer)
+                              }
+                            />
+                            <CreateOrderForDeviceButton
+                              title={t("orders.createForDevice")}
+                              onClick={() =>
+                                createOrderForDevice(
+                                  selectedOrder.customer,
+                                  selectedOrder,
+                                )
+                              }
+                            />
+                          </>
                         )}
                         <button
                           type="button"

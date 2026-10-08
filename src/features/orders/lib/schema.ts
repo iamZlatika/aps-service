@@ -144,4 +144,12 @@ export const prefillStateSchema = z.object({
       z.object({ phoneNumber: z.string(), isPrimary: z.boolean() }),
     ),
   }),
+  device: z
+    .object({
+      deviceType: z.string(),
+      manufacturer: z.string(),
+      deviceModel: z.string(),
+      devicePassword: z.string(),
+    })
+    .optional(),
 });

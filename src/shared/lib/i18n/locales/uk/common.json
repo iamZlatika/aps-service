@@ -515,6 +515,7 @@
   },
   "orders": {
     "createNew": "Створити нове замовлення",
+    "createForDevice": "Нове замовлення на цей пристрій",
     "remainingToPay": "До оплати",
     "overpayment": "Переплата",
     "closeOrder": "Закриття замовлення",
@@ -1066,10 +1067,8 @@
       "table": {
         "date": "Дата операції",
         "amount": "Сума",
-        "description": "Опис",
-        "comment": "Коментар",
-        "counter_name": "Платник",
-        "counter_iban": "IBAN платника"
+        "description": "Від кого",
+        "comment": "Коментар"
       }
     },
     "toast": {

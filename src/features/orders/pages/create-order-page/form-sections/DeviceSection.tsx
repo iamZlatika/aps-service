@@ -27,13 +27,16 @@ const fetchAccessoryQuickSelect = createQuickSelectFetcher(
 export const DeviceSection = () => {
   const { fetchers, createItemFns } = useDictionarySection();
   const { t } = useTranslation();
-  const [isNoPassword, setIsNoPassword] = useState(false);
   const {
     control,
     register,
     setValue,
+    getValues,
     formState: { errors },
   } = useFormContext<NewOrderSchema>();
+  const [isNoPassword, setIsNoPassword] = useState(
+    () => getValues("devicePassword") === t("orders.form.noPasswordValue"),
+  );
 
   return (
     <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2 flex flex-col gap-4">
