@@ -1,3 +1,5 @@
+import { phoneRegex } from "@/shared/lib/constants";
+
 export const MOBILE_OPERATOR_CODES = [
   "50",
   "66",
@@ -19,6 +21,10 @@ export const MOBILE_OPERATOR_CODES = [
 export function isSupportedMobileOperator(phone: string): boolean {
   const code = phone.slice(4, 6);
   return (MOBILE_OPERATOR_CODES as readonly string[]).includes(code);
+}
+
+export function isPhoneNumber(value: string): boolean {
+  return phoneRegex.test(value);
 }
 
 export function extractLocalPhoneDigits(chars: string): string {

@@ -8,6 +8,8 @@ import { useDownloadImage } from "@/features/orders/pages/order-page/components/
 import { HistoryItemWrapper } from "@/features/orders/pages/order-page/components/history-sidebar/sections/HistoryItemWrapper.tsx";
 import type { HistoryComment } from "@/features/orders/pages/order-page/types.ts";
 import LinkifiedText from "@/shared/components/common/LinkifiedText.tsx";
+import { PhoneDropdown } from "@/shared/components/PhoneDropdown";
+import { isPhoneNumber } from "@/shared/lib/phone.ts";
 
 interface CommentItemProps {
   item: HistoryComment;
@@ -20,6 +22,10 @@ export const CommentItem = memo(({ item }: CommentItemProps) => {
 
   const userName = item.user.name;
   const image = item.image;
+  const text = item.text?.trim();
+  // Phones are posted as plain comments; a comment that is exactly a phone
+  // number gets the call/messenger menu instead of the quote.
+  const isPhone = !!text && isPhoneNumber(text);
 
   return (
     <HistoryItemWrapper date={item.date}>
@@ -28,12 +34,18 @@ export const CommentItem = memo(({ item }: CommentItemProps) => {
           <div className="flex flex-wrap items-center gap-1 mb-2">
             <span className="font-medium">— {userName} —</span>
             <span className="text-muted-foreground">
-              {t("orders.history.comment.addedText")}
+              {isPhone
+                ? t("orders.history.comment.addedPhone")
+                : t("orders.history.comment.addedText")}
             </span>
           </div>
-          <blockquote className="border-l-2 border-muted-foreground/40 rounded-r-md bg-muted px-3 py-2 text-base font-bold text-foreground italic whitespace-pre-wrap">
-            <LinkifiedText text={item.text} />
-          </blockquote>
+          {isPhone && text ? (
+            <PhoneDropdown phoneNumber={text} size="md" />
+          ) : (
+            <blockquote className="border-l-2 border-muted-foreground/40 rounded-r-md bg-muted px-3 py-2 text-base font-bold text-foreground italic whitespace-pre-wrap">
+              <LinkifiedText text={item.text} />
+            </blockquote>
+          )}
         </>
       )}
       {image && (

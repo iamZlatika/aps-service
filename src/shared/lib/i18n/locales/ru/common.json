@@ -622,7 +622,8 @@
       },
       "comment": {
         "addedText": "добавил комментарий",
-        "addedPhoto": "добавил фото"
+        "addedPhoto": "добавил фото",
+        "addedPhone": "добавил телефон"
       },
       "payment": {
         "received": "получил",

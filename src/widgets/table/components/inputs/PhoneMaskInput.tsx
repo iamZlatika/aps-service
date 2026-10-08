@@ -14,6 +14,7 @@ interface PhoneMaskInputProps {
   className?: string;
   hasError?: boolean;
   disabled?: boolean;
+  autoFocus?: boolean;
 }
 
 export const PhoneMaskInput = ({
@@ -26,6 +27,7 @@ export const PhoneMaskInput = ({
   className,
   hasError,
   disabled,
+  autoFocus,
 }: PhoneMaskInputProps) => {
   const displayValue = value.startsWith("+38")
     ? value.slice(3)
@@ -58,6 +60,7 @@ export const PhoneMaskInput = ({
         onKeyDown={onKeyDown}
         placeholder={placeholder ?? "0__-___-__-__"}
         disabled={disabled}
+        autoFocus={autoFocus}
         className="flex-1 bg-transparent px-3 py-1 text-base placeholder:text-muted-foreground focus:outline-none rounded-r-md disabled:cursor-not-allowed"
       />
     </div>
