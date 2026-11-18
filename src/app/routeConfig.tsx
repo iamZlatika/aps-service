@@ -9,6 +9,7 @@ import { SharedRoutes } from "@/shared/api/routes.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 
 import { ProtectedRoute } from "./ProtectedRoute";
+import { RealtimeSession } from "./RealtimeSession";
 
 // Layouts
 const Layout = lazy(() => import("@/shared/components/Layout"));
@@ -39,17 +40,22 @@ export const routeConfig: RouteObject[] = [
         element: <ProtectedRoute />,
         children: [
           {
-            element: (
-              <Suspense fallback={<Loader />}>
-                <Layout />
-              </Suspense>
-            ),
+            element: <RealtimeSession />,
             children: [
               {
-                index: true,
-                element: <Navigate to={ORDERS_ROUTES.root} replace />,
+                element: (
+                  <Suspense fallback={<Loader />}>
+                    <Layout />
+                  </Suspense>
+                ),
+                children: [
+                  {
+                    index: true,
+                    element: <Navigate to={ORDERS_ROUTES.root} replace />,
+                  },
+                  modulesRoutes,
+                ],
               },
-              modulesRoutes,
             ],
           },
         ],
