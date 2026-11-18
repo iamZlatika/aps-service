@@ -6,8 +6,11 @@ class FakeEchoConnection {
   private failed = false;
   readonly echo = { disconnect: vi.fn() };
 
+  constructor(private readonly onFailed: () => void) {}
+
   markFailed(): void {
     this.failed = true;
+    this.onFailed();
   }
 
   get isUsable(): boolean {
@@ -16,14 +19,15 @@ class FakeEchoConnection {
 }
 
 const created: FakeEchoConnection[] = [];
-const createEchoInstance = vi.fn((_token: string) => {
-  const connection = new FakeEchoConnection();
+const createEchoInstance = vi.fn((_token: string, onFailed: () => void) => {
+  const connection = new FakeEchoConnection(onFailed);
   created.push(connection);
   return connection;
 });
 
 vi.mock("@/shared/lib/echoFactory", () => ({
-  createEchoInstance: (token: string) => createEchoInstance(token),
+  createEchoInstance: (token: string, onFailed: () => void) =>
+    createEchoInstance(token, onFailed),
 }));
 
 type EchoModule = typeof EchoModuleType;
@@ -69,6 +73,17 @@ describe("initEcho", () => {
     expect(echoModule.getEcho()).toBe(created[1].echo);
   });
 
+  it("disconnects the old-token connection when the token changes mid-init", async () => {
+    const stale = echoModule.initEcho("old-token");
+    await echoModule.initEcho("new-token");
+    await stale;
+
+    expect(created).toHaveLength(2);
+    expect(created[0].echo.disconnect).toHaveBeenCalled();
+    expect(created[1].echo.disconnect).not.toHaveBeenCalled();
+    expect(echoModule.getEcho()).toBe(created[1].echo);
+  });
+
   it("disconnects a connection that resolves after destroyEcho", async () => {
     const pending = echoModule.initEcho("token");
     echoModule.destroyEcho();
@@ -91,5 +106,31 @@ describe("destroyEcho", () => {
 
     expect(createEchoInstance).toHaveBeenCalledTimes(2);
     expect(echoModule.getEcho()).toBe(created[1].echo);
+  });
+});
+
+describe("subscribeEcho", () => {
+  it("notifies when the connection appears, fails and is destroyed", async () => {
+    const listener = vi.fn();
+    echoModule.subscribeEcho(listener);
+
+    await echoModule.initEcho("token");
+    expect(listener).toHaveBeenCalledTimes(1);
+
+    created[0].markFailed();
+    expect(listener).toHaveBeenCalledTimes(2);
+
+    echoModule.destroyEcho();
+    expect(listener).toHaveBeenCalledTimes(3);
+  });
+
+  it("stops notifying after unsubscribe", async () => {
+    const listener = vi.fn();
+    const unsubscribe = echoModule.subscribeEcho(listener);
+    unsubscribe();
+
+    await echoModule.initEcho("token");
+
+    expect(listener).not.toHaveBeenCalled();
   });
 });

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { mapOrderDtoToOrder } from "@/features/orders/lib/adapters";
 import { type Order, type OrderSocketEvent } from "@/features/orders/types";
 import { queryKeys } from "@/shared/api/queryKeys";
-import { getEcho } from "@/shared/lib/echo";
+import { useEcho } from "@/shared/hooks/useEcho";
 import { type PaginatedResponse } from "@/widgets/table/models/types";
 
 const ORDER_UPDATE_EVENTS = [
@@ -19,9 +19,9 @@ const ORDER_UPDATE_EVENTS = [
 
 export const useOrdersSocket = (): void => {
   const queryClient = useQueryClient();
+  const echo = useEcho();
 
   useEffect(() => {
-    const echo = getEcho();
     if (!echo) return;
 
     const channel = echo.private("backoffice.orders");
@@ -51,5 +51,5 @@ export const useOrdersSocket = (): void => {
     return () => {
       echo.leave("backoffice.orders");
     };
-  }, [queryClient]);
+  }, [echo, queryClient]);
 };

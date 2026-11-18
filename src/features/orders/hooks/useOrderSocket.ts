@@ -25,7 +25,7 @@ import {
   type OrderStatusChangedSocketEvent,
 } from "@/features/orders/types";
 import { queryKeys } from "@/shared/api/queryKeys";
-import { getEcho } from "@/shared/lib/echo";
+import { useEcho } from "@/shared/hooks/useEcho";
 
 const ORDER_UPDATE_EVENTS = [
   ".order.updated",
@@ -47,9 +47,9 @@ const mergeOrderFields = (old: OrderInfo, orderDto: OrderDto): OrderInfo => {
 
 export const useOrderSocket = (orderId: number): void => {
   const queryClient = useQueryClient();
+  const echo = useEcho();
 
   useEffect(() => {
-    const echo = getEcho();
     if (!echo) return;
 
     const channelName = `backoffice.orders.${orderId}`;
@@ -150,5 +150,5 @@ export const useOrderSocket = (orderId: number): void => {
     return () => {
       echo.leave(channelName);
     };
-  }, [orderId, queryClient]);
+  }, [orderId, echo, queryClient]);
 };

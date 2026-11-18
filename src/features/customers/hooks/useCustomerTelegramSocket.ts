@@ -7,15 +7,15 @@ import type {
   CustomerTelegramLinkedSocketEvent,
 } from "@/features/customers/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { getEcho } from "@/shared/lib/echo";
+import { useEcho } from "@/shared/hooks/useEcho";
 
 export const useCustomerTelegramSocket = (customerId: number | null): void => {
   const queryClient = useQueryClient();
+  const echo = useEcho();
 
   useEffect(() => {
     if (customerId === null) return;
 
-    const echo = getEcho();
     if (!echo) return;
 
     const channelName = `backoffice.customers.${customerId}`;
@@ -42,5 +42,5 @@ export const useCustomerTelegramSocket = (customerId: number | null): void => {
     return () => {
       echo.leave(channelName);
     };
-  }, [customerId, queryClient]);
+  }, [customerId, echo, queryClient]);
 };

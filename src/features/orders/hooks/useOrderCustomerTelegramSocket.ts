@@ -5,7 +5,7 @@ import { mapTelegramDtoToTelegram } from "@/features/customers/lib/adapters.ts";
 import type { CustomerTelegramLinkedSocketEvent } from "@/features/customers/types.ts";
 import type { OrderInfo } from "@/features/orders/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { getEcho } from "@/shared/lib/echo";
+import { useEcho } from "@/shared/hooks/useEcho";
 
 // CustomerInfoCard on the order page renders the same Telegram subscription
 // section as the customer page, but reads it off `OrderInfo.customer`, not
@@ -17,11 +17,11 @@ export const useOrderCustomerTelegramSocket = (
   customerId: number | null,
 ): void => {
   const queryClient = useQueryClient();
+  const echo = useEcho();
 
   useEffect(() => {
     if (customerId === null) return;
 
-    const echo = getEcho();
     if (!echo) return;
 
     const channelName = `backoffice.customers.${customerId}`;
@@ -51,5 +51,5 @@ export const useOrderCustomerTelegramSocket = (
     return () => {
       echo.leave(channelName);
     };
-  }, [orderId, customerId, queryClient]);
+  }, [orderId, customerId, echo, queryClient]);
 };

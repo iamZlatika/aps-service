@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 import { type Ability } from "@/features/auth/abilities.ts";
@@ -6,7 +5,6 @@ import { AuthRoutes } from "@/features/auth/api/routes.ts";
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import { SharedRoutes } from "@/shared/api/routes.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
-import { destroyEcho } from "@/shared/lib/echo.ts";
 
 interface ProtectedRouteProps {
   requiredAbility?: Ability;
@@ -14,15 +12,6 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute = ({ requiredAbility }: ProtectedRouteProps) => {
   const { isAuthenticated, can, isLoading } = useAuth();
-
-  // Disconnects the socket when leaving the backoffice area entirely (e.g. to the
-  // public website), even if the auth token stays valid. Lives here because this
-  // component mounts/unmounts exactly once per backoffice session, unlike useAuth
-  // which is called by many components and would otherwise tear down the shared
-  // connection on every one of their re-renders.
-  useEffect(() => {
-    return () => destroyEcho();
-  }, []);
 
   if (isLoading) {
     return <Loader />;

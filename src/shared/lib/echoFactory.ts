@@ -44,6 +44,7 @@ function isMobileViewport(): boolean {
 function attachConnectionListener(
   instance: Echo,
   connection: EchoConnection,
+  onFailed: () => void,
 ): void {
   const { connection: ablyConnection } = (instance.connector as AblyConnector)
     .ably;
@@ -55,6 +56,7 @@ function attachConnectionListener(
       toast.error(i18next.t("errors.socket_failed"));
       instance.disconnect();
       connection.markFailed();
+      onFailed();
     }
     if (
       stateChange.current === "suspended" &&
@@ -70,7 +72,10 @@ function attachConnectionListener(
   });
 }
 
-export function createEchoInstance(token: string): EchoConnection {
+export function createEchoInstance(
+  token: string,
+  onFailed: () => void,
+): EchoConnection {
   const instance = new Echo({
     broadcaster: "ably",
     authEndpoint: `${import.meta.env.VITE_API_URL}/broadcasting/auth`,
@@ -79,6 +84,6 @@ export function createEchoInstance(token: string): EchoConnection {
     },
   });
   const connection = new EchoConnection(instance);
-  attachConnectionListener(instance, connection);
+  attachConnectionListener(instance, connection, onFailed);
   return connection;
 }

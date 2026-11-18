@@ -6,16 +6,16 @@ import { toast } from "sonner";
 import { mapBankTransactionDtoToBankTransaction } from "@/features/banking/lib/adapters.ts";
 import type { BankTransactionReceivedSocketEvent } from "@/features/banking/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
-import { getEcho } from "@/shared/lib/echo";
+import { useEcho } from "@/shared/hooks/useEcho";
 import { formatMoney } from "@/shared/lib/utils.ts";
 
 const CHANNEL_NAME = "backoffice.banking";
 
 export const useBankingSocket = (): void => {
   const queryClient = useQueryClient();
+  const echo = useEcho();
 
   useEffect(() => {
-    const echo = getEcho();
     if (!echo) return;
 
     const channel = echo.private(CHANNEL_NAME);
@@ -43,5 +43,5 @@ export const useBankingSocket = (): void => {
     return () => {
       echo.leave(CHANNEL_NAME);
     };
-  }, [queryClient]);
+  }, [echo, queryClient]);
 };
