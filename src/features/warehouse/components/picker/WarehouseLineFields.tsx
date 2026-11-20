@@ -10,7 +10,7 @@ import { Label } from "@/shared/components/ui/label.tsx";
 import { stripNonDigits } from "@/shared/lib/utils.ts";
 
 interface WarehouseLineFieldsProps {
-  /** Donor parts are single pieces — quantity is fixed to 1. */
+  /** A donor part: quantity is fixed to 1 and its cost price is editable. */
   isSinglePiece: boolean;
 }
 
@@ -54,6 +54,20 @@ export const WarehouseLineFields = ({
           </p>
         )}
       </div>
+      {isSinglePiece && (
+        <div className="col-span-2 flex flex-col gap-1">
+          <Label>{t("warehouse.picker.costPrice")}</Label>
+          <FormField
+            inputMode="numeric"
+            onInput={onDigitsInput}
+            error={errors.costPrice}
+            {...register("costPrice")}
+          />
+          <p className="text-xs text-muted-foreground">
+            {t("warehouse.picker.costPriceHint")}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

@@ -1447,7 +1447,7 @@
       },
       "fromDonor": "з {{donor}}",
       "costPrice": "Собівартість",
-      "costPriceMissing": "не вказана"
+      "costPriceHint": "Перезапише собівартість на картці запчастини"
     },
     "badges": {
       "warehouse": "Склад",

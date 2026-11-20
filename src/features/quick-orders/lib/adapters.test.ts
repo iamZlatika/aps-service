@@ -39,3 +39,35 @@ describe("mapNewQuickOrderToDto — whole donor line", () => {
     });
   });
 });
+
+describe("mapNewQuickOrderToDto — donor part line", () => {
+  const order = {
+    locationId: 1,
+    paymentMethod: "cash" as const,
+    services: [],
+  };
+  const partLine = {
+    name: "Матриця",
+    price: "3000",
+    quantity: 1,
+    costPrice: "",
+    purchasePrice: "1500",
+    warehouseItemId: null,
+    donorPartId: 5,
+    warehouseDonorId: null,
+    donorParts: [],
+  };
+
+  it("sends cost_price only when the manager typed one", () => {
+    const untouched = mapNewQuickOrderToDto({ ...order, products: [partLine] });
+    expect(untouched.products).toEqual([
+      { donor_part_id: 5, price: "3000", quantity: 1 },
+    ]);
+
+    const changed = mapNewQuickOrderToDto({
+      ...order,
+      products: [{ ...partLine, costPrice: "1800" }],
+    });
+    expect(changed.products[0]).toMatchObject({ cost_price: "1800" });
+  });
+});

@@ -117,6 +117,19 @@ export function getChangedMoneyValue(
   return next && next !== current ? next : null;
 }
 
+/**
+ * A donor part line's cost price to send: search `purchase_price` is the
+ * part's current cost price; nothing is sent unless the manager changed it.
+ */
+export function getLineCostPrice(
+  result: Pick<WarehouseSearchResult, "source" | "purchasePrice">,
+  value: string,
+): string | null {
+  return isDonorPartSource(result)
+    ? getChangedMoneyValue(value, result.purchasePrice)
+    : null;
+}
+
 /** Switches one picker source on / off, keeping the canonical order. */
 export function toggleSource(
   sources: readonly WarehouseSource[],

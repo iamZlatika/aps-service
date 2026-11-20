@@ -91,6 +91,7 @@ function mapNewQuickOrderProductToDto(product: NewQuickOrderItemSchema) {
   if (product.donorPartId !== null) {
     return {
       donor_part_id: product.donorPartId,
+      ...(product.costPrice && { cost_price: product.costPrice }),
       price: product.price,
       quantity: product.quantity,
     };

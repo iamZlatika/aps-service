@@ -11,6 +11,7 @@ import {
   warehouseLineSchema,
 } from "@/features/warehouse/lib/line.schema.ts";
 import {
+  getLineCostPrice,
   getWarehouseLineSource,
   isDonorPartSource,
 } from "@/features/warehouse/lib/service.ts";
@@ -39,10 +40,15 @@ export const QuickOrderWarehouseLineForm = ({
   >({
     resolver: zodResolver(warehouseLineSchema()),
     // The card price is only a default — a discount is normal.
-    defaultValues: { price: result.price ?? "", quantity: "1" },
+    defaultValues: {
+      price: result.price ?? "",
+      quantity: "1",
+      costPrice: result.purchasePrice ?? "",
+    },
   });
 
   const onSubmit = (values: WarehouseLineSchema) => {
+    const costPrice = getLineCostPrice(result, values.costPrice);
     onSave({
       ...getWarehouseLineSource(result),
       name: result.name,
@@ -50,8 +56,9 @@ export const QuickOrderWarehouseLineForm = ({
       quantity: isDonorPartSource(result) ? 1 : values.quantity,
       // Shown in the draft row only; the DTO mapper never sends it for a
       // warehouse line — the backend copies it from the card.
-      purchasePrice: result.purchasePrice ?? "",
-      costPrice: "",
+      purchasePrice: costPrice ?? result.purchasePrice ?? "",
+      // Donor part only: sent as cost_price, overwrites the part's card.
+      costPrice: costPrice ?? "",
       warehouseDonorId: null,
       donorParts: [],
     });

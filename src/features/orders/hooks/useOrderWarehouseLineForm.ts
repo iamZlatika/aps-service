@@ -12,6 +12,7 @@ import {
   orderWarehouseLineSchema,
 } from "@/features/orders/lib/schema.ts";
 import {
+  getLineCostPrice,
   getWarehouseLineSource,
   getWarehouseSourceErrorMessage,
   isDonorPartSource,
@@ -22,7 +23,10 @@ import type { ValidationError } from "@/shared/api/types.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 import { isApiError, notifyError } from "@/shared/lib/errors/services.ts";
 
-const FIELD_MAP = { manager_id: "managerId" } as const;
+const FIELD_MAP = {
+  manager_id: "managerId",
+  cost_price: "costPrice",
+} as const;
 
 type UseOrderWarehouseLineFormParams = {
   orderId: number;
@@ -58,6 +62,7 @@ export const useOrderWarehouseLineForm = ({
       // The card price is only a default — a discount is normal.
       price: result.price ?? "",
       quantity: "1",
+      costPrice: result.purchasePrice ?? "",
       managerId: user?.id,
     },
   });
@@ -73,6 +78,7 @@ export const useOrderWarehouseLineForm = ({
         purchasePrice: "",
         supplierName: "",
         quantity: isDonorPartSource(result) ? 1 : values.quantity,
+        costPrice: getLineCostPrice(result, values.costPrice),
         managerId: values.managerId,
       }),
     onSuccess: () => {

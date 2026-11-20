@@ -1449,7 +1449,7 @@
       },
       "fromDonor": "из {{donor}}",
       "costPrice": "Себестоимость",
-      "costPriceMissing": "не указана"
+      "costPriceHint": "Перезапишет себестоимость на карточке запчасти"
     },
     "badges": {
       "warehouse": "Склад",

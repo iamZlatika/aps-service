@@ -1,11 +1,16 @@
 import i18next from "i18next";
 import { z } from "zod";
 
-import { requiredDigitsField } from "@/features/warehouse/lib/fieldSchemas.ts";
+import {
+  optionalDigitsField,
+  requiredDigitsField,
+} from "@/features/warehouse/lib/fieldSchemas.ts";
 
 /**
  * A line sold from the warehouse: the price is always the seller's (the card
  * price is only a default), the name and purchase price come from the card.
+ * A donor part's cost price is prefilled from the card and overwrites it when
+ * changed.
  */
 export const warehouseLineSchema = () =>
   z.object({
@@ -19,6 +24,7 @@ export const warehouseLineSchema = () =>
       .refine((value) => value >= 1, {
         message: i18next.t("validation.minQuantity"),
       }),
+    costPrice: optionalDigitsField(),
   });
 
 export type WarehouseLineFormValues = z.input<

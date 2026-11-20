@@ -7,6 +7,7 @@ import {
   getDonorSalePartRows,
   getDonorSalePurchase,
   getDonorTitle,
+  getLineCostPrice,
   getSaleDocument,
   getSignedStockQuantity,
   getStoragePlaceLabel,
@@ -178,6 +179,25 @@ describe("getChangedMoneyValue", () => {
   it("never clears the price with an empty field", () => {
     expect(getChangedMoneyValue("", "1000")).toBeNull();
     expect(getChangedMoneyValue("", null)).toBeNull();
+  });
+});
+
+describe("getLineCostPrice", () => {
+  const part = { source: "donor_part" as const, purchasePrice: "1500" };
+
+  it("sends a donor part's cost price only when the manager changed it", () => {
+    expect(getLineCostPrice(part, "1800")).toBe("1800");
+    expect(getLineCostPrice(part, "1500")).toBeNull();
+    expect(getLineCostPrice(part, "")).toBeNull();
+    expect(getLineCostPrice({ ...part, purchasePrice: null }, "900")).toBe(
+      "900",
+    );
+  });
+
+  it("never sends it for a showcase / supply item", () => {
+    expect(
+      getLineCostPrice({ source: "showcase", purchasePrice: "100" }, "200"),
+    ).toBeNull();
   });
 });
 

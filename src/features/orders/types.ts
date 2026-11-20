@@ -124,6 +124,8 @@ export type NewOrderProduct = Omit<
   supplierName: string;
   /** Whole donor line only: the parts sold with it (none → all of them). */
   donorParts?: readonly DonorSalePart[];
+  /** Donor part line only: overwrites the part's cost price; null → not sent. */
+  costPrice?: string | null;
 };
 export type OrderService = {
   id: number;
