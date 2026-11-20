@@ -7,15 +7,41 @@ import { Badge } from "@/shared/components/ui/badge.tsx";
 interface WarehouseLineBadgeProps {
   warehouseItemId: number | null;
   donorPartId: number | null;
-  /** Orders only — quick sales can't sell a whole donor. */
   warehouseDonorId?: number | null;
 }
 
 /**
  * Where an order / quick-sale line came from. There is no single-part screen,
- * so a donor part leads to the parts list. A sold whole donor has no screen
- * at all (its card is gone), so its badge is not a link.
+ * so a donor part leads to the parts list; a sold donor keeps its card.
  */
+type LineTarget = { link: string; labelKey: string };
+
+function getLineTarget(
+  warehouseItemId: number | null,
+  donorPartId: number | null,
+  warehouseDonorId: number | null,
+): LineTarget | null {
+  if (warehouseDonorId !== null) {
+    return {
+      link: WAREHOUSE_LINKS.donor(warehouseDonorId),
+      labelKey: "warehouse.badges.wholeDonor",
+    };
+  }
+  if (warehouseItemId !== null) {
+    return {
+      link: WAREHOUSE_LINKS.item(warehouseItemId),
+      labelKey: "warehouse.badges.warehouse",
+    };
+  }
+  if (donorPartId !== null) {
+    return {
+      link: WAREHOUSE_LINKS.parts(),
+      labelKey: "warehouse.badges.donor",
+    };
+  }
+  return null;
+}
+
 export const WarehouseLineBadge = ({
   warehouseItemId,
   donorPartId,
@@ -23,28 +49,18 @@ export const WarehouseLineBadge = ({
 }: WarehouseLineBadgeProps) => {
   const { t } = useTranslation();
 
-  if (warehouseDonorId !== null) {
-    return (
-      <Badge variant="outline" className="shrink-0">
-        {t("warehouse.badges.wholeDonor")}
-      </Badge>
-    );
-  }
+  const target = getLineTarget(warehouseItemId, donorPartId, warehouseDonorId);
+  if (!target) return null;
 
-  if (warehouseItemId === null && donorPartId === null) return null;
-
-  const isItem = warehouseItemId !== null;
   return (
     <Link
-      to={
-        isItem ? WAREHOUSE_LINKS.item(warehouseItemId) : WAREHOUSE_LINKS.parts()
-      }
+      to={target.link}
       // The row itself opens the edit dialog — don't trigger it.
       onClick={(event) => event.stopPropagation()}
       className="shrink-0"
     >
       <Badge variant="outline" className="hover:bg-muted">
-        {t(isItem ? "warehouse.badges.warehouse" : "warehouse.badges.donor")}
+        {t(target.labelKey)}
       </Badge>
     </Link>
   );

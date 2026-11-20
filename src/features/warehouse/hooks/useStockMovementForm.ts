@@ -5,7 +5,10 @@ import { useForm, type UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { warehouseApi } from "@/features/warehouse/api";
-import { getSignedStockQuantity } from "@/features/warehouse/lib/service.ts";
+import {
+  getChangedMoneyValue,
+  getSignedStockQuantity,
+} from "@/features/warehouse/lib/service.ts";
 import {
   type StockMovementFormValues,
   type StockMovementSchema,
@@ -16,12 +19,17 @@ import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 import { isApiError, notifyError } from "@/shared/lib/errors/services.ts";
 
-const FIELD_MAP = { location_id: "locationId" } as const;
+const FIELD_MAP = {
+  location_id: "locationId",
+  purchase_price: "purchasePrice",
+} as const;
 
 type UseStockMovementFormParams = {
   itemId: number;
   reason: ManualStockReason;
   defaultLocationId: number | null;
+  /** The item's current purchase price — prefills the form. */
+  purchasePrice: string | null;
   onSuccess: () => void;
 };
 
@@ -35,6 +43,7 @@ export const useStockMovementForm = ({
   itemId,
   reason,
   defaultLocationId,
+  purchasePrice,
   onSuccess,
 }: UseStockMovementFormParams): UseStockMovementFormReturn => {
   const queryClient = useQueryClient();
@@ -50,6 +59,7 @@ export const useStockMovementForm = ({
       locationId: defaultLocationId ?? undefined,
       quantity: "",
       note: "",
+      purchasePrice: purchasePrice ?? "",
     },
   });
 
@@ -58,6 +68,10 @@ export const useStockMovementForm = ({
       warehouseApi.changeStock(itemId, {
         ...values,
         quantity: getSignedStockQuantity(values.reason, values.quantity),
+        purchasePrice: getChangedMoneyValue(
+          values.purchasePrice,
+          purchasePrice,
+        ),
       }),
     onSuccess: (item) => {
       toast.success(i18next.t("warehouse.stock.success"));

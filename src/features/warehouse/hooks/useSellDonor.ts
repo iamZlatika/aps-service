@@ -11,7 +11,10 @@ import {
   type SellDonorSchema,
   sellDonorSchema,
 } from "@/features/warehouse/lib/orderActions.schema.ts";
-import { getWarehouseSourceErrorMessage } from "@/features/warehouse/lib/service.ts";
+import {
+  getWarehouseSourceErrorMessage,
+  mapDonorSalePartRows,
+} from "@/features/warehouse/lib/service.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import type { ValidationError } from "@/shared/api/types.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
@@ -34,10 +37,10 @@ type UseSellDonorReturn = {
 };
 
 /**
- * Adds a whole donor as an order line (`warehouse_donor_id`). The backend
- * names the line after the donor, takes its acquisition cost as the purchase
- * price and removes the donor (with its parts) from the warehouse. Deleting
- * the line brings them back.
+ * Adds a donor as an order line (`warehouse_donor_id` + `donor_parts`). The
+ * backend names the line after the donor and sets its purchase: Σ cost prices
+ * of the picked parts, or acquisition + investments when none are picked (then
+ * every part goes). Deleting the line brings the donor and parts back.
  */
 export const useSellDonor = ({
   orderId,
@@ -51,6 +54,7 @@ export const useSellDonor = ({
     defaultValues: {
       donorId: null,
       donorLabel: "",
+      parts: [],
       price: "",
       managerId: user?.id,
     },
@@ -62,6 +66,7 @@ export const useSellDonor = ({
         warehouseItemId: null,
         donorPartId: null,
         warehouseDonorId: values.donorId,
+        donorParts: mapDonorSalePartRows(values.parts),
         // Not sent for a warehouse line — the backend snapshots the donor.
         name: values.donorLabel,
         purchasePrice: "",
@@ -81,16 +86,17 @@ export const useSellDonor = ({
     onError: (error) => {
       if (isApiError(error) && error.status === 422) {
         handleFormError(error, methods.setError, { fieldMap: FIELD_MAP });
-        // "Already sold or written off", "only one source", … — show it on
-        // the donor field, and refresh the list it was picked from.
+        // "Already sold", "part not in this donor", "part has no cost
+        // price", … — show it on the donor field and refresh the warehouse.
         const sourceError = getWarehouseSourceErrorMessage(
           isApiError<ValidationError>(error) ? error.data?.errors : undefined,
         );
         if (sourceError) {
           methods.setError("donorId", { type: "server", message: sourceError });
         }
+        // The list it was picked from and the donor card (parts, costs).
         void queryClient.invalidateQueries({
-          queryKey: queryKeys.warehouse.availableDonorOptions(),
+          queryKey: queryKeys.warehouse.all,
         });
       } else {
         notifyError(error);

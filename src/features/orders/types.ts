@@ -18,6 +18,7 @@ import type {
 import type { NewOrderSchema } from "@/features/orders/lib/schema.ts";
 import type { Referral } from "@/features/referrals/types.ts";
 import type { SearchPreset, User } from "@/features/users/types.ts";
+import type { DonorSalePart } from "@/features/warehouse/types.ts";
 import {
   type DocumentType,
   type PaymentMethodType,
@@ -99,7 +100,7 @@ export type OrderProduct = {
   quantity: number;
   warehouseItemId: number | null;
   donorPartId: number | null;
-  /** A whole donor sold as an order line (orders only, not quick sales). */
+  /** A whole donor sold as a line (orders and quick sales). */
   warehouseDonorId: number | null;
   completedAt: string | null;
   createdAt: string;
@@ -118,7 +119,12 @@ export type NewOrderProduct = Omit<
   | "completedAt"
   | "deletedByUser"
   | "supplier"
-> & { managerId: number; supplierName: string };
+> & {
+  managerId: number;
+  supplierName: string;
+  /** Whole donor line only: the parts sold with it (none → all of them). */
+  donorParts?: readonly DonorSalePart[];
+};
 export type OrderService = {
   id: number;
   manager: User;

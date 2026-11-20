@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { DictionaryRefField } from "@/features/warehouse/components/DictionaryRefField.tsx";
 import { LocationSelectField } from "@/features/warehouse/components/LocationSelectField.tsx";
 import { PartPhotoSection } from "@/features/warehouse/components/part-form/PartPhotoSection.tsx";
+import { SaveStoragePlaceCheckbox } from "@/features/warehouse/components/SaveStoragePlaceCheckbox.tsx";
 import { StoragePlaceField } from "@/features/warehouse/components/StoragePlaceField.tsx";
 import { useDonorPartForm } from "@/features/warehouse/hooks/useDonorPartForm.ts";
 import { createCategoryFetcher } from "@/features/warehouse/lib/searchFetchers.ts";
@@ -23,6 +24,7 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
+import { stripNonDigits } from "@/shared/lib/utils.ts";
 
 const PART_KIND = WAREHOUSE_CATEGORY_KINDS.PART;
 
@@ -53,6 +55,10 @@ export const PartFormDialog = ({
     register,
     formState: { errors },
   } = methods;
+
+  const onDigitsInput = (e: { currentTarget: HTMLInputElement }) => {
+    e.currentTarget.value = stripNonDigits(e.currentTarget.value);
+  };
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
@@ -91,6 +97,17 @@ export const PartFormDialog = ({
                 {...register("name")}
               />
             </div>
+            <div className="flex flex-col gap-1">
+              <Label>{t("warehouse.part.fields.costPrice")}</Label>
+              <FormField
+                autoComplete="off"
+                inputMode="numeric"
+                placeholder={t("warehouse.part.fields.costPriceHint")}
+                onInput={onDigitsInput}
+                error={errors.costPrice}
+                {...register("costPrice")}
+              />
+            </div>
             <Controller
               name="locationId"
               control={control}
@@ -115,6 +132,7 @@ export const PartFormDialog = ({
                 />
               )}
             />
+            <SaveStoragePlaceCheckbox />
             <div className="flex flex-col gap-1">
               <Label>{t("warehouse.part.fields.note")}</Label>
               <FormField

@@ -43,6 +43,7 @@ import {
 import { mapReferralDtoToReferral } from "@/features/referrals/lib/referralAdapters.ts";
 import { mapUserDtoToUser } from "@/features/users/lib/adapters.ts";
 import type { SearchPreset } from "@/features/users/types.ts";
+import { mapDonorSalePartsToDto } from "@/features/warehouse/lib/adapters.ts";
 import type { PaginatedResponse } from "@/widgets/table/models/types.ts";
 
 export function mapStatusHistoryItemDtoToStatusHistoryItem(
@@ -327,6 +328,10 @@ export function mapNewProductToDto(product: NewOrderProduct) {
   if (product.warehouseDonorId !== null) {
     return {
       warehouse_donor_id: product.warehouseDonorId,
+      ...(product.donorParts &&
+        product.donorParts.length > 0 && {
+          donor_parts: mapDonorSalePartsToDto(product.donorParts),
+        }),
       price: product.price,
       quantity: product.quantity,
       manager_id: product.managerId,

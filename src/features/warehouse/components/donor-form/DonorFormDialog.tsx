@@ -2,6 +2,7 @@ import { Controller, FormProvider } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { LocationSelectField } from "@/features/warehouse/components/LocationSelectField.tsx";
+import { SaveStoragePlaceCheckbox } from "@/features/warehouse/components/SaveStoragePlaceCheckbox.tsx";
 import { StoragePlaceField } from "@/features/warehouse/components/StoragePlaceField.tsx";
 import { useDonorForm } from "@/features/warehouse/hooks/useDonorForm.ts";
 import type { Donor, DonorDetail } from "@/features/warehouse/types.ts";
@@ -122,6 +123,7 @@ export const DonorFormDialog = ({
                 />
               )}
             />
+            <SaveStoragePlaceCheckbox />
             <div className="flex flex-col gap-1">
               <Label>{t("warehouse.donor.fields.note")}</Label>
               <FormField

@@ -26,6 +26,7 @@ const FIELD_MAP = {
   acquisition_cost: "acquisitionCost",
   storage_place_id: "storagePlace",
   storage_place_name: "storagePlace",
+  save_storage_place: "storagePlace",
   location_id: "locationId",
 } as const;
 
@@ -68,7 +69,7 @@ export const useDonorForm = ({
             : "warehouse.donor.successCreate",
         ),
       );
-      // Disposing a donor also disposes its available parts — refresh them too.
+      // The donor shows in lists, the picker and its parts — refresh them all.
       void queryClient.invalidateQueries({ queryKey: queryKeys.warehouse.all });
       onSuccess(saved);
     },

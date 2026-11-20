@@ -22,8 +22,10 @@ import { isApiError, notifyError } from "@/shared/lib/errors/services.ts";
 const FIELD_MAP = {
   category_id: "category",
   category_name: "category",
+  cost_price: "costPrice",
   storage_place_id: "storagePlace",
   storage_place_name: "storagePlace",
+  save_storage_place: "storagePlace",
   location_id: "locationId",
 } as const;
 

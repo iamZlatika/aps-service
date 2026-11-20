@@ -4,6 +4,7 @@ import { LocationDtoSchema } from "@/entities/location/dto.ts";
 import { SupplierDtoSchema } from "@/features/dictionaries/api/dto.ts";
 import { UserDtoSchema } from "@/features/users/api/dto.ts";
 import {
+  DONOR_STATUSES,
   STOCK_MOVEMENT_REASONS,
   WAREHOUSE_CATEGORY_KINDS,
   WAREHOUSE_ITEM_KINDS,
@@ -70,6 +71,8 @@ export const StockMovementDtoSchema = z.object({
   quick_order_id: z.number().nullable(),
   order_product_id: z.number().nullable(),
   user: UserDtoSchema.nullable(),
+  // The item's purchase price at the moment of the movement.
+  purchase_price: z.string().nullable(),
   note: z.string().nullable(),
   created_at: z.iso.datetime(),
 });
@@ -118,11 +121,26 @@ export const DonorShortDtoSchema = z.object({
 });
 export type DonorShortDto = z.infer<typeof DonorShortDtoSchema>;
 
-export const DonorDtoSchema = DonorShortDtoSchema.extend({
+// Exactly one of the two is set: a dictionary place or free text kept on the card.
+const StoragePlaceFieldsDtoSchema = z.object({
   storage_place: StoragePlaceDtoSchema.nullable(),
+  storage_place_note: z.string().nullable(),
+});
+
+const SaleInfoDtoSchema = z.object({
+  sold_in_order_id: z.number().nullable(),
+  sold_in_quick_order_id: z.number().nullable(),
+  sold_at: z.iso.datetime().nullable(),
+  /** Price of the selling line itself (not the donor's whole revenue). */
+  sold_price: z.string().nullable(),
+});
+
+export const DonorDtoSchema = DonorShortDtoSchema.extend({
+  ...StoragePlaceFieldsDtoSchema.shape,
+  ...SaleInfoDtoSchema.shape,
+  status: zodEnumFromConst(DONOR_STATUSES),
   source_order_id: z.number().nullable(),
   origin: z.string().nullable(),
-  sold_in_order_id: z.number().nullable(),
   supplier: SupplierDtoSchema.nullable(),
   location: LocationDtoSchema.nullable(),
   acquisition_cost: z.string().nullable(),
@@ -136,15 +154,42 @@ export const DonorPartDtoSchema = z.object({
   donor: DonorShortDtoSchema.nullable(),
   category: WarehouseCategoryDtoSchema,
   name: z.string().nullable(),
-  storage_place: StoragePlaceDtoSchema.nullable(),
+  cost_price: z.string().nullable(),
+  is_sold: z.boolean(),
+  sold_with_donor: z.boolean(),
+  ...SaleInfoDtoSchema.shape,
+  ...StoragePlaceFieldsDtoSchema.shape,
   location: LocationDtoSchema.nullable(),
   note: z.string().nullable(),
   photo_url: z.string().nullable(),
 });
 export type DonorPartDto = z.infer<typeof DonorPartDtoSchema>;
 
+export const DonorInvestmentDtoSchema = z.object({
+  id: z.number(),
+  warehouse_item_id: z.number().nullable(),
+  name: z.string(),
+  quantity: z.number(),
+  amount: z.string(),
+  note: z.string().nullable(),
+  created_at: z.iso.datetime(),
+});
+export type DonorInvestmentDto = z.infer<typeof DonorInvestmentDtoSchema>;
+
+export const DonorEconomicsDtoSchema = z.object({
+  acquisition_cost: z.string(),
+  investments_total: z.string(),
+  total_cost: z.string(),
+  parts_cost_recovered: z.string(),
+  revenue: z.string(),
+  profit: z.string(),
+});
+export type DonorEconomicsDto = z.infer<typeof DonorEconomicsDtoSchema>;
+
 export const DonorDetailDtoSchema = DonorDtoSchema.extend({
   parts: z.array(DonorPartDtoSchema),
+  investments: z.array(DonorInvestmentDtoSchema),
+  economics: DonorEconomicsDtoSchema,
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),
 });
@@ -175,6 +220,9 @@ export const WarehouseSearchResultDtoSchema = z.object({
   purchase_price: z.string().nullable(),
   quantity: z.number().nullable(),
   storage_place: StoragePlaceDtoSchema.nullable(),
+  // v6 documents the note on donors and parts only — optional here until the
+  // picker response is confirmed to carry it.
+  storage_place_note: z.string().nullish(),
   location: LocationDtoSchema.nullable(),
   donor: DonorShortDtoSchema.nullable(),
 });

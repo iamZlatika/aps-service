@@ -4,6 +4,7 @@ import { z } from "zod";
 import {
   dictionaryRefField,
   isDictionaryRefFilled,
+  optionalDigitsField,
 } from "@/features/warehouse/lib/fieldSchemas.ts";
 
 export const donorPartSchema = () =>
@@ -11,7 +12,9 @@ export const donorPartSchema = () =>
     .object({
       category: dictionaryRefField(),
       name: z.string().trim(),
+      costPrice: optionalDigitsField(),
       storagePlace: dictionaryRefField(),
+      saveStoragePlace: z.boolean(),
       locationId: z
         .number({ error: i18next.t("validation.locationRequired") })
         .int()

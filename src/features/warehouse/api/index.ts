@@ -18,6 +18,7 @@ import { WAREHOUSE_API } from "@/features/warehouse/api/endpoints.ts";
 import {
   mapDonorDetailDto,
   mapDonorPartDto,
+  mapNewDonorInvestmentToDto,
   mapNewDonorPartToDto,
   mapNewDonorToDto,
   mapNewStockMovementToDto,
@@ -36,6 +37,7 @@ import type {
   DonorDetail,
   DonorPart,
   NewDonor,
+  NewDonorInvestment,
   NewDonorPart,
   NewStockMovement,
   NewStoragePlace,
@@ -368,6 +370,33 @@ export const warehouseApi = {
     );
     const dto = parseDto(StoragePlaceResponseDtoSchema, response);
     return mapStoragePlaceDto(dto.data);
+  },
+
+  // ── Donor investments ────────────────────────────────────────────────────
+  /** In-stock donors only (422 `donor_sold_no_investments`); returns the full card. */
+  addDonorInvestment: async (
+    donorId: number,
+    data: NewDonorInvestment,
+  ): Promise<DonorDetail> => {
+    const payload = mapNewDonorInvestmentToDto(data);
+    const response = await post<typeof payload, DataEnvelope<DonorDetailDto>>(
+      WAREHOUSE_API.donorInvestments(donorId),
+      payload,
+    );
+    const dto = parseDto(DonorDetailDtoSchema, response.data);
+    return mapDonorDetailDto(dto);
+  },
+
+  /** A warehouse line gives its stock back (a `return` movement). */
+  deleteDonorInvestment: async (
+    donorId: number,
+    investmentId: number,
+  ): Promise<DonorDetail> => {
+    const response = await del<DataEnvelope<DonorDetailDto>>(
+      WAREHOUSE_API.donorInvestment(donorId, investmentId),
+    );
+    const dto = parseDto(DonorDetailDtoSchema, response.data);
+    return mapDonorDetailDto(dto);
   },
 
   /** 422 while any donor or part is still kept there. */

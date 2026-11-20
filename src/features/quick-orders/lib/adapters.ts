@@ -16,6 +16,7 @@ import type {
   QuickOrderDetail,
 } from "@/features/quick-orders/types.ts";
 import { mapUserDtoToUser } from "@/features/users/lib/adapters.ts";
+import { mapDonorSalePartsToDto } from "@/features/warehouse/lib/adapters.ts";
 import type { PaginatedResponse } from "@/widgets/table/models/types.ts";
 
 // from dto
@@ -90,6 +91,16 @@ function mapNewQuickOrderProductToDto(product: NewQuickOrderItemSchema) {
   if (product.donorPartId !== null) {
     return {
       donor_part_id: product.donorPartId,
+      price: product.price,
+      quantity: product.quantity,
+    };
+  }
+  if (product.warehouseDonorId !== null) {
+    return {
+      warehouse_donor_id: product.warehouseDonorId,
+      ...(product.donorParts.length > 0 && {
+        donor_parts: mapDonorSalePartsToDto(product.donorParts),
+      }),
       price: product.price,
       quantity: product.quantity,
     };

@@ -149,6 +149,7 @@ const ItemPageContent = ({ itemId }: ItemPageContentProps) => {
                   : null
               }
               defaultLocationId={user?.location?.id ?? null}
+              purchasePrice={item.purchasePrice}
               onClose={() => setDialog(null)}
             />
           )}

@@ -52,6 +52,8 @@ export const QuickOrderWarehouseLineForm = ({
       // warehouse line — the backend copies it from the card.
       purchasePrice: result.purchasePrice ?? "",
       costPrice: "",
+      warehouseDonorId: null,
+      donorParts: [],
     });
     onClose();
   };

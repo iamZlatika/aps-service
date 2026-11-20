@@ -1,6 +1,7 @@
 import i18next from "i18next";
 import { z } from "zod";
 
+import { optionalDigitsField } from "@/features/warehouse/lib/fieldSchemas.ts";
 import { MANUAL_STOCK_REASONS } from "@/features/warehouse/types.ts";
 import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
 
@@ -22,6 +23,7 @@ export const stockMovementSchema = () =>
           message: i18next.t("warehouse.stock.nonZero"),
         }),
       note: z.string().trim().max(500),
+      purchasePrice: optionalDigitsField(),
     })
     .superRefine((values, ctx) => {
       // A correction means "accounting drifted from reality" — say why. The

@@ -18,6 +18,7 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
+import { stripNonDigits } from "@/shared/lib/utils.ts";
 
 type StockOffice = { id: number; name: string };
 
@@ -28,6 +29,8 @@ interface StockMovementDialogProps {
   office: StockOffice | null;
   /** Correction: the office is picked in the form, this is the default. */
   defaultLocationId: number | null;
+  /** The item's current purchase price — prefills the field. */
+  purchasePrice: string | null;
   onClose: () => void;
 }
 
@@ -36,6 +39,7 @@ export const StockMovementDialog = ({
   reason,
   office,
   defaultLocationId,
+  purchasePrice,
   onClose,
 }: StockMovementDialogProps) => {
   const { t } = useTranslation();
@@ -43,6 +47,7 @@ export const StockMovementDialog = ({
     itemId,
     reason,
     defaultLocationId: office?.id ?? defaultLocationId,
+    purchasePrice,
     onSuccess: onClose,
   });
   const {
@@ -51,6 +56,10 @@ export const StockMovementDialog = ({
     formState: { errors },
   } = methods;
   const isCorrection = reason === MANUAL_STOCK_REASONS.CORRECTION;
+
+  const onDigitsInput = (e: { currentTarget: HTMLInputElement }) => {
+    e.currentTarget.value = stripNonDigits(e.currentTarget.value);
+  };
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
@@ -94,6 +103,21 @@ export const StockMovementDialog = ({
                   {t("warehouse.stock.correctionHint")}
                 </p>
               )}
+            </div>
+            {/* One purchase price per item, no batches: a new value
+                overwrites it for every office and the whole stock. */}
+            <div className="flex flex-col gap-1">
+              <Label>{t("warehouse.stock.purchasePrice")}</Label>
+              <FormField
+                autoComplete="off"
+                inputMode="numeric"
+                onInput={onDigitsInput}
+                error={errors.purchasePrice}
+                {...register("purchasePrice")}
+              />
+              <p className="text-xs text-muted-foreground">
+                {t("warehouse.stock.purchasePriceHint")}
+              </p>
             </div>
             {/* Optional for purchase / write-off, required for correction. */}
             <div className="flex flex-col gap-1">

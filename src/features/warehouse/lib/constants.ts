@@ -26,6 +26,12 @@ export const ITEMS_FILTER_KEYS = ["category_id", "location_id"] as const;
 
 export const DONORS_FILTER_KEYS = ["location_id"] as const;
 
+/**
+ * In stock / Sold / All switch of the donors list — forwarded like a filter,
+ * but not reset by "Clear filters" (it's a view, not a narrowing).
+ */
+export const DONOR_STATUS_FILTER_KEY = "status";
+
 export const PARTS_FILTER_KEYS = ["category_id", "location_id"] as const;
 
 /**

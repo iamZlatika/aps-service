@@ -8,6 +8,7 @@ import {
 import { ORDERS_LINKS } from "@/features/orders/navigation.ts";
 import { QUICK_ORDERS_LINKS } from "@/features/quick-orders/navigation.ts";
 import type { StockMovement } from "@/features/warehouse/types.ts";
+import { MoneyAmount } from "@/shared/components/common/MoneyAmount.tsx";
 import { Card, CardContent } from "@/shared/components/ui/card.tsx";
 import { cn, formatDate } from "@/shared/lib/utils.ts";
 
@@ -71,6 +72,17 @@ export const ItemMovementsCard = ({ movements }: ItemMovementsCardProps) => {
           {row.delta > 0 ? `+${row.delta}` : row.delta}
         </span>
       ),
+    },
+    {
+      // The price in force at that moment — shows when it changed.
+      key: "purchasePrice",
+      label: t("warehouse.table.purchasePrice"),
+      render: (row) =>
+        row.purchasePrice !== null ? (
+          <MoneyAmount value={row.purchasePrice} />
+        ) : (
+          "—"
+        ),
     },
     {
       key: "user",

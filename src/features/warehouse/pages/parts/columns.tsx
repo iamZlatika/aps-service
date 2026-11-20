@@ -2,8 +2,12 @@ import i18next from "i18next";
 
 import { DonorTitle } from "@/features/warehouse/components/DonorTitle.tsx";
 import { PhotoThumb } from "@/features/warehouse/components/PhotoThumb.tsx";
-import { getPartDisplayName } from "@/features/warehouse/lib/service.ts";
+import {
+  getPartDisplayName,
+  getStoragePlaceLabel,
+} from "@/features/warehouse/lib/service.ts";
 import type { DonorPart } from "@/features/warehouse/types.ts";
+import { MoneyAmount } from "@/shared/components/common/MoneyAmount.tsx";
 import { type ColumnConfig } from "@/widgets/table/models/types.ts";
 
 export function buildDonorPartColumns(): ColumnConfig<DonorPart>[] {
@@ -33,6 +37,14 @@ export function buildDonorPartColumns(): ColumnConfig<DonorPart>[] {
       renderCell: (_value, part) => part.category.name,
     },
     {
+      key: "costPrice",
+      field: "costPrice",
+      labelKey: "warehouse.table.costPrice",
+      sortable: false,
+      renderCell: (_value, part) =>
+        part.costPrice === null ? "—" : <MoneyAmount value={part.costPrice} />,
+    },
+    {
       key: "donor",
       field: "donor",
       labelKey: "warehouse.table.donor",
@@ -58,7 +70,7 @@ export function buildDonorPartColumns(): ColumnConfig<DonorPart>[] {
       field: "storagePlace",
       labelKey: "warehouse.table.storagePlace",
       sortable: false,
-      renderCell: (_value, part) => part.storagePlace?.name ?? "—",
+      renderCell: (_value, part) => getStoragePlaceLabel(part) ?? "—",
     },
   ];
 }

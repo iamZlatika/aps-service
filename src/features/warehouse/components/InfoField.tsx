@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 interface InfoFieldProps {
-  label: string;
+  label: ReactNode;
   children: ReactNode;
 }
 

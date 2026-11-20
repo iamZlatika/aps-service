@@ -34,6 +34,16 @@ export const newQuickOrderItemSchema = () =>
     // only for display — the backend takes it from the card.
     warehouseItemId: z.number().int().positive().nullable().default(null),
     donorPartId: z.number().int().positive().nullable().default(null),
+    // A whole donor (quantity 1) and the parts sold with it — none = all.
+    warehouseDonorId: z.number().int().positive().nullable().default(null),
+    donorParts: z
+      .array(
+        z.object({
+          id: z.number().int().positive(),
+          costPrice: z.string().nullable(),
+        }),
+      )
+      .default([]),
   });
 export type NewQuickOrderItemSchema = z.infer<
   ReturnType<typeof newQuickOrderItemSchema>

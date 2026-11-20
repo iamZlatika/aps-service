@@ -4,6 +4,7 @@ import { z } from "zod";
 import {
   dictionaryRefField,
   isDictionaryRefFilled,
+  optionalDigitsField,
   requiredDigitsField,
 } from "@/features/warehouse/lib/fieldSchemas.ts";
 
@@ -19,29 +20,66 @@ export const toDonorSchema = () =>
 export type ToDonorFormValues = z.input<ReturnType<typeof toDonorSchema>>;
 export type ToDonorSchema = z.infer<ReturnType<typeof toDonorSchema>>;
 
+/** A required id picked in a combobox (null until something is picked). */
+const pickedIdField = () =>
+  z
+    .number()
+    .int()
+    .positive()
+    .nullable()
+    .transform((value, ctx) => {
+      if (value === null) {
+        ctx.addIssue({
+          code: "custom",
+          message: i18next.t("validation.field_required"),
+        });
+        return z.NEVER;
+      }
+      return value;
+    });
+
 /**
- * Order → "Sell donor": a whole donor becomes a product line of the order.
- * Name and purchase price come from the donor card; the manager sets the price.
+ * A picked part must have a cost price (on its card or typed here): the
+ * line's purchase is their sum, and the master's percent comes from margin.
  */
-export const sellDonorSchema = () =>
+const donorSalePartSchema = () =>
+  z
+    .object({
+      id: z.number().int().positive(),
+      label: z.string(),
+      selected: z.boolean(),
+      costPrice: optionalDigitsField(),
+      cardCostPrice: z.string().nullable(),
+    })
+    .superRefine((part, ctx) => {
+      if (part.selected && !part.costPrice) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["costPrice"],
+          message: i18next.t("validation.field_required"),
+        });
+      }
+    });
+
+/**
+ * "Sell donor" — the same in an order and in a quick sale: which donor, which
+ * of its parts go with it (none = all), and the price. The name comes from the
+ * donor card; the purchase is computed by the backend.
+ */
+export const donorSaleSchema = () =>
   z.object({
-    donorId: z
-      .number()
-      .int()
-      .positive()
-      .nullable()
-      .transform((value, ctx) => {
-        if (value === null) {
-          ctx.addIssue({
-            code: "custom",
-            message: i18next.t("validation.field_required"),
-          });
-          return z.NEVER;
-        }
-        return value;
-      }),
+    donorId: pickedIdField(),
     donorLabel: z.string(),
+    parts: z.array(donorSalePartSchema()),
     price: requiredDigitsField(),
+  });
+
+export type DonorSaleFormValues = z.input<ReturnType<typeof donorSaleSchema>>;
+export type DonorSaleSchema = z.infer<ReturnType<typeof donorSaleSchema>>;
+
+/** Order → "Sell donor": a donor line also needs its manager. */
+export const sellDonorSchema = () =>
+  donorSaleSchema().extend({
     managerId: z
       .number({ error: i18next.t("validation.field_required") })
       .int()

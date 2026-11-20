@@ -4,6 +4,8 @@ import { mapUserDtoToUser } from "@/features/users/lib/adapters.ts";
 import type {
   DonorDetailDto,
   DonorDto,
+  DonorEconomicsDto,
+  DonorInvestmentDto,
   DonorPartDto,
   DonorShortDto,
   PaginatedDonorPartsDto,
@@ -21,14 +23,21 @@ import type {
   DictionaryRef,
   Donor,
   DonorDetail,
+  DonorEconomics,
+  DonorInvestment,
   DonorPart,
+  DonorSalePart,
   DonorShort,
   NewDonor,
+  NewDonorInvestment,
   NewDonorPart,
   NewStockMovement,
   NewWarehouseItem,
+  SaleInfo,
   StockMovement,
   StoragePlace,
+  StoragePlaceFields,
+  StoragePlaceInput,
   WarehouseCategory,
   WarehouseItem,
   WarehouseItemDetail,
@@ -67,6 +76,7 @@ function mapStockMovementDto(dto: StockMovementDto): StockMovement {
     quickOrderId: dto.quick_order_id,
     orderProductId: dto.order_product_id,
     user: dto.user ? mapUserDtoToUser(dto.user) : null,
+    purchasePrice: dto.purchase_price,
     note: dto.note,
     createdAt: dto.created_at,
   };
@@ -113,6 +123,32 @@ export function mapPaginatedWarehouseItemsDto(
   };
 }
 
+function mapStoragePlaceFieldsDto(dto: {
+  storage_place: StoragePlaceDto | null;
+  storage_place_note?: string | null;
+}): StoragePlaceFields {
+  return {
+    storagePlace: dto.storage_place
+      ? mapStoragePlaceDto(dto.storage_place)
+      : null,
+    storagePlaceNote: dto.storage_place_note ?? null,
+  };
+}
+
+function mapSaleInfoDto(dto: {
+  sold_in_order_id: number | null;
+  sold_in_quick_order_id: number | null;
+  sold_at: string | null;
+  sold_price: string | null;
+}): SaleInfo {
+  return {
+    soldInOrderId: dto.sold_in_order_id,
+    soldInQuickOrderId: dto.sold_in_quick_order_id,
+    soldAt: dto.sold_at,
+    soldPrice: dto.sold_price,
+  };
+}
+
 function mapDonorShortDto(dto: DonorShortDto): DonorShort {
   return {
     id: dto.id,
@@ -125,12 +161,11 @@ function mapDonorShortDto(dto: DonorShortDto): DonorShort {
 export function mapDonorDto(dto: DonorDto): Donor {
   return {
     ...mapDonorShortDto(dto),
-    storagePlace: dto.storage_place
-      ? mapStoragePlaceDto(dto.storage_place)
-      : null,
+    ...mapStoragePlaceFieldsDto(dto),
+    ...mapSaleInfoDto(dto),
+    status: dto.status,
     sourceOrderId: dto.source_order_id,
     origin: dto.origin,
-    soldInOrderId: dto.sold_in_order_id,
     supplier: dto.supplier ? mapSupplierDtoToSupplier(dto.supplier) : null,
     location: dto.location ? mapLocationDtoToLocation(dto.location) : null,
     acquisitionCost: dto.acquisition_cost,
@@ -145,12 +180,37 @@ export function mapDonorPartDto(dto: DonorPartDto): DonorPart {
     donor: dto.donor ? mapDonorShortDto(dto.donor) : null,
     category: mapWarehouseCategoryDto(dto.category),
     name: dto.name,
-    storagePlace: dto.storage_place
-      ? mapStoragePlaceDto(dto.storage_place)
-      : null,
+    costPrice: dto.cost_price,
+    isSold: dto.is_sold,
+    soldWithDonor: dto.sold_with_donor,
+    ...mapSaleInfoDto(dto),
+    ...mapStoragePlaceFieldsDto(dto),
     location: dto.location ? mapLocationDtoToLocation(dto.location) : null,
     note: dto.note,
     photoUrl: dto.photo_url,
+  };
+}
+
+function mapDonorInvestmentDto(dto: DonorInvestmentDto): DonorInvestment {
+  return {
+    id: dto.id,
+    warehouseItemId: dto.warehouse_item_id,
+    name: dto.name,
+    quantity: dto.quantity,
+    amount: dto.amount,
+    note: dto.note,
+    createdAt: dto.created_at,
+  };
+}
+
+function mapDonorEconomicsDto(dto: DonorEconomicsDto): DonorEconomics {
+  return {
+    acquisitionCost: dto.acquisition_cost,
+    investmentsTotal: dto.investments_total,
+    totalCost: dto.total_cost,
+    partsCostRecovered: dto.parts_cost_recovered,
+    revenue: dto.revenue,
+    profit: dto.profit,
   };
 }
 
@@ -158,6 +218,8 @@ export function mapDonorDetailDto(dto: DonorDetailDto): DonorDetail {
   return {
     ...mapDonorDto(dto),
     parts: dto.parts.map(mapDonorPartDto),
+    investments: dto.investments.map(mapDonorInvestmentDto),
+    economics: mapDonorEconomicsDto(dto.economics),
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
   };
@@ -200,9 +262,7 @@ export function mapWarehouseSearchResultDto(
     price: dto.price,
     purchasePrice: dto.purchase_price,
     quantity: dto.quantity,
-    storagePlace: dto.storage_place
-      ? mapStoragePlaceDto(dto.storage_place)
-      : null,
+    ...mapStoragePlaceFieldsDto(dto),
     location: dto.location ? mapLocationDtoToLocation(dto.location) : null,
     donor: dto.donor ? mapDonorShortDto(dto.donor) : null,
   };
@@ -214,6 +274,19 @@ export function mapWarehouseSearchResultDto(
 function getNewRefName(ref: DictionaryRef): string | null {
   const name = ref.name.trim();
   return ref.id === null && name ? name : null;
+}
+
+/**
+ * A typed place stays on the card unless the manager asked to keep it in the
+ * dictionary; the flag goes only with a typed name, never with a picked id.
+ */
+function mapStoragePlaceInputToDto(input: StoragePlaceInput) {
+  const name = getNewRefName(input.storagePlace);
+  return {
+    storage_place_id: input.storagePlace.id,
+    storage_place_name: name,
+    ...(name !== null && { save_storage_place: input.saveStoragePlace }),
+  };
 }
 
 export function mapNewWarehouseItemToDto(item: NewWarehouseItem) {
@@ -236,6 +309,9 @@ export function mapNewStockMovementToDto(movement: NewStockMovement) {
     quantity: movement.quantity,
     reason: movement.reason,
     note: movement.note || null,
+    ...(movement.purchasePrice !== null && {
+      purchase_price: movement.purchasePrice,
+    }),
   };
 }
 
@@ -247,8 +323,7 @@ export function mapNewDonorToDto(donor: NewDonor) {
     origin: donor.origin || null,
     supplier_id: donor.supplierId,
     acquisition_cost: donor.acquisitionCost || null,
-    storage_place_id: donor.storagePlace.id,
-    storage_place_name: getNewRefName(donor.storagePlace),
+    ...mapStoragePlaceInputToDto(donor),
     location_id: donor.locationId,
     note: donor.note || null,
   };
@@ -259,9 +334,34 @@ export function mapNewDonorPartToDto(part: NewDonorPart) {
     category_id: part.category.id,
     category_name: getNewRefName(part.category),
     name: part.name || null,
-    storage_place_id: part.storagePlace.id,
-    storage_place_name: getNewRefName(part.storagePlace),
+    cost_price: part.costPrice || null,
+    ...mapStoragePlaceInputToDto(part),
     location_id: part.locationId,
     note: part.note || null,
   };
+}
+
+export function mapNewDonorInvestmentToDto(investment: NewDonorInvestment) {
+  if (investment.warehouseItemId !== null) {
+    return {
+      warehouse_item_id: investment.warehouseItemId,
+      quantity: investment.quantity,
+      // Left out → purchase price × quantity on the backend.
+      ...(investment.amount && { amount: investment.amount }),
+      note: investment.note || null,
+    };
+  }
+  return {
+    name: investment.name,
+    amount: investment.amount,
+    note: investment.note || null,
+  };
+}
+
+/** A cost price is sent only when there is one — it is saved on the part. */
+export function mapDonorSalePartsToDto(parts: readonly DonorSalePart[]) {
+  return parts.map((part) => ({
+    id: part.id,
+    ...(part.costPrice !== null && { cost_price: part.costPrice }),
+  }));
 }

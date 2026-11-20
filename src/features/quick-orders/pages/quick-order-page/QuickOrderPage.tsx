@@ -81,6 +81,7 @@ const QuickOrderPageContent = ({
             <WarehouseLineBadge
               warehouseItemId={row.warehouseItemId}
               donorPartId={row.donorPartId}
+              warehouseDonorId={row.warehouseDonorId}
             />
           )}
         </span>

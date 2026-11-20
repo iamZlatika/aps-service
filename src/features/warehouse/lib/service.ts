@@ -1,18 +1,29 @@
 import type { DonorSchema } from "@/features/warehouse/lib/donor.schema.ts";
+import {
+  type DonorInvestmentSchema,
+  INVESTMENT_MODES,
+} from "@/features/warehouse/lib/investment.schema.ts";
 import type { WarehouseItemSchema } from "@/features/warehouse/lib/item.schema.ts";
 import type { DonorPartSchema } from "@/features/warehouse/lib/part.schema.ts";
 import {
   type DictionaryRef,
   type Donor,
+  DONOR_STATUS_FILTERS,
+  DONOR_STATUSES,
   type DonorPart,
+  type DonorSalePart,
   type DonorShort,
+  type DonorStatusFilter,
   MANUAL_STOCK_REASONS,
   type ManualStockReason,
   type NewDonor,
+  type NewDonorInvestment,
   type NewDonorPart,
   type NewStoragePlace,
   type NewWarehouseItem,
+  type SaleInfo,
   type StoragePlace,
+  type StoragePlaceFields,
   WAREHOUSE_CATEGORY_KINDS,
   WAREHOUSE_ITEM_KINDS,
   WAREHOUSE_SOURCES,
@@ -44,7 +55,22 @@ function toRef(entity: { id: number; name: string } | null): DictionaryRef {
   return entity ? { id: entity.id, name: entity.name } : EMPTY_REF;
 }
 
+/** A card with free-text place opens the form with that text typed in. */
+function toStoragePlaceRef(entity: StoragePlaceFields): DictionaryRef {
+  if (entity.storagePlace) return toRef(entity.storagePlace);
+  return entity.storagePlaceNote
+    ? { id: null, name: entity.storagePlaceNote }
+    : EMPTY_REF;
+}
+
 // ── Display ─────────────────────────────────────────────────────────────────
+
+/** "Where it lies" — the dictionary place or the free text on the card. */
+export function getStoragePlaceLabel(
+  entity: StoragePlaceFields,
+): string | null {
+  return entity.storagePlace?.name ?? entity.storagePlaceNote;
+}
 
 /** "Lenovo Ноутбук IdeaPad 3", or null when the donor has no device data at all. */
 export function getDonorTitle(donor: DonorShort): string | null {
@@ -79,6 +105,18 @@ export function getSignedStockQuantity(
   }
 }
 
+/**
+ * Money fields prefilled from a card (an item's purchase price, a part's cost
+ * price): only a changed, non-empty value is sent — it overwrites the card.
+ */
+export function getChangedMoneyValue(
+  value: string,
+  current: string | null,
+): string | null {
+  const next = value.trim();
+  return next && next !== current ? next : null;
+}
+
 /** Switches one picker source on / off, keeping the canonical order. */
 export function toggleSource(
   sources: readonly WarehouseSource[],
@@ -102,6 +140,114 @@ export function isDonorPartSource(
   result: Pick<WarehouseSearchResult, "source">,
 ): boolean {
   return result.source === WAREHOUSE_SOURCES.DONOR_PART;
+}
+
+// ── Donor sale & status ─────────────────────────────────────────────────────
+
+export function isDonorSold(donor: Pick<Donor, "status">): boolean {
+  return donor.status === DONOR_STATUSES.SOLD;
+}
+
+/** `?status=` from the URL; missing / unknown → in stock (the backend default). */
+export function parseDonorStatusFilter(
+  value: string | undefined,
+): DonorStatusFilter {
+  return (
+    Object.values(DONOR_STATUS_FILTERS).find((status) => status === value) ??
+    DONOR_STATUS_FILTERS.IN_STOCK
+  );
+}
+
+/** In stock is the default — the parameter is then left out of the URL. */
+export function toDonorStatusParam(status: DonorStatusFilter): string {
+  return status === DONOR_STATUS_FILTERS.IN_STOCK ? "" : status;
+}
+
+export type SaleDocument =
+  | { kind: "order"; id: number }
+  | { kind: "quickOrder"; id: number };
+
+/** The order or quick sale a donor / part left in, if any. */
+export function getSaleDocument(sale: SaleInfo): SaleDocument | null {
+  if (sale.soldInOrderId !== null) {
+    return { kind: "order", id: sale.soldInOrderId };
+  }
+  if (sale.soldInQuickOrderId !== null) {
+    return { kind: "quickOrder", id: sale.soldInQuickOrderId };
+  }
+  return null;
+}
+
+/** One donor part in the "sell donor" form. */
+export type DonorSalePartRow = {
+  id: number;
+  label: string;
+  selected: boolean;
+  costPrice: string;
+  /** The value on the card — sent again only when edited. */
+  cardCostPrice: string | null;
+};
+
+/** Only parts on the shelf can go with the donor. */
+export function getDonorSalePartRows(
+  parts: readonly DonorPart[],
+): DonorSalePartRow[] {
+  return parts
+    .filter((part) => !part.isSold)
+    .map((part) => ({
+      id: part.id,
+      label: getPartDisplayName(part),
+      selected: false,
+      costPrice: part.costPrice ?? "",
+      cardCostPrice: part.costPrice,
+    }));
+}
+
+export function mapDonorSalePartRows(
+  rows: readonly DonorSalePartRow[],
+): DonorSalePart[] {
+  return rows
+    .filter((row) => row.selected)
+    .map((row) => ({
+      id: row.id,
+      costPrice: getChangedMoneyValue(row.costPrice, row.cardCostPrice),
+    }));
+}
+
+/**
+ * The purchase the line will get: picked parts → the sum of their cost
+ * prices; nothing picked → the donor's full cost (acquisition + investments).
+ */
+export function getDonorSalePurchase(
+  rows: readonly Pick<DonorSalePartRow, "selected" | "costPrice">[],
+  donorTotalCost: string,
+): string {
+  const selected = rows.filter((row) => row.selected);
+  if (!selected.length) return donorTotalCost;
+  return String(
+    selected.reduce((sum, row) => sum + (Number(row.costPrice) || 0), 0),
+  );
+}
+
+// ── Donor investments ───────────────────────────────────────────────────────
+
+export function mapInvestmentFormToNew(
+  values: DonorInvestmentSchema,
+): NewDonorInvestment {
+  if (values.mode === INVESTMENT_MODES.WAREHOUSE && values.itemId !== null) {
+    return {
+      warehouseItemId: values.itemId,
+      quantity: Number(values.quantity),
+      amount: values.amount,
+      note: values.note,
+    };
+  }
+  return {
+    warehouseItemId: null,
+    name: values.name,
+    amount: values.amount,
+    note: values.note,
+  };
 }
 
 // ── Item form ───────────────────────────────────────────────────────────────
@@ -167,6 +313,7 @@ export function getDonorFormDefaults(
       origin: "",
       acquisitionCost: "",
       storagePlace: EMPTY_REF,
+      saveStoragePlace: false,
       locationId: defaultLocationId ?? undefined,
       note: "",
     };
@@ -177,7 +324,8 @@ export function getDonorFormDefaults(
     deviceModel: donor.deviceModel ?? "",
     origin: donor.origin ?? "",
     acquisitionCost: donor.acquisitionCost ?? "",
-    storagePlace: toRef(donor.storagePlace),
+    storagePlace: toStoragePlaceRef(donor),
+    saveStoragePlace: false,
     locationId: donor.location?.id ?? defaultLocationId ?? undefined,
     note: donor.note ?? "",
   };
@@ -185,8 +333,8 @@ export function getDonorFormDefaults(
 
 /**
  * PUT replaces every field, so the form always sends the whole card. The
- * status is not part of it: it changes only through actions (swap → given to
- * customer, delete → disposed).
+ * status is not part of it: only a sale makes a donor `sold` (and removing
+ * the sale line brings it back to `in_stock`).
  */
 export function mapDonorFormToNewDonor(
   values: DonorSchema,
@@ -200,6 +348,7 @@ export function mapDonorFormToNewDonor(
     supplierId: donor?.supplier?.id ?? null,
     acquisitionCost: values.acquisitionCost,
     storagePlace: values.storagePlace,
+    saveStoragePlace: values.saveStoragePlace,
     locationId: values.locationId,
     note: values.note,
   };
@@ -215,7 +364,9 @@ export function getDonorPartFormDefaults(
     return {
       category: EMPTY_REF,
       name: "",
+      costPrice: "",
       storagePlace: EMPTY_REF,
+      saveStoragePlace: false,
       locationId: defaultLocationId ?? undefined,
       note: "",
     };
@@ -223,7 +374,9 @@ export function getDonorPartFormDefaults(
   return {
     category: toRef(part.category),
     name: part.name ?? "",
-    storagePlace: toRef(part.storagePlace),
+    costPrice: part.costPrice ?? "",
+    storagePlace: toStoragePlaceRef(part),
+    saveStoragePlace: false,
     locationId: part.location?.id ?? defaultLocationId ?? undefined,
     note: part.note ?? "",
   };
@@ -235,7 +388,9 @@ export function mapDonorPartFormToNewPart(
   return {
     category: values.category,
     name: values.name,
+    costPrice: values.costPrice,
     storagePlace: values.storagePlace,
+    saveStoragePlace: values.saveStoragePlace,
     locationId: values.locationId,
     note: values.note,
   };
@@ -244,7 +399,7 @@ export function mapDonorPartFormToNewPart(
 // ── Server errors ───────────────────────────────────────────────────────────
 
 const SOURCE_ERROR_KEY =
-  /(^|\.)(warehouse_item_id|donor_part_id|warehouse_donor_id)$/;
+  /(^|\.)(warehouse_item_id|donor_part_id|warehouse_donor_id|donor_parts(\.\d+\.\w+)?)$/;
 
 /**
  * Validation messages about the warehouse source of a line (part already used,
@@ -296,6 +451,25 @@ export function prepareStoragePlaceList(
           (b.locationId ?? Number.MAX_SAFE_INTEGER) ||
         a.name.localeCompare(b.name),
     );
+}
+
+/**
+ * "Save to dictionary" makes sense only for typed text that the dictionary
+ * doesn't have yet in that office: a picked place is linked by id, and an
+ * existing name is linked by the backend on its own.
+ */
+export function canSaveStoragePlace(
+  places: readonly StoragePlace[],
+  ref: DictionaryRef,
+  locationId: number | null,
+): boolean {
+  const needle = ref.name.trim().toLocaleLowerCase();
+  if (ref.id !== null || !needle) return false;
+  return !places.some(
+    (place) =>
+      place.locationId === locationId &&
+      place.name.trim().toLocaleLowerCase() === needle,
+  );
 }
 
 /** The dictionary form's flat string values → a storage place. */

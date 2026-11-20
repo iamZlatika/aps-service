@@ -156,6 +156,7 @@ export const queryKeys = {
     parts: makeEntityKey(["warehouse"], "parts"),
     availableDonorOptions: () =>
       [...queryKeys.warehouse.all, "available-donor-options"] as const,
+    itemOptions: () => [...queryKeys.warehouse.all, "item-options"] as const,
     // Shares the ["warehouse", "categories"] prefix with `categories(kind)`, so
     // invalidating the managed list also refreshes the form dropdowns.
     categoryList: makeEntityKey(["warehouse"], "categories"),

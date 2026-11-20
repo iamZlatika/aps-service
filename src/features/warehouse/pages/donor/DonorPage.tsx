@@ -1,4 +1,4 @@
-import { Archive, Pencil } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,18 +6,24 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
 import { warehouseApi } from "@/features/warehouse/api";
 import { DonorFormDialog } from "@/features/warehouse/components/donor-form/DonorFormDialog.tsx";
+import { DonorInvestmentDialog } from "@/features/warehouse/components/donor-investment/DonorInvestmentDialog.tsx";
 import { DonorTitle } from "@/features/warehouse/components/DonorTitle.tsx";
 import { PartFormDialog } from "@/features/warehouse/components/part-form/PartFormDialog.tsx";
 import { useCanManageWarehouse } from "@/features/warehouse/hooks/useCanManageWarehouse.ts";
 import { useDeleteWarehouseEntity } from "@/features/warehouse/hooks/useDeleteWarehouseEntity.ts";
 import { useDonor } from "@/features/warehouse/hooks/useDonor.ts";
+import { isDonorSold } from "@/features/warehouse/lib/service.ts";
 import { WAREHOUSE_LINKS } from "@/features/warehouse/navigation.ts";
+import { DonorEconomicsCard } from "@/features/warehouse/pages/donor/DonorEconomicsCard.tsx";
 import { DonorInfoCard } from "@/features/warehouse/pages/donor/DonorInfoCard.tsx";
+import { DonorInvestmentsCard } from "@/features/warehouse/pages/donor/DonorInvestmentsCard.tsx";
 import { DonorPartsCard } from "@/features/warehouse/pages/donor/DonorPartsCard.tsx";
 import type { DonorPart } from "@/features/warehouse/types.ts";
+import { HintTooltip } from "@/shared/components/common/HintTooltip.tsx";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
+import { Badge } from "@/shared/components/ui/badge.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { DeleteConfirmDialog } from "@/widgets/table/components/dialogs";
 
@@ -25,6 +31,7 @@ type DonorDialog =
   | { type: "edit" }
   | { type: "dispose" }
   | { type: "part"; part?: DonorPart }
+  | { type: "investment" }
   | null;
 
 interface DonorPageContentProps {
@@ -38,8 +45,8 @@ const DonorPageContent = ({ donorId }: DonorPageContentProps) => {
   const canManage = useCanManageWarehouse();
   const [dialog, setDialog] = useState<DonorDialog>(null);
   const { donor, isLoading, isError, error, refetch } = useDonor(donorId);
-  // DELETE means "write off": the donor and its available parts become
-  // disposed and the record is hidden; a swapped donor keeps its status.
+  // DELETE means only "this record was a mistake"; a sold donor is refused
+  // (422) — its sale line has to be removed first.
   const { onDelete: disposeDonor, isPending: isDisposing } =
     useDeleteWarehouseEntity(
       warehouseApi.deleteDonor,
@@ -49,6 +56,7 @@ const DonorPageContent = ({ donorId }: DonorPageContentProps) => {
   const { onDelete: deletePart, isPending: isDeletingPart } =
     useDeleteWarehouseEntity(warehouseApi.deletePart);
   const defaultLocationId = donor?.location?.id ?? user?.location?.id ?? null;
+  const isSold = !!donor && isDonorSold(donor);
 
   return (
     <QueryPageGuard
@@ -65,6 +73,9 @@ const DonorPageContent = ({ donorId }: DonorPageContentProps) => {
               <h1 className="text-lg font-bold break-words sm:text-2xl">
                 <DonorTitle donor={donor} />
               </h1>
+              <Badge variant={isSold ? "secondary" : "outline"}>
+                {t(`warehouse.donorStatuses.${donor.status}`)}
+              </Badge>
             </div>
             {canManage && (
               <div className="flex gap-2">
@@ -76,27 +87,45 @@ const DonorPageContent = ({ donorId }: DonorPageContentProps) => {
                   <Pencil className="h-4 w-4" />
                   {t("warehouse.donor.edit")}
                 </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-destructive hover:text-destructive"
-                  onClick={() => setDialog({ type: "dispose" })}
+                <HintTooltip
+                  hint={
+                    isSold
+                      ? t("warehouse.donor.soldCannotDelete")
+                      : t("warehouse.donor.disposeDescription")
+                  }
                 >
-                  <Archive className="h-4 w-4" />
-                  {t("warehouse.donor.dispose")}
-                </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-destructive hover:text-destructive"
+                    disabled={isSold}
+                    onClick={() => setDialog({ type: "dispose" })}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    {t("warehouse.donor.dispose")}
+                  </Button>
+                </HintTooltip>
               </div>
             )}
           </div>
 
           <DonorInfoCard donor={donor} />
+          <DonorEconomicsCard economics={donor.economics} />
           <DonorPartsCard
             parts={donor.parts}
             canManage={canManage}
+            canAdd={!isSold}
             isDeleting={isDeletingPart}
             onAdd={() => setDialog({ type: "part" })}
             onEdit={(part) => setDialog({ type: "part", part })}
             onDelete={(part) => deletePart(part.id)}
+          />
+          <DonorInvestmentsCard
+            donorId={donor.id}
+            investments={donor.investments}
+            canManage={canManage}
+            isSold={isSold}
+            onAdd={() => setDialog({ type: "investment" })}
           />
 
           {dialog?.type === "edit" && (
@@ -111,6 +140,12 @@ const DonorPageContent = ({ donorId }: DonorPageContentProps) => {
               part={dialog.part}
               donorId={donor.id}
               defaultLocationId={defaultLocationId}
+              onClose={() => setDialog(null)}
+            />
+          )}
+          {dialog?.type === "investment" && (
+            <DonorInvestmentDialog
+              donorId={donor.id}
               onClose={() => setDialog(null)}
             />
           )}

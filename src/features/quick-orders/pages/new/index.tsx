@@ -12,6 +12,7 @@ import { OrderTableCard } from "@/features/orders/components/order-table-card/Or
 import { useLeaveGuard } from "@/features/orders/hooks/useLeaveGuard.ts";
 import { calcOrderItemTotal } from "@/features/orders/lib/cellFormatters.tsx";
 import AddQuickOrderItemModal from "@/features/quick-orders/components/AddQuickOrderItemModal.tsx";
+import { QuickOrderDonorDialog } from "@/features/quick-orders/components/QuickOrderDonorDialog.tsx";
 import QuickOrderFormFields from "@/features/quick-orders/components/QuickOrderFormFields.tsx";
 import { useAddQuickOrder } from "@/features/quick-orders/hooks/useAddQuickOrder.ts";
 import { useQuickOrderFormDefaults } from "@/features/quick-orders/hooks/useQuickOrderFormDefaults.ts";
@@ -47,6 +48,7 @@ const CreateQuickOrderPage = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [modalState, setModalState] = useState<ModalState>(null);
+  const [isSellingDonor, setIsSellingDonor] = useState(false);
   const prefill = useQuickOrderPrefill();
 
   const methods = useForm<
@@ -116,6 +118,7 @@ const CreateQuickOrderPage = () => {
           <WarehouseLineBadge
             warehouseItemId={row.warehouseItemId}
             donorPartId={row.donorPartId}
+            warehouseDonorId={row.warehouseDonorId}
           />
         </span>
       ),
@@ -202,6 +205,10 @@ const CreateQuickOrderPage = () => {
                   onClick: () =>
                     setModalState({ mode: "add", type: "product" }),
                 },
+                {
+                  label: t("warehouse.orderActions.sellDonor"),
+                  onClick: () => setIsSellingDonor(true),
+                },
               ]}
               columns={columns}
               data={rows}
@@ -240,6 +247,12 @@ const CreateQuickOrderPage = () => {
           </form>
         </FormProvider>
       </div>
+      {isSellingDonor && (
+        <QuickOrderDonorDialog
+          onSave={productsArray.append}
+          onClose={() => setIsSellingDonor(false)}
+        />
+      )}
       {modalState && (
         <AddQuickOrderItemModal
           type={modalState.type}

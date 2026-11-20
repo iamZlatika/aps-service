@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { stockMovementSchema } from "@/features/warehouse/lib/stock.schema.ts";
 
 describe("stockMovementSchema", () => {
-  const base = { locationId: 1, quantity: "5", note: "" };
+  const base = { locationId: 1, quantity: "5", note: "", purchasePrice: "" };
 
   it("requires a note for a correction", () => {
     const result = stockMovementSchema().safeParse({
@@ -22,5 +22,17 @@ describe("stockMovementSchema", () => {
     expect(
       stockMovementSchema().safeParse({ ...base, reason: "writeoff" }).success,
     ).toBe(true);
+  });
+
+  it("accepts digits only for the purchase price", () => {
+    const parse = (purchasePrice: string) =>
+      stockMovementSchema().safeParse({
+        ...base,
+        reason: "purchase",
+        purchasePrice,
+      });
+    expect(parse("1200").success).toBe(true);
+    expect(parse("-5").success).toBe(false);
+    expect(parse("12.5").success).toBe(false);
   });
 });

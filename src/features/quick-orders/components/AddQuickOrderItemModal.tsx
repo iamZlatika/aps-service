@@ -53,8 +53,13 @@ const AddQuickOrderItemModal = ({
   // A line sold from the warehouse keeps the card's name and purchase price.
   const isWarehouseLine =
     !!editItem &&
-    (editItem.warehouseItemId !== null || editItem.donorPartId !== null);
-  const isDonorPartLine = !!editItem && editItem.donorPartId !== null;
+    (editItem.warehouseItemId !== null ||
+      editItem.donorPartId !== null ||
+      editItem.warehouseDonorId !== null);
+  // A donor part / a whole donor is one physical thing — quantity stays 1.
+  const isSinglePieceLine =
+    !!editItem &&
+    (editItem.donorPartId !== null || editItem.warehouseDonorId !== null);
 
   const {
     control,
@@ -195,7 +200,7 @@ const AddQuickOrderItemModal = ({
                 type="number"
                 inputMode="numeric"
                 min={1}
-                readOnly={isDonorPartLine}
+                readOnly={isSinglePieceLine}
                 className={READ_ONLY_INPUT_CLASS}
               />
               {errors.quantity && (

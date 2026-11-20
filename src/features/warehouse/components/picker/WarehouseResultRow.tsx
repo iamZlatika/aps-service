@@ -4,6 +4,7 @@ import { WarehouseSourceBadge } from "@/features/warehouse/components/picker/War
 import { StockQuantity } from "@/features/warehouse/components/StockQuantity.tsx";
 import {
   getDonorTitle,
+  getStoragePlaceLabel,
   isDonorPartSource,
 } from "@/features/warehouse/lib/service.ts";
 import type { WarehouseSearchResult } from "@/features/warehouse/types.ts";
@@ -15,6 +16,7 @@ interface WarehouseResultRowProps {
 
 export const WarehouseResultRow = ({ result }: WarehouseResultRowProps) => {
   const { t } = useTranslation();
+  const storagePlace = getStoragePlaceLabel(result);
 
   return (
     <div className="flex w-full min-w-0 items-start gap-2">
@@ -29,7 +31,7 @@ export const WarehouseResultRow = ({ result }: WarehouseResultRowProps) => {
                 getDonorTitle(result.donor) ??
                 t("warehouse.donor.unnamed", { id: result.donor.id }),
             })}`}
-          {result.storagePlace && ` · ${result.storagePlace.name}`}
+          {storagePlace && ` · ${storagePlace}`}
         </p>
       </div>
       <div className="shrink-0 text-right text-sm">

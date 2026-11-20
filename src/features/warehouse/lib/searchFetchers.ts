@@ -3,8 +3,12 @@ import { warehouseApi } from "@/features/warehouse/api";
 import {
   filterByName,
   getDonorTitle,
+  getStoragePlaceLabel,
 } from "@/features/warehouse/lib/service.ts";
-import type { WarehouseCategoryKind } from "@/features/warehouse/types.ts";
+import type {
+  WarehouseCategoryKind,
+  WarehouseItemKind,
+} from "@/features/warehouse/types.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { SEARCH_PAGE_SIZE } from "@/shared/lib/constants.ts";
@@ -79,7 +83,30 @@ export const fetchAvailableDonorOptions = async (
     name: getDonorTitle(donor) ?? `#${donor.id}`,
     meta: {
       locationName: donor.location?.name ?? null,
-      storagePlaceName: donor.storagePlace?.name ?? null,
+      storagePlaceName: getStoragePlaceLabel(donor),
     },
+  }));
+};
+
+export type WarehouseItemOptionMeta = {
+  purchasePrice: string | null;
+  kind: WarehouseItemKind;
+};
+
+/** Showcase and supplies together (no `kind`) — for donor investments. */
+export const fetchWarehouseItemOptions = async (
+  search: string,
+): Promise<SearchableSelectOption<WarehouseItemOptionMeta>[]> => {
+  const { items } = await warehouseApi.getItems(
+    1,
+    SEARCH_PAGE_SIZE,
+    null,
+    "none",
+    search ? { search } : undefined,
+  );
+  return items.map((item) => ({
+    id: item.id,
+    name: item.name,
+    meta: { purchasePrice: item.purchasePrice, kind: item.kind },
   }));
 };

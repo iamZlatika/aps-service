@@ -8,6 +8,9 @@ export const WAREHOUSE_API = {
   donors: () => `${BASE}/donors`,
   donor: (id: number) => `${BASE}/donors/${id}`,
   donorParts: (id: number) => `${BASE}/donors/${id}/parts`,
+  donorInvestments: (id: number) => `${BASE}/donors/${id}/investments`,
+  donorInvestment: (id: number, investmentId: number) =>
+    `${BASE}/donors/${id}/investments/${investmentId}`,
   parts: () => `${BASE}/parts`,
   part: (id: number) => `${BASE}/parts/${id}`,
   partPhoto: (id: number) => `${BASE}/parts/${id}/photo`,

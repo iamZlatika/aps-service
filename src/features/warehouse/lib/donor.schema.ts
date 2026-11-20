@@ -16,6 +16,7 @@ export const donorSchema = () =>
       origin: z.string().trim().max(255),
       acquisitionCost: optionalDigitsField(),
       storagePlace: dictionaryRefField(),
+      saveStoragePlace: z.boolean(),
       locationId: z
         .number({ error: i18next.t("validation.locationRequired") })
         .int()

@@ -34,6 +34,7 @@ export const STOCK_MOVEMENT_REASONS = {
   WRITEOFF: "writeoff",
   CORRECTION: "correction",
   RETURN: "return",
+  DONOR_INVESTMENT: "donor_investment",
 } as const;
 export type StockMovementReason =
   (typeof STOCK_MOVEMENT_REASONS)[keyof typeof STOCK_MOVEMENT_REASONS];
@@ -46,6 +47,20 @@ export const MANUAL_STOCK_REASONS = {
 } as const;
 export type ManualStockReason =
   (typeof MANUAL_STOCK_REASONS)[keyof typeof MANUAL_STOCK_REASONS];
+
+export const DONOR_STATUSES = {
+  IN_STOCK: "in_stock",
+  SOLD: "sold",
+} as const;
+export type DonorStatus = (typeof DONOR_STATUSES)[keyof typeof DONOR_STATUSES];
+
+/** `?status=` of the donors list; without it the backend lists in-stock only. */
+export const DONOR_STATUS_FILTERS = {
+  ...DONOR_STATUSES,
+  ALL: "all",
+} as const;
+export type DonorStatusFilter =
+  (typeof DONOR_STATUS_FILTERS)[keyof typeof DONOR_STATUS_FILTERS];
 
 export const WAREHOUSE_SOURCES = {
   SHOWCASE: "showcase",
@@ -96,6 +111,8 @@ export type StockMovement = {
   quickOrderId: number | null;
   orderProductId: number | null;
   user: User | null;
+  /** The item's purchase price at the moment of the movement. */
+  purchasePrice: string | null;
   note: string | null;
   createdAt: string;
 };
@@ -143,9 +160,26 @@ export type NewStockMovement = {
   quantity: number;
   reason: ManualStockReason;
   note: string;
+  /** Overwrites the item's purchase price everywhere; null leaves it as is. */
+  purchasePrice: string | null;
 };
 
 // ── Donors & parts ──────────────────────────────────────────────────────────
+
+/**
+ * "Where it lies": a dictionary place, or free text kept on the card only —
+ * exactly one of the two is set.
+ */
+export type StoragePlaceFields = {
+  storagePlace: StoragePlace | null;
+  storagePlaceNote: string | null;
+};
+
+/** Form side: a typed place goes to the dictionary only on explicit request. */
+export type StoragePlaceInput = {
+  storagePlace: DictionaryRef;
+  saveStoragePlace: boolean;
+};
 
 export type DonorShort = {
   id: number;
@@ -154,71 +188,135 @@ export type DonorShort = {
   deviceModel: string | null;
 };
 
-/**
- * A donor is listed only while it is physically in the workshop: a swapped or
- * written-off donor disappears (and its card returns 404). No status field.
- */
-export type Donor = DonorShort & {
-  storagePlace: StoragePlace | null;
-  /** Set by the system when the donor was born from an order (read-only). */
-  sourceOrderId: number | null;
-  /** Free text: where the donor came from ("bought dead on OLX", …). */
-  origin: string | null;
-  /** The order the donor was sold in (as a whole, as an order line). */
+/** Where and when a donor / part left the workshop (all null while in stock). */
+export type SaleInfo = {
   soldInOrderId: number | null;
-  supplier: Supplier | null;
-  location: Location | null;
-  acquisitionCost: string | null;
-  note: string | null;
-  partsCount: number;
+  soldInQuickOrderId: number | null;
+  soldAt: string | null;
+  /**
+   * Price of the selling order / quick-sale line. For a donor it is not
+   * `economics.revenue` — that also counts parts sold separately earlier.
+   */
+  soldPrice: string | null;
 };
 
 /**
- * Only parts physically on the shelf are listed: one taken into an order or a
- * quick sale disappears (and comes back when that line is removed), as do the
- * parts of a donor that left the workshop. No condition / status fields.
+ * A sold donor stays (status `sold`) and its card keeps the history; DELETE
+ * means only "this record was a mistake" and is refused for a sold donor.
  */
-export type DonorPart = {
+export type Donor = DonorShort &
+  StoragePlaceFields &
+  SaleInfo & {
+    status: DonorStatus;
+    /** Set by the system when the donor was born from an order (read-only). */
+    sourceOrderId: number | null;
+    /** Free text: where the donor came from ("bought dead on OLX", …). */
+    origin: string | null;
+    supplier: Supplier | null;
+    location: Location | null;
+    acquisitionCost: string | null;
+    note: string | null;
+    /** On-the-shelf parts only. */
+    partsCount: number;
+  };
+
+/**
+ * Lists and the picker show only parts on the shelf; the donor card shows the
+ * sold ones too (history). A sold part comes back when its line is removed.
+ */
+export type DonorPart = StoragePlaceFields &
+  SaleInfo & {
+    id: number;
+    donor: DonorShort | null;
+    category: WarehouseCategory;
+    name: string | null;
+    /** What the part costs us ("market average + delivery"). */
+    costPrice: string | null;
+    isSold: boolean;
+    /** Left inside a whole sold donor — then there is no price of its own. */
+    soldWithDonor: boolean;
+    location: Location | null;
+    note: string | null;
+    photoUrl: string | null;
+  };
+
+/** Money spent on a donor after buying it: a warehouse item or a free line. */
+export type DonorInvestment = {
   id: number;
-  donor: DonorShort | null;
-  category: WarehouseCategory;
-  name: string | null;
-  storagePlace: StoragePlace | null;
-  location: Location | null;
+  /** Set for a line taken from the warehouse (its stock was written off). */
+  warehouseItemId: number | null;
+  name: string;
+  quantity: number;
+  amount: string;
   note: string | null;
-  photoUrl: string | null;
+  createdAt: string;
+};
+
+export type DonorEconomics = {
+  acquisitionCost: string;
+  investmentsTotal: string;
+  /** acquisition + investments. */
+  totalCost: string;
+  /** Σ cost prices of sold parts — cost against cost, NOT a profit. */
+  partsCostRecovered: string;
+  /** The donor itself + parts sold separately. */
+  revenue: string;
+  /** revenue − total cost. */
+  profit: string;
 };
 
 export type DonorDetail = Donor & {
+  /** Sold parts included — the card shows the history. */
   parts: DonorPart[];
+  investments: DonorInvestment[];
+  economics: DonorEconomics;
   createdAt: string;
   updatedAt: string;
 };
 
-export type NewDonor = {
+export type NewDonor = StoragePlaceInput & {
   manufacturer: string;
   deviceType: string;
   deviceModel: string;
   origin: string;
   supplierId: number | null;
   acquisitionCost: string;
-  storagePlace: DictionaryRef;
   locationId: number;
   note: string;
 };
 
 /** Which donor a part belongs to is decided by the endpoint, not the body. */
-export type NewDonorPart = {
+export type NewDonorPart = StoragePlaceInput & {
   category: DictionaryRef;
   name: string;
-  storagePlace: DictionaryRef;
+  costPrice: string;
   locationId: number;
   note: string;
 };
 
+export type NewDonorInvestment =
+  | {
+      warehouseItemId: number;
+      quantity: number;
+      /** Empty → purchase price × quantity, computed by the backend. */
+      amount: string;
+      note: string;
+    }
+  | { warehouseItemId: null; name: string; amount: string; note: string };
+
+/**
+ * Parts picked when selling a donor: the line's purchase becomes the sum of
+ * their cost prices, and only they leave with it (the rest stay on the shelf).
+ * A sent cost price is saved on the part card.
+ */
+export type DonorSalePart = {
+  id: number;
+  costPrice: string | null;
+};
+
 // ── Unified "+ product" search ──────────────────────────────────────────────
 
-export type WarehouseSearchResult = {
+export type WarehouseSearchResult = StoragePlaceFields & {
   source: WarehouseSource;
   id: number;
   name: string;
@@ -226,7 +324,6 @@ export type WarehouseSearchResult = {
   price: string | null;
   purchasePrice: string | null;
   quantity: number | null;
-  storagePlace: StoragePlace | null;
   location: Location | null;
   /** Only for `donor_part` — which donor the part was taken from. */
   donor: DonorShort | null;

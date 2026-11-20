@@ -31,6 +31,8 @@ export const useQuickOrderPrefill = (): QuickOrderPrefill => {
           purchasePrice: product.purchasePrice,
           warehouseItemId: product.warehouseItemId,
           donorPartId: null,
+          warehouseDonorId: null,
+          donorParts: [],
         },
       ],
     };

@@ -1,13 +1,24 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  canSaveStoragePlace,
+  getChangedMoneyValue,
+  getDonorPartFormDefaults,
+  getDonorSalePartRows,
+  getDonorSalePurchase,
   getDonorTitle,
+  getSaleDocument,
   getSignedStockQuantity,
+  getStoragePlaceLabel,
   getWarehouseLineSource,
   getWarehouseSourceErrorMessage,
   mapDonorFormToNewDonor,
+  mapDonorSalePartRows,
+  mapInvestmentFormToNew,
   mapStoragePlaceFormValues,
+  parseDonorStatusFilter,
   prepareStoragePlaceList,
+  toDonorStatusParam,
   toggleSource,
 } from "@/features/warehouse/lib/service.ts";
 
@@ -93,6 +104,7 @@ describe("mapDonorFormToNewDonor", () => {
       origin: "Купили мертвяка на OLX",
       acquisitionCost: "",
       storagePlace: { id: 2, name: "Полиця А1" },
+      saveStoragePlace: false,
       locationId: 1,
       note: "",
     });
@@ -152,6 +164,253 @@ describe("mapStoragePlaceFormValues", () => {
     ).toEqual({
       name: "Стол",
       locationId: null,
+    });
+  });
+});
+
+describe("getChangedMoneyValue", () => {
+  it("sends a changed price only", () => {
+    expect(getChangedMoneyValue("1200", "1000")).toBe("1200");
+    expect(getChangedMoneyValue(" 1000 ", "1000")).toBeNull();
+    expect(getChangedMoneyValue("800", null)).toBe("800");
+  });
+
+  it("never clears the price with an empty field", () => {
+    expect(getChangedMoneyValue("", "1000")).toBeNull();
+    expect(getChangedMoneyValue("", null)).toBeNull();
+  });
+});
+
+describe("getStoragePlaceLabel", () => {
+  it("shows the dictionary place, or the free text on the card", () => {
+    expect(
+      getStoragePlaceLabel({
+        storagePlace: { id: 4, name: "Стелаж А-1", locationId: 1 },
+        storagePlaceNote: null,
+      }),
+    ).toBe("Стелаж А-1");
+    expect(
+      getStoragePlaceLabel({
+        storagePlace: null,
+        storagePlaceNote: "Під столом",
+      }),
+    ).toBe("Під столом");
+    expect(
+      getStoragePlaceLabel({ storagePlace: null, storagePlaceNote: null }),
+    ).toBeNull();
+  });
+});
+
+describe("canSaveStoragePlace", () => {
+  const places = [
+    { id: 4, name: "Стелаж А-1", locationId: 1 },
+    { id: 5, name: "Загальна полиця", locationId: null },
+  ];
+
+  it("offers saving only typed text that is not in the dictionary", () => {
+    expect(
+      canSaveStoragePlace(places, { id: null, name: "Під столом" }, 1),
+    ).toBe(true);
+    expect(canSaveStoragePlace(places, { id: 4, name: "Стелаж А-1" }, 1)).toBe(
+      false,
+    );
+    expect(canSaveStoragePlace(places, { id: null, name: "  " }, 1)).toBe(
+      false,
+    );
+  });
+
+  it("treats the same name in the same office as existing", () => {
+    expect(
+      canSaveStoragePlace(places, { id: null, name: " стелаж а-1 " }, 1),
+    ).toBe(false);
+    // Same name, another office — a different place.
+    expect(
+      canSaveStoragePlace(places, { id: null, name: "Стелаж А-1" }, 2),
+    ).toBe(true);
+    expect(
+      canSaveStoragePlace(places, { id: null, name: "Загальна полиця" }, null),
+    ).toBe(false);
+  });
+});
+
+describe("getDonorPartFormDefaults", () => {
+  it("opens a card with a free-text place with that text typed in", () => {
+    const defaults = getDonorPartFormDefaults(
+      {
+        id: 1,
+        donor: null,
+        category: { id: 11, name: "Матриця", kind: "part" },
+        name: null,
+        costPrice: "1500",
+        isSold: false,
+        soldWithDonor: false,
+        soldPrice: null,
+        soldInOrderId: null,
+        soldInQuickOrderId: null,
+        soldAt: null,
+        storagePlace: null,
+        storagePlaceNote: "Під столом",
+        location: null,
+        note: null,
+        photoUrl: null,
+      },
+      1,
+    );
+    expect(defaults.storagePlace).toEqual({ id: null, name: "Під столом" });
+    expect(defaults.saveStoragePlace).toBe(false);
+  });
+});
+
+describe("donor status filter", () => {
+  it("defaults to in stock and leaves it out of the URL", () => {
+    expect(parseDonorStatusFilter(undefined)).toBe("in_stock");
+    expect(parseDonorStatusFilter("bogus")).toBe("in_stock");
+    expect(parseDonorStatusFilter("sold")).toBe("sold");
+    expect(toDonorStatusParam("in_stock")).toBe("");
+    expect(toDonorStatusParam("all")).toBe("all");
+  });
+});
+
+describe("getSaleDocument", () => {
+  it("points to the order or the quick sale", () => {
+    const none = {
+      soldInOrderId: null,
+      soldInQuickOrderId: null,
+      soldAt: null,
+      soldPrice: null,
+    };
+    expect(getSaleDocument(none)).toBeNull();
+    expect(getSaleDocument({ ...none, soldInOrderId: 841 })).toEqual({
+      kind: "order",
+      id: 841,
+    });
+    expect(getSaleDocument({ ...none, soldInQuickOrderId: 12 })).toEqual({
+      kind: "quickOrder",
+      id: 12,
+    });
+  });
+});
+
+describe("donor sale", () => {
+  const part = {
+    donor: null,
+    category: { id: 11, name: "Матриця", kind: "part" as const },
+    name: null,
+    soldWithDonor: false,
+    soldPrice: null,
+    soldInOrderId: null,
+    soldInQuickOrderId: null,
+    soldAt: null,
+    storagePlace: null,
+    storagePlaceNote: null,
+    location: null,
+    note: null,
+    photoUrl: null,
+  };
+
+  it("lists only parts on the shelf, none picked", () => {
+    const rows = getDonorSalePartRows([
+      { ...part, id: 3, costPrice: "1500", isSold: false },
+      { ...part, id: 4, costPrice: null, isSold: true },
+      { ...part, id: 5, costPrice: null, isSold: false },
+    ]);
+    expect(rows).toEqual([
+      {
+        id: 3,
+        label: "Матриця",
+        selected: false,
+        costPrice: "1500",
+        cardCostPrice: "1500",
+      },
+      {
+        id: 5,
+        label: "Матриця",
+        selected: false,
+        costPrice: "",
+        cardCostPrice: null,
+      },
+    ]);
+  });
+
+  it("sends picked parts, a cost price only when edited", () => {
+    expect(
+      mapDonorSalePartRows([
+        {
+          id: 3,
+          label: "",
+          selected: true,
+          costPrice: "1500",
+          cardCostPrice: "1500",
+        },
+        {
+          id: 5,
+          label: "",
+          selected: true,
+          costPrice: "700",
+          cardCostPrice: null,
+        },
+        {
+          id: 6,
+          label: "",
+          selected: false,
+          costPrice: "900",
+          cardCostPrice: "900",
+        },
+      ]),
+    ).toEqual([
+      { id: 3, costPrice: null },
+      { id: 5, costPrice: "700" },
+    ]);
+  });
+
+  it("purchase = Σ picked cost prices, or the donor's full cost", () => {
+    const rows = [
+      { selected: true, costPrice: "1500" },
+      { selected: true, costPrice: "2500" },
+      { selected: false, costPrice: "900" },
+    ];
+    expect(getDonorSalePurchase(rows, "15000")).toBe("4000");
+    expect(
+      getDonorSalePurchase(
+        rows.map((row) => ({ ...row, selected: false })),
+        "15000",
+      ),
+    ).toBe("15000");
+  });
+});
+
+describe("mapInvestmentFormToNew", () => {
+  const base = {
+    itemId: 44,
+    itemLabel: "SSD Kingston 480GB",
+    quantity: "2",
+    name: "",
+    amount: "",
+    note: "",
+  };
+
+  it("maps a warehouse line (amount left to the backend)", () => {
+    expect(mapInvestmentFormToNew({ ...base, mode: "warehouse" })).toEqual({
+      warehouseItemId: 44,
+      quantity: 2,
+      amount: "",
+      note: "",
+    });
+  });
+
+  it("maps a free line without the item", () => {
+    expect(
+      mapInvestmentFormToNew({
+        ...base,
+        mode: "free",
+        name: "Доставка Новою поштою",
+        amount: "300",
+      }),
+    ).toEqual({
+      warehouseItemId: null,
+      name: "Доставка Новою поштою",
+      amount: "300",
+      note: "",
     });
   });
 });
