@@ -1447,7 +1447,9 @@
         "supply": "Расходники",
         "donor_part": "Запчасти"
       },
-      "fromDonor": "из {{donor}}"
+      "fromDonor": "из {{donor}}",
+      "costPrice": "Себестоимость",
+      "costPriceMissing": "не указана"
     },
     "badges": {
       "warehouse": "Склад",

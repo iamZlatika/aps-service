@@ -1445,7 +1445,9 @@
         "supply": "Розхідники",
         "donor_part": "Запчастини"
       },
-      "fromDonor": "з {{donor}}"
+      "fromDonor": "з {{donor}}",
+      "costPrice": "Собівартість",
+      "costPriceMissing": "не вказана"
     },
     "badges": {
       "warehouse": "Склад",
