@@ -218,6 +218,9 @@ export type Donor = DonorShort &
     note: string | null;
     /** On-the-shelf parts only. */
     partsCount: number;
+    /** Money put into the donor after buying it (rows are on the card). */
+    investmentsCount: number;
+    investmentsTotal: string;
   };
 
 /**

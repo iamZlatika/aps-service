@@ -171,6 +171,8 @@ export function mapDonorDto(dto: DonorDto): Donor {
     acquisitionCost: dto.acquisition_cost,
     note: dto.note,
     partsCount: dto.parts_count,
+    investmentsCount: dto.investments_count,
+    investmentsTotal: dto.investments_total,
   };
 }
 

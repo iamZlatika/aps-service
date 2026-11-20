@@ -8,6 +8,7 @@ import {
   getDonorSalePartRows,
   getDonorSalePurchase,
 } from "@/features/warehouse/lib/service.ts";
+import type { Donor } from "@/features/warehouse/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { notifyError } from "@/shared/lib/errors/services.ts";
 
@@ -16,6 +17,8 @@ type UseDonorSalePickerReturn = {
   parts: DonorSalePartRow[];
   /** Null until a donor is picked and its card is loaded. */
   purchase: string | null;
+  /** The picked donor's investments — null until its card is loaded. */
+  investments: Pick<Donor, "investmentsCount" | "investmentsTotal"> | null;
   isLoadingDonor: boolean;
   selectDonor: (donorId: number, label: string) => void;
   typeDonor: (text: string) => void;
@@ -74,6 +77,7 @@ export const useDonorSalePicker = (): UseDonorSalePickerReturn => {
       donorId !== null && donor
         ? getDonorSalePurchase(parts, donor.economics.totalCost)
         : null,
+    investments: donorId !== null && donor ? donor : null,
     isLoadingDonor: donorId !== null && isFetching && !donor,
     selectDonor,
     typeDonor,

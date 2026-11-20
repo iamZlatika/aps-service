@@ -146,6 +146,8 @@ export const DonorDtoSchema = DonorShortDtoSchema.extend({
   acquisition_cost: z.string().nullable(),
   note: z.string().nullable(),
   parts_count: z.number(),
+  investments_count: z.number(),
+  investments_total: z.string(),
 });
 export type DonorDto = z.infer<typeof DonorDtoSchema>;
 

@@ -18,6 +18,7 @@ export const DonorSaleFields = () => {
     donorLabel,
     parts,
     purchase,
+    investments,
     isLoadingDonor,
     selectDonor,
     typeDonor,
@@ -35,6 +36,16 @@ export const DonorSaleFields = () => {
       />
       {isLoadingDonor && (
         <p className="text-sm text-muted-foreground">{t("loader.default")}</p>
+      )}
+      {investments && investments.investmentsCount > 0 && (
+        // Decides the line's purchase: counted for a whole donor only.
+        <p className="rounded-md border bg-muted/40 p-3 text-sm">
+          {t("warehouse.donorSale.investments", {
+            count: investments.investmentsCount,
+          })}{" "}
+          <MoneyAmount value={investments.investmentsTotal} />.{" "}
+          {t("warehouse.donorSale.investmentsHint")}
+        </p>
       )}
       {purchase !== null && (
         <div className="flex flex-col gap-2">
