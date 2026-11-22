@@ -5,6 +5,7 @@ import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
+import { WORK_TYPES } from "@/entities/work/types";
 import { worksApi } from "@/features/works/api";
 import { mapBackofficeWorkToEditFormValues } from "@/features/works/lib/adapters.ts";
 import {
@@ -22,6 +23,7 @@ type UseEditWorkResult = {
   errors: FieldErrors<WorkEditFormValues>;
   isPending: boolean;
   isLoading: boolean;
+  isReasonRequired: boolean;
   onSubmit: (e?: BaseSyntheticEvent) => Promise<void>;
   onBack: () => void;
 };
@@ -42,7 +44,7 @@ export const useEditWork = (workId: number): UseEditWorkResult => {
     setError,
     formState: { errors },
   } = useForm<WorkEditFormValues>({
-    resolver: zodResolver(workEditSchema),
+    resolver: zodResolver(workEditSchema(work?.type.key)),
     values: work ? mapBackofficeWorkToEditFormValues(work) : undefined,
   });
 
@@ -69,6 +71,7 @@ export const useEditWork = (workId: number): UseEditWorkResult => {
     errors,
     isPending: mutation.isPending,
     isLoading,
+    isReasonRequired: work?.type.key === WORK_TYPES.REPAIR,
     onSubmit: handleSubmit((values) => mutation.mutate(values)),
     onBack,
   };

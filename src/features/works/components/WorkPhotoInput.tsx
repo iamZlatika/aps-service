@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { type FieldError } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { RequiredMark } from "@/features/works/components/RequiredMark";
 import {
   COMPRESSION_OPTIONS,
   formatSize,
@@ -12,12 +13,15 @@ import { cn } from "@/shared/lib/utils";
 
 interface WorkPhotoInputProps {
   label: string;
+  /** Shows the asterisk — the schema decides whether it is really required. */
+  required?: boolean;
   error?: FieldError;
   onChange: (file: File | undefined) => void;
 }
 
 export const WorkPhotoInput = ({
   label,
+  required = false,
   error,
   onChange,
 }: WorkPhotoInputProps) => {
@@ -65,7 +69,9 @@ export const WorkPhotoInput = ({
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-baseline gap-2">
-        <span className="text-sm font-medium">{label}</span>
+        <span className="text-sm font-medium">
+          {label} {required && <RequiredMark />}
+        </span>
         <span className="text-xs text-muted-foreground">
           {t("works.photo.max_size", { size: "2 МБ" })}
         </span>

@@ -3,6 +3,7 @@ import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+import { WORK_TYPES } from "@/entities/work/types";
 import { WorkContentSection } from "@/features/works/components/WorkContentSection";
 import { WorkDeviceSection } from "@/features/works/components/WorkDeviceSection";
 import { WorkPhotosSection } from "@/features/works/components/WorkPhotosSection";
@@ -46,7 +47,11 @@ const WorkCreatePage = () => {
           errors={errors}
           workType={workType}
         />
-        <WorkContentSection register={register} errors={errors} />
+        <WorkContentSection
+          register={register}
+          errors={errors}
+          isReasonRequired={workType === WORK_TYPES.REPAIR}
+        />
 
         {errors.root && (
           <p className="text-sm text-destructive">{errors.root.message}</p>

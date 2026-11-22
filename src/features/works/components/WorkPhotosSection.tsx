@@ -42,6 +42,7 @@ export const WorkPhotosSection = ({
                 render={({ field }) => (
                   <WorkPhotoInput
                     label={t("works.photo.before")}
+                    required
                     error={errors.before_photo}
                     onChange={field.onChange}
                   />
@@ -53,6 +54,7 @@ export const WorkPhotosSection = ({
                 render={({ field }) => (
                   <WorkPhotoInput
                     label={t("works.photo.after")}
+                    required
                     error={errors.after_photo}
                     onChange={field.onChange}
                   />
@@ -67,6 +69,7 @@ export const WorkPhotosSection = ({
               render={({ field }) => (
                 <WorkPhotoInput
                   label={t("works.photo.main")}
+                  required
                   error={errors.main_photo}
                   onChange={field.onChange}
                 />

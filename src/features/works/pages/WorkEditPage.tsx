@@ -13,8 +13,16 @@ const WorkEditPage = () => {
   const workId = id ? parseInt(id, 10) : 0;
   const { t } = useTranslation();
 
-  const { register, control, errors, isPending, isLoading, onSubmit, onBack } =
-    useEditWork(workId);
+  const {
+    register,
+    control,
+    errors,
+    isPending,
+    isLoading,
+    isReasonRequired,
+    onSubmit,
+    onBack,
+  } = useEditWork(workId);
 
   if (isLoading) return <Loader />;
 
@@ -33,7 +41,11 @@ const WorkEditPage = () => {
           errors={errors}
           showWorkType={false}
         />
-        <WorkContentSection register={register} errors={errors} />
+        <WorkContentSection
+          register={register}
+          errors={errors}
+          isReasonRequired={isReasonRequired}
+        />
 
         {errors.root && (
           <p className="text-sm text-destructive">{errors.root.message}</p>

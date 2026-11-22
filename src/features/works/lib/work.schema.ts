@@ -23,7 +23,23 @@ const imageFile = () =>
     });
 
 const requiredString = () =>
-  z.string().min(1, i18next.t("validation.field_required"));
+  z.string().trim().min(1, i18next.t("validation.field_required"));
+
+/** A repair needs the reason in both languages (an upgrade has none). */
+export function addMissingReasonIssues(
+  data: { reason_ru?: string; reason_uk?: string },
+  ctx: z.RefinementCtx,
+): void {
+  (["reason_ru", "reason_uk"] as const).forEach((field) => {
+    if (!data[field]?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: i18next.t("validation.field_required"),
+        path: [field],
+      });
+    }
+  });
+}
 
 export const workSchema = z
   .object({
@@ -50,6 +66,7 @@ export const workSchema = z
       });
     }
     if (data.type === WORK_TYPES.REPAIR) {
+      addMissingReasonIssues(data, ctx);
       if (!data.before_photo) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
