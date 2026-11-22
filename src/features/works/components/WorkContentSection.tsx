@@ -7,6 +7,7 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { RequiredMark } from "@/features/works/components/RequiredMark";
 import {
   Card,
   CardContent,
@@ -23,20 +24,49 @@ type ContentFields = {
   reason_uk?: string;
 };
 
+type ContentField = keyof ContentFields;
+
 interface WorkContentSectionProps<T extends FieldValues & ContentFields> {
   register: UseFormRegister<T>;
   errors: FieldErrors<T>;
+  /** A repair needs the reason in both languages; an upgrade has none. */
+  isReasonRequired: boolean;
 }
 
 export const WorkContentSection = <T extends FieldValues & ContentFields>({
   register,
   errors,
+  isReasonRequired,
 }: WorkContentSectionProps<T>) => {
   const { t } = useTranslation();
 
   const contentErrors = errors as unknown as Partial<
-    Record<keyof ContentFields, FieldError>
+    Record<ContentField, FieldError>
   >;
+
+  const renderField = (name: ContentField, rows: number, required: boolean) => {
+    const error = contentErrors[name];
+    return (
+      <div className="flex flex-col gap-1.5">
+        <Label>
+          {t(`works.form.${name}`)}{" "}
+          {required ? (
+            <RequiredMark />
+          ) : (
+            <span className="text-xs text-muted-foreground">
+              ({t("works.form.reason_optional")})
+            </span>
+          )}
+        </Label>
+        <Textarea
+          {...register(name as Path<T>)}
+          className={error ? "border-destructive" : undefined}
+          rows={rows}
+        />
+        {error && <p className="text-sm text-destructive">{error.message}</p>}
+      </div>
+    );
+  };
 
   return (
     <Card>
@@ -46,54 +76,10 @@ export const WorkContentSection = <T extends FieldValues & ContentFields>({
         </CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <Label>
-            {t("works.form.reason_ru")}{" "}
-            <span className="text-xs text-muted-foreground">
-              ({t("works.form.reason_optional")})
-            </span>
-          </Label>
-          <Textarea {...register("reason_ru" as Path<T>)} rows={3} />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <Label>
-            {t("works.form.reason_uk")}{" "}
-            <span className="text-xs text-muted-foreground">
-              ({t("works.form.reason_optional")})
-            </span>
-          </Label>
-          <Textarea {...register("reason_uk" as Path<T>)} rows={3} />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <Label>{t("works.form.description_ru")}</Label>
-          <Textarea
-            {...register("description_ru" as Path<T>)}
-            className={
-              contentErrors.description_ru ? "border-destructive" : undefined
-            }
-            rows={4}
-          />
-          {contentErrors.description_ru && (
-            <p className="text-sm text-destructive">
-              {contentErrors.description_ru.message}
-            </p>
-          )}
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <Label>{t("works.form.description_uk")}</Label>
-          <Textarea
-            {...register("description_uk" as Path<T>)}
-            className={
-              contentErrors.description_uk ? "border-destructive" : undefined
-            }
-            rows={4}
-          />
-          {contentErrors.description_uk && (
-            <p className="text-sm text-destructive">
-              {contentErrors.description_uk.message}
-            </p>
-          )}
-        </div>
+        {renderField("reason_ru", 3, isReasonRequired)}
+        {renderField("reason_uk", 3, isReasonRequired)}
+        {renderField("description_ru", 4, true)}
+        {renderField("description_uk", 4, true)}
       </CardContent>
     </Card>
   );
